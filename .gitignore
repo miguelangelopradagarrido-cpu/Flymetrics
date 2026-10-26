@@ -1,0 +1,37 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Archivos de configuración de editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Configuración del agente local
+.agents/
+
+# Base de datos SQLite local obsoleta
+*.db
+*.sqlite3
+
+# Archivo de variables de entorno con credenciales secretas
+.env
+
+# Carpetas de desarrollo temporal
+scratch/
+backend/scratch/
+docs/
+
+# Archivos pesados temporales de uploads si no se quieren en el repo
+frontend/uploads/
+backend/uploads/

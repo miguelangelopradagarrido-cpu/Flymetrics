@@ -1,0 +1,3018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flymetrics</title>
+  <meta http-equiv="Permissions-Policy" content="geolocation=*, compute-pressure=*" />
+  <meta name="description" content="Panel de administración Flymetrics." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="../css/admin.css?v=20261016_v9_redesign_hd" />
+  <script>
+    // Fail-safe inmediato para modales: disponible antes de evaluar cualquier otra línea
+    window.openModal = function(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('hidden');
+      el.classList.add('active', 'open');
+      el.style.setProperty('display', 'flex', 'important');
+      el.style.setProperty('visibility', 'visible', 'important');
+      el.style.setProperty('opacity', '1', 'important');
+      el.style.setProperty('pointer-events', 'auto', 'important');
+      const inner = el.querySelector('.modal, .modal-box, .modal-card');
+      if (inner) {
+        inner.style.setProperty('display', 'flex', 'important');
+        inner.style.setProperty('visibility', 'visible', 'important');
+        inner.style.setProperty('opacity', '1', 'important');
+        inner.style.setProperty('transform', 'translateY(0) scale(1)', 'important');
+      }
+      document.body.style.overflow = 'hidden';
+    };
+    window.closeModal = function(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('active', 'open');
+      el.classList.add('hidden');
+      el.style.setProperty('display', 'none', 'important');
+      el.style.setProperty('visibility', 'hidden', 'important');
+      el.style.setProperty('opacity', '0', 'important');
+      el.style.setProperty('pointer-events', 'none', 'important');
+      document.body.style.overflow = '';
+    };
+    window.closeAllModals = function() {
+      document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.classList.remove('active', 'open');
+        m.classList.add('hidden');
+        m.style.setProperty('display', 'none', 'important');
+        m.style.setProperty('visibility', 'hidden', 'important');
+        m.style.setProperty('opacity', '0', 'important');
+        m.style.setProperty('pointer-events', 'none', 'important');
+      });
+      document.body.style.overflow = '';
+    };
+    // Apertura inmediata sin bloqueos de red
+    window.openNewAgendaModal = function() {
+      const f = document.getElementById('newAgendaForm');
+      if (f) f.reset();
+      window.openModal('newAgendaModal');
+    };
+    window.openNewClienteModal = function() {
+      const f = document.getElementById('newClienteForm');
+      if (f) f.reset();
+      window.openModal('newClienteModal');
+    };
+    window.openNewTecnicoModal = function() {
+      const f = document.getElementById('newTecnicoForm');
+      if (f) f.reset();
+      window.openModal('newTecnicoModal');
+    };
+    window.openNewDroneModal = function() {
+      const f = document.getElementById('newDroneForm');
+      if (f) f.reset();
+      window.openModal('newDroneModal');
+    };
+    window.openNewServicioModal = function() {
+      const f = document.getElementById('formServicioAdmin');
+      if (f) f.reset();
+      window.openModal('modalServicio');
+    };
+    window.openNewUsuarioModal = function() {
+      const f = document.getElementById('newUsuarioForm');
+      if (f) f.reset();
+      window.openModal('newUsuarioModal');
+    };
+    window.openZoneModal = function(index = null) {
+      const form = document.getElementById('zoneForm');
+      const editIndexInput = document.getElementById('zoneEditIndex');
+      const titleEl = document.getElementById('zoneModalTitleText');
+      if (editIndexInput) editIndexInput.value = (index !== null && index !== undefined) ? String(index) : '';
+      if (titleEl) titleEl.textContent = (index !== null && index !== undefined) ? 'Modificar Zona de Mayor Demanda' : 'Agregar Nueva Zona de Mayor Demanda';
+      if (index === null || index === undefined) {
+        if (form) form.reset();
+      }
+      window.openModal('zoneEditorModal');
+    };
+    window.closeZoneModal = function() {
+      window.closeModal('zoneEditorModal');
+    };
+    window.openModificarAgendaModal = function(id) {
+      window.openModal('reprogramarModal');
+      const inputId = document.getElementById('reprogramarTurnoId');
+      if (inputId && id) inputId.value = id;
+    };
+  </script>
+</head>
+<body>
+
+<!-- =====================================================
+     APP LAYOUT
+===================================================== -->
+<div class="app-layout">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-logo">
+        <img src="../img/logo_bird_blue.png" alt="Flymetrics Logo" class="brand-bird-img" onerror="this.src='../img/logo.png'" style="height:36px; width:auto; max-width:58px; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0, 48, 73, 0.22));" />
+        <div class="sidebar-logo-text">
+          <span class="sidebar-logo-name" style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; color:#003049;">Fly<span style="color:#1C82AD;">metrics</span></span>
+          <span class="sidebar-logo-sub" style="font-size:0.72rem; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Admin Enterprise</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menú principal</div>
+
+      <button class="nav-item active" data-panel="dashboard" title="Dashboard">
+        <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="nav-item" data-panel="agenda" id="navAgenda" title="Agenda">
+        <span class="nav-icon"><i class="fa-solid fa-calendar-days"></i></span>
+        <span>Agenda</span>
+        <span class="nav-badge" id="agendaBadge">0</span>
+      </button>
+
+      <button class="nav-item" data-panel="clientes" title="Clientes">
+        <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+        <span>Clientes</span>
+      </button>
+
+      <button class="nav-item" data-panel="tecnicos" title="Técnicos">
+        <span class="nav-icon"><i class="fa-solid fa-user-gear"></i></span>
+        <span>Técnicos</span>
+      </button>
+
+      <div class="nav-section-label" style="margin-top:8px">Operaciones</div>
+
+      <button class="nav-item" data-panel="servicios" title="Servicios">
+        <span class="nav-icon"><i class="fa-solid fa-list-check"></i></span>
+        <span>Servicios</span>
+      </button>
+
+      <button class="nav-item" data-panel="publicidad" id="navPublicidad" title="Publicidad y Medios">
+        <span class="nav-icon"><i class="fa-solid fa-bullhorn"></i></span>
+        <span>Publicidad & Medios</span>
+      </button>
+
+      <button class="nav-item" data-panel="reagendamiento" title="Reagendamiento de Turnos">
+        <span class="nav-icon"><i class="fa-solid fa-calendar-plus"></i></span>
+        <span>Reagendamiento</span>
+      </button>
+
+      <button class="nav-item" data-panel="facturacion" title="Facturación">
+        <span class="nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+        <span>Facturación</span>
+      </button>
+
+      <button class="nav-item" data-panel="informes-ejecutivos" title="Informes Ejecutivos">
+        <span class="nav-icon"><i class="fa-solid fa-file-signature"></i></span>
+        <span>Informes Ejecutivos</span>
+      </button>
+
+      <button class="nav-item" data-panel="zonas" id="navZonas" title="Zonas de Mayor Demanda">
+        <span class="nav-icon"><i class="fa-solid fa-map-location-dot"></i></span>
+        <span>Zonas de Demanda</span>
+      </button>
+
+      <div class="nav-section-label" style="margin-top:8px">Sistema</div>
+
+      <button class="nav-item" data-panel="usuarios" title="Usuarios">
+        <span class="nav-icon"><i class="fa-solid fa-user-shield"></i></span>
+        <span>Usuarios</span>
+      </button>
+
+      <button class="nav-item" data-panel="contacto-web" id="navContactoWeb" title="Cotizaciones 24 Horas">
+        <span class="nav-icon"><i class="fa-solid fa-headset"></i></span>
+        <span>Cotizaciones 24 Horas</span>
+        <span class="nav-badge" id="webContactoBadge" style="background:#10B981; color:#fff;">0</span>
+      </button>
+
+      <button class="nav-item" data-panel="configuracion" title="Configuración">
+        <span class="nav-icon"><i class="fa-solid fa-sliders"></i></span>
+        <span>Configuración</span>
+      </button>
+
+      <div class="nav-section-label" style="margin-top:8px">Acceso Externo</div>
+
+      <button class="nav-item" onclick="window.open('tecnico.html', '_blank')" title="Portal Técnico">
+        <span class="nav-icon"><i class="fa-solid fa-plane-departure"></i></span>
+        <span>Portal Técnico</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarUserInitials">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebarUserName">Admin</div>
+          <div class="sidebar-user-role" id="sidebarUserRole">Administrador</div>
+        </div>
+      </div>
+      <button class="sidebar-logout" id="logoutBtn" onclick="logout()" title="Cerrar sesión">
+        <i class="fa-solid fa-power-off"></i>
+        <span>Cerrar sesión</span>
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay hidden" id="adminSidebarOverlay" onclick="toggleAdminSidebar(event)" style="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:90;backdrop-filter:blur(4px);opacity:0;transition:opacity 0.3s;pointer-events:all;"></div>
+
+  <!-- ==================== MAIN ==================== -->
+  <main class="main-content">
+
+    <header class="topbar">
+      <div style="display:flex; align-items:center; gap:12px; flex:1;">
+        <button class="topbar-toggle" id="sidebarToggle" onclick="toggleAdminSidebar(event)" aria-label="Toggle Sidebar" title="Menú lateral"><i class="fa-solid fa-bars"></i></button>
+        <div style="width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg, #003049 0%, #1c82ad 100%); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.85rem; flex-shrink:0;">
+          <i class="fa-solid fa-helicopter"></i>
+        </div>
+        <span style="font-family:'Space Grotesk', sans-serif; font-weight:800; font-size:1.1rem; letter-spacing:-0.01em; color:#003049;" id="topbarBrandName">Flymetrics</span>
+        <span style="color:rgba(0,48,73,0.2); font-size:0.8rem;">|</span>
+        <div class="topbar-title" id="topbarTitle" style="margin-left:0; font-size:0.95rem; font-weight:700; color:#1c82ad; flex:none;">Dashboard <span id="topbarSub"></span></div>
+      </div>
+      <div class="topbar-actions">
+        <div style="font-size:0.78rem;color:var(--text-2)" id="topbarTime"></div>
+
+        <div style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(28, 130, 173,0.08);border:1px solid rgba(28, 130, 173,0.15);border-radius:20px;font-size:0.72rem;color:var(--accent)">
+          <span style="width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite"></span>
+          Sistema activo
+        </div>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- ========================================
+           PANEL 1: DASHBOARD
+      ======================================== -->
+      <section class="panel active" id="panel-dashboard">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Dashboard</div>
+            <div class="section-subtitle" id="dashboardDate"></div>
+          </div>
+          <button class="btn btn-primary" data-quick="agenda" onclick="openNewAgendaModal()">
+            <i class="fa-solid fa-plus"></i> Nueva agenda
+          </button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+          <div class="stat-card blue">
+            <span class="stat-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <div class="stat-label">Turnos hoy</div>
+            <div class="stat-value" id="statTurnosHoy">—</div>
+            <div class="stat-change up">↑ programados</div>
+          </div>
+          <div class="stat-card green">
+            <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
+            <div class="stat-label">Clientes totales</div>
+            <div class="stat-value" id="statClientes">—</div>
+            <div class="stat-change up">↑ este mes</div>
+          </div>
+          <div class="stat-card orange">
+            <span class="stat-icon"><i class="fa-solid fa-user-gear"></i></span>
+            <div class="stat-label">Técnicos activos</div>
+            <div class="stat-value" id="statTecnicos">—</div>
+            <div class="stat-change">en campo</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Recent Agenda -->
+          <div class="card" style="grid-column: 1 / -1">
+            <div class="card-header">
+              <span class="card-title"><i class="fa-solid fa-list-check" style="color:var(--accent); margin-right:6px;"></i> Turnos recientes</span>
+              <button class="btn btn-ghost btn-sm" data-panel="agenda" onclick="navigateTo('agenda')">Ver todos →</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Servicio</th>
+                    <th>Fecha / Hora</th>
+                    <th>Estado</th>
+                    <th>Técnico</th>
+                  </tr>
+                </thead>
+                <tbody id="recentAgendaBody">
+                  <tr><td colspan="6" class="text-center"><div class="loading-state"><div class="spinner"></div>Cargando...</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <div class="quick-action-card" data-quick="agenda" onclick="openNewAgendaModal()" style="cursor:pointer;">
+            <div class="quick-action-icon"><i class="fa-solid fa-calendar-plus"></i></div>
+            <div class="quick-action-label">Nueva Agenda</div>
+          </div>
+          <div class="quick-action-card" data-quick="tecnicos" onclick="navigateTo('tecnicos')" style="cursor:pointer;">
+            <div class="quick-action-icon"><i class="fa-solid fa-user-gear"></i></div>
+            <div class="quick-action-label">Ver Técnicos</div>
+          </div>
+          <div class="quick-action-card" data-quick="clientes" onclick="navigateTo('clientes')" style="cursor:pointer;">
+            <div class="quick-action-icon"><i class="fa-solid fa-users"></i></div>
+            <div class="quick-action-label">Ver Clientes</div>
+          </div>
+          <div class="quick-action-card" data-quick="facturacion" onclick="navigateTo('facturacion')" style="cursor:pointer;">
+            <div class="quick-action-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+            <div class="quick-action-label">Facturación</div>
+          </div>
+          <div class="quick-action-card" data-quick="informes" onclick="navigateTo('informes-ejecutivos')" style="cursor:pointer;">
+            <div class="quick-action-icon"><i class="fa-solid fa-file-signature"></i></div>
+            <div class="quick-action-label">Informes Ejecutivos</div>
+          </div>
+          <div class="quick-action-card" data-quick="drones" onclick="navigateTo('drones')" style="cursor:pointer;">
+            <div class="quick-action-icon"><i class="fa-solid fa-helicopter"></i></div>
+            <div class="quick-action-label">Flota Drones</div>
+          </div>
+          <div class="quick-action-card" data-quick="zonas" onclick="navigateTo('zonas')" style="cursor:pointer;">
+            <div class="quick-action-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div class="quick-action-label">Zonas de Demanda</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL 2: AGENDA
+      ======================================== -->
+      <section class="panel" id="panel-agenda">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Agenda de Servicios</div>
+            <div class="section-subtitle">Gestión completa de turnos y asignaciones</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadAgenda()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary" id="newAgendaBtn" onclick="openNewAgendaModal()"><i class="fa-solid fa-plus"></i> Nueva agenda</button>
+          </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="card mb-6">
+          <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+              <span class="card-title" id="calMonthTitle" style="font-size:1.05rem; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-calendar-days" style="color:var(--accent);"></i> Calendario de Vuelos
+              </span>
+              <div class="btn-group" style="display:inline-flex; border:1px solid #cbd5e1; border-radius:10px; overflow:hidden; background:#f8fafc;">
+                <button type="button" class="btn btn-sm btn-ghost" id="btnCalView7" onclick="setCalendarView('7days')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">7 Días</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btnCalView14" onclick="setCalendarView('14days')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">14 Días</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btnCalViewMonth" onclick="setCalendarView('month')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">Mes Completo</button>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button class="btn btn-ghost btn-sm" onclick="navCalendar(-1)" title="Periodo Anterior" style="padding:5px 10px; border-radius:8px; border:1px solid #e2e8f0;"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="btn btn-ghost btn-sm" onclick="navCalendar(0)" title="Ir a Hoy" style="padding:5px 12px; font-size:0.78rem; font-weight:700; border-radius:8px; border:1px solid #e2e8f0;">Hoy</button>
+              <button class="btn btn-ghost btn-sm" onclick="navCalendar(1)" title="Periodo Siguiente" style="padding:5px 10px; border-radius:8px; border:1px solid #e2e8f0;"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="card-body" style="padding:16px">
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="toolbar" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+          <div class="search-input-wrap" style="flex:1; min-width:240px;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="agendaSearch" placeholder="Buscar por ID, cliente, finca, servicio, técnico..." />
+          </div>
+          <select class="filter-select form-select" id="agendaEstadoFilter" style="min-width:150px; font-weight:600;">
+            <option value="">Todos los estados</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Confirmado">Confirmado</option>
+            <option value="En proceso">En proceso</option>
+            <option value="Completado">Completado</option>
+            <option value="Finalizado">Finalizado</option>
+            <option value="Cancelado">Cancelado</option>
+          </select>
+          <select class="filter-select form-select" id="agendaTecnicoFilter" style="min-width:160px; font-weight:600;">
+            <option value="">Todos los técnicos</option>
+          </select>
+          <input type="date" class="filter-select form-input" id="agendaDateFilter" style="min-width:140px; font-weight:600;" />
+          <button class="btn btn-ghost btn-sm" onclick="clearAgendaFilters()" style="font-weight:700; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-filter-circle-xmark"></i> Limpiar</button>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#ID</th>
+                  <th>Cliente</th>
+                  <th>Finca</th>
+                  <th>Servicio</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Observaciones</th>
+                  <th>Precio</th>
+                  <th>Estado</th>
+                  <th>Técnico</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="agendaTableBody">
+                <tr><td colspan="11"><div class="loading-state"><div class="spinner"></div>Cargando...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL 3: CLIENTES
+      ======================================== -->
+      <section class="panel" id="panel-clientes">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Clientes</div>
+            <div class="section-subtitle">Base de clientes registrados</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadClientes()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary" id="newClienteBtn" onclick="openNewClienteModal()"><i class="fa-solid fa-plus"></i> Nuevo cliente</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-input-wrap">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="clientesSearch" placeholder="Buscar por nombre, email..." />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Fincas</th>
+                  <th>Turnos</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="clientesTableBody">
+                <tr><td colspan="6"><div class="loading-state"><div class="spinner"></div>Cargando...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL 4: TÉCNICOS
+      ======================================== -->
+      <section class="panel" id="panel-tecnicos">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:8px;"></i>Monitoreo y Gestión de Técnicos</div>
+            <div class="section-subtitle">Supervisión en tiempo real de pilotos en campo, disponibilidad operativa y asignaciones de vuelo</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadTecnicos()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary" id="newTecnicoBtn" onclick="openNewTecnicoModal()"><i class="fa-solid fa-plus"></i> Nuevo técnico</button>
+          </div>
+        </div>
+
+        <!-- Pilot Monitoring KPI Cards -->
+        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">
+          <div class="stat-card blue" style="padding: 14px 20px;">
+            <span class="stat-icon"><i class="fa-solid fa-users-gear"></i></span>
+            <div class="stat-label">Total Pilotos</div>
+            <div class="stat-value" id="statTotalTecnicos" style="font-size: 1.5rem;">—</div>
+          </div>
+          <div class="stat-card green" style="padding: 14px 20px;">
+            <span class="stat-icon"><i class="fa-solid fa-circle-check"></i></span>
+            <div class="stat-label">Disponibles</div>
+            <div class="stat-value" id="statTecnicosDisponibles" style="font-size: 1.5rem;">—</div>
+          </div>
+          <div class="stat-card" style="padding: 14px 20px; border-left: 4px solid #6b7280;">
+            <span class="stat-icon"><i class="fa-solid fa-bed"></i></span>
+            <div class="stat-label">En Descanso / Off</div>
+            <div class="stat-value" id="statTecnicosInactivos" style="font-size: 1.5rem;">—</div>
+          </div>
+        </div>
+
+        <div class="toolbar" style="margin-top:20px;">
+          <div class="search-input-wrap">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="tecnicosSearch" placeholder="Buscar técnico por nombre, apellido, teléfono..." />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Técnico</th>
+                  <th style="text-align:center; width:60px;" title="WhatsApp del Técnico"><i class="fa-brands fa-whatsapp" style="color:#25D366; font-size:1.2rem;"></i></th>
+                  <th>Estado</th>
+                  <th>Turnos asignados</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tecnicosTableBody">
+                <tr><td colspan="5"><div class="loading-state"><div class="spinner"></div>Cargando...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- PANEL 5: DRONES (DESHABILITADO) -->
+      <section class="panel" id="panel-drones" style="display:none !important;">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Flota de Drones</div>
+            <div class="section-subtitle">Inventario y estado de aeronaves</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadDrones()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary" id="newDroneBtn" onclick="openNewDroneModal()"><i class="fa-solid fa-plus"></i> Agregar drone</button>
+          </div>
+        </div>
+
+        <!-- Drone Stats Grid -->
+        <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 24px;">
+          <div class="stat-card blue" style="padding: 14px 20px;">
+            <span class="stat-icon"><i class="fa-solid fa-helicopter"></i></span>
+            <div class="stat-label">Total Drones</div>
+            <div class="stat-value" id="statTotalDrones" style="font-size: 1.5rem;">—</div>
+          </div>
+          <div class="stat-card green" style="padding: 14px 20px;">
+            <span class="stat-icon"><i class="fa-solid fa-check"></i></span>
+            <div class="stat-label">Disponibles / Habilitados</div>
+            <div class="stat-value" id="statDronesDisponibles" style="font-size: 1.5rem;">—</div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-input-wrap">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="dronesSearch" placeholder="Buscar drone..." />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Modelo & Serie</th>
+                  <th>Piloto Asignado</th>
+                  <th style="text-align:center;">Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="dronesTableBody">
+                <tr><td colspan="4"><div class="loading-state"><div class="spinner"></div>Cargando...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL 6: SERVICIOS
+      <!-- ========================================
+           PANEL SERVICIOS & MULTIMEDIA
+      ======================================== -->
+      <section class="panel" id="panel-servicios">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:8px;"></i>Servicios Especializados & Multimedia</div>
+            <div class="section-subtitle">Catálogo de servicios agrícolas, videos demostrativos e imágenes de la página principal</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="openMediaGalleryModal()" style="border:1.5px solid var(--accent); color:var(--accent); font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-photo-film"></i> Galería Multimedia
+            </button>
+            <button class="btn btn-primary" onclick="openNewServicioModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;">
+              <i class="fa-solid fa-plus"></i> Nuevo servicio
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+          <div class="search-input-wrap" style="flex:1; min-width:260px;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="serviciosSearch" placeholder="Buscar servicio por nombre, sistema, especificación..." oninput="renderServiciosTable()" />
+          </div>
+          <select id="serviciosFilterActivo" class="form-select" onchange="renderServiciosTable()" style="max-width:220px; font-weight:600;">
+            <option value="">Todos los servicios</option>
+            <option value="activo">Solo Activos (En Home)</option>
+            <option value="inactivo">Desactivados / Inactivos</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:70px;">Media</th>
+                  <th>Servicio & Icono</th>
+                  <th>Especificaciones Técnicas</th>
+                  <th style="text-align:center;">Página Principal</th>
+                  <th style="text-align:center; width:130px;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="serviciosTableBody">
+                <tr><td colspan="5"><div class="loading-state"><div class="spinner"></div>Cargando catálogo de servicios...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL PUBLICIDAD & MEDIOS
+      ======================================== -->
+      <section class="panel" id="panel-publicidad">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:var(--accent); margin-right:8px;"></i>Módulo de Publicidad & Medios</div>
+            <div class="section-subtitle">Administración de video principal, foto móvil, collage rotativo de clientes y redes sociales</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadPublicidadPanel()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;">
+              <i class="fa-solid fa-rotate"></i> Actualizar
+            </button>
+            <button class="btn btn-ghost" onclick="openMediaGalleryModal()" style="border:1.5px solid var(--accent); color:var(--accent); font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-photo-film"></i> Galería Multimedia
+            </button>
+            <button class="btn btn-primary" id="btnNuevoMedioPublicidad" onclick="openNewCollageModal()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;">
+              <i class="fa-solid fa-plus"></i> + Agregar al Collage
+            </button>
+          </div>
+        </div>
+
+        <!-- Subtabs de Navegación -->
+        <div class="tab-nav" style="display:flex; gap:8px; border-bottom:1.5px solid #e2e8f0; margin-bottom:20px; padding-bottom:8px; flex-wrap:wrap;">
+          <button class="btn btn-sm btn-ghost active pub-tab-btn" id="pubTabBtnCollage" onclick="switchPublicidadSubTab('collage')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1; background:rgba(28,130,173,0.1); color:var(--primary);">
+            <i class="fa-solid fa-images" style="color:var(--accent); margin-right:6px;"></i> Collage Dashboard Cliente
+          </button>
+          <button class="btn btn-sm btn-ghost pub-tab-btn" id="pubTabBtnGlobal" onclick="switchPublicidadSubTab('global')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1;">
+            <i class="fa-solid fa-tv" style="color:#0284c7; margin-right:6px;"></i> Medios Globales (Video & Portada Móvil)
+          </button>
+          <button class="btn btn-sm btn-ghost pub-tab-btn" id="pubTabBtnRedes" onclick="switchPublicidadSubTab('redes')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1;">
+            <i class="fa-solid fa-share-nodes" style="color:#10b981; margin-right:6px;"></i> Redes Sociales Oficiales
+          </button>
+        </div>
+
+        <!-- SUBTAB 1: COLLAGE DASHBOARD CLIENTE -->
+        <div id="pubSubTabCollage" class="pub-subtab-content">
+          <!-- Zona de arrastrar y soltar imágenes -->
+          <div id="collageDragZone"
+            ondragover="event.preventDefault(); this.classList.add('drag-over')"
+            ondragleave="this.classList.remove('drag-over')"
+            ondrop="event.preventDefault(); this.classList.remove('drag-over'); uploadMultipleCollageFiles({files: event.dataTransfer.files})"
+            onclick="document.getElementById('collageMultiFileInput').click()"
+            style="border: 2.5px dashed #1c82ad; border-radius: 16px; padding: 32px 24px; text-align: center;
+                   background: linear-gradient(135deg, rgba(28,130,173,0.05) 0%, rgba(16,185,129,0.05) 100%);
+                   cursor: pointer; transition: all 0.25s ease; margin-bottom: 18px; position: relative;">
+            <style>
+              #collageDragZone.drag-over {
+                border-color: #10b981 !important;
+                background: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(28,130,173,0.08) 100%) !important;
+                transform: scale(1.01);
+                box-shadow: 0 8px 32px rgba(16,185,129,0.2);
+              }
+            </style>
+            <div style="font-size: 2.8rem; margin-bottom: 10px; line-height:1;">
+              <i class="fa-solid fa-images" style="color: #1c82ad;"></i>
+              <i class="fa-solid fa-plus" style="font-size:1.1rem; color:#10b981; margin-left:4px; vertical-align:super;"></i>
+            </div>
+            <div style="font-weight: 800; font-size: 1.05rem; color: var(--text-primary); margin-bottom: 6px;">
+              Arrastra aquí tus fotos y videos del collage
+            </div>
+            <div style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 14px;">
+              O haz clic para seleccionar desde tu equipo — <strong>sin límite de cantidad</strong>
+            </div>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+              <span style="background: rgba(28,130,173,0.1); color:#1c82ad; padding:4px 12px; border-radius:20px; font-size:0.78rem; font-weight:700;">
+                <i class="fa-solid fa-image" style="margin-right:4px;"></i> JPG · PNG · WEBP · SVG · GIF
+              </span>
+              <span style="background: rgba(16,185,129,0.1); color:#059669; padding:4px 12px; border-radius:20px; font-size:0.78rem; font-weight:700;">
+                <i class="fa-solid fa-video" style="margin-right:4px;"></i> MP4 · WEBM · MOV
+              </span>
+            </div>
+            <input type="file" id="collageMultiFileInput" multiple accept="image/*,video/*"
+              style="display:none;" onchange="uploadMultipleCollageFiles(this)" />
+          </div>
+
+          <!-- Barra de progreso de subida en lote -->
+          <div id="collageBatchUploadStatus" style="display:none; width:100%; margin-bottom:14px;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border: 1.5px solid #86efac;
+            border-radius:12px; padding:14px 18px; color:#166534; font-size:0.86rem;
+            font-weight:700; align-items:center; gap:12px; flex-direction: column;">
+            <div style="display:flex; align-items:center; gap:10px; width:100%;">
+              <i class="fa-solid fa-spinner fa-spin" style="font-size:1.2rem; color:#15803d;"></i>
+              <span id="collageBatchUploadText">Procesando lote de imágenes...</span>
+            </div>
+            <div style="width:100%; background:#d1fae5; border-radius:8px; height:8px; overflow:hidden;">
+              <div id="collageBatchProgressBar" style="height:8px; border-radius:8px;
+                background: linear-gradient(90deg, #10b981, #1c82ad);
+                width:0%; transition: width 0.4s ease; animation: pulseBar 1.5s infinite;">
+              </div>
+            </div>
+            <style>
+              @keyframes pulseBar { 0%,100%{opacity:1} 50%{opacity:0.7} }
+            </style>
+          </div>
+
+          <!-- Toolbar de búsqueda y filtros -->
+          <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+            <div class="search-input-wrap" style="flex:1; min-width:260px;">
+              <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input type="text" class="search-input" id="pubCollageSearch" placeholder="Buscar en el collage por título, subtítulo o badge..." oninput="renderCollageTable()" />
+            </div>
+            <select id="pubCollageFilterActivo" class="form-select" onchange="renderCollageTable()" style="max-width:200px; font-weight:600;">
+              <option value="">Todos los estados</option>
+              <option value="activo">Solo Activos (En Rotación)</option>
+              <option value="inactivo">Pausados / Inactivos</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="openNewCollageModal()" style="font-weight:800; border-radius:10px; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-plus"></i> Nuevo Elemento Individual
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:90px;">Miniatura</th>
+                    <th>Título &amp; Subtítulo</th>
+                    <th style="text-align:center; width:90px;">Tipo</th>
+                    <th>Badge / Acción</th>
+                    <th style="text-align:center; width:80px;">Orden</th>
+                    <th style="text-align:center; width:100px;">Rotación</th>
+                    <th style="text-align:center; width:120px;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="pubCollageTableBody">
+                  <tr><td colspan="7"><div class="loading-state"><div class="spinner"></div>Cargando collage de clientes...</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 2: MEDIOS GLOBALES (VIDEO HERO & PÓSTER MÓVIL) -->
+        <div id="pubSubTabGlobal" class="pub-subtab-content" style="display:none;">
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap:24px; margin-bottom:24px;">
+            <!-- Tarjeta 1: Video Hero de la Página Principal -->
+            <div class="card" style="padding:22px; border-radius:18px; border:1.5px solid rgba(28,130,173,0.25); display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-film" style="color:#e11d48;"></i> Video Hero (Página Principal)
+                </h3>
+                <span class="badge" style="background:#fef2f2; color:#e11d48; border:1px solid #fecdd3;">Full Screen</span>
+              </div>
+              <p style="font-size:0.83rem; color:#64748b; margin:0;">
+                Video en bucle continuo proyectado en pantalla completa en el inicio web.
+              </p>
+              
+              <!-- Video Preview -->
+              <div style="width:100%; height:200px; border-radius:12px; background:#001828; overflow:hidden; position:relative; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center;">
+                <video id="pubGlobalHeroPreview" src="/video/hero.mp4" muted loop playsinline autoplay style="width:100%; height:100%; object-fit:cover;"></video>
+              </div>
+
+              <!-- Input y botones -->
+              <div>
+                <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:6px; display:block;">Ruta o URL del Video:</label>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <input type="text" id="pubHeroVideoInput" class="form-input" value="/video/hero.mp4" placeholder="/video/hero.mp4 o https://..." oninput="var v=document.getElementById('pubGlobalHeroPreview'); if(v){ v.src=this.value; v.load(); v.play().catch(()=>{}); }" style="font-size:0.82rem; flex:1; min-width:180px;" />
+                  <input type="file" id="pubHeroVideoFileInput" accept="video/mp4,video/webm" style="display:none;" onchange="subirMedioGlobalDirecto(this, 'video')" />
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="openMediaGalleryModal('hero_video')" style="font-weight:700; white-space:nowrap; border:1px solid var(--accent); color:var(--accent);">
+                    <i class="fa-solid fa-photo-film"></i> Galería
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('pubHeroVideoFileInput').click()" style="font-weight:700; white-space:nowrap;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Subir
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="eliminarMedioGlobal('video')" title="Restablecer o borrar video subido" style="background:#fee2e2; color:#ef4444; border:1px solid #fca5a5; font-weight:700;">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 2: Foto de Carga en Celulares (Poster Móvil) -->
+            <div class="card" style="padding:22px; border-radius:18px; border:1.5px solid rgba(28,130,173,0.25); display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-mobile-screen" style="color:#0284c7;"></i> Portada Móvil / Foto de Carga
+                </h3>
+                <span class="badge" style="background:#f0f9ff; color:#0284c7; border:1px solid #bae6fd;">Ultra Ligera</span>
+              </div>
+              <p style="font-size:0.83rem; color:#64748b; margin:0;">
+                Imagen que se muestra inmediatamente en celulares para carga rápida sin gastar datos ni saturar el ancho de banda.
+              </p>
+
+              <!-- Image Preview -->
+              <div style="width:100%; height:200px; border-radius:12px; background:#001828; overflow:hidden; position:relative; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center;">
+                <img id="pubGlobalPosterPreview" src="/img/servicio_precision.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='../img/servicio_precision.jpg';" />
+              </div>
+
+              <!-- Input y botones -->
+              <div>
+                <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:6px; display:block;">Ruta o URL de la Imagen:</label>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <input type="text" id="pubMobilePosterInput" class="form-input" value="/img/servicio_precision.jpg" placeholder="/img/servicio_precision.jpg o /uploads/..." oninput="var p=document.getElementById('pubGlobalPosterPreview'); if(p){ p.src=this.value + (this.value.includes('?') ? '&' : '?') + 't=' + Date.now(); }" style="font-size:0.82rem; flex:1; min-width:180px;" />
+                  <input type="file" id="pubMobilePosterFileInput" accept="image/*" style="display:none;" onchange="subirMedioGlobalDirecto(this, 'imagen')" />
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="openMediaGalleryModal('mobile_poster')" style="font-weight:700; white-space:nowrap; border:1px solid var(--accent); color:var(--accent);">
+                    <i class="fa-solid fa-photo-film"></i> Galería
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('pubMobilePosterFileInput').click()" style="font-weight:700; white-space:nowrap;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Subir
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="eliminarMedioGlobal('imagen')" title="Restablecer o borrar imagen subida" style="background:#fee2e2; color:#ef4444; border:1px solid #fca5a5; font-weight:700;">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:12px;">
+            <button class="btn btn-primary" onclick="guardarMediosGlobales()" style="font-weight:800; padding:12px 28px; border-radius:12px;">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Medios Globales
+            </button>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: REDES SOCIALES OFICIALES -->
+        <div id="pubSubTabRedes" class="pub-subtab-content" style="display:none;">
+          <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+            <div class="search-input-wrap" style="flex:1; min-width:260px;">
+              <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input type="text" class="search-input" id="pubRedesSearch" placeholder="Buscar red social por nombre o plataforma..." oninput="renderRedesTable()" />
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openNewRedSocialModal()" style="font-weight:800; border-radius:10px; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-plus"></i> Registrar Red Social
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:70px; text-align:center;">Icono</th>
+                    <th>Red Social / Plataforma</th>
+                    <th>Nombre Visible</th>
+                    <th>Enlace Oficial (URL)</th>
+                    <th style="text-align:center; width:80px;">Orden</th>
+                    <th style="text-align:center; width:100px;">Estado</th>
+                    <th style="text-align:center; width:120px;">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="pubRedesTableBody">
+                  <tr><td colspan="7"><div class="loading-state"><div class="spinner"></div>Cargando redes sociales...</div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL REAGENDAMIENTO DE TURNOS
+      ======================================== -->
+      <section class="panel" id="panel-reagendamiento">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-calendar-plus" style="color:var(--accent); margin-right:8px;"></i>Módulo de Reagendamiento</div>
+            <div class="section-subtitle">Gestión rápida para reprogramar fechas, horas estimadas, franjas diurnas/nocturnas y motivos de cambio</div>
+          </div>
+          <button class="btn btn-ghost" onclick="panelLoaders.reagendamiento()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar Turnos</button>
+        </div>
+
+        <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+          <div class="search-input-wrap" style="flex:1; min-width:260px;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="reagendarSearch" placeholder="Buscar turno por cliente, finca, ID, teléfono..." oninput="renderReagendamientoTable()" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#ID Turno</th>
+                  <th>Cliente / Finca</th>
+                  <th>Servicio(s) Solicitado(s)</th>
+                  <th>Fecha & Hora Actual</th>
+                  <th>Observaciones / Jornada</th>
+                  <th>Estado</th>
+                  <th style="text-align:center;">Acción de Reagendamiento</th>
+                </tr>
+              </thead>
+              <tbody id="reagendamientoTableBody">
+                <tr><td colspan="7"><div class="loading-state"><div class="spinner"></div>Cargando solicitudes de reagendamiento...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL SOLICITUDES COTIZACIÓN 24 HORAS
+      ======================================== -->
+      <section class="panel" id="panel-contacto-web">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-headset" style="color:var(--accent); margin-right:8px;"></i>Cotizaciones & Contacto 24 Horas</div>
+            <div class="section-subtitle">Solicitudes de cotización e información recibidas desde la página principal con detalles de área y cultivo</div>
+          </div>
+          <button class="btn btn-ghost" onclick="loadContactoWeb()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar Lista</button>
+        </div>
+
+        <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+          <div class="search-input-wrap" style="flex:1; min-width:260px;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="contactoWebSearch" placeholder="Buscar por cliente, teléfono, cultivo, municipio..." />
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-weight:700; font-size:0.85rem; color:#003049;">Estado:</label>
+            <select id="contactoWebEstadoFilter" class="form-select" style="min-width:140px; font-weight:600;">
+              <option value="">Todos los Estados</option>
+              <option value="Abierto">Abiertos (Pendientes)</option>
+              <option value="En Proceso">En Proceso</option>
+              <option value="Atendido">Atendidos</option>
+              <option value="Cerrado">Cerrados</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th># Ticket</th>
+                  <th>Cliente / Contacto</th>
+                  <th>Servicio & Cultivo</th>
+                  <th>Hectáreas (Ha)</th>
+                  <th>Ubicación / Finca</th>
+                  <th>Mensaje / Requerimiento</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                  <th style="text-align:center;">Acciones Admin</th>
+                </tr>
+              </thead>
+              <tbody id="contactoWebTableBody">
+                <tr><td colspan="9"><div class="loading-state"><div class="spinner"></div>Cargando solicitudes de cotización 24h...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL 7: FACTURACIÓN (ALEGRA)
+      ======================================== -->
+      <section class="panel" id="panel-facturacion">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent); margin-right:8px;"></i>Facturación & Integración Alegra</div>
+            <div class="section-subtitle">Gestión de facturación electrónica y vinculación de enlaces directos a la plataforma de Alegra por cada cliente</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadFacturacion()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary" onclick="openVincularAlegraModal()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-link"></i> Vincular Facturación Alegra</button>
+          </div>
+        </div>
+
+        <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+          <div class="search-input-wrap" style="flex:1; min-width:260px;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="pagosSearch" placeholder="Buscar cliente por nombre, NIT, email o estado de Alegra..." oninput="renderPagosTable(this.value)" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th># ID</th>
+                  <th>Cliente</th>
+                  <th>Documento / NIT</th>
+                  <th>Contacto / WhatsApp</th>
+                  <th>Estado Facturación Alegra</th>
+                  <th>Enlace Directo Alegra</th>
+                  <th style="text-align:center;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="pagosTableBody">
+                <tr><td colspan="7"><div class="loading-state"><div class="spinner"></div>Cargando clientes y facturación Alegra...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL: INFORMES EJECUTIVOS (SHAREPOINT)
+      ======================================== -->
+      <section class="panel" id="panel-informes-ejecutivos">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--accent); margin-right:8px;"></i>Informes Ejecutivos & Integración SharePoint</div>
+            <div class="section-subtitle">Gestión y vinculación de carpetas oficiales de Microsoft SharePoint por cada cliente</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadInformesEjecutivosClientes()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary" onclick="openVincularSharepointModal()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-link"></i> Vincular Carpeta SharePoint</button>
+          </div>
+        </div>
+
+        <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+          <div class="search-input-wrap" style="flex:1; min-width:260px;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="informesEjecutivosSearch" placeholder="Buscar cliente por nombre, NIT, email o estado de SharePoint..." oninput="renderInformesEjecutivosTable(this.value)" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th># ID</th>
+                  <th>Cliente</th>
+                  <th>Documento / NIT</th>
+                  <th>Contacto / WhatsApp</th>
+                  <th>Estado Carpeta SharePoint</th>
+                  <th>Enlace Directo SharePoint</th>
+                  <th style="text-align:center;">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="informesEjecutivosTableBody">
+                <tr><td colspan="7"><div class="loading-state"><div class="spinner"></div>Cargando clientes y carpetas SharePoint...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL: ADMIN-TÉCNICO (TORRE DE CONTROL)
+      ======================================== -->
+      <section id="panel-admin-tecnico" class="panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <div>
+            <h2 class="section-title" style="margin:0; display:flex; align-items:center; gap:10px;">
+              <span><i class="fa-solid fa-tower-broadcast" style="color:var(--accent); margin-right:6px;"></i> Torre de Control Admin-Técnico</span>
+            </h2>
+            <div class="section-subtitle">Monitoreo individual de pilotos, matriz de ocupación de drones, informes ejecutivos y recálculo de rutas.</div>
+          </div>
+          <button class="btn btn-primary" onclick="loadAdminTecnicoModule()" style="display:inline-flex; align-items:center; gap:8px; font-weight:800; border-radius:12px; padding:10px 18px;">
+            <i class="fa-solid fa-rotate"></i> Recargar Datos Operativos
+          </button>
+        </div>
+
+        <!-- Grid 1: Monitoreo Individual de Técnicos -->
+        <div style="margin-bottom:28px;">
+          <h3 style="font-family:'Syne',sans-serif; color:#003049; font-size:1.15rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+            <span><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Monitoreo Individual de Pilotos Técnicos</span>
+          </h3>
+          <div id="tecnicosIndividualGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:18px;">
+            <div class="card" style="padding:20px; text-align:center; color:var(--text-3);">Cargando monitoreo de técnicos...</div>
+          </div>
+        </div>
+
+        <!-- Grid 2: Matriz de Ocupación y Edición Total -->
+        <div class="card" style="padding:24px; border-radius:18px; border:1px solid rgba(28, 130, 173, 0.25);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+            <div>
+              <h3 style="font-family:'Syne',sans-serif; color:#003049; font-size:1.15rem; margin:0 0 4px 0;"><i class="fa-solid fa-helicopter" style="color:var(--accent); margin-right:6px;"></i> Matriz de Ocupación Dron + Piloto & Edición Total</h3>
+              <div style="font-size:0.83rem; color:#6c757d;">Gestiona asignaciones anti-choque, informes ejecutivos y enlaces directos de SharePoint.</div>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="table-styled" style="width:100%;">
+              <thead>
+                <tr>
+                  <th># Turno</th>
+                  <th>Fecha & Hora</th>
+                  <th>Predio & Cliente</th>
+                  <th>Piloto Asignado</th>
+                  <th>Dron Vinculado</th>
+                  <th>Estado Vuelo</th>
+                  <th>SharePoint / SLA</th>
+                  <th>Acciones Admin</th>
+                </tr>
+              </thead>
+              <tbody id="ocupacionDronesTableBody">
+                <tr><td colspan="8" style="text-align:center; padding:20px; color:#6c757d;">Cargando matriz de ocupación...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL: GESTIÓN DE USUARIOS
+      ======================================== -->
+      <section class="panel" id="panel-usuarios">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-users-gear" style="color:var(--accent); margin-right:8px;"></i>Gestión de Usuarios del Sistema</div>
+            <div class="section-subtitle">Administra cuentas, roles, verificación de clientes y contraseñas de todos los usuarios registrados</div>
+          </div>
+          <button class="btn btn-primary" onclick="openNewUsuarioModal()"><i class="fa-solid fa-plus"></i> Nuevo usuario</button>
+        </div>
+
+        <div class="toolbar" style="margin-bottom:16px; display:flex; gap:10px; align-items:center;">
+          <div class="search-input-wrap" style="flex:1; position:relative;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="usuariosSearch" placeholder="Buscar por email, nombre, teléfono o rol..." oninput="renderUsuariosTable(this.value)" style="width:100%; padding-right:36px;" />
+            <button type="button" onclick="document.getElementById('usuariosSearch').value=''; renderUsuariosTable('');" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; font-size:1rem; cursor:pointer;" title="Limpiar filtro">✕</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="loadUsuarios()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;" title="Recargar desde la base de datos"><i class="fa-solid fa-rotate"></i> Refrescar</button>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Usuario / Email</th>
+                  <th>Nombre & Perfil</th>
+                  <th>Rol</th>
+                  <th>Fecha Registro</th>
+                  <th>Estado Verificación</th>
+                  <th>Acciones Admin</th>
+                </tr>
+              </thead>
+              <tbody id="usuariosTableBody">
+                <tr><td colspan="6" class="text-center" style="padding:40px; color:var(--text-3);"><div class="loading-state"><div class="spinner"></div>Cargando usuarios...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ========================================
+           PANEL: ZONAS DE MAYOR DEMANDA & COBERTURA
+      ======================================== -->
+      <section class="panel" id="panel-zonas">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:8px;"></i>Zonas de Mayor Demanda</div>
+            <div class="section-subtitle">Gestión de bases operativas y zonas de demanda que se reflejan en el mapa interactivo de la página principal</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn btn-ghost" onclick="loadCorporateConfig()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
+            <button class="btn btn-primary" onclick="openZoneModal()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-plus"></i> Agregar Nueva Zona</button>
+          </div>
+        </div>
+
+        <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
+          <div class="search-input-wrap" style="flex:1; min-width:260px;">
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" class="search-input" id="zonasSearch" placeholder="Buscar zona por nombre, etiqueta, servicio o demanda..." oninput="filterZonasCards(this.value)" />
+          </div>
+        </div>
+
+        <div class="card" style="padding: 24px;">
+          <div id="zonasPanelCards" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+            <div class="loading-state"><div class="spinner"></div>Cargando zonas de demanda...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================
+           PANEL 9: CONFIGURACIÓN DEL SISTEMA
+      ======================================== -->
+      <section class="panel" id="panel-configuracion">
+        <div class="section-header">
+          <div>
+            <div class="section-title"><i class="fa-solid fa-gears" style="color:var(--accent); margin-right:8px;"></i>Configuración del Sistema</div>
+            <div class="section-subtitle">Gestión integral de la empresa, datos corporativos y seguridad</div>
+          </div>
+          <button class="btn btn-primary" id="saveConfigBtn" onclick="saveCorporateConfig()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+          </button>
+        </div>
+
+        <div class="grid-2">
+          <!-- 1. Información Corporativa -->
+          <div class="settings-section" style="grid-column: 1 / -1;">
+            <div class="settings-section-header">
+              <div class="settings-section-title"><i class="fa-solid fa-building" style="color:var(--accent); margin-right:6px;"></i> Perfil Corporativo & Canales de Contacto</div>
+            </div>
+            <div style="padding: 20px;">
+              <div class="form-grid form-grid-2">
+                <div class="form-field">
+                  <label>Nombre Comercial</label>
+                  <input id="cfgEmpresa" class="form-input" value="Flymetrics Colombia S.A.S." oninput="syncCorporatePreview()" />
+                </div>
+                <div class="form-field">
+                  <label>NIT / Registro Fiscal</label>
+                  <input id="cfgNit" class="form-input" value="900.123.456-7" />
+                </div>
+                <div class="form-field">
+                  <label>Teléfono Principal</label>
+                  <input id="cfgTelefono" class="form-input" value="+57 305 406 1764" />
+                </div>
+                <div class="form-field">
+                  <label>WhatsApp de Soporte y Contacto</label>
+                  <input id="cfgWhatsapp" class="form-input" value="+57 314 3764972" />
+                </div>
+                <div class="form-field">
+                  <label>Correo Electrónico Oficial</label>
+                  <input id="cfgEmail" class="form-input" value="comercial@flymetrics.com.co" />
+                </div>
+                <div class="form-field">
+                  <label>Dirección / Sede Principal</label>
+                  <input id="cfgDireccion" class="form-input" value="Avenida El Dorado #68b-70, Bogotá D.C." />
+                </div>
+                <div class="form-field full">
+                  <label>Plantilla WhatsApp Respuesta 24h a Cotizaciones (Usa {nombre}, {servicio}, {hectareas})</label>
+                  <input id="cfgWaTemplate24h" class="form-input" value="Hola {nombre}, te contactamos desde Flymetrics Colombia sobre tu solicitud de {servicio} ({hectareas} ha)." />
+                </div>
+                <div class="form-field full">
+                  <label>Plantilla WhatsApp Confirmación de Agendamiento Directo (Usa {radicado}, {nombre}, {cedula}, {finca}, {municipio}, {departamento}, {cultivo}, {hectareas}, {servicio}, {fecha}, {ubicacion_maps})</label>
+                  <textarea id="cfgWaTemplateAgendar" class="form-input" rows="3" style="resize: vertical; font-family: inherit; line-height: 1.4;">Hola Flymetrics Colombia, acabo de agendar una solicitud de servicio / demostración:
+Radicado: {radicado}
+Productor: {nombre} (CC/NIT: {cedula})
+Finca: {finca} en {municipio} ({departamento})
+Cultivo: {cultivo} ({hectareas} Ha)
+Servicio: {servicio}
+Fecha programada: {fecha}
+Ubicación / Maps: {ubicacion_maps}
+Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
+                </div>
+                <div class="form-field full">
+                  <label>Plantilla WhatsApp General (Botón flotante y enlaces)</label>
+                  <input id="cfgWaTemplateGeneral" class="form-input" value="Hola Flymetrics, deseo solicitar asesoría e información técnica sobre sus servicios de drones agrícolas." />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section" style="margin-top:16px;">
+          <div class="settings-section-header">
+            <div class="settings-section-title"><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:6px;"></i> Zonas de Mayor Presencia</div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openZoneModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;">
+              <i class="fa-solid fa-plus"></i> Agregar zona
+            </button>
+          </div>
+          <div style="padding: 20px;">
+            <div id="cfgZonesList" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px;"></div>
+          </div>
+        </div>
+
+        <!-- 2. Configuración de Servidor de Correos & Redirección de Botones (Protegido por Clave Maestra) -->
+        <div class="settings-section" style="margin-top:20px; border:1.5px solid rgba(28, 130, 173, 0.35); border-radius:18px; overflow:hidden;">
+          <div class="settings-section-header" style="background:rgba(28, 130, 173, 0.08); display:flex; justify-content:space-between; align-items:center;">
+            <div class="settings-section-title">
+              <i class="fa-solid fa-envelope-circle-check" style="color:var(--accent); margin-right:6px;"></i> Servidor de Correos & Redirección de Botones (Protegido)
+            </div>
+            <button type="button" class="btn btn-sm" id="btnDesbloquearCorreo" onclick="openMasterKeyModal()" style="font-weight:700; background:linear-gradient(135deg, #1c82ad, #003049); color:#fff; border:none; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fa-solid fa-lock" id="iconLockCorreo"></i> <span id="textLockCorreo">Desbloquear con Clave Maestra</span>
+            </button>
+          </div>
+          
+          <div id="boxCorreoBloqueado" style="padding: 24px; text-align: center; color: #64748b;">
+            <i class="fa-solid fa-shield-halved" style="font-size: 2.2rem; color: #1c82ad; margin-bottom: 10px;"></i>
+            <div style="font-weight: 700; color: #003049; font-size: 1rem;">Módulo Protegido por Contraseña Maestra de Administrador</div>
+            <div style="font-size: 0.85rem; max-width: 520px; margin: 6px auto 14px auto;">
+              Para proteger las credenciales de despacho (SMTP) y la dirección web donde dirigen los botones de los correos a los clientes, ingresa tu clave maestra. Si es tu primera vez, podrás crearla ahora mismo.
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openMasterKeyModal()" style="font-weight: 700;">
+              <i class="fa-solid fa-key"></i> Autenticar con Clave Maestra
+            </button>
+          </div>
+
+          <div id="boxCorreoDesbloqueado" style="padding: 24px; display: none;">
+            <form id="formConfigCorreo" onsubmit="saveEmailConfigAdmin(event)">
+              <div class="form-grid form-grid-2">
+                <div class="form-field full" style="background: rgba(16, 185, 129, 0.06); padding: 12px 16px; border-radius: 12px; border: 1px solid #10b981; margin-bottom: 8px;">
+                  <label style="color: #065f46; font-weight: 800; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-link"></i> Dirección de Redirección para Botones de Correo (URL de Acceso al Portal):
+                  </label>
+                  <input type="text" id="cfgUrlBotonesCorreo" class="form-input" placeholder="http://localhost:3000/pages/cliente.html o https://tu-dominio.com/pages/cliente.html" required style="font-weight: 700; color: #003049; background: #fff;" />
+                  <div style="font-size: 0.78rem; color: #059669; margin-top: 4px;">
+                    Todos los correos enviados (bienvenida, confirmación de vuelo, reportes listos, pagos) usarán este enlace para los botones de acción como "Ingresar a mi Portal" o "Ver mi Vuelo".
+                  </div>
+                </div>
+
+                <div class="form-field">
+                  <label>Servidor SMTP (Host)</label>
+                  <input type="text" id="cfgSmtpHost" class="form-input" placeholder="smtp.gmail.com o smtp-mail.outlook.com" autocomplete="off" required />
+                </div>
+                <div class="form-field">
+                  <label>Puerto SMTP</label>
+                  <input type="number" id="cfgSmtpPort" class="form-input" placeholder="587" value="587" autocomplete="off" required />
+                </div>
+                <div class="form-field">
+                  <label>Correo Remitente (Cuenta de Envío)</label>
+                  <input type="email" id="cfgSmtpUser" class="form-input" placeholder="comercial@flymetrics.com.co o tu-correo@hotmail.com" autocomplete="off" required />
+                </div>
+                <div class="form-field">
+                  <label>Nombre Visible del Remitente</label>
+                  <input type="text" id="cfgSenderName" class="form-input" placeholder="Flymetrics Colombia" value="Flymetrics Colombia" autocomplete="off" required />
+                </div>
+                <div class="form-field">
+                  <label>Contraseña de Aplicación / Password SMTP</label>
+                  <input type="password" id="cfgSmtpPassword" class="form-input" autocomplete="new-password" placeholder="Dejar en blanco para mantener la actual" />
+                  <span id="cfgSmtpPassStatus" style="font-size: 0.75rem; color: #10b981; font-weight: 700; margin-top: 3px; display: block;"></span>
+                </div>
+                <div class="form-field">
+                  <label>Cambiar Clave Maestra de Seguridad (Opcional)</label>
+                  <input type="password" id="cfgNuevaClaveMaestra" class="form-input" autocomplete="new-password" placeholder="Ingresa nueva clave solo si deseas cambiarla" />
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+                <button type="button" class="btn btn-ghost" onclick="bloquearModuloCorreo()">Bloquear Módulo</button>
+                <button type="submit" class="btn btn-primary" style="font-weight: 800; padding: 10px 24px;">
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar Credenciales y Enlaces
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- 3. Información del Sistema -->
+        <div class="settings-section" style="margin-top:20px;">
+          <div class="settings-section-header">
+            <div class="settings-section-title"><i class="fa-solid fa-circle-info" style="color:var(--accent); margin-right:6px;"></i> Diagnóstico & Estado de Sesión</div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-label"><strong>Plataforma</strong></div>
+            <span style="font-size:0.85rem;color:var(--accent);font-weight:700">Flymetrics Enterprise v2.5</span>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-label"><strong>Hora de Inicio de Sesión</strong></div>
+            <span style="font-size:0.85rem;color:var(--text-2)" id="cfgSessionTime">—</span>
+          </div>
+          <div class="settings-row">
+            <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('¿Cerrar sesión de administrador?'))logout()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-power-off"></i> Cerrar Sesión</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- End of panels -->
+
+    </div><!-- /page-content -->
+  </main>
+</div><!-- /app-layout -->
+
+<!-- =====================================================
+     MODALS
+===================================================== -->
+
+<!-- Modal: Editor de Zonas de Mayor Presencia -->
+<div class="modal-overlay hidden" id="zoneEditorModal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <span class="modal-title" id="zoneModalTitle"><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:6px;"></i> <span id="zoneModalTitleText">Zona de Mayor Demanda</span></span>
+      <button class="modal-close" onclick="closeZoneModal()">✕</button>
+    </div>
+    <form id="zoneForm" onsubmit="return saveZoneFromModal(event)">
+      <div class="modal-body">
+        <input type="hidden" id="zoneEditIndex" value="" />
+        <div class="form-grid form-grid-2">
+          <div class="form-field">
+            <label>Nombre de la zona *</label>
+            <input type="text" id="zoneNombre" class="form-input" placeholder="Ej. Cundinamarca" required />
+          </div>
+          <div class="form-field">
+            <label>Etiqueta / Tag *</label>
+            <input type="text" id="zoneTag" class="form-input" placeholder="Ej. Base Central" required />
+          </div>
+          <div class="form-field">
+            <label>Latitud *</label>
+            <input type="number" step="any" id="zoneLat" class="form-input" placeholder="4.7110" required />
+          </div>
+          <div class="form-field">
+            <label>Longitud *</label>
+            <input type="number" step="any" id="zoneLng" class="form-input" placeholder="-74.0721" required />
+          </div>
+          <div class="form-field full">
+            <label>Descripción</label>
+            <textarea id="zoneDescripcion" class="form-input" rows="2" placeholder="Ej. Sabana de Bogotá, Facatativá, Chía, Madrid — Flores, Papa y Hortalizas"></textarea>
+          </div>
+          <div class="form-field full">
+            <label>Servicio *</label>
+            <input type="text" id="zoneServicio" class="form-input" placeholder="Ej. Monitoreo Multiespectral, Cartografía y Aspersión" required />
+          </div>
+          <div class="form-field full">
+            <label>Demanda *</label>
+            <input type="text" id="zoneDemanda" class="form-input" placeholder="Ej. Base Central y Operaciones Sabana" required />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px; padding:16px 20px 20px; border-top:1px solid rgba(255,255,255,0.08);">
+        <button type="button" class="btn btn-ghost" onclick="closeZoneModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar zona</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Técnico / Admin (Staff) -->
+<div class="modal-overlay hidden" id="newStaffModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-user-plus" style="color:var(--accent); margin-right:6px;"></i> Crear nuevo usuario</span>
+      <button class="modal-close" onclick="closeModal('newStaffModal')">✕</button>
+    </div>
+    <form id="newStaffForm" onsubmit="submitNewStaff(event)">
+      <div class="modal-body">
+        <!-- Selector de rol -->
+        <div style="display:flex;gap:12px;margin-bottom:20px">
+          <label style="flex:1;cursor:pointer">
+            <input type="radio" name="staffRol" value="tecnico" id="staffRolTecnico" checked onchange="onStaffRolChange()" style="display:none">
+            <div class="staff-rol-card" id="cardRolTecnico" style="border:2px solid var(--accent);background:rgba(28, 130, 173,0.06);border-radius:12px;padding:16px;text-align:center;transition:all 0.2s">
+              <div style="font-size:1.8rem;margin-bottom:6px;color:var(--accent);"><i class="fa-solid fa-user-gear"></i></div>
+              <div style="font-weight:600;color:var(--accent)">Técnico</div>
+              <div style="font-size:0.72rem;color:var(--text-2);margin-top:4px">Piloto RPAS certificado</div>
+            </div>
+          </label>
+          <label style="flex:1;cursor:pointer">
+            <input type="radio" name="staffRol" value="administrador" id="staffRolAdmin" onchange="onStaffRolChange()" style="display:none">
+            <div class="staff-rol-card" id="cardRolAdmin" style="border:2px solid rgba(255,255,255,0.1);background:rgba(28, 130, 173,0.03);border-radius:12px;padding:16px;text-align:center;transition:all 0.2s">
+              <div style="font-size:1.8rem;margin-bottom:6px;color:var(--text-2);"><i class="fa-solid fa-user-tie"></i></div>
+              <div style="font-weight:600;color:var(--text-2)">Administrador</div>
+              <div style="font-size:0.72rem;color:var(--text-2);margin-top:4px">Acceso total al panel</div>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Nombre Completo *</label>
+            <input type="text" id="staffNombre" class="form-input" placeholder="Ej. CARLOS RODRÍGUEZ GÓMEZ" required style="text-transform: uppercase;" />
+          </div>
+          <div class="form-field full">
+            <label>Teléfono / WhatsApp</label>
+            <input type="tel" id="staffTelefono" class="form-input" placeholder="3001234567" />
+          </div>
+          <div class="form-field full">
+            <label>Email *</label>
+            <input type="email" id="staffEmail" class="form-input" placeholder="tecnico@flymetrics.co" required />
+          </div>
+          <div class="form-field">
+            <label>Contraseña *</label>
+            <input type="password" id="staffPassword" class="form-input" placeholder="Mín. 8 caracteres" required minlength="6" />
+          </div>
+          <div class="form-field" id="staffCertificacionField">
+            <label>Certificación</label>
+            <input type="text" id="staffCertificacion" class="form-input" placeholder="Piloto RPAS Nivel A" value="Piloto RPAS Nivel A" />
+          </div>
+        </div>
+
+        <div id="staffErrMsg" style="color:#FF3C3C;font-size:0.82rem;margin-top:8px;display:none"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('newStaffModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="btnCrearStaff">
+          ＋ Crear usuario
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Cambiar rol -->
+<div class="modal-overlay hidden" id="cambiarRolModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-rotate" style="color:var(--accent); margin-right:6px;"></i> Cambiar rol</span>
+      <button class="modal-close" onclick="closeModal('cambiarRolModal')">✕</button>
+    </div>
+    <form id="cambiarRolForm" onsubmit="event.preventDefault(); var cId=document.getElementById('cambiarRolUserId').value; var cRol=document.getElementById('cambiarRolSelect').value; if(cId&&cRol) changeUsuarioRol(cId,cRol);">
+      <div class="modal-body">
+        <input type="hidden" id="cambiarRolUserId" />
+        <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:12px;">
+          Usuario: <strong id="cambiarRolUserEmail"></strong>
+        </p>
+        <div class="form-field full">
+          <label>Nuevo rol</label>
+          <select id="cambiarRolSelect" required>
+            <option value="administrador">Administrador</option>
+            <option value="tecnico">Técnico</option>
+            <option value="cliente">Cliente</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('cambiarRolModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar rol</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div class="modal-overlay hidden" id="resetPasswordModal">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <span class="modal-title">Resetear contrasea</span>
+      <button class="modal-close" onclick="closeModal('resetPasswordModal')">✕</button>
+    </div>
+    <form id="resetPasswordForm" onsubmit="event.preventDefault(); var id=document.getElementById('resetPasswordUserId')?.value; var pw=document.getElementById('resetPasswordInput')?.value; if(id&&pw) resetUsuarioPassword(id,pw);">
+      <div class="modal-body">
+        <input type="hidden" id="resetPasswordUserId" />
+        <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:12px;">
+          Resetear contrasea de: <strong id="resetPasswordEmail"></strong>
+        </p>
+        <div class="form-field full">
+          <label>Nueva contrasea</label>
+          <input type="password" id="resetPasswordInput" placeholder="Mn. 8 caracteres" required minlength="8" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('resetPasswordModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Turno Detail Modal -->
+<div class="modal-overlay hidden" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="detailModalTitle">Detalle de agenda</span>
+      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="detailModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('detailModal')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Reagendamiento / Modificar Turno -->
+<div class="modal-overlay hidden" id="reagendarModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-calendar-plus" style="color:var(--accent); margin-right:6px;"></i> Reagendar / Editar Turno</span>
+      <button class="modal-close" onclick="closeModal('reagendarModal')">✕</button>
+    </div>
+    <form id="reagendarForm" onsubmit="event.preventDefault(); submitReagendamiento();">
+      <div class="modal-body">
+        <input type="hidden" id="reagendarTurnoId">
+        <div id="reagendarErrMsg" class="modal-alert-error" style="display:none;"><i class="fa-solid fa-triangle-exclamation"></i><span id="reagendarErrMsgText"></span></div>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:14px;">
+          <div style="font-weight:700; color:#003049; font-size:0.92rem;" id="reagendarInfoTitle">Turno #—</div>
+          <div style="font-size:0.80rem; color:#64748b;" id="reagendarInfoSub">Cliente — | Finca —</div>
+        </div>
+        <div class="form-grid form-grid-2">
+          <div class="form-field">
+            <label>Nueva Fecha de Vuelo *</label>
+            <input type="date" id="reagendarFecha" class="form-input" required />
+          </div>
+          <div class="form-field">
+            <label>Nueva Hora de Inicio *</label>
+            <input type="time" id="reagendarHora" class="form-input" required />
+          </div>
+          <div class="form-field full">
+            <label>Estado del Turno</label>
+            <select id="reagendarEstado" class="form-select">
+              <option value="Reagendado">Reagendado</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Confirmado">Confirmado</option>
+              <option value="En proceso">En proceso</option>
+              <option value="Completado">Completado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label><i class="fa-solid fa-clock-rotate-left"></i> Motivo del Reagendamiento *</label>
+            <textarea id="reagendarMotivo" class="form-textarea" rows="3" placeholder="Explique la razón del reagendamiento (ej. Lluvia intensa, solicitud del productor, mantenimiento preventivo de dron)..." required></textarea>
+            <small style="font-size:0.75rem; color:#64748b; margin-top:2px;">Este motivo se guardará en un campo independiente y no modificará los datos de la finca ni las notas originales.</small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('reagendarModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="btnSubmitReagendar" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Reagendamiento
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Nueva Agenda Modal -->
+<div class="modal-overlay hidden" id="newAgendaModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-calendar-days"></i> Nueva agenda</span>
+      <button class="modal-close" onclick="closeModal('newAgendaModal')">✕</button>
+    </div>
+    <form id="newAgendaForm" onsubmit="submitNewAgenda(event)" novalidate>
+      <div class="modal-body">
+        <div id="newAgendaErrMsg" class="modal-alert-error" style="display:none;"><i class="fa-solid fa-triangle-exclamation"></i><span id="newAgendaErrMsgText"></span></div>
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Seleccionar Cliente Registrado (Opcional)</label>
+            <select id="newAgendaClienteSelect" class="form-input" onchange="onAgendaClienteSelectChange()">
+              <option value="">-- Crear cliente nuevo o seleccionar existente --</option>
+            </select>
+          </div>
+          
+          <!-- Mini-módulo de Fincas del Cliente -->
+          <div class="form-field full" id="newAgendaFincaContainer" style="display:none; background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:14px; padding:14px; margin-bottom:4px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <label style="font-weight:700; color:#0369a1; font-size:0.86rem; margin:0; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-tree" style="color:var(--accent);"></i> Fincas Registradas de este Cliente
+              </label>
+              <button type="button" class="btn btn-sm btn-ghost" id="btnToggleNewFincaInline" onclick="toggleNewFincaInline()" style="font-size:0.78rem; padding:4px 10px; color:var(--accent); font-weight:700; border:1px solid rgba(28,130,173,0.25); border-radius:8px; background:#ffffff;">
+                <i class="fa-solid fa-plus-circle"></i> + Registrar Finca
+              </button>
+            </div>
+            <select id="newAgendaFincaSelect" class="form-select" onchange="onAgendaFincaSelectChange()" style="width:100%; border-radius:8px; font-weight:600;">
+              <option value="">-- Seleccionar finca registrada o escribir manualmente abajo --</option>
+            </select>
+
+            <!-- Mini-form inline para creación rápida de finca -->
+            <div id="newFincaInlineForm" style="display:none; margin-top:12px; padding-top:12px; border-top:1px dashed #93c5fd;">
+              <div style="font-weight:700; font-size:0.82rem; color:#003049; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-map-pin" style="color:var(--accent);"></i> Registrar Nueva Finca para este Cliente:
+              </div>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <input type="text" id="inlineFincaNombre" class="form-input" placeholder="Nombre de Finca / Predio *" style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
+                <input type="text" id="inlineFincaUbicacion" class="form-input" placeholder="Municipio / Vereda *" style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
+                <input type="number" id="inlineFincaHa" class="form-input" placeholder="Hectáreas (ej. 15.0)" step="0.1" style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
+                <input type="text" id="inlineFincaMaps" class="form-input" placeholder="Link Google Maps o Coordenadas GPS *" required style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
+              </div>
+              <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:10px;">
+                <button type="button" class="btn btn-sm btn-ghost" onclick="toggleNewFincaInline(false)" style="font-size:0.80rem;">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-primary" id="btnGuardarFincaInline" onclick="guardarFincaInline()" style="font-size:0.80rem; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                  <i class="fa-solid fa-floppy-disk"></i> Guardar y Seleccionar Finca
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Nombre del cliente *</label>
+            <input type="text" id="newAgendaCliente" placeholder="Carlos Mendoza" required />
+          </div>
+          <div class="form-field">
+            <label>Email del cliente *</label>
+            <input type="email" id="newAgendaEmail" placeholder="cliente@email.com" required />
+          </div>
+          <div class="form-field">
+            <label>Teléfono</label>
+            <input type="tel" id="newAgendaTel" placeholder="3001234567" />
+          </div>
+          <div class="form-field">
+            <label>Nombre de la finca *</label>
+            <input type="text" id="newAgendaFinca" placeholder="Finca El Paraíso" required />
+          </div>
+          <div class="form-field">
+            <label><i class="fa-solid fa-location-dot" style="color:var(--accent); margin-right:4px;"></i> Ubicación / Municipio *</label>
+            <input type="text" id="newAgendaUbicacion" placeholder="Ej. Villavicencio, Vereda El Triunfo" required />
+          </div>
+          <div class="form-field full">
+            <label><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:4px;"></i> Enlace Google Maps / Coordenadas GPS *</label>
+            <input type="text" id="newAgendaMaps" placeholder="Ej. https://maps.app.goo.gl/... o 4.1420, -73.6266" required />
+          </div>
+          <div class="form-field full">
+            <label style="font-weight:700; color:#003049; margin-bottom:6px; display:block;"><i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:4px;"></i> Servicios Requeridos * (Selección múltiple permitida)</label>
+            <div id="newAgendaServiciosContainer" style="display:flex; flex-wrap:wrap; gap:10px; background:#f8fafc; border:1.5px solid #cbd5e1; padding:12px; border-radius:12px;">
+              <!-- Dynamic checkboxes loaded from loadServicios -->
+            </div>
+          </div>
+          <div class="form-field">
+            <label><i class="fa-solid fa-seedling" style="color:var(--accent); margin-right:4px;"></i> Cultivo Principal</label>
+            <input type="text" id="newAgendaCultivo" placeholder="Ej. Arroz, Palma, Maíz, Frutales..." />
+          </div>
+          <div class="form-field">
+            <label>Hectáreas *</label>
+            <input type="number" id="newAgendaHa" placeholder="10.5" min="0.1" max="5000" step="0.1" value="10" required />
+          </div>
+          <div class="form-field">
+            <label>Fecha del vuelo *</label>
+            <input type="date" id="newAgendaFecha" required />
+          </div>
+          <div class="form-field">
+            <label>Hora de inicio *</label>
+            <input type="time" id="newAgendaHora" required value="08:00" />
+          </div>
+          <div class="form-field">
+            <label>Técnico asignado</label>
+            <select id="newAgendaTecnico">
+              <option value="">Sin asignar</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Estado inicial</label>
+            <select id="newAgendaEstado">
+              <option value="Pendiente">Pendiente</option>
+              <option value="Confirmado">Confirmado</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label>Notas adicionales & Observaciones</label>
+            <textarea id="newAgendaNotas" placeholder="Observaciones de acceso a la finca, cultivo, indicaciones especiales para el piloto, etc."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('newAgendaModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Crear turno</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Nuevo Cliente Modal -->
+<div class="modal-overlay hidden" id="newClienteModal">
+  <div class="modal" style="max-width: 600px;">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-user-plus" style="color:var(--accent); margin-right:6px;"></i> Registrar Nuevo Cliente</span>
+      <button class="modal-close" onclick="closeModal('newClienteModal')">✕</button>
+    </div>
+    <form id="newClienteForm" onsubmit="submitNewCliente(event)" novalidate>
+      <div class="modal-body">
+        <div style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px;">
+          Completa los datos del titular y su ubicación de cultivo/predio para registrarlo en el sistema.
+        </div>
+
+        <div style="font-weight:700; color:var(--primary); font-size:0.88rem; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-id-card" style="color:var(--accent);"></i> Datos del Titular
+        </div>
+
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Nombre Completo *</label>
+            <input type="text" id="newClienteNombre" placeholder="Ej. CARLOS ANDRÉS MENDOZA DÍAZ" required style="text-transform: uppercase;" />
+          </div>
+          <div class="form-field">
+            <label>Email (Opcional)</label>
+            <input type="email" id="newClienteEmail" placeholder="cliente@email.com (opcional)" />
+          </div>
+          <div class="form-field">
+            <label>Teléfono / WhatsApp *</label>
+            <input type="tel" id="newClienteTel" placeholder="3001234567" required />
+          </div>
+          <div class="form-field full">
+            <label>Contraseña de Acceso (Opcional - por defecto: Flymetrics123!)</label>
+            <input type="password" id="newClientePassword" placeholder="Asignar contraseña personalizada (mín. 6 caracteres)" minlength="6" />
+          </div>
+        </div>
+
+        <div style="font-weight:700; color:var(--primary); font-size:0.88rem; margin:16px 0 8px; display:flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-mountain-sun" style="color:#10b981;"></i> Ubicación y Predio / Finca
+        </div>
+
+        <div class="form-grid form-grid-2">
+          <div class="form-field">
+            <label>Nombre de la Finca / Predio</label>
+            <input type="text" id="newClienteFinca" placeholder="Ej. Finca La Esperanza" />
+          </div>
+          <div class="form-field">
+            <label>Hectáreas Estimadas</label>
+            <input type="number" id="newClienteHectareas" placeholder="Ej. 25.5" step="0.1" min="0" />
+          </div>
+          <div class="form-field">
+            <label>Departamento</label>
+            <input type="text" id="newClienteDepto" placeholder="Ej. Cundinamarca" />
+          </div>
+          <div class="form-field">
+            <label>Municipio / Ubicación</label>
+            <input type="text" id="newClienteCiudad" placeholder="Ej. Facatativá" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('newClienteModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-user-check" style="margin-right:6px;"></i> Registrar Cliente</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Nuevo Técnico Modal -->
+<div class="modal-overlay hidden" id="newTecnicoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Nuevo Técnico</span>
+      <button class="modal-close" onclick="closeModal('newTecnicoModal')">✕</button>
+    </div>
+    <form id="newTecnicoForm" onsubmit="submitNewTecnico(event)" novalidate>
+      <div class="modal-body">
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Nombre Completo *</label>
+            <input type="text" id="newTecnicoNombre" placeholder="Ej. JUAN PÉREZ GÓMEZ" required style="text-transform: uppercase;" />
+          </div>
+          <div class="form-field">
+            <label>Email *</label>
+            <input type="email" id="newTecnicoEmail" placeholder="tecnico@flymetrics.co" required />
+          </div>
+          <div class="form-field">
+            <label>Teléfono / WhatsApp</label>
+            <input type="tel" id="newTecnicoTel" placeholder="3001234567" />
+          </div>
+          <div class="form-field full">
+            <label>Contraseña de Acceso para el Técnico *</label>
+            <input type="password" id="newTecnicoPassword" placeholder="Asignar contraseña (mínimo 6 caracteres)" required minlength="6" />
+          </div>
+          <input type="hidden" id="newTecnicoCert" value="Piloto RPAS" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('newTecnicoModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Crear técnico</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Editar Técnico Modal -->
+<div class="modal-overlay hidden" id="editTecnicoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-user-pen" style="color:var(--accent); margin-right:6px;"></i> Editar Técnico</span>
+      <button class="modal-close" onclick="closeModal('editTecnicoModal')">✕</button>
+    </div>
+    <form id="editTecnicoForm" novalidate>
+      <div class="modal-body">
+        <input type="hidden" id="editTecnicoId" />
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Nombre Completo *</label>
+            <input type="text" id="editTecnicoNombre" required style="text-transform: uppercase;" />
+          </div>
+          <input type="hidden" id="editTecnicoCert" value="Piloto RPAS" />
+          <div class="form-field">
+            <label>Teléfono</label>
+            <input type="tel" id="editTecnicoTel" />
+          </div>
+          <div class="form-field">
+            <label>Estado</label>
+            <select id="editTecnicoEstado">
+              <option value="disponible">Disponible</option>
+              <option value="ocupado">Ocupado</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label><i class="fa-solid fa-lock" style="color:var(--accent); margin-right:4px;"></i> Cambiar Contraseña (Opcional)</label>
+            <input type="password" id="editTecnicoPassword" placeholder="Dejar en blanco para conservar contraseña actual" minlength="6" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('editTecnicoModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Ver Vuelos Registrados del Técnico Modal -->
+<div class="modal-overlay hidden" id="tecnicoVuelosModal">
+  <div class="modal" style="max-width:760px; width:92%;">
+    <div class="modal-header">
+      <span class="modal-title" id="tecnicoVuelosModalTitle"><i class="fa-solid fa-plane-up" style="color:var(--accent); margin-right:6px;"></i> Vuelos Asignados al Piloto</span>
+      <button class="modal-close" onclick="closeModal('tecnicoVuelosModal')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:16px 20px;">
+      <div class="table-wrap" style="max-height:420px; overflow-y:auto; overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th># Radicado</th>
+              <th>Fecha & Hora</th>
+              <th>Cliente</th>
+              <th>Finca / Predio</th>
+              <th>Servicio</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tecnicoVuelosTableBody">
+            <tr><td colspan="6" class="text-center" style="padding:28px; color:var(--text-3);">Cargando vuelos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" onclick="closeModal('tecnicoVuelosModal')">Entendido / Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cambiar Contraseña de Usuario Modal -->
+<div class="modal-overlay hidden" id="changePasswordModal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-key" style="color:var(--accent); margin-right:6px;"></i> Modificar Contraseña de Usuario</span>
+      <button class="modal-close" onclick="closeModal('changePasswordModal')">✕</button>
+    </div>
+    <form id="changePasswordForm" onsubmit="submitChangeUserPassword(event)">
+      <div class="modal-body">
+        <input type="hidden" id="changePassUserId" />
+        <div style="background:rgba(28,130,173,0.06); border:1px solid rgba(28,130,173,0.2); border-radius:10px; padding:12px; margin-bottom:16px;">
+          <div style="font-size:0.75rem; color:var(--text-2);">Actualizando contraseña de:</div>
+          <div id="changePassUserEmailLabel" style="font-weight:bold; color:var(--primary); font-size:0.95rem;">usuario@flymetrics.co</div>
+        </div>
+        <div class="form-field full">
+          <label>Nueva Contraseña *</label>
+          <div style="position:relative; display:flex; align-items:center;">
+            <input type="password" id="changePassNewInput" class="form-input" placeholder="Ingresa la nueva contraseña (mín. 6 caracteres)" required minlength="6" style="padding-right:42px; width:100%;" />
+            <button type="button" onclick="toggleChangePassVisibility()" style="position:absolute; right:10px; background:none; border:none; color:#1c82ad; cursor:pointer; font-size:1rem; padding:4px;" title="Mostrar / Ocultar Contraseña">
+              <i class="fa-solid fa-eye" id="changePassEyeIcon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('changePasswordModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-key"></i> Actualizar Contraseña</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Nuevo Usuario Modal -->
+<div class="modal-overlay hidden" id="newUsuarioModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Crear Nuevo Usuario</span>
+      <button class="modal-close" onclick="closeModal('newUsuarioModal')">✕</button>
+    </div>
+    <form id="newUsuarioForm" onsubmit="submitCreateUsuario(event)">
+      <div class="modal-body">
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Nombre Completo *</label>
+            <input type="text" id="newUsrNombre" placeholder="Ej. CARLOS GÓMEZ" required style="text-transform: uppercase;" />
+          </div>
+          <div class="form-field full">
+            <label>Correo Electrónico *</label>
+            <input type="email" id="newUsrEmail" placeholder="usuario@flymetrics.co" required />
+          </div>
+          <div class="form-field full">
+            <label>Contraseña de Acceso *</label>
+            <input type="password" id="newUsrPassword" placeholder="Mínimo 6 caracteres" required minlength="6" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('newUsuarioModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Nuevo Drone Modal -->
+<div class="modal-overlay hidden" id="newDroneModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-helicopter" style="color:var(--accent); margin-right:6px;"></i> Agregar Dron a la Flota</span>
+      <button class="modal-close" onclick="closeModal('newDroneModal')">✕</button>
+    </div>
+    <form id="newDroneForm" onsubmit="submitNewDrone(event)" novalidate>
+      <div class="modal-body">
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Modelo del Dron *</label>
+            <input type="text" id="newDroneModelo" placeholder="Ej: DJI Agras T40 / DJI Mavic 3M" required />
+          </div>
+          <div class="form-field full">
+            <label>Número de Serie / Matrícula *</label>
+            <input type="text" id="newDroneSerie" placeholder="Ej: AGT40-COL-001" required />
+          </div>
+          <div class="form-field full">
+            <label>Piloto Técnico Asignado (Opcional)</label>
+            <select id="newDroneTecnico">
+              <option value="">Sin piloto asignado (Flota general)</option>
+              <!-- Populated dynamically with tecnicos -->
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('newDroneModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Agregar dron</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Editar Drone Modal -->
+<div class="modal-overlay hidden" id="editDroneModal">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-pen-to-square" style="color:var(--accent); margin-right:6px;"></i> Editar Dron y Asignar Piloto</span>
+      <button class="modal-close" onclick="closeModal('editDroneModal')">✕</button>
+    </div>
+    <form id="editDroneForm" onsubmit="event.preventDefault(); submitEditDrone(event);" novalidate>
+      <div class="modal-body">
+        <input type="hidden" id="editDroneId" />
+        <div class="form-grid form-grid-2">
+          <div class="form-field full">
+            <label>Modelo del Dron *</label>
+            <input type="text" id="editDroneModelo" required />
+          </div>
+          <div class="form-field full">
+            <label>Número de Serie / Matrícula *</label>
+            <input type="text" id="editDroneSerie" placeholder="AGT40-COL-001" required />
+          </div>
+          <div class="form-field full">
+            <label>Piloto Técnico Asignado</label>
+            <select id="editDroneTecnico">
+              <option value="">Sin piloto asignado (Flota general)</option>
+              <!-- Populated dynamically with tecnicos -->
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('editDroneModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Autenticación por Clave Maestra para Configuración de Correos -->
+<div class="modal-overlay hidden" id="masterKeyModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-key" style="color:var(--accent); margin-right:6px;"></i> Contraseña Maestra de Seguridad</span>
+      <button class="modal-close" onclick="closeModal('masterKeyModal')">✕</button>
+    </div>
+    <form id="formMasterKey" onsubmit="submitMasterKeyVerification(event)">
+      <div class="modal-body">
+        <p style="font-size:0.86rem; color:#475569; margin-bottom:14px; line-height:1.45;">
+          Ingresa la contraseña maestra para desbloquear y administrar las credenciales de correo (SMTP) y la URL de redirección de los botones.
+        </p>
+        <div class="form-field full">
+          <label style="font-weight:700;">Contraseña Maestra *</label>
+          <div style="position:relative; display:flex; align-items:center;">
+            <input type="password" id="inputMasterKey" class="form-input" placeholder="Ingresa tu clave maestra..." required minlength="4" autofocus style="padding-right:40px; width:100%;" />
+            <button type="button" onclick="const inp=document.getElementById('inputMasterKey'); const ico=document.getElementById('eyeMasterKey'); if(inp){ const isPwd=inp.type==='password'; inp.type=isPwd?'text':'password'; if(ico) ico.className=isPwd?'fa-solid fa-eye-slash':'fa-solid fa-eye'; }" style="position:absolute; right:10px; background:none; border:none; color:#1c82ad; cursor:pointer; font-size:1rem; padding:4px;" title="Ver/Ocultar contraseña">
+              <i class="fa-solid fa-eye" id="eyeMasterKey"></i>
+            </button>
+          </div>
+          <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">
+            <i class="fa-solid fa-info-circle" style="color:var(--accent);"></i> Clave maestra predeterminada de fábrica: <strong>admin123</strong>
+          </div>
+          <div id="masterKeyError" style="color:#ef4444; font-size:0.8rem; margin-top:6px; display:none;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('masterKeyModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="btnSubmitMasterKey" style="font-weight:700;">
+          <i class="fa-solid fa-unlock"></i> Desbloquear
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Vincular Facturación Alegra por Cliente -->
+<div class="modal-overlay hidden" id="vincularAlegraModal">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent); margin-right:6px;"></i> Vincular Facturación Alegra por Cliente</span>
+      <button class="modal-close" onclick="closeModal('vincularAlegraModal')">✕</button>
+    </div>
+    <form id="vincularAlegraForm" onsubmit="submitVincularAlegra(event)">
+      <div class="modal-body">
+        <div style="background:rgba(28,130,173,0.06); border:1px solid rgba(28,130,173,0.2); border-radius:12px; padding:14px; margin-bottom:16px;">
+          <div style="font-size:0.83rem; color:#003049; line-height:1.4;">
+            <i class="fa-solid fa-circle-info" style="color:var(--accent); margin-right:4px;"></i>
+            Asigna el enlace de la factura o portal en <strong>Alegra</strong> para que el cliente acceda directamente desde su cuenta.
+          </div>
+        </div>
+        <div class="form-grid form-grid-1">
+          <div class="form-field">
+            <label>Seleccionar Cliente *</label>
+            <select id="alegraClienteSelect" required class="form-input" onchange="onAlegraClienteChange()">
+              <option value="">Selecciona un cliente...</option>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Enlace / URL de Alegra para este Cliente *</label>
+            <input type="url" id="alegraUrlInput" class="form-input" placeholder="https://app.alegra.com/factura/... o portal del cliente" required />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('vincularAlegraModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" style="font-weight:700;"><i class="fa-solid fa-floppy-disk"></i> Guardar Vinculación Alegra</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Subir Comprobante / Recibo de Cobro -->
+<div class="modal-overlay hidden" id="uploadReciboModal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent); margin-right:6px;"></i> Subir Comprobante / Recibo de Cobro</span>
+      <button class="modal-close" onclick="closeModal('uploadReciboModal')">✕</button>
+    </div>
+    <form id="uploadReciboForm" onsubmit="event.preventDefault(); submitUploadRecibo(event);">
+      <div class="modal-body">
+        <div class="form-grid form-grid-1">
+          <div class="form-field">
+            <label>Cliente / Vuelo Asociado *</label>
+            <select id="reciboTurnoSelect" required class="form-input">
+              <option value="">Selecciona un vuelo o cliente...</option>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Número / Referencia del Comprobante *</label>
+            <input type="text" id="reciboReferencia" class="form-input" placeholder="Ej: REC-2026-0042 o FACT-105" required />
+          </div>
+          <div class="form-field">
+            <label>Fecha de Emisión *</label>
+            <input type="date" id="reciboFecha" class="form-input" required />
+          </div>
+          <div class="form-field">
+            <label>Enlace / URL de la Factura o Comprobante Digital (Alegra, Drive, Cloud)</label>
+            <input type="url" id="reciboUrlDirecta" class="form-input" placeholder="https://app.alegra.com/factura/123 o enlace nube" />
+          </div>
+          <div class="form-field">
+            <label>O Subir Archivo Adjunto (JPG, PNG, PDF)</label>
+            <input type="file" id="reciboFileInput" accept="image/*,.pdf" class="form-input" style="padding:8px;" onchange="handleReciboFileChange(event)" />
+            <input type="hidden" id="reciboFileBase64" />
+            <div id="reciboFilePreview" style="margin-top:8px; font-size:0.8rem; color:var(--accent);"></div>
+          </div>
+          <div class="form-field">
+            <label>Observaciones / Descripción</label>
+            <textarea id="reciboNotas" class="form-input" style="min-height:60px; resize:none;" placeholder="Detalles de la labor o insumos cobrados..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('uploadReciboModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar Comprobante</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Nueva Notificación Modal -->
+<div class="modal-overlay hidden" id="newNotifModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-bell" style="color:var(--accent); margin-right:6px;"></i> Enviar Notificación / Alerta</span>
+      <button class="modal-close" onclick="closeModal('newNotifModal')">✕</button>
+    </div>
+    <form id="newNotifForm" onsubmit="event.preventDefault(); submitNewNotif();">
+      <div class="modal-body">
+        <div class="form-field mb-4">
+          <label>Seleccionar Cliente *</label>
+          <select id="notifClienteSelect" required class="form-input">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+        <div class="form-field mb-4">
+          <label>Título de la Alerta *</label>
+          <input type="text" id="notifTitulo" class="form-input" placeholder="Ej: Vuelo Programado" required />
+        </div>
+        <div class="form-field mb-4">
+          <label>Mensaje *</label>
+          <textarea id="notifMensaje" class="form-input" style="min-height:90px;" placeholder="Detalles de la alerta..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('newNotifModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Enviar Alerta</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- =====================================================
+     TOAST CONTAINER
+===================================================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- =====================================================
+     INLINE STYLES
+===================================================== -->
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+</style>
+<script>
+  // Update live clock
+  function updateClock() {
+    const el = document.getElementById('topbarTime');
+    if (el) {
+      const now = new Date();
+      el.textContent = now.toLocaleString('es-CO', {
+        weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+      });
+    }
+  }
+  updateClock();
+  setInterval(updateClock, 60000);
+
+  // Update dashboard date
+  const dashDateEl = document.getElementById('dashboardDate');
+  if (dashDateEl) {
+    dashDateEl.textContent = new Date().toLocaleDateString('es-CO', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+  }
+
+  // Session start time for config
+  const cfgSessEl = document.getElementById('cfgSessionTime');
+  if (cfgSessEl) {
+    cfgSessEl.textContent = new Date().toLocaleString('es-CO');
+  }
+
+  // Update agenda badge with pending count
+  async function updateBadge() {
+    try {
+      const agenda = await apiFetch('/agenda') || [];
+      const pending = Array.isArray(agenda) ? agenda.filter(a => a.estado === 'Pendiente').length : 0;
+      const badge = document.getElementById('agendaBadge');
+      if (badge) badge.textContent = pending;
+    } catch(e) {
+      const badge = document.getElementById('agendaBadge');
+      if (badge) badge.textContent = '0';
+    }
+  }
+  setTimeout(updateBadge, 1000);
+  // Sidebar toggle for mobile responsive view
+  window.toggleAdminSidebar = function(e) {
+    if (e) e.stopPropagation();
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('adminSidebarOverlay');
+    if (sidebar) {
+      const isOpen = sidebar.classList.toggle('open');
+      if (overlay) {
+        if (isOpen) {
+          overlay.classList.remove('hidden');
+          setTimeout(() => overlay.style.opacity = '1', 10);
+        } else {
+          overlay.style.opacity = '0';
+          setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+      }
+    }
+  };
+
+  // Close sidebar when clicking a nav item on mobile
+  document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && sidebar.classList.contains('open')) {
+        toggleAdminSidebar();
+      }
+    });
+  });
+</script>
+
+
+<!-- Modal: Vincular Carpeta SharePoint por Cliente (Alegra Style) -->
+<div class="modal-overlay hidden" id="vincularSharepointModal">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <span class="modal-title"><i class="fa-solid fa-file-signature" style="color:var(--accent); margin-right:6px;"></i> Vincular Carpeta SharePoint por Cliente</span>
+      <button class="modal-close" onclick="closeModal('vincularSharepointModal')">✕</button>
+    </div>
+    <form id="vincularSharepointForm" onsubmit="submitVincularSharepoint(event)">
+      <div class="modal-body">
+        <div style="background:rgba(28,130,173,0.06); border:1px solid rgba(28,130,173,0.2); border-radius:12px; padding:14px; margin-bottom:16px;">
+          <div style="font-size:0.83rem; color:#003049; line-height:1.4;">
+            <i class="fa-solid fa-circle-info" style="color:var(--accent); margin-right:4px;"></i>
+            Asigna el enlace de la carpeta en <strong>Microsoft SharePoint / OneDrive</strong> para que el cliente consulte sus informes ejecutivos y entregables oficiales directamente desde su portal.
+          </div>
+        </div>
+        <div class="form-grid form-grid-1">
+          <div class="form-field">
+            <label>Seleccionar Cliente *</label>
+            <select id="sharepointClienteSelect" required class="form-input" onchange="onSharepointClienteChange()">
+              <option value="">Cargando clientes...</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Enlace / URL de SharePoint para este Cliente *</label>
+            <input type="url" id="sharepointUrlInput" class="form-input" placeholder="https://flymetrics.sharepoint.com/... o enlace de carpeta" required />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('vincularSharepointModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" style="font-weight:700;"><i class="fa-solid fa-floppy-disk"></i> Guardar Vinculación SharePoint</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Modificar y Reprogramar Turno (Admin) -->
+<div class="modal-overlay hidden" id="reprogramarModal">
+  <div class="modal card" style="max-width:540px; width:92%; padding:26px; border-radius:22px; background:#ffffff; box-shadow:0 20px 50px rgba(0,48,73,0.2); border:1.5px solid rgba(28,130,173,0.25);">
+    <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #f1f5f9; padding-bottom:12px;">
+      <span class="modal-title" style="font-weight:800; font-size:1.2rem; color:#003049; font-family:'Syne',sans-serif; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Modificar Información del Agendamiento
+      </span>
+      <button class="modal-close btn btn-ghost btn-sm" onclick="closeModal('reprogramarModal')">✕</button>
+    </div>
+    <form id="reprogramarForm" onsubmit="submitReprogramar(event)" style="display:flex; flex-direction:column; max-height:calc(90vh - 80px);">
+      <input type="hidden" id="reprogramarTurnoId" />
+      
+      <div class="modal-body" style="padding:4px 6px 16px; overflow-y:auto; flex:1 1 auto; max-height:calc(90vh - 160px);">
+        <div id="reprogramarErrMsg" class="modal-alert-error" style="display:none;"><i class="fa-solid fa-triangle-exclamation"></i><span id="reprogramarErrMsgText"></span></div>
+
+        <!-- Aviso de protección de estados (Luis - Minuta oficial) -->
+        <div id="reprogramarLockNotice" style="display:none; margin-bottom:12px; padding:10px 14px; background:rgba(28,130,173,0.1); border-left:4px solid #1c82ad; border-radius:8px; font-size:0.82rem; color:#003049; line-height:1.45;">
+          <strong><i class="fa-solid fa-shield-halved" style="color:#1c82ad;"></i> Modificación de Agendamiento:</strong> Puedes actualizar servicio, predio, hectáreas, fecha, recursos asignados y novedades operacionales del turno.
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          
+          <div>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> Servicios de Vuelo Solicitados * (Selección Múltiple)</label>
+            <div id="reprogramarServiciosContainer" style="display:flex; flex-wrap:wrap; gap:8px; background:#f8fafc; border:1.5px solid #cbd5e1; padding:10px 12px; border-radius:12px; max-height:160px; overflow-y:auto;">
+              <!-- Loaded dynamically as styled checkboxes -->
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-map-location-dot" style="color:var(--accent);"></i> Enlace Google Maps / Ubicación GPS *</label>
+            <input type="text" id="reprogramarMaps" class="form-input" placeholder="https://maps.app.goo.gl/... o coordenadas" style="width:100%; border-radius:10px;" required />
+          </div>
+
+          <div>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-seedling" style="color:var(--accent);"></i> Cultivo Principal</label>
+            <input type="text" id="reprogramarCultivo" class="form-input" placeholder="Ej. Arroz, Palma, Maíz..." style="width:100%; border-radius:10px;" />
+          </div>
+
+          <div style="display:grid; grid-template-columns: 2fr 1fr; gap:12px;">
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-wheat-awn" style="color:var(--accent);"></i> Finca / Predio</label>
+              <select id="reprogramarFinca" class="form-select" style="width:100%; font-weight:600; border-radius:10px;">
+                <!-- Loaded dynamically -->
+              </select>
+            </div>
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-chart-area" style="color:var(--accent);"></i> Hectáreas</label>
+              <input type="number" id="reprogramarHectareas" class="form-input" min="0.1" step="0.1" placeholder="Ej: 25" style="width:100%; font-weight:700; border-radius:10px;" />
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-calendar-days" style="color:var(--accent);"></i> Fecha del Turno *</label>
+              <input type="date" id="reprogramarFecha" class="form-input" style="width:100%; font-weight:700; border-radius:10px;" required />
+            </div>
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-clock" style="color:var(--accent);"></i> Hora Inicio *</label>
+              <input type="time" id="reprogramarHora" class="form-input" style="width:100%; font-weight:700; border-radius:10px;" required />
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-user-pilot" style="color:var(--accent);"></i> Piloto Principal / Responsable</label>
+              <select id="reprogramarTecnico" class="form-select" style="width:100%; font-weight:600; border-radius:10px;">
+                <!-- Loaded dynamically -->
+              </select>
+            </div>
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-helicopter" style="color:var(--accent);"></i> Dron Flota</label>
+              <select id="reprogramarDron" class="form-select" style="width:100%; font-weight:600; border-radius:10px;">
+                <!-- Loaded dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-user-plus" style="color:var(--accent);"></i> 2º Piloto Asistente (Opcional)</label>
+              <select id="reprogramarTecnico2" class="form-select" style="width:100%; font-weight:600; border-radius:10px;">
+                <option value="">Sin segundo piloto</option>
+                <!-- Loaded dynamically -->
+              </select>
+            </div>
+            <div>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-user-plus" style="color:var(--accent);"></i> 3º Piloto Asistente (Opcional)</label>
+              <select id="reprogramarTecnico3" class="form-select" style="width:100%; font-weight:600; border-radius:10px;">
+                <option value="">Sin tercer piloto</option>
+                <!-- Loaded dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-signal" style="color:var(--accent);"></i> Estado del Vuelo *</label>
+            <select id="reprogramarEstado" class="form-select" style="width:100%; font-weight:700; border-radius:10px;">
+              <option value="Pendiente">Pendiente (Nueva solicitud)</option>
+              <option value="Pendiente por confirmar">Pendiente por confirmar (Cotización enviada)</option>
+              <option value="Confirmado">Confirmado (Aceptado / En agenda)</option>
+              <option value="En Proceso">En Proceso (Operación en campo)</option>
+              <option value="Completado">Completado (Vuelo realizado por piloto)</option>
+              <option value="Finalizado">Finalizado (Informe y SharePoint entregados)</option>
+              <option value="Reagendado">Reagendado (Fecha / hora modificada)</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-comment-dots" style="color:var(--accent);"></i> Motivo de Modificación / Reagendamiento</label>
+            <input type="text" id="reprogramarMotivo" class="form-input" placeholder="Ej: Ajuste por clima, solicitud del cliente, optimización de ruta..." style="width:100%; border-radius:10px;" />
+          </div>
+
+          <div>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-note-sticky" style="color:var(--accent);"></i> Observaciones del Servicio</label>
+            <textarea id="reprogramarObservaciones" rows="2" class="form-input" placeholder="Observaciones generales..." style="width:100%; border-radius:10px; font-family:'Outfit',sans-serif;"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px; border-top:1px solid #f1f5f9; padding-top:14px; background:#ffffff; position:sticky; bottom:0; z-index:10;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('reprogramarModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" style="font-weight:800; display:inline-flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================
+     MODAL DETALLE COTIZACIÓN 24 HORAS
+======================================== -->
+<div class="modal-overlay hidden" id="contactoDetailModal">
+  <div class="modal-card" style="max-width: 640px; width: 94%; border-radius: 24px; padding: 24px; box-shadow: 0 20px 50px rgba(0,48,73,0.22); border: 1px solid rgba(28,130,173,0.22); background: #ffffff;">
+    <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0;">
+      <div class="modal-title" id="contactoDetailTitle" style="font-size:1.15rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-file-invoice" style="color:var(--accent);"></i> Detalle de Solicitud
+      </div>
+      <button class="modal-close" onclick="closeModal('contactoDetailModal')">✕</button>
+    </div>
+    <div id="contactoDetailBody" style="padding: 16px 0; font-size: 0.92rem; line-height: 1.6;">
+      <!-- Loaded dynamically -->
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:14px; border-top:1px solid #e2e8f0; padding-top:16px;">
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <label style="font-weight:700; font-size:0.85rem; color:#003049;">Cambiar Estado:</label>
+        <select id="contactoDetailEstadoSelect" class="form-select" style="min-width:140px; font-weight:700; font-size:0.85rem; border-radius:10px;">
+          <option value="Abierto">Abierto</option>
+          <option value="En Proceso">En Proceso</option>
+          <option value="Atendido">Atendido</option>
+          <option value="Cerrado">Cerrado</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="saveContactoEstadoFromModal()" style="font-weight:700; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar
+        </button>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button type="button" class="btn btn-danger btn-sm" onclick="if(_activeContactoId) { closeModal('contactoDetailModal'); deleteContactoCotizacion(_activeContactoId); }" style="background:#ef4444; color:#fff; font-weight:700; border-radius:10px; display:inline-flex; align-items:center; gap:6px; border:none;">
+          <i class="fa-solid fa-trash-can"></i> Eliminar
+        </button>
+        <a id="contactoDetailWhatsappBtn" href="#" target="_blank" class="btn btn-sm" style="background:#25D366; color:#fff; font-weight:700; border-radius:10px; display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+          <i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> WhatsApp
+        </a>
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('contactoDetailModal')" style="border-radius:10px; font-weight:700;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     MODAL COTIZAR / NEGOCIAR SERVICIO (ADMIN)
+======================================== -->
+<div class="modal-overlay hidden" id="cotizarAgendaModal">
+  <div class="modal-card" style="max-width: 680px; width: 94%; border-radius: 24px; padding: 26px; box-shadow: 0 25px 60px rgba(0,48,73,0.25); border: 1px solid rgba(28,130,173,0.22); background: #ffffff;">
+    <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0;">
+      <div class="modal-title" style="font-size:1.2rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent);"></i> <span id="cotizarModalTitle">Cotizar y Asignar Turno #RAD-</span>
+      </div>
+      <button class="modal-close" onclick="closeModal('cotizarAgendaModal')">✕</button>
+    </div>
+
+    <!-- Info resumen del turno -->
+    <div id="cotizarModalResumen" style="background:#f8fafc; border-radius:14px; padding:14px 18px; margin:16px 0; border:1px solid #e2e8f0; font-size:0.88rem;">
+      <!-- Llenado dinámico -->
+    </div>
+
+    <!-- Sugerencia del cliente destacada si existe -->
+    <div id="cotizarModalSugerenciaBox" style="display:none; background:#eff6ff; border-left:4px solid #2563eb; border-radius:10px; padding:14px 18px; margin-bottom:16px;">
+      <div style="font-weight:800; color:#1e40af; font-size:0.86rem; margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+        <i class="fa-solid fa-comment-dots"></i> Contrapropuesta / Sugerencia del Cliente:
+      </div>
+      <div id="cotizarModalSugerenciaTexto" style="color:#1e3a8a; font-size:0.88rem; font-style:italic; line-height:1.5;"></div>
+    </div>
+
+    <!-- Historial de negociación colapsable -->
+    <div id="cotizarModalHistorialBox" style="display:none; margin-bottom:16px;">
+      <details style="background:#fafafa; border:1px solid #e5e7eb; border-radius:10px; padding:10px 14px;">
+        <summary style="font-weight:700; color:#475569; font-size:0.84rem; cursor:pointer;">
+          <i class="fa-solid fa-clock-rotate-left"></i> Ver historial de negociación en base de datos
+        </summary>
+        <div id="cotizarModalHistorialTimeline" style="margin-top:10px; font-size:0.82rem; line-height:1.6; max-height:160px; overflow-y:auto;"></div>
+      </details>
+    </div>
+
+    <form id="cotizarAgendaForm" onsubmit="submitCotizarAgendaForm(event)" style="display:flex; flex-direction:column; gap:16px;">
+      <input type="hidden" id="cotizarTurnoId" />
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+        <div>
+          <label class="form-label" style="font-weight:800; color:#003049; font-size:0.86rem;">
+            <i class="fa-solid fa-sack-dollar" style="color:#059669;"></i> Precio del Servicio (COP) *
+          </label>
+          <input type="number" id="cotizarTarifaInput" class="form-input" required min="1000" step="1000" placeholder="Ej: 1500000" style="width:100%; border-radius:10px; font-weight:800; font-size:1.05rem; color:#065f46;" />
+        </div>
+
+        <div>
+          <label class="form-label" style="font-weight:800; color:#003049; font-size:0.86rem;">
+            <i class="fa-solid fa-user-astronaut" style="color:var(--accent);"></i> Técnico / Piloto Asignado *
+          </label>
+          <select id="cotizarTecnicoSelect" class="form-select" required style="width:100%; border-radius:10px; font-weight:700;">
+            <option value="">Seleccione piloto obligatorio...</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;">
+          <i class="fa-solid fa-message" style="color:#1c82ad;"></i> Mensaje / Nota para el Cliente (Máx 500 caracteres)
+        </label>
+        <textarea id="cotizarMensajeAdmin" rows="2" maxlength="500" class="form-input" placeholder="Mensaje que acompañará la propuesta de precio en el correo y portal..." style="width:100%; border-radius:10px; font-family:'Outfit',sans-serif;"></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:8px; border-top:1px solid #f1f5f9; padding-top:16px;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('cotizarAgendaModal')">Cerrar</button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" id="btnAceptarDirectoAdmin" class="btn btn-sm" onclick="adminAceptarDirectoServicio()" style="background:#059669; color:#fff; font-weight:800; border-radius:10px; padding:10px 16px; border:none; display:inline-flex; align-items:center; gap:6px;">
+            <i class="fa-solid fa-check-double"></i> Aceptar Directamente el Servicio
+          </button>
+          <button type="submit" class="btn btn-primary btn-sm" style="font-weight:800; border-radius:10px; padding:10px 18px; display:inline-flex; align-items:center; gap:6px;">
+            <i class="fa-solid fa-paper-plane"></i> Enviar Cotización al Cliente
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================
+     MODAL GESTIÓN DE SERVICIO (CREAR / EDITAR)
+======================================== -->
+<div class="modal-overlay hidden" id="modalServicio">
+  <div class="modal-card" style="max-width: 780px; width: 95%; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 26px; box-shadow: 0 25px 60px rgba(0,48,73,0.25); border: 1px solid rgba(28,130,173,0.22); background: #ffffff;">
+    <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0;">
+      <div class="modal-title" style="font-size:1.2rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> <span id="modalServicioTitle">Nuevo Servicio Especializado</span>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalServicio')">✕</button>
+    </div>
+
+    <form id="formServicioAdmin" onsubmit="submitGuardarServicio(event)" style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
+      <input type="hidden" id="servicioModalId" value="" />
+
+      <div>
+        <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;">Nombre del Servicio *</label>
+        <input type="text" id="servicioModalNombre" class="form-input" required placeholder="Ej: Mapeo Multiespectral Avanzado" style="width:100%; border-radius:10px; font-weight:700;" />
+      </div>
+
+      <div>
+        <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;">Descripción Operativa y Comercial *</label>
+        <textarea id="servicioModalDescripcion" rows="3" class="form-input" required placeholder="Descripción de los entregables agronómicos, analítica y alcance del vuelo..." style="width:100%; border-radius:10px; font-family:'Outfit',sans-serif;"></textarea>
+      </div>
+
+      <!-- Especificaciones Técnicas (Mostradas en las tarjetas del home) -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:14px;">
+        <div style="font-weight:800; font-size:0.85rem; color:#003049; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-microchip" style="color:var(--accent);"></i> Especificaciones Técnicas (Página Principal)
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:#475569;">Sistema / Tecnología</label>
+            <input type="text" id="servicioModalSistema" class="form-input" placeholder="Ej: Sensores Multiespectrales 5 Bandas" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:#475569;">Eficiencia Operativa</label>
+            <input type="text" id="servicioModalEficiencia" class="form-input" placeholder="Ej: Hasta 150 Ha por jornada" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:#475569;">Capacidad / Cobertura</label>
+            <input type="text" id="servicioModalCapacidad" class="form-input" placeholder="Ej: Vuelo autónomo con RTK continuo" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+          </div>
+          <div>
+            <label style="font-size:0.78rem; font-weight:700; color:#475569;">Precisión Métrica</label>
+            <input type="text" id="servicioModalPrecision" class="form-input" placeholder="Ej: Centimétrica RTK ±2cm" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Icono FontAwesome -->
+      <div>
+        <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;">Icono Distintivo</label>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <input type="text" id="servicioModalIcono" class="form-input" placeholder="fa-solid fa-helicopter" style="flex:1; border-radius:10px;" />
+          <div id="servicioModalIconPreview" style="width:40px; height:40px; border-radius:10px; background:#003049; display:flex; align-items:center; justify-content:center; color:#E4C7A1; font-size:1.2rem;">
+            <i class="fa-solid fa-helicopter"></i>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
+          <small style="color:#64748b; font-size:0.75rem; width:100%;">Iconos recomendados (haz clic para asignar):</small>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-helicopter')" style="font-size:0.75rem; padding:2px 8px;">🚁 Dron</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-mountain-sun')" style="font-size:0.75rem; padding:2px 8px;">🏔️ Topografía</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-spray-can')" style="font-size:0.75rem; padding:2px 8px;">💦 Aspersión</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-seedling')" style="font-size:0.75rem; padding:2px 8px;">🌱 Agricultura</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-cow')" style="font-size:0.75rem; padding:2px 8px;">🐄 Ganadería</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-camera')" style="font-size:0.75rem; padding:2px 8px;">📷 Fotogrametría</button>
+        </div>
+      </div>
+
+      <!-- MÓDULO MULTIMEDIA: SUBIR IMAGEN DIRECTA -->
+      <div style="border:1.5px dashed #cbd5e1; border-radius:14px; padding:16px; background:#fafafa;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <label style="font-weight:800; color:#003049; font-size:0.86rem; margin:0; display:flex; align-items:center; gap:6px;">
+            <i class="fa-solid fa-image" style="color:#0284c7;"></i> Imagen del Servicio (Miniatura & Portada)
+          </label>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="openMediaGalleryModal('imagen')" style="font-size:0.76rem; font-weight:700; color:#0284c7;">
+            <i class="fa-solid fa-images"></i> Elegir de la Galería
+          </button>
+        </div>
+
+        <div style="display:flex; gap:14px; align-items:center;">
+          <!-- Preview Miniatura -->
+          <div id="servicioModalImgPreviewWrap" style="width:110px; height:75px; border-radius:10px; border:1px solid #cbd5e1; background:#e2e8f0; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <img id="servicioModalImgPreview" src="img/servicio_precision.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='img/servicio_precision.jpg'" />
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; gap:8px; margin-bottom:6px;">
+              <input type="file" id="servicioModalImgFile" accept="image/*" style="display:none;" onchange="subirArchivoServicio(this, 'imagen')" />
+              <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('servicioModalImgFile').click()" style="font-size:0.80rem; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Subir Imagen Directamente
+              </button>
+              <span id="servicioImgUploadSpinner" style="display:none; color:#0284c7; font-size:0.82rem; align-items:center; gap:4px;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Subiendo imagen...
+              </span>
+            </div>
+            <input type="text" id="servicioModalImagenUrl" class="form-input" placeholder="O ingresa la URL de la imagen (ej: img/servicio_precision.jpg o /uploads/images/...)" oninput="document.getElementById('servicioModalImgPreview').src = this.value" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- MÓDULO MULTIMEDIA: SUBIR VIDEO DIRECTO -->
+      <div style="border:1.5px dashed #cbd5e1; border-radius:14px; padding:16px; background:#fafafa;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <label style="font-weight:800; color:#003049; font-size:0.86rem; margin:0; display:flex; align-items:center; gap:6px;">
+            <i class="fa-solid fa-video" style="color:#e11d48;"></i> Video Demostrativo del Servicio
+          </label>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="openMediaGalleryModal('video')" style="font-size:0.76rem; font-weight:700; color:#e11d48;">
+            <i class="fa-solid fa-film"></i> Elegir de la Galería
+          </button>
+        </div>
+
+        <div style="display:flex; gap:14px; align-items:center;">
+          <!-- Preview Video -->
+          <div id="servicioModalVidPreviewWrap" style="width:110px; height:75px; border-radius:10px; border:1px solid #cbd5e1; background:#0f172a; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative;">
+            <video id="servicioModalVidPreview" src="video/hero.mp4" muted loop playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+            <button type="button" onclick="previewVideoModal(document.getElementById('servicioModalVideoUrl').value)" style="position:absolute; background:rgba(0,0,0,0.6); color:#fff; border:none; border-radius:50%; width:26px; height:26px; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+              <i class="fa-solid fa-play" style="font-size:0.7rem;"></i>
+            </button>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; gap:8px; margin-bottom:6px;">
+              <input type="file" id="servicioModalVidFile" accept="video/mp4,video/webm,video/quicktime" style="display:none;" onchange="subirArchivoServicio(this, 'video')" />
+              <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('servicioModalVidFile').click()" style="font-size:0.80rem; font-weight:700; display:inline-flex; align-items:center; gap:6px; background:#e11d48; border-color:#e11d48;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Subir Video Directamente (.mp4)
+              </button>
+              <span id="servicioVidUploadSpinner" style="display:none; color:#e11d48; font-size:0.82rem; align-items:center; gap:4px;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Subiendo video...
+              </span>
+            </div>
+            <input type="text" id="servicioModalVideoUrl" class="form-input" placeholder="O ingresa la URL del video (ej: video/topografia_drone.mp4 o /uploads/videos/...)" oninput="document.getElementById('servicioModalVidPreview').src = this.value" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado Activo en la página principal -->
+      <div style="display:flex; align-items:center; gap:10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px 16px;">
+        <input type="checkbox" id="servicioModalActivo" checked style="width:18px; height:18px; accent-color:#16a34a; cursor:pointer;" />
+        <label for="servicioModalActivo" style="font-weight:700; color:#15803d; font-size:0.88rem; margin:0; cursor:pointer;">
+          Publicar y mostrar activamente este servicio en la página principal (Home)
+        </label>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #e2e8f0; padding-top:16px; margin-top:8px;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalServicio')">Cancelar</button>
+        <button type="submit" id="btnGuardarServicioModal" class="btn btn-primary" style="font-weight:800; display:inline-flex; align-items:center; gap:8px; padding:10px 24px; border-radius:10px;">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Servicio en Base de Datos
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================
+     MODAL GALERÍA MULTIMEDIA (IMÁGENES & VIDEOS)
+======================================== -->
+<div class="modal-overlay hidden" id="modalMediaGallery">
+  <div class="modal-card" style="max-width: 1180px; width: 96%; max-height: 94vh; height: 90vh; display:flex; flex-direction:column; border-radius: 24px; padding: 24px; box-shadow: 0 25px 60px rgba(0,48,73,0.3); border: 1.5px solid rgba(28,130,173,0.3); background: #ffffff;">
+    <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0;">
+      <div>
+        <div class="modal-title" style="font-size:1.25rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-photo-film" style="color:var(--accent);"></i> Galería Multimedia del Sistema
+          <span id="galleryCountBadge" class="badge" style="background:#e0f2fe; color:#0284c7; font-weight:800; font-size:0.75rem; border:1px solid #bae6fd;">Cargando...</span>
+        </div>
+        <div style="font-size:0.80rem; color:#64748b; margin-top:2px;">
+          Explora con miniatura real, previsualiza en HD, copia enlaces directos o elimina archivos físicos de raíz
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalMediaGallery')">✕</button>
+    </div>
+
+    <!-- Barra de control, filtros de formato, buscador y subida rápida -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin:16px 0 14px;">
+      <!-- Filtros por tipo -->
+      <div style="display:flex; background:#f1f5f9; padding:4px; border-radius:12px; gap:4px; border:1px solid #e2e8f0;">
+        <button type="button" id="galleryTabAll" class="btn btn-sm btn-primary" onclick="filterMediaGallery('all')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">Todos</button>
+        <button type="button" id="galleryTabImages" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('imagen')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">🖼️ Imágenes</button>
+        <button type="button" id="galleryTabVideos" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('video')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">🎬 Videos</button>
+      </div>
+
+      <!-- Buscador dinámico y subida directa -->
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <div class="search-input-wrap" style="min-width:180px; max-width:240px;">
+          <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+          <input type="text" id="gallerySearchInput" class="search-input" placeholder="Buscar archivo..." oninput="filterMediaSearch(this.value)" style="padding-top:6px; padding-bottom:6px; font-size:0.78rem;" />
+        </div>
+
+        <input type="file" id="galleryDirectFileInput" accept="image/*,video/mp4,video/webm" style="display:none;" onchange="subirArchivoGaleriaDirecto(this)" />
+        <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('galleryDirectFileInput').click()" style="font-weight:800; border-radius:10px; display:inline-flex; align-items:center; gap:6px; background:#059669; border-color:#059669; box-shadow:0 4px 12px rgba(5,150,105,0.25);">
+          <i class="fa-solid fa-cloud-arrow-up"></i> + Subir Archivo
+        </button>
+      </div>
+    </div>
+
+    <div id="galleryUploadStatus" style="display:none; background:#eff6ff; border:1.5px solid #93c5fd; color:#1e40af; padding:10px 16px; border-radius:12px; font-size:0.83rem; font-weight:700; margin-bottom:12px; align-items:center; gap:10px;">
+      <i class="fa-solid fa-spinner fa-spin" style="font-size:1.1rem; color:#2563eb;"></i>
+      <span>Subiendo archivo multimedia al servidor...</span>
+    </div>
+
+    <!-- Grid de archivos multimedia con previsualización definida y tarjetas ampliadas -->
+    <div id="galleryMediaGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:20px; padding:16px 8px 30px; overflow-y:auto; flex:1; align-content:start;">
+      <!-- Llenado dinámico -->
+      <div style="grid-column: 1/-1; text-align:center; padding:40px; color:#64748b;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem; margin-bottom:8px;"></i>
+        <div>Cargando archivos multimedia...</div>
+      </div>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; padding-top:12px; border-top:1px solid #e2e8f0;">
+      <div style="font-size:0.75rem; color:#64748b;">
+        <i class="fa-solid fa-shield-halved" style="color:#0284c7; margin-right:4px;"></i> Al eliminar un archivo subido, se borra directamente del disco del servidor.
+      </div>
+      <button type="button" class="btn btn-ghost" onclick="closeModal('modalMediaGallery')" style="font-weight:700;">Cerrar Galería</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     MODAL VISOR MULTIMEDIA AMPLIADO (LIGHTBOX)
+======================================== -->
+<div class="modal-overlay hidden" id="modalMediaPreviewer" style="z-index: 10050;">
+  <div class="modal-card" style="max-width: 920px; width: 95%; max-height: 94vh; background: #0b1320; color: #fff; border-radius: 22px; padding: 22px; border: 1.5px solid rgba(255,255,255,0.18); box-shadow: 0 35px 80px rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 14px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:12px;">
+      <div>
+        <div id="mediaViewerTitle" style="font-weight:800; font-size:1.15rem; color:#fff; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-eye" style="color:var(--accent);"></i> Vista Previa
+        </div>
+        <div id="mediaViewerSubtitle" style="font-size:0.78rem; color:#94a3b8; margin-top:2px;">Detalles y enlace del recurso</div>
+      </div>
+      <button type="button" class="btn-close-circle" onclick="closeModal('modalMediaPreviewer')" style="background:rgba(255,255,255,0.12); border:none; color:#fff; font-size:1.3rem; border-radius:50%; width:34px; height:34px; cursor:pointer; display:flex; align-items:center; justify-content:center;">&times;</button>
+    </div>
+    <div style="flex:1; min-height:300px; max-height:60vh; display:flex; align-items:center; justify-content:center; background:#020617; border-radius:14px; overflow:hidden; position:relative;">
+      <img id="mediaViewerImg" src="" style="max-width:100%; max-height:58vh; object-fit:contain; display:none;" />
+      <video id="mediaViewerVid" src="" controls autoplay playsinline style="max-width:100%; max-height:58vh; display:none;"></video>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-top:1px solid rgba(255,255,255,0.12); padding-top:12px;">
+      <div id="mediaViewerMeta" style="font-size:0.80rem; color:#cbd5e1; font-weight:600;"></div>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn btn-sm btn-ghost" id="mediaViewerCopyBtn" style="color:#38bdf8; border:1px solid rgba(56,189,248,0.5); font-weight:700;">
+          <i class="fa-solid fa-copy"></i> Copiar URL
+        </button>
+        <button type="button" class="btn btn-sm btn-primary" onclick="closeModal('modalMediaPreviewer')" style="font-weight:700;">Cerrar Visor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================
+     MODAL ELEMENTO DEL COLLAGE (PUBLICIDAD)
+======================================== -->
+<div class="modal-overlay hidden" id="modalCollageItem">
+  <div class="modal-card" style="max-width: 650px; width: 95%; max-height: 90vh; overflow-y: auto; border-radius: 20px; padding: 24px; background: #ffffff; border: 1px solid rgba(28,130,173,0.25); box-shadow: 0 20px 50px rgba(0,48,73,0.25);">
+    <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0; margin-bottom:18px;">
+      <div>
+        <div class="modal-title" id="collageModalTitle" style="font-size:1.2rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> Elemento del Collage
+        </div>
+        <div style="font-size:0.78rem; color:#64748b;">Configura imágenes o videos con su texto y botón para el dashboard de cliente</div>
+      </div>
+      <button type="button" class="btn-close-circle" onclick="closeModal('modalCollageItem')" style="background:none; border:none; font-size:1.4rem; color:#94a3b8; cursor:pointer;">&times;</button>
+    </div>
+
+    <form id="formCollageItem" onsubmit="submitCollageItem(event)" style="display:flex; flex-direction:column; gap:14px;">
+      <input type="hidden" id="collageModalId" value="" />
+
+      <div class="form-group">
+        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Título Principal *</label>
+        <input type="text" id="collageModalTitulo" class="form-input" placeholder="Ej: Aspersión Aérea Ultra-Fina & Nutrición" required style="font-size:0.85rem;" />
+      </div>
+
+      <div class="form-group">
+        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Subtítulo o Descripción</label>
+        <textarea id="collageModalSubtitulo" class="form-input" rows="2" placeholder="Breve descripción del servicio o tecnología para los agricultores..." style="font-size:0.82rem; resize:vertical;"></textarea>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Tipo de Medio *</label>
+          <select id="collageModalTipoMedio" class="form-select" onchange="onCollageTipoMedioChange()" style="font-size:0.85rem;">
+            <option value="imagen">Imagen (.jpg, .png, .webp)</option>
+            <option value="video">Video (.mp4, .webm)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Badge / Etiqueta Superior</label>
+          <input type="text" id="collageModalBadge" class="form-input" placeholder="Ej: Servicio Estrella, NDVI & NDRE" style="font-size:0.85rem;" />
+        </div>
+      </div>
+
+      <!-- SECCIÓN MULTIMEDIA DEL COLLAGE -->
+      <div style="border:1.5px dashed #cbd5e1; border-radius:14px; padding:14px; background:#f8fafc;">
+        <label style="font-size:0.82rem; font-weight:800; color:#003049; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-photo-film" style="color:var(--accent);"></i> Archivo Multimedia (Imagen o Video)
+        </label>
+
+        <div style="display:flex; gap:12px; align-items:center;">
+          <!-- Preview Miniatura -->
+          <div style="width:110px; height:75px; border-radius:10px; border:1px solid #cbd5e1; background:#0f172a; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <img id="collageModalImgPreview" src="../img/servicio_aspersion.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='../img/servicio_precision.jpg';" />
+            <video id="collageModalVidPreview" src="/video/hero.mp4" muted loop playsinline style="width:100%; height:100%; object-fit:cover; display:none;"></video>
+          </div>
+          
+          <div style="flex:1;">
+            <div style="display:flex; gap:8px; margin-bottom:6px; flex-wrap:wrap;">
+              <input type="file" id="collageModalFileInput" accept="image/*,video/mp4,video/webm" style="display:none;" onchange="subirArchivoCollage(this)" />
+              <button type="button" class="btn btn-sm btn-ghost" onclick="openMediaGalleryModal()" style="font-size:0.80rem; font-weight:700; display:inline-flex; align-items:center; gap:6px; border:1px solid var(--accent); color:var(--accent);">
+                <i class="fa-solid fa-photo-film"></i> Elegir de Galería
+              </button>
+              <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('collageModalFileInput').click()" style="font-size:0.80rem; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Subir Archivo Directo
+              </button>
+              <span id="collageUploadSpinner" style="display:none; color:#0284c7; font-size:0.82rem; align-items:center; gap:4px;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Subiendo...
+              </span>
+            </div>
+            <input type="text" id="collageModalUrlMedio" class="form-input" placeholder="O ingresa la ruta / URL (ej: img/servicio_aspersion.jpg o /uploads/...)" oninput="updateCollagePreview(this.value)" required style="font-size:0.82rem;" />
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Texto del Botón CTA</label>
+          <input type="text" id="collageModalTextoBoton" class="form-input" placeholder="Ej: Programar Aspersión" style="font-size:0.85rem;" />
+        </div>
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Acción / Enlace</label>
+          <input type="text" id="collageModalUrlAccion" class="form-input" placeholder="Ej: #agendar, #documentos, #whatsapp" style="font-size:0.85rem;" />
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:center;">
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Orden de Presentación</label>
+          <input type="number" id="collageModalOrden" class="form-input" value="1" min="0" style="font-size:0.85rem;" />
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; padding-top:16px;">
+          <input type="checkbox" id="collageModalActivo" checked style="width:18px; height:18px; accent-color:#16a34a; cursor:pointer;" />
+          <label for="collageModalActivo" style="font-weight:700; font-size:0.85rem; color:#15803d; cursor:pointer; margin:0;">
+            Activo en rotación automática
+          </label>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #e2e8f0; padding-top:14px; margin-top:8px;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalCollageItem')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" style="font-weight:800; border-radius:10px; padding:10px 22px;">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Elemento
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========================================
+     MODAL RED SOCIAL (PUBLICIDAD)
+======================================== -->
+<div class="modal-overlay hidden" id="modalRedSocial">
+  <div class="modal-card" style="max-width: 520px; width: 95%; border-radius: 20px; padding: 24px; background: #ffffff; border: 1px solid rgba(28,130,173,0.25); box-shadow: 0 20px 50px rgba(0,48,73,0.25);">
+    <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0; margin-bottom:18px;">
+      <div>
+        <div class="modal-title" id="redSocialModalTitle" style="font-size:1.2rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-share-nodes" style="color:#10b981;"></i> Red Social Oficial
+        </div>
+        <div style="font-size:0.78rem; color:#64748b;">Registra canales oficiales de contacto y redes de Flymetrics</div>
+      </div>
+      <button type="button" class="btn-close-circle" onclick="closeModal('modalRedSocial')" style="background:none; border:none; font-size:1.4rem; color:#94a3b8; cursor:pointer;">&times;</button>
+    </div>
+
+    <form id="formRedSocial" onsubmit="submitRedSocial(event)" style="display:flex; flex-direction:column; gap:14px;">
+      <input type="hidden" id="redSocialModalId" value="" />
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Plataforma / Red *</label>
+          <select id="redSocialModalPlataforma" class="form-select" onchange="onRedSocialPlataformaChange()" style="font-size:0.85rem;">
+            <option value="whatsapp">WhatsApp</option>
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+            <option value="tiktok">TikTok</option>
+            <option value="youtube">YouTube</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="twitter">X (Twitter)</option>
+            <option value="otro">Otra Red / Web</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Icono FontAwesome</label>
+          <input type="text" id="redSocialModalIcono" class="form-input" value="fa-whatsapp" placeholder="fa-whatsapp" style="font-size:0.85rem;" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Nombre Visible *</label>
+        <input type="text" id="redSocialModalNombre" class="form-input" placeholder="Ej: WhatsApp Oficial, Instagram Flymetrics" required style="font-size:0.85rem;" />
+      </div>
+
+      <div class="form-group">
+        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">URL / Enlace Oficial *</label>
+        <input type="url" id="redSocialModalUrl" class="form-input" placeholder="https://..." required style="font-size:0.85rem;" />
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:center;">
+        <div class="form-group">
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Orden</label>
+          <input type="number" id="redSocialModalOrden" class="form-input" value="1" min="0" style="font-size:0.85rem;" />
+        </div>
+        <div style="display:flex; align-items:center; gap:8px; padding-top:16px;">
+          <input type="checkbox" id="redSocialModalActivo" checked style="width:18px; height:18px; accent-color:#16a34a; cursor:pointer;" />
+          <label for="redSocialModalActivo" style="font-weight:700; font-size:0.85rem; color:#15803d; cursor:pointer; margin:0;">
+            Activa públicamente
+          </label>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px solid #e2e8f0; padding-top:14px; margin-top:8px;">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('modalRedSocial')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" style="font-weight:800; border-radius:10px; padding:10px 22px;">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Red Social
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <script src="../js/admin.js?v=20261016_190800"></script>
+</body>
+</html>
