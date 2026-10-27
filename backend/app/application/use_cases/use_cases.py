@@ -174,10 +174,15 @@ class AuthUseCases:
             raise BadRequestException("El correo electrónico es obligatorio")
 
         user = db.query(UsuarioModel).filter(func.lower(UsuarioModel.email) == clean_email).first()
-        if not user or not verify_password(request.contraseña, user.contraseña):
+        if not user:
             raise UnauthorizedException("Credenciales incorrectas")
-            
-        # Generar token JWT
+
+        stored_hash = getattr(user, 'password_hash', None) or getattr(user, 'contraseña', None) or getattr(user, 'contrasena', None) or ''
+        plain_pwd = getattr(request, 'contraseña', None) or getattr(request, 'contrasena', None) or getattr(request, 'password', None) or ''
+
+        if not verify_password(plain_pwd, stored_hash):
+            raise UnauthorizedException("Credenciales incorrectas")
+
         token_data = {"sub": user.email, "rol": user.rol, "id_usuarios": user.id_usuarios}
         token = create_access_token(token_data)
         

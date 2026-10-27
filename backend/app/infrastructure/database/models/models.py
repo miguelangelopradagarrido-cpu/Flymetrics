@@ -31,8 +31,24 @@ class UsuarioModel(Base, AuditMixin):
     id_usuarios = Column(Integer, primary_key=True, autoincrement=True)
     rol = Column(String(50), nullable=False)  # 'cliente', 'tecnico', 'administrador'
     email = Column(String(100), unique=True, nullable=False)
-    contraseña = Column(String(255), nullable=False)
+    password_hash = Column("contraseña", String(255), nullable=False)
     fecha_de_creacion = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+    @property
+    def contraseña(self):
+        return self.password_hash
+
+    @contraseña.setter
+    def contraseña(self, value):
+        self.password_hash = value
+
+    @property
+    def contrasena(self):
+        return self.password_hash
+
+    @contrasena.setter
+    def contrasena(self, value):
+        self.password_hash = value
     
     # Relaciones
     cliente = relationship("ClienteModel", back_populates="usuario", uselist=False, cascade="all, delete-orphan")
@@ -189,7 +205,7 @@ class AgendaModel(Base, AuditMixin):
     fecha_de_turno = Column(Date, nullable=False, index=True)
     hora_inicio_estimada = Column(Time, nullable=False)
     hora_fin_estimada = Column(Time, nullable=True)
-    tipo_turno = Column(Enum(TipoTurnoEnum), default=TipoTurnoEnum.Fumigacion)
+    tipo_turno = Column(String(50), default="Fumigación")
     estado = Column(String(30), nullable=True, index=True)  # 'Pendiente', 'Confirmado', 'En Proceso', 'Hecho', 'Cancelado', 'Rechazado'
     tarifa = Column(Numeric(10, 2), nullable=True)
     costo_logistico = Column(Numeric(10, 2), default=0.00)
@@ -288,7 +304,7 @@ class PagoModel(Base, AuditMixin):
     id_turno = Column(Integer, ForeignKey("tabla_agenda.id_turno", ondelete="CASCADE"), nullable=False)
     monto = Column(Numeric(10, 2), nullable=False)
     fecha_pago = Column(TIMESTAMP, server_default=func.current_timestamp())
-    metodo_pago = Column(Enum(MetodoPagoEnum), default=MetodoPagoEnum.Pendiente)
+    metodo_pago = Column(String(50), default="Pendiente")
     referencia_transaccion = Column(String(100), nullable=True)
     url_comprobante = Column(String(255), nullable=True)
     url_cotizacion = Column(String(255), nullable=True)

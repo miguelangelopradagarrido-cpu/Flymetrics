@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, EmailStr, ConfigDict, field_validator, model_validator
-from typing import Optional, List, Any
-from datetime import date, time, datetime
+from typing import Optional, List, Any, Union
+from datetime import date, time, datetime, timedelta
 from decimal import Decimal
 from app.infrastructure.database.models.models import MetodoPagoEnum, TipoTurnoEnum
 
@@ -27,15 +27,23 @@ class UsuarioCreate(BaseModel):
 
 class UsuarioLogin(BaseModel):
     email: EmailStr
-    contraseña: str
+    contraseña: str = Field(default="")
 
     @model_validator(mode="before")
     @classmethod
     def check_login_password_field(cls, data: Any) -> Any:
         if isinstance(data, dict):
-            if "password" in data and "contraseña" not in data:
-                data["contraseña"] = data.pop("password")
+            pwd = data.get("password") or data.get("contraseña") or data.get("contrasena")
+            if not pwd:
+                for k in list(data.keys()):
+                    if "pass" in k.lower() or "contra" in k.lower():
+                        pwd = data[k]
+                        break
+            if pwd:
+                data["contraseña"] = str(pwd)
         return data
+
+    model_config = ConfigDict(populate_by_name=True)
 
 class GoogleLoginRequest(BaseModel):
     token: str
@@ -476,35 +484,45 @@ class AgendaResponderPropuestaRequest(BaseModel):
 
 class AgendaResponse(BaseModel):
     id_turno: int
-    id_finca: Optional[int]
+    id_finca: Optional[int] = None
     id_servicio: int
-    id_drone: Optional[int]
-    id_tecnico: Optional[int]
+    id_drone: Optional[int] = None
+    id_tecnico: Optional[int] = None
     tecnicos_adicionales: Optional[str] = None
-    fecha_de_turno: date
-    hora_inicio_estimada: time
-    hora_fin_estimada: Optional[time]
-    tipo_turno: TipoTurnoEnum
-    estado: Optional[str]
-    tarifa: Optional[Decimal]
-    costo_logistico: Optional[Decimal]
-    cel: Optional[str]
-    observaciones_servicio: Optional[str]
-    hora_inicio_real: Optional[time]
-    hora_fin_real: Optional[time]
-    retraso_justificacion: Optional[str]
+    fecha_de_turno: Optional[Union[date, str]] = None
+    hora_inicio_estimada: Optional[Union[time, timedelta, str]] = None
+    hora_fin_estimada: Optional[Union[time, timedelta, str]] = None
+    tipo_turno: Optional[str] = "Fumigación"
+    estado: Optional[str] = "Pendiente"
+    tarifa: Optional[Decimal] = None
+    costo_logistico: Optional[Decimal] = Decimal("0.00")
+    cel: Optional[str] = None
+    observaciones_servicio: Optional[str] = None
+    hora_inicio_real: Optional[Union[time, timedelta, str]] = None
+    hora_fin_real: Optional[Union[time, timedelta, str]] = None
+    retraso_justificacion: Optional[str] = None
     motivo_reagendamiento: Optional[str] = None
     es_demostracion: Optional[bool] = False
     sugerencia_cliente: Optional[str] = None
     token_confirmacion: Optional[str] = None
     historial_negociacion: Optional[str] = None
-    
+
+    @field_validator('hora_inicio_estimada', 'hora_fin_estimada', 'hora_inicio_real', 'hora_fin_real', mode='before')
+    @classmethod
+    def serialize_hora(cls, v: Any):
+        if v is None:
+            return None
+        if isinstance(v, timedelta):
+            total_seconds = int(v.total_seconds())
+            hours = total_seconds // 3600
+            minutes = (total_seconds % 3600) // 60
+            seconds = total_seconds % 60
+            return f'{hours:02d}:{minutes:02d}:{seconds:02d}'
+        if isinstance(v, time):
+            return v.strftime('%H:%M:%S')
+        return str(v)
+
     model_config = ConfigDict(from_attributes=True)
-
-
-# ==========================================
-# MÓDULO 7 — BITÁCORA DEL TÉCNICO & REPORTES
-# ==========================================
 
 class ReporteVueloResponse(BaseModel):
     id_reporte: int
