@@ -13,9 +13,12 @@
   // Soporte universal para túneles (ngrok, trycloudflare, locales y producción):
   // Si está en un túnel público o puerto 3000 o servidor de producción, el backend está en el mismo origin.
   // Si está en LiveServer o protocolo file://, apunta a http://localhost:3000
+  // Enlace oficial a la API desplegada en Hostless Apps
+  var PROD_API_URL = 'https://flymetrics-api.hostless.app';
+
   var apiBase = global.API_BASE || ((_protocol === 'file:' || isDevPort)
     ? 'http://localhost:3000'
-    : (_origin || 'http://localhost:3000'));
+    : (_origin && _origin.includes('localhost') ? _origin : PROD_API_URL));
 
   var baseUrl = (apiBase.replace(/\/+$/, '')) + '/api/v1';
 

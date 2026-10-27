@@ -129,24 +129,25 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 app.add_middleware(BaseHTTPMiddleware, dispatch=security_headers_middleware)
 
 # Configurar CORS seguro según entorno y orígenes permitidos
-allowed_origins_list = [o.strip() for o in settings.ALLOWED_ORIGINS.split(",") if o.strip()]
-if getattr(settings, "ENVIRONMENT", "development") != "production":
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|.*\.trycloudflare\.com)(:\d+)?$",
-        allow_origins=allowed_origins_list,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-else:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=allowed_origins_list,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+# Configuracion de CORS abierta y robusta para frontend en Hostless y dominio propio
+cors_regex = r"^https?://(localhost|127\.0\.0\.1|.*\.hostless\.site|.*\.hostless\.app|.*\.flymetrics\.com\.co|.*\.flymetrics\.co)(:\d+)?$"
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=cors_regex,
+    allow_origins=[
+        "https://flymetrics.com.co",
+        "https://www.flymetrics.com.co",
+        "https://flymetrics.co",
+        "https://www.flymetrics.co",
+        "https://flymetrics.hostless.site",
+        "https://flymetrics-api.hostless.app",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Registrar limitador de tasa (Rate Limiter)
 setup_rate_limiter(app)
