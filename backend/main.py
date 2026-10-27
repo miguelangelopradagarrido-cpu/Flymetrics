@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 from pathlib import Path
 from fastapi import FastAPI, APIRouter, Depends
@@ -49,8 +49,8 @@ async def lifespan(app: FastAPI):
         from app.infrastructure.database.session import SessionLocal
         from app.infrastructure.security.jwt_handler import hash_password
         
-        default_admin_email = os.getenv("ADMIN_EMAIL", "admin@flymetrics.co").strip()
-        default_admin_password = os.getenv("ADMIN_PASSWORD", "Admin123456!").strip()
+        default_admin_email = os.getenv("ADMIN_EMAIL", "admin@flymetrics.co").strip().lower()
+        default_admin_password = os.getenv("ADMIN_PASSWORD", "FlymetricsAdmin2026*").strip()
 
         with SessionLocal() as db_session:
             admin_user = db_session.query(UsuarioModel).filter(UsuarioModel.email == default_admin_email).first()
@@ -64,17 +64,11 @@ async def lifespan(app: FastAPI):
                 db_session.commit()
                 print(f"[STARTUP] Usuario Administrador creado exitosamente: {default_admin_email}")
             else:
-                # Si existe, garantizar que tenga el rol y contraseña correcta
-                actualizado = False
-                if admin_user.rol != "administrador":
-                    admin_user.rol = "administrador"
-                    actualizado = True
-                if default_admin_password and not admin_user.contraseña:
-                    admin_user.contraseña = hash_password(default_admin_password)
-                    actualizado = True
-                if actualizado:
-                    db_session.commit()
-                    print(f"[STARTUP] Usuario Administrador actualizado: {default_admin_email}")
+                # Actualizar siempre al iniciar para garantizar acceso con la clave oficial
+                admin_user.rol = "administrador"
+                admin_user.contraseña = hash_password(default_admin_password)
+                db_session.commit()
+                print(f"[STARTUP] Contraseña de Administrador actualizada a la oficial: {default_admin_email}")
     except Exception as e:
         print(f"[STARTUP] Aviso: No se pudo verificar el usuario admin inicial: {e}")
 

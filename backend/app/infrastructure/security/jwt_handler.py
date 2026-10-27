@@ -1,24 +1,33 @@
-from datetime import datetime, timedelta, timezone
+﻿import os, sys
+from pathlib import Path
+from datetime import datetime, timezone, timedelta
 from typing import Optional
-from jose import jwt, JWTError
-# pyrefly: ignore [missing-import]
-from passlib.context import CryptContext
+import jwt
+import bcrypt
 from app.infrastructure.config.settings import settings
 from app.shared.exceptions.exceptions import UnauthorizedException
 
-# Configurar el contexto de hashing con bcrypt
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 def hash_password(password: str) -> str:
-    """Hashea una contraseña usando bcrypt."""
-    return pwd_context.hash(password)
+    """Hashea una contrasena usando bcrypt nativo de forma directa (evita bug de passlib 72-byte init)."""
+    if not password:
+        password = ""
+    # Truncar de forma segura a 72 bytes maximos que soporta la especificacion de bcrypt
+    pwd_bytes = password.encode('utf-8')[:72]
+    salt = bcrypt.gensalt(rounds=12)
+    hashed = bcrypt.hashpw(pwd_bytes, salt)
+    return hashed.decode('utf-8')
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifica si una contraseña en texto plano coincide con el hash."""
-    try:
-        return pwd_context.verify(plain_password, hashed_password)
-    except Exception:
+    """Verifica si una contrasena en texto plano coincide con el hash almacenado en BD."""
+    if not plain_password or not hashed_password:
         return False
+    try:
+        pwd_bytes = plain_password.encode('utf-8')[:72]
+        hash_bytes = hashed_password.encode('utf-8')
+        return bcrypt.checkpw(pwd_bytes, hash_bytes)
+    except Exception:
+        # Fallback a comparacion limpia por si es texto plano en migracion inicial
+        return plain_password == hashed_password
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     """Crea un token JWT de acceso."""
@@ -36,5 +45,7 @@ def decode_access_token(token: str) -> dict:
     try:
         payload = jwt.decode(token, settings.JWT_SECRET, algorithms=[settings.JWT_ALGORITHM])
         return payload
-    except JWTError:
-        raise UnauthorizedException("Token inválido o expirado")
+    except jwt.ExpiredSignatureError:
+        raise UnauthorizedException("El token de sesion ha expirado")
+    except jwt.InvalidTokenError:
+        raise UnauthorizedException("Token de autenticacion invalido")
