@@ -78,24 +78,8 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         print(f"[STARTUP] Aviso: No se pudo verificar el usuario admin inicial: {e}")
 
-    # Listener en segundo plano para sincronizar bitácoras de Microsoft Forms por correo
-    import threading, time
-    from app.shared.utils.forms_email_sync import sync_bitacoras_from_email
-    
-    stop_event = threading.Event()
-    def _poll_loop():
-        time.sleep(3)
-        while not stop_event.is_set():
-            try:
-                sync_bitacoras_from_email(mark_as_read=True)
-            except Exception:
-                pass
-            stop_event.wait(20)
-            
-    t = threading.Thread(target=_poll_loop, daemon=True)
-    t.start()
+    # Tareas en segundo plano ligeras (sincronizacion de bitacoras bajo demanda o webhook)
     yield
-    stop_event.set()
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -105,6 +89,28 @@ app = FastAPI(
     redoc_url="/redoc",
     lifespan=lifespan
 )
+
+# 1. CORS Middleware añadido PRIMERO para interceptar todas las peticiones (incluyendo preflight OPTIONS)
+cors_regex = r"^https?://(localhost|127\.0\.0\.1|.*\.hostless\.site|.*\.hostless\.app|.*\.flymetrics\.com\.co|.*\.flymetrics\.co)(:\d+)?$"
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=cors_regex,
+    allow_origins=[
+        "https://flymetrics.com.co",
+        "https://www.flymetrics.com.co",
+        "https://flymetrics.co",
+        "https://www.flymetrics.co",
+        "https://flymetrics.hostless.site",
+        "https://flymetrics-api.hostless.app",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"]
+)
+
 
 # Middleware de aceleración y control de caché HTTP para recursos estáticos
 class CacheControlMiddleware(BaseHTTPMiddleware):
@@ -134,26 +140,6 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 # Middleware de headers de seguridad (CSP, HSTS, X-Frame-Options, etc.)
 app.add_middleware(BaseHTTPMiddleware, dispatch=security_headers_middleware)
 
-# Configurar CORS seguro según entorno y orígenes permitidos
-# Configuracion de CORS abierta y robusta para frontend en Hostless y dominio propio
-cors_regex = r"^https?://(localhost|127\.0\.0\.1|.*\.hostless\.site|.*\.hostless\.app|.*\.flymetrics\.com\.co|.*\.flymetrics\.co)(:\d+)?$"
-app.add_middleware(
-    CORSMiddleware,
-    allow_origin_regex=cors_regex,
-    allow_origins=[
-        "https://flymetrics.com.co",
-        "https://www.flymetrics.com.co",
-        "https://flymetrics.co",
-        "https://www.flymetrics.co",
-        "https://flymetrics.hostless.site",
-        "https://flymetrics-api.hostless.app",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000"
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Registrar limitador de tasa (Rate Limiter)
 setup_rate_limiter(app)
