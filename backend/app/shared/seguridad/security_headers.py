@@ -1,4 +1,4 @@
-﻿import os
+import os
 from fastapi import Request
 
 # Detectar entorno para ajustar headers
@@ -8,11 +8,11 @@ async def security_headers_middleware(request: Request, call_next):
     """
     Middleware para inyectar headers de seguridad robustos en todas las respuestas.
     Previene Clickjacking, XSS, MIME-sniffing, etc.
-    Soporta tÃºneles Cloudflare (*.trycloudflare.com) y ngrok para desarrollo/demo.
+    Soporta túneles Cloudflare (*.trycloudflare.com) y ngrok para desarrollo/demo.
     """
     response = await call_next(request)
     
-    # HSTS solo bajo HTTPS real (producciÃ³n); en dev evita problemas con http://
+    # HSTS solo bajo HTTPS real (producción); en dev evita problemas con http://
     if _IS_PROD:
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
     
@@ -30,7 +30,7 @@ async def security_headers_middleware(request: Request, call_next):
             "object-src 'none';"
         )
     else:
-        # connect-src ampliado: localhost + cualquier tÃºnel Cloudflare/ngrok que sirva el frontend
+        # connect-src ampliado: localhost + cualquier túnel Cloudflare/ngrok que sirva el frontend
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' "
@@ -61,7 +61,7 @@ async def security_headers_middleware(request: Request, call_next):
             "frame-ancestors 'self' https://accounts.google.com;"
         )
     
-    # Ocultar la tecnologÃ­a del backend por seguridad
+    # Ocultar la tecnología del backend por seguridad
     response.headers["Server"] = "Flymetrics-Secure"
     if "x-powered-by" in response.headers:
         del response.headers["x-powered-by"]

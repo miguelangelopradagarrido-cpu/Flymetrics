@@ -33,8 +33,15 @@ def setup_error_handlers(app: FastAPI):
         """Maneja cualquier error de servidor inesperado sin fugar detalles internos."""
         import logging
         logging.getLogger("uvicorn.error").error(f"Internal Server Error: {str(exc)}", exc_info=True)
-        return error_response(
+        resp = error_response(
             message="Ocurrió un error inesperado en el servidor",
             errors=["Error interno procesando la solicitud. Si el problema persiste, contacte a soporte."],
             status_code=500
         )
+        # Los errores 500 salen por fuera de CORSMiddleware: agregar cabeceras CORS manualmente
+        origin = request.headers.get("origin")
+        if origin:
+            resp.headers["Access-Control-Allow-Origin"] = origin
+            resp.headers["Access-Control-Allow-Credentials"] = "true"
+            resp.headers["Vary"] = "Origin"
+        return resp

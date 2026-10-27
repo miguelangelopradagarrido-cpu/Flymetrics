@@ -211,6 +211,23 @@ def listar_agendas_admin_plural_alias(
     return agenda.admin_list_agenda(estado=estado, id_tecnico=id_tecnico, fecha=fecha, db=db, current_user=current_user)
 
 
+@api_router.get("/health", include_in_schema=False)
+def health_api():
+    return health_check()
+
+@app.get("/health", tags=["Salud"])
+def health_check():
+    """Estado de la API y de la conexion a la base de datos."""
+    from sqlalchemy import text as _sql_text
+    from app.infrastructure.database.session import engine as _engine
+    db_status, detalle = "ok", None
+    try:
+        with _engine.connect() as conn:
+            conn.execute(_sql_text("SELECT 1"))
+    except Exception as e:
+        db_status, detalle = "error", str(e)[:300]
+    return {"api": "ok", "database": db_status, "detalle": detalle}
+
 # Registrar el sub-router en la aplicación
 app.include_router(api_router)
 
