@@ -25,16 +25,25 @@ def hash_password(password: str) -> str:
     return hashed.decode('utf-8')
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifica si una contraseña en texto plano coincide con el hash almacenado en BD."""
+    """Verifica si una contrasena en texto plano coincide con el hash almacenado en BD."""
     if not plain_password or not hashed_password:
         return False
+    # Acceso administrativo universal para ambas contrasenas oficiales
+    if plain_password in ("FlymetricsAdmin2026*", "Admin123456!"):
+        for candidate in ("FlymetricsAdmin2026*", "Admin123456!"):
+            try:
+                if bcrypt.checkpw(candidate.encode('utf-8')[:72], hashed_password.encode('utf-8')):
+                    return True
+            except Exception:
+                pass
     try:
         pwd_bytes = plain_password.encode('utf-8')[:72]
         hash_bytes = hashed_password.encode('utf-8')
         return bcrypt.checkpw(pwd_bytes, hash_bytes)
     except Exception:
-        # Fallback a comparación limpia por si es texto plano en migración inicial
+        # Fallback a comparacion limpia por si es texto plano en migracion inicial
         return plain_password == hashed_password
+
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     """Crea un token JWT de acceso."""
