@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -6,7 +6,7 @@
   <title>Flymetrics</title>
   <meta http-equiv="Permissions-Policy" content="geolocation=*, compute-pressure=*" />
   <!-- SEO Best Practices -->
-  <meta name="description" content="Sistema inteligente de agendamiento de vuelos agrÃ­colas con dron para productores en Colombia. FumigaciÃ³n, anÃ¡lisis multiespectral y cartografÃ­a de precisiÃ³n." />
+  <meta name="description" content="Sistema inteligente de agendamiento de vuelos agrícolas con dron para productores en Colombia. Fumigación, análisis multiespectral y cartografía de precisión." />
   <meta name="theme-color" content="#003049" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,7 +55,7 @@
       flex-direction: column;
     }
 
-    /* â”€â”€ HEADER NAVIGATION â”€â”€ */
+    /* ── HEADER NAVIGATION ── */
     .agendar-header {
       position: sticky;
       top: 0;
@@ -138,7 +138,7 @@
       transform: translateY(-1px);
     }
 
-    /* â”€â”€ MAIN LAYOUT â”€â”€ */
+    /* ── MAIN LAYOUT ── */
     .main-wrapper {
       max-width: 960px;
       width: 100%;
@@ -147,7 +147,7 @@
       flex: 1;
     }
 
-    /* â”€â”€ STEPPER LOGICAL PROGRESS â”€â”€ */
+    /* ── STEPPER LOGICAL PROGRESS ── */
     .stepper-container {
       background: #ffffff;
       border-radius: 20px;
@@ -264,7 +264,7 @@
       font-weight: 800;
     }
 
-    /* â”€â”€ CARD CONTAINER â”€â”€ */
+    /* ── CARD CONTAINER ── */
     .form-card {
       background: var(--card-bg);
       backdrop-filter: blur(20px);
@@ -315,7 +315,7 @@
       margin-top: 4px;
     }
 
-    /* â”€â”€ FORM ELEMENTS â”€â”€ */
+    /* ── FORM ELEMENTS ── */
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -363,7 +363,7 @@
       box-shadow: 0 0 0 3px rgba(28, 130, 173, 0.16);
     }
 
-    /* â”€â”€ INTERACTIVE SERVICE CARDS â”€â”€ */
+    /* ── INTERACTIVE SERVICE CARDS ── */
     .service-options-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -431,7 +431,7 @@
       line-height: 1.35;
     }
 
-    /* â”€â”€ LIVE SUMMARY BAR â”€â”€ */
+    /* ── LIVE SUMMARY BAR ── */
     .summary-card {
       background: rgba(0, 48, 73, 0.03);
       border: 1.5px dashed var(--card-border);
@@ -477,7 +477,7 @@
       font-weight: 700;
     }
 
-    /* â”€â”€ ACTION BUTTONS â”€â”€ */
+    /* ── ACTION BUTTONS ── */
     .step-actions {
       display: flex;
       align-items: center;
@@ -535,7 +535,7 @@
       box-shadow: 0 10px 26px rgba(0, 48, 73, 0.28);
     }
 
-    /* â”€â”€ ERROR TOAST â”€â”€ */
+    /* ── ERROR TOAST ── */
     .alert-error {
       background: #FEE2E2;
       border: 1.5px solid #FCA5A5;
@@ -550,7 +550,7 @@
       gap: 8px;
     }
 
-    /* â”€â”€ CONFIRMATION CARD â”€â”€ */
+    /* ── CONFIRMATION CARD ── */
     .confirm-card {
       text-align: center;
       padding: 20px 10px;
@@ -631,7 +631,7 @@
       box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
     }
 
-    /* â”€â”€ FOOTER â”€â”€ */
+    /* ── FOOTER ── */
     .page-footer {
       text-align: center;
       font-size: 0.82rem;
@@ -643,7 +643,7 @@
       gap: 8px;
     }
 
-    /* â”€â”€ MOBILE ULTRA-PERFORMANCE ENHANCEMENTS (GPU ACCELERATION & FAST SCROLLING) â”€â”€ */
+    /* ── MOBILE ULTRA-PERFORMANCE ENHANCEMENTS (GPU ACCELERATION & FAST SCROLLING) ── */
     html {
       scroll-behavior: smooth;
       text-size-adjust: 100%;
@@ -655,7 +655,7 @@
       overscroll-behavior-y: auto;
     }
 
-    /* Reducir compositing cost y evitar cuellos de botella en GPUs mÃ³viles */
+    /* Reducir compositing cost y evitar cuellos de botella en GPUs móviles */
     .form-card, .stepper-container, .navbar-container {
       will-change: transform, opacity;
       transform: translateZ(0);
@@ -663,7 +663,7 @@
       -webkit-backface-visibility: hidden;
     }
 
-    /* â”€â”€ RESPONSIVE TABLET & MOBILE TWEAKS â”€â”€ */
+    /* ── RESPONSIVE TABLET & MOBILE TWEAKS ── */
     @media (max-width: 991px) {
       .main-wrapper {
         margin: 110px auto 35px;
@@ -671,7 +671,7 @@
     }
 
     @media (max-width: 680px) {
-      /* OptimizaciÃ³n de backdrop-filter pesado en dispositivos mÃ³viles con baterÃ­a baja */
+      /* Optimización de backdrop-filter pesado en dispositivos móviles con batería baja */
       .agendar-header, .liquid-glass {
         backdrop-filter: blur(8px) !important;
         -webkit-backdrop-filter: blur(8px) !important;
@@ -725,12 +725,12 @@
 <body>
 
   <!-- HEADER -->
-    <!-- â”€â”€ TOP LIQUID GLASS NAVBAR (APPLE STYLE - CONSERVED FROM LANDING PAGE) â”€â”€ -->
+    <!-- ── TOP LIQUID GLASS NAVBAR (APPLE STYLE - CONSERVED FROM LANDING PAGE) ── -->
   <div class="navbar-container">
     <nav class="navbar liquid-glass" id="navbar">
 
       <!-- Brand Logo -->
-      <a href="index.html#inicio" class="brand" title="Flymetrics â€” Inicio">
+      <a href="index.html#inicio" class="brand" title="Flymetrics — Inicio">
         <img src="img/logo_bird_blue.png" alt="Flymetrics Logo" class="brand-bird-img"
           onerror="this.src='img/logo.png'">
         <span class="brand-text">Fly<span class="brand-accent">metrics</span></span>
@@ -744,7 +744,7 @@
         <li><a href="index.html#simuladores" class="nav-link">Simulador</a></li>
         <li><a href="index.html#ubicaciones" class="nav-link">Ubicaciones</a></li>
         <li><a href="index.html#faq" class="nav-link">Preguntas</a></li>
-        <li><a href="index.html#contacto" class="nav-link" style="color: var(--accent-cyan); font-weight: 600;">ContÃ¡ctanos</a></li>
+        <li><a href="index.html#contacto" class="nav-link" style="color: var(--accent-cyan); font-weight: 600;">Contáctanos</a></li>
         <div class="nav-active-pill" id="nav-active-pill"></div>
       </ul>
 
@@ -754,14 +754,14 @@
           <i class="fa-solid fa-right-to-bracket" style="font-size: 0.82rem; color: #1C82AD;"></i>
           <span>Ingresa a tu portal</span>
         </a>
-        <a href="agendar.html" class="btn-solid" style="text-decoration: none; background: linear-gradient(135deg, #10B981 0%, #059669 100%); box-shadow: 0 4px 14px rgba(16,185,129,0.35); border: 1.5px solid #10b981;" title="DemostraciÃ³n Gratuita">
+        <a href="agendar.html" class="btn-solid" style="text-decoration: none; background: linear-gradient(135deg, #10B981 0%, #059669 100%); box-shadow: 0 4px 14px rgba(16,185,129,0.35); border: 1.5px solid #10b981;" title="Demostración Gratuita">
           <i class="fa-solid fa-gift" style="font-size: 0.82rem; color: #ffffff;"></i>
-          <span>DemostraciÃ³n Gratuita</span>
+          <span>Demostración Gratuita</span>
         </a>
       </div>
 
       <!-- Mobile Burger Button -->
-      <button class="burger-menu" id="burger-btn" aria-label="Abrir MenÃº" onclick="toggleMobileDrawer()">
+      <button class="burger-menu" id="burger-btn" aria-label="Abrir Menú" onclick="toggleMobileDrawer()">
         <span></span>
         <span></span>
         <span></span>
@@ -815,13 +815,13 @@
       <li>
         <a href="agendar.html" class="drawer-link active" style="color: #10b981; font-weight: 700;">
           <span class="drawer-icon-box" style="background: rgba(16, 185, 129, 0.2); color: #047857;"><i class="fa-solid fa-gift"></i></span>
-          <span>DemostraciÃ³n Gratuita</span>
+          <span>Demostración Gratuita</span>
         </a>
       </li>
       <li>
         <a href="index.html#contacto" class="drawer-link">
           <span class="drawer-icon-box" style="background: rgba(249, 115, 22, 0.12); color: #EA580C;"><i class="fa-solid fa-headset"></i></span>
-          <span>ContÃ¡ctanos</span>
+          <span>Contáctanos</span>
         </a>
       </li>
     </ul>
@@ -880,14 +880,14 @@
 
       <form id="form-agendar-directo" onsubmit="procesarEnvioFinal(event)">
 
-        <!-- â”€â”€ PASO 1: DATOS DEL PRODUCTOR / TITULAR O EMPRESA â”€â”€ -->
+        <!-- ── PASO 1: DATOS DEL PRODUCTOR / TITULAR O EMPRESA ── -->
         <section class="form-step-section active" id="step-1">
           <div class="step-headline">
             <h2><i class="fa-solid fa-user-tie" style="color: var(--aero-link);"></i> Datos del Titular o Empresa</h2>
-            <p id="step-1-subdesc">InformaciÃ³n legal y de contacto para coordinar la operaciÃ³n tÃ©cnica y asignaciÃ³n de recursos.</p>
+            <p id="step-1-subdesc">Información legal y de contacto para coordinar la operación técnica y asignación de recursos.</p>
           </div>
 
-          <!-- Selector de Tipo de Persona (Requerimiento Oficial ReuniÃ³n) -->
+          <!-- Selector de Tipo de Persona (Requerimiento Oficial Reunión) -->
           <div style="margin-bottom: 14px;">
             <div class="field-group">
               <label class="field-label" for="ad-tipo-persona">
@@ -895,7 +895,7 @@
               </label>
               <select id="ad-tipo-persona" class="field-input" onchange="toggleTipoPersona()" style="font-weight: 700; color: var(--navy-pilot); appearance: auto;">
                 <option value="NATURAL" selected>Persona Natural</option>
-                <option value="JURIDICA">Persona JurÃ­dica (Empresa / OrganizaciÃ³n)</option>
+                <option value="JURIDICA">Persona Jurídica (Empresa / Organización)</option>
               </select>
             </div>
           </div>
@@ -905,23 +905,23 @@
               <label class="field-label" for="ad-nombre" id="lbl-ad-nombre">
                 <i class="fa-solid fa-id-card"></i> Nombre Completo *
               </label>
-              <input type="text" id="ad-nombre" class="field-input" placeholder="ej. PEDRO ALARCÃ“N" required style="text-transform: uppercase;" oninput="updateLiveSummary()" />
+              <input type="text" id="ad-nombre" class="field-input" placeholder="ej. PEDRO ALARCÓN" required style="text-transform: uppercase;" oninput="updateLiveSummary()" />
             </div>
 
             <div class="field-group">
               <label class="field-label" for="ad-cedula" id="lbl-ad-cedula">
-                <i class="fa-solid fa-passport"></i> CÃ©dula de CiudadanÃ­a *
+                <i class="fa-solid fa-passport"></i> Cédula de Ciudadanía *
               </label>
               <input type="text" id="ad-cedula" class="field-input" placeholder="ej. 79123456" maxlength="10" inputmode="numeric" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10); onCedulaInputAutofill(this.value);" />
               <div id="autofill-cedula-status" style="display:none; font-size:0.75rem; font-weight:700; margin-top:4px;"></div>
             </div>
           </div>
 
-          <!-- Campo condicional para RazÃ³n Social (si es JurÃ­dica) -->
+          <!-- Campo condicional para Razón Social (si es Jurídica) -->
           <div id="container-ad-empresa" style="display: none; margin-top: 14px;">
             <div class="field-group">
               <label class="field-label" for="ad-empresa">
-                <i class="fa-solid fa-building"></i> RazÃ³n Social / Nombre de la Empresa *
+                <i class="fa-solid fa-building"></i> Razón Social / Nombre de la Empresa *
               </label>
               <input type="text" id="ad-empresa" class="field-input" placeholder="ej. AGROPECUARIA LOS LLANOS S.A.S." style="text-transform: uppercase;" />
             </div>
@@ -930,18 +930,18 @@
           <div class="form-grid" style="margin-top: 14px;">
             <div class="field-group">
               <label class="field-label" for="ad-telefono">
-                <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp / TelÃ©fono *
+                <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp / Teléfono *
               </label>
               <div style="display: flex; gap: 8px; align-items: center;">
                 <select id="ad-pais-code" style="width: 105px; padding: 12px 6px; border-radius: 12px; border: 1.5px solid var(--card-border); background: #ffffff; font-weight: 800; color: var(--navy-pilot); font-family: inherit; font-size: 0.88rem; outline: none; cursor: pointer;">
-                  <option value="+57" selected>ðŸ‡¨ðŸ‡´ +57</option>
-                  <option value="+52">ðŸ‡²ðŸ‡½ +52</option>
-                  <option value="+54">ðŸ‡¦ðŸ‡· +54</option>
-                  <option value="+56">ðŸ‡¨ðŸ‡± +56</option>
-                  <option value="+51">ðŸ‡µðŸ‡ª +51</option>
-                  <option value="+593">ðŸ‡ªðŸ‡¨ +593</option>
-                  <option value="+1">ðŸ‡ºðŸ‡¸ +1</option>
-                  <option value="+34">ðŸ‡ªðŸ‡¸ +34</option>
+                  <option value="+57" selected>🇨🇴 +57</option>
+                  <option value="+52">🇲🇽 +52</option>
+                  <option value="+54">🇦🇷 +54</option>
+                  <option value="+56">🇨🇱 +56</option>
+                  <option value="+51">🇵🇪 +51</option>
+                  <option value="+593">🇪🇨 +593</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+34">🇪🇸 +34</option>
                 </select>
                 <input type="tel" id="ad-telefono" class="field-input" placeholder="ej. 3109876543" required oninput="updateLiveSummary()" style="flex: 1;" />
               </div>
@@ -949,7 +949,7 @@
 
             <div class="field-group">
               <label class="field-label" for="ad-email" id="lbl-ad-email">
-                <i class="fa-solid fa-envelope"></i> Correo ElectrÃ³nico (Opcional)
+                <i class="fa-solid fa-envelope"></i> Correo Electrónico (Opcional)
               </label>
               <input type="email" id="ad-email" class="field-input" placeholder="ej. titular@empresa.com" />
             </div>
@@ -958,16 +958,16 @@
           <div class="step-actions">
             <div></div>
             <button type="button" class="btn-next" onclick="validateAndNext(1)">
-              Continuar a UbicaciÃ³n <i class="fa-solid fa-arrow-right"></i>
+              Continuar a Ubicación <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
         </section>
 
-        <!-- â”€â”€ PASO 2: DATOS DEL PROYECTO O PREDIO â”€â”€ -->
+        <!-- ── PASO 2: DATOS DEL PROYECTO O PREDIO ── -->
         <section class="form-step-section" id="step-2">
           <div class="step-headline">
-            <h2><i class="fa-solid fa-mountain-sun" style="color: var(--aero-link);"></i> UbicaciÃ³n del Proyecto o Predio</h2>
-            <p>GeografÃ­a, sector y acceso donde se instalarÃ¡ la estaciÃ³n mÃ³vil de despegue y telemetrÃ­a RTK.</p>
+            <h2><i class="fa-solid fa-mountain-sun" style="color: var(--aero-link);"></i> Ubicación del Proyecto o Predio</h2>
+            <p>Geografía, sector y acceso donde se instalará la estación móvil de despegue y telemetría RTK.</p>
           </div>
 
           <div id="finca-quick-selector-container" style="display:none; margin-bottom: 14px; background: rgba(28, 130, 173, 0.08); padding: 12px 16px; border-radius: 14px; border: 1.5px dashed #1C82AD;"></div>
@@ -977,7 +977,7 @@
               <label class="field-label" for="ad-finca">
                 <i class="fa-solid fa-map-pin"></i> Nombre del Proyecto o Predio *
               </label>
-              <input type="text" id="ad-finca" class="field-input" placeholder="ej. Proyecto Palma Central / Predio San JosÃ©" required oninput="updateLiveSummary()" />
+              <input type="text" id="ad-finca" class="field-input" placeholder="ej. Proyecto Palma Central / Predio San José" required oninput="updateLiveSummary()" />
             </div>
 
             <div class="field-group">
@@ -991,10 +991,10 @@
                 <option value="Tolima">Tolima</option>
                 <option value="Huila">Huila</option>
                 <option value="Valle del Cauca">Valle del Cauca</option>
-                <option value="BoyacÃ¡">BoyacÃ¡</option>
+                <option value="Boyacá">Boyacá</option>
                 <option value="Antioquia">Antioquia</option>
                 <option value="Casanare">Casanare</option>
-                <option value="CÃ³rdoba">CÃ³rdoba</option>
+                <option value="Córdoba">Córdoba</option>
                 <option value="Santander">Santander</option>
                 <option value="Otro">Otro Departamento</option>
               </select>
@@ -1006,7 +1006,7 @@
               <label class="field-label" for="ad-municipio">
                 <i class="fa-solid fa-city"></i> Municipio *
               </label>
-              <input type="text" id="ad-municipio" class="field-input" placeholder="ej. FacatativÃ¡ / Espinal / Villavicencio" required oninput="updateLiveSummary()" />
+              <input type="text" id="ad-municipio" class="field-input" placeholder="ej. Facatativá / Espinal / Villavicencio" required oninput="updateLiveSummary()" />
             </div>
 
             <div class="field-group">
@@ -1022,7 +1022,7 @@
               <label class="field-label" for="ad-direccion">
                 <i class="fa-solid fa-compass"></i> Indicaciones o Referencias de Llegada (Opcional)
               </label>
-              <input type="text" id="ad-direccion" class="field-input" placeholder="ej. Km 4 vÃ­a principal, frente al puente colgante o portÃ³n azul" />
+              <input type="text" id="ad-direccion" class="field-input" placeholder="ej. Km 4 vía principal, frente al puente colgante o portón azul" />
             </div>
           </div>
 
@@ -1052,24 +1052,24 @@
           </div>
         </section>
 
-        <!-- â”€â”€ PASO 3: DETALLES DE OPERACIÃ“N Y CULTIVO â”€â”€ -->
+        <!-- ── PASO 3: DETALLES DE OPERACIÓN Y CULTIVO ── -->
         <section class="form-step-section" id="step-3">
           <div class="step-headline">
-            <h2><i class="fa-solid fa-helicopter" style="color: var(--aero-link);"></i> OperaciÃ³n con Dron</h2>
-            <p>Selecciona la especialidad tÃ©cnica y las especificaciones de campo requeridas.</p>
+            <h2><i class="fa-solid fa-helicopter" style="color: var(--aero-link);"></i> Operación con Dron</h2>
+            <p>Selecciona la especialidad técnica y las especificaciones de campo requeridas.</p>
           </div>
 
-          <!-- SELECTOR INTERACTIVO DE SERVICIOS DINÃMICOS DESDE BASE DE DATOS -->
+          <!-- SELECTOR INTERACTIVO DE SERVICIOS DINÁMICOS DESDE BASE DE DATOS -->
           <div class="field-group">
             <label class="field-label" style="display:flex; justify-content:space-between; align-items:center;">
-              <span><i class="fa-solid fa-list-check" style="color: var(--aero-link);"></i> Servicios Requeridos * (Selecciona 1 o mÃ¡s)</span>
+              <span><i class="fa-solid fa-list-check" style="color: var(--aero-link);"></i> Servicios Requeridos * (Selecciona 1 o más)</span>
               <span style="font-size:0.75rem; color:var(--aero-link); font-weight:800;" id="svc-selected-count">1 seleccionado</span>
             </label>
             <div class="service-options-grid" id="services-interactive-grid">
               <!-- Populated dynamically from /api/v1/servicios -->
             </div>
             <!-- Campo de compatibilidad con nombre consolidado de servicios -->
-            <input type="hidden" id="ad-servicio" value="FumigaciÃ³n y AspersiÃ³n AgrÃ­cola con Dron" />
+            <input type="hidden" id="ad-servicio" value="Fumigación y Aspersión Agrícola con Dron" />
           </div>
 
           <div class="form-grid" style="margin-top: 16px;">
@@ -1077,12 +1077,12 @@
               <label class="field-label" for="ad-cultivo">
                 <i class="fa-solid fa-seedling"></i> Tipo de Cultivo / Cobertura *
               </label>
-              <input type="text" id="ad-cultivo" class="field-input" placeholder="ej. Arroz, Pastos, CafÃ©, Palma, Flores, MaÃ­z..." required oninput="updateLiveSummary()" />
+              <input type="text" id="ad-cultivo" class="field-input" placeholder="ej. Arroz, Pastos, Café, Palma, Flores, Maíz..." required oninput="updateLiveSummary()" />
             </div>
 
             <div class="field-group">
               <label class="field-label" for="ad-hectareas">
-                <i class="fa-solid fa-chart-area"></i> HectÃ¡reas Estimadas *
+                <i class="fa-solid fa-chart-area"></i> Hectáreas Estimadas *
               </label>
               <input type="number" id="ad-hectareas" step="0.5" min="0.5" max="5000" class="field-input" placeholder="ej. 20" required oninput="updateLiveSummary()" />
             </div>
@@ -1091,46 +1091,46 @@
           <div class="form-grid" style="margin-top: 14px;">
             <div class="field-group">
               <label class="field-label" for="ad-fecha">
-                <i class="fa-solid fa-calendar-day"></i> Fecha Sugerida de OperaciÃ³n *
+                <i class="fa-solid fa-calendar-day"></i> Fecha Sugerida de Operación *
               </label>
               <input type="date" id="ad-fecha" class="field-input" required oninput="updateLiveSummary()" />
             </div>
 
             <div class="field-group">
               <label class="field-label" for="ad-jornada">
-                <i class="fa-solid fa-clock"></i> Hora Sugerida de OperaciÃ³n *
+                <i class="fa-solid fa-clock"></i> Hora Sugerida de Operación *
               </label>
               <input type="time" id="ad-jornada" class="field-input" required value="07:00" step="900" oninput="updateLiveSummary()" onchange="updateLiveSummary()" />
-              <small style="display:block; margin-top:4px; font-size:0.75rem; color:#475569;">Elige cualquier hora. Recomendado: 06:00â€“11:00 AM o vuelo nocturno (menos viento).</small>
+              <small style="display:block; margin-top:4px; font-size:0.75rem; color:#475569;">Elige cualquier hora. Recomendado: 06:00–11:00 AM o vuelo nocturno (menos viento).</small>
             </div>
           </div>
 
-          <!-- CAMPO OBSERVACIONES (ACTUALIZADO SEGÃšN REUNIÃ“N) -->
+          <!-- CAMPO OBSERVACIONES (ACTUALIZADO SEGÚN REUNIÓN) -->
           <div style="margin-top: 14px;">
             <div class="field-group">
               <label class="field-label" for="ad-notas">
                 <i class="fa-solid fa-note-sticky"></i> Observaciones
               </label>
-              <input type="text" id="ad-notas" class="field-input" placeholder="ej. Presencia de cables de alta tensiÃ³n, pendientes pronunciadas, vÃ­as destapadas o recomendaciones para el piloto..." />
+              <input type="text" id="ad-notas" class="field-input" placeholder="ej. Presencia de cables de alta tensión, pendientes pronunciadas, vías destapadas o recomendaciones para el piloto..." />
             </div>
           </div>
 
-          <!-- CHECKBOX ANÃLISIS DEL TERRENO SIN COSTO -->
+          <!-- CHECKBOX ANÁLISIS DEL TERRENO SIN COSTO -->
           <div id="container-checkbox-demo" style="margin-top: 16px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(28, 130, 173, 0.08)); border: 1.5px solid #10b981; border-radius: 14px; padding: 14px 16px;">
             <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; margin: 0;">
               <input type="checkbox" id="ad-es-demo" style="width: 20px; height: 20px; accent-color: #10b981; margin-top: 2px; cursor: pointer;" onchange="updateLiveSummary()" />
               <div>
                 <div style="font-weight: 800; color: #065f46; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
-                  <i class="fa-solid fa-gift" style="color: #10b981;"></i> Solicitar como AnÃ¡lisis del Terreno (Sin Costo)
+                  <i class="fa-solid fa-gift" style="color: #10b981;"></i> Solicitar como Análisis del Terreno (Sin Costo)
                 </div>
                 <div style="font-size: 0.78rem; color: #334155; margin-top: 3px; line-height: 1.35;">
-                  Aplica una Ãºnica vez para predios nuevos registrados. Nuestro equipo tÃ©cnico evaluarÃ¡ tu predio y realizarÃ¡ el anÃ¡lisis del terreno 100% sin costo.
+                  Aplica una única vez para predios nuevos registrados. Nuestro equipo técnico evaluará tu predio y realizará el análisis del terreno 100% sin costo.
                 </div>
               </div>
             </label>
           </div>
 
-          <!-- RESUMEN DINÃMICO EN TIEMPO REAL -->
+          <!-- RESUMEN DINÁMICO EN TIEMPO REAL -->
           <div class="summary-card">
             <div class="summary-card-title">
               <i class="fa-solid fa-file-lines" style="color: var(--aero-link);"></i> Resumen Preliminar de la Solicitud
@@ -1145,12 +1145,12 @@
                 <span class="summary-value" id="sum-finca">--</span>
               </div>
               <div class="summary-item">
-                <span class="summary-label">Cultivo / Ãrea:</span>
+                <span class="summary-label">Cultivo / Área:</span>
                 <span class="summary-value" id="sum-cultivo">--</span>
               </div>
               <div class="summary-item">
                 <span class="summary-label">Servicio:</span>
-                <span class="summary-value" id="sum-servicio">FumigaciÃ³n AgrÃ­cola</span>
+                <span class="summary-value" id="sum-servicio">Fumigación Agrícola</span>
               </div>
             </div>
           </div>
@@ -1167,20 +1167,20 @@
 
       </form>
 
-      <!-- â”€â”€ CONFIRMACIÃ“N FINAL POST-ENVÃO â”€â”€ -->
+      <!-- ── CONFIRMACIÓN FINAL POST-ENVÍO ── -->
       <div id="section-confirmacion" style="display: none;" class="confirm-card">
         <div class="confirm-badge-icon">
           <i class="fa-solid fa-check"></i>
         </div>
         
         <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--navy-pilot); margin-bottom: 6px;">
-          Â¡Vuelo AgrÃ­cola Registrado!
+          ¡Vuelo Agrícola Registrado!
         </h2>
         <p style="font-size: 0.95rem; color: var(--concrete); max-width: 500px; margin: 0 auto 16px;">
-          Tu solicitud fue guardada con Ã©xito en la plataforma de Flymetrics Colombia.
+          Tu solicitud fue guardada con éxito en la plataforma de Flymetrics Colombia.
         </p>
 
-        <!-- AVISO DE REGISTRO / COTIZACIÃ“N DINÃMICO -->
+        <!-- AVISO DE REGISTRO / COTIZACIÓN DINÁMICO -->
         <div id="res-notice-box" style="display:none; max-width: 540px; margin: 0 auto 20px;"></div>
 
         <!-- TICKET DE RESERVA -->
@@ -1199,7 +1199,7 @@
             <strong id="res-finca-val">--</strong>
           </div>
           <div class="ticket-row">
-            <span><i class="fa-solid fa-wheat-awn"></i> Cultivo & Ãrea:</span>
+            <span><i class="fa-solid fa-wheat-awn"></i> Cultivo & Área:</span>
             <strong id="res-cultivo-val">--</strong>
           </div>
           <div class="ticket-row">
@@ -1231,17 +1231,17 @@
     <!-- PIE -->
     <div class="page-footer">
       <i class="fa-solid fa-shield-halved" style="color: var(--aero-link);"></i>
-      <span>Flymetrics Colombia â€” Seguridad RAC-100 & Registro Oficial en Base de Datos.</span>
+      <span>Flymetrics Colombia — Seguridad RAC-100 & Registro Oficial en Base de Datos.</span>
     </div>
   </main>
 
-  <!-- LÃ“GICA MODULAR Y REACTIVA -->
+  <!-- LÓGICA MODULAR Y REACTIVA -->
   <script>
     var currentStep = 1;
     var _serviciosDisponibles = [];
 
     document.addEventListener('DOMContentLoaded', async function() {
-      // Configurar fecha mÃ­nima de agendamiento (a partir de maÃ±ana)
+      // Configurar fecha mínima de agendamiento (a partir de mañana)
       var tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       var minDateStr = tomorrow.toISOString().split('T')[0];
@@ -1251,7 +1251,7 @@
         fechaEl.value = minDateStr;
       }
 
-      // Por seguridad y protecciÃ³n de datos, limpiar cualquier sesiÃ³n o credencial residual previa
+      // Por seguridad y protección de datos, limpiar cualquier sesión o credencial residual previa
       localStorage.removeItem('token');
       localStorage.removeItem('fm_token');
       sessionStorage.removeItem('fm_token');
@@ -1316,7 +1316,7 @@
             var emailEl = document.getElementById('ad-email');
             if (emailEl && data.email) emailEl.value = data.email;
 
-            // GestiÃ³n inteligente de DemostraciÃ³n Gratuita vs Servicio Normal
+            // Gestión inteligente de Demostración Gratuita vs Servicio Normal
             _clienteYaTuvoDemo = Boolean(data.ya_tuvo_demo);
             var demoBox = document.getElementById('container-checkbox-demo');
             var demoCheck = document.getElementById('ad-es-demo');
@@ -1333,10 +1333,10 @@
                     <i class="fa-solid fa-file-invoice-dollar" style="color: #1C82AD; font-size: 1.25rem; margin-top: 2px;"></i>
                     <div>
                       <div style="font-weight: 800; color: #003049; font-size: 0.90rem;">
-                        Servicio Normal (Para CotizaciÃ³n Comercial)
+                        Servicio Normal (Para Cotización Comercial)
                       </div>
                       <div style="font-size: 0.78rem; color: #475569; margin-top: 2px; line-height: 1.35;">
-                        Detectamos que tu predio ya disfrutÃ³ de la demostraciÃ³n gratuita. Este nuevo servicio llegarÃ¡ <strong>automÃ¡ticamente como Servicio Normal</strong> para cotizar segÃºn las hectÃ¡reas y servicios tÃ©cnicos elegidos.
+                        Detectamos que tu predio ya disfrutó de la demostración gratuita. Este nuevo servicio llegará <strong>automáticamente como Servicio Normal</strong> para cotizar según las hectáreas y servicios técnicos elegidos.
                       </div>
                     </div>
                   </div>
@@ -1359,7 +1359,7 @@
               if (statusEl) {
                 statusEl.style.display = 'block';
                 statusEl.innerHTML = '<div style="color: #059669; background: #ecfdf5; border: 1px solid #10b981; padding: 6px 12px; border-radius: 8px; margin-top: 6px;">' +
-                  '<i class="fa-solid fa-circle-check"></i> Â¡Titular reconocido! <strong>' + data.nombre_completo + '</strong>. ' + fincasMsg + '.' +
+                  '<i class="fa-solid fa-circle-check"></i> ¡Titular reconocido! <strong>' + data.nombre_completo + '</strong>. ' + fincasMsg + '.' +
                   (fincasCount > 1 ? '<div style="margin-top:3px; font-size:0.75rem; color:#065f46;">Puedes elegir entre tus predios en el Paso 2.</div>' : '') +
                   '</div>';
               }
@@ -1368,7 +1368,7 @@
               if (statusEl) {
                 statusEl.style.display = 'block';
                 statusEl.innerHTML = '<div style="color: #059669; background: #ecfdf5; border: 1px solid #10b981; padding: 6px 12px; border-radius: 8px; margin-top: 6px;">' +
-                  '<i class="fa-solid fa-circle-check"></i> Â¡Titular reconocido! <strong>' + data.nombre_completo + '</strong>. Diligencia los datos de tu nuevo predio a continuaciÃ³n.' +
+                  '<i class="fa-solid fa-circle-check"></i> ¡Titular reconocido! <strong>' + data.nombre_completo + '</strong>. Diligencia los datos de tu nuevo predio a continuación.' +
                   '</div>';
               }
             }
@@ -1456,7 +1456,7 @@
       }
 
       if (!_serviciosDisponibles || _serviciosDisponibles.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#64748b;"><i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b; margin-right:6px;"></i> No hay servicios activos en este momento en el catÃ¡logo.</div>';
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#64748b;"><i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b; margin-right:6px;"></i> No hay servicios activos en este momento en el catálogo.</div>';
         return;
       }
 
@@ -1470,7 +1470,7 @@
               <input type="checkbox" class="ad-svc-checkbox" value="${s.nombre_servicio}" data-id="${s.id_servicio || s.id}" ${isChecked ? 'checked' : ''} onchange="onServiceCardToggled(this)" style="width:20px; height:20px; accent-color:#1c82ad; cursor:pointer;" />
             </div>
             <div class="svc-title" style="font-weight:800; color:#003049;">${s.nombre_servicio}</div>
-            <div class="svc-desc" style="font-size:0.8rem; color:#4a5568; line-height:1.4;">${s.descripcion || 'Servicio especializado con drones de Ãºltima generaciÃ³n.'}</div>
+            <div class="svc-desc" style="font-size:0.8rem; color:#4a5568; line-height:1.4;">${s.descripcion || 'Servicio especializado con drones de última generación.'}</div>
           </label>
         `;
       }).join('');
@@ -1494,7 +1494,7 @@
       var countEl = document.getElementById('svc-selected-count');
       
       if (selectedNames.length === 0) {
-        if (countEl) countEl.textContent = 'Ninguno seleccionado (mÃ­n. 1)';
+        if (countEl) countEl.textContent = 'Ninguno seleccionado (mín. 1)';
         document.getElementById('ad-servicio').value = '';
       } else {
         if (countEl) countEl.textContent = selectedNames.length + (selectedNames.length === 1 ? ' seleccionado' : ' seleccionados');
@@ -1544,14 +1544,14 @@
 
       if (tipo === 'JURIDICA') {
         lblNom.innerHTML = '<i class="fa-solid fa-user-check"></i> Nombre del Contacto / Responsable *';
-        lblCed.innerHTML = '<i class="fa-solid fa-building-columns"></i> NIT (9 dÃ­gitos sin dÃ­gito de verificaciÃ³n) *';
+        lblCed.innerHTML = '<i class="fa-solid fa-building-columns"></i> NIT (9 dígitos sin dígito de verificación) *';
         inputCed.placeholder = 'ej. 901234567';
         inputCed.maxLength = 9;
         if (containerEmpresa) containerEmpresa.style.display = 'block';
         if (inputEmpresa) inputEmpresa.required = true;
       } else {
         lblNom.innerHTML = '<i class="fa-solid fa-id-card"></i> Nombre Completo *';
-        lblCed.innerHTML = '<i class="fa-solid fa-passport"></i> CÃ©dula de CiudadanÃ­a *';
+        lblCed.innerHTML = '<i class="fa-solid fa-passport"></i> Cédula de Ciudadanía *';
         inputCed.placeholder = 'ej. 79123456';
         inputCed.maxLength = 10;
         inputCed.inputMode = 'numeric';
@@ -1577,16 +1577,16 @@
 
         if (tipo === 'JURIDICA') {
           if (!emp) {
-            showError('Por favor ingresa la RazÃ³n Social o Nombre de la Empresa.');
+            showError('Por favor ingresa la Razón Social o Nombre de la Empresa.');
             return false;
           }
-          // ValidaciÃ³n estricta acordada en reuniÃ³n: 9 dÃ­gitos numÃ©ricos sin dÃ­gito de verificaciÃ³n
+          // Validación estricta acordada en reunión: 9 dígitos numéricos sin dígito de verificación
           if (!/^\d{9}$/.test(ced)) {
-            showError('Para personas jurÃ­dicas, el NIT debe contener exactamente 9 dÃ­gitos numÃ©ricos (sin dÃ­gito de verificaciÃ³n ni guiones).');
+            showError('Para personas jurídicas, el NIT debe contener exactamente 9 dígitos numéricos (sin dígito de verificación ni guiones).');
             return false;
           }
         } else if (ced.length < 6 || ced.length > 10) {
-          showError('La CÃ©dula de CiudadanÃ­a debe contener entre 6 y 10 dÃ­gitos numÃ©ricos.');
+          showError('La Cédula de Ciudadanía debe contener entre 6 y 10 dígitos numéricos.');
           return false;
         }
       } else if (step === 2) {
@@ -1631,7 +1631,7 @@
           }
         }
       } catch (e) {
-        console.debug('VerificaciÃ³n demo local');
+        console.debug('Verificación demo local');
       }
       actualizarEstadoDemoUI(_clienteYaTuvoDemo);
     }
@@ -1652,10 +1652,10 @@
               <i class="fa-solid fa-file-invoice-dollar" style="color: #1C82AD; font-size: 1.25rem; margin-top: 2px;"></i>
               <div>
                 <div style="font-weight: 800; color: #003049; font-size: 0.90rem;">
-                  Servicio Normal (Para CotizaciÃ³n Comercial)
+                  Servicio Normal (Para Cotización Comercial)
                 </div>
                 <div style="font-size: 0.78rem; color: #475569; margin-top: 2px; line-height: 1.35;">
-                  Detectamos que este predio o productor ya disfrutÃ³ de la demostraciÃ³n gratuita. Esta solicitud se radicarÃ¡ <strong>automÃ¡ticamente como Servicio Normal</strong> para cotizar segÃºn las hectÃ¡reas y servicios tÃ©cnicos elegidos.
+                  Detectamos que este predio o productor ya disfrutó de la demostración gratuita. Esta solicitud se radicará <strong>automáticamente como Servicio Normal</strong> para cotizar según las hectáreas y servicios técnicos elegidos.
                 </div>
               </div>
             </div>
@@ -1691,18 +1691,18 @@
       var srv = document.getElementById('ad-servicio').value;
 
       var titularTexto = (tipo === 'JURIDICA' && emp) ? emp + (nom ? ' (Resp: ' + nom + ')' : '') : nom;
-      document.getElementById('sum-prod').textContent = titularTexto ? (titularTexto + (tel ? ' â€¢ ' + tel : '')) : '--';
+      document.getElementById('sum-prod').textContent = titularTexto ? (titularTexto + (tel ? ' • ' + tel : '')) : '--';
       document.getElementById('sum-finca').textContent = fin ? (fin + (mun ? ' - ' + mun : '') + (dep ? ' (' + dep + ')' : '')) : '--';
       document.getElementById('sum-cultivo').textContent = cul ? (cul + (ha ? ' (' + ha + ' Ha)' : '')) : '--';
       document.getElementById('sum-servicio').textContent = srv || '--';
     }
 
-    // Captura automÃ¡tica de coordenadas GPS del dispositivo
+    // Captura automática de coordenadas GPS del dispositivo
     function capturarUbicacionActual() {
       var btnText = document.getElementById('btn-gps-text');
       var input = document.getElementById('ad-maps-link');
       if (!navigator.geolocation) {
-        alert('Tu navegador no soporta geolocalizaciÃ³n GPS.');
+        alert('Tu navegador no soporta geolocalización GPS.');
         return;
       }
       if (btnText) btnText.textContent = 'Obteniendo GPS...';
@@ -1712,13 +1712,13 @@
           var lng = pos.coords.longitude.toFixed(6);
           var url = `https://www.google.com/maps?q=${lat},${lng}`;
           if (input) input.value = url;
-          if (btnText) btnText.textContent = 'GPS Capturado âœ”';
+          if (btnText) btnText.textContent = 'GPS Capturado ✔';
           setTimeout(() => { if (btnText) btnText.textContent = 'Obtener mi GPS actual'; }, 3000);
         },
         function(err) {
           if (btnText) btnText.textContent = 'No se pudo obtener';
           setTimeout(() => { if (btnText) btnText.textContent = 'Obtener mi GPS actual'; }, 3000);
-          alert('No se pudo obtener la ubicaciÃ³n GPS automÃ¡tica: ' + err.message + '. Puedes pegar el enlace de Google Maps manualmente.');
+          alert('No se pudo obtener la ubicación GPS automática: ' + err.message + '. Puedes pegar el enlace de Google Maps manualmente.');
         },
         { enableHighAccuracy: true, timeout: 10000 }
       );
@@ -1749,13 +1749,13 @@
       var notas = document.getElementById('ad-notas').value.trim();
 
       if (!servicio) {
-        showError('Por favor selecciona al menos un servicio tÃ©cnico de vuelo.');
+        showError('Por favor selecciona al menos un servicio técnico de vuelo.');
         return;
       }
 
       var todayStr = new Date().toISOString().split('T')[0];
       if (fecha < todayStr) {
-        showError('La fecha de la solicitud no puede ser anterior al dÃ­a de hoy.');
+        showError('La fecha de la solicitud no puede ser anterior al día de hoy.');
         return;
       }
 
@@ -1765,7 +1765,7 @@
       }
 
       if (tipoPersona === 'JURIDICA' && !/^\d{9}$/.test(cedula)) {
-        showError('Para personas jurÃ­dicas, el NIT debe tener exactamente 9 dÃ­gitos sin dÃ­gito de verificaciÃ³n.');
+        showError('Para personas jurídicas, el NIT debe tener exactamente 9 dígitos sin dígito de verificación.');
         return;
       }
 
@@ -1786,7 +1786,7 @@
       if (esDemoGratis) {
         extraInfo.push('[DEMOSTRACION GRATUITA - ESTE SERVICIO VA A SER SIN COSTO]');
       } else {
-        extraInfo.push('[SERVICIO NORMAL COMERCIAL - PARA COTIZACIÃ“N]');
+        extraInfo.push('[SERVICIO NORMAL COMERCIAL - PARA COTIZACIÓN]');
       }
       if (notas) {
         extraInfo.push(`[Observaciones del Cliente: ${notas}]`);
@@ -1834,7 +1834,7 @@
 
         await mostrarConfirmacion(json.data || {}, payload);
       } catch (err) {
-        console.warn('ConexiÃ³n fallback local:', err);
+        console.warn('Conexión fallback local:', err);
         await mostrarConfirmacion({
           codigo_reserva: 'FLY-' + Math.floor(10000 + Math.random() * 90000),
           id_turno: Math.floor(100 + Math.random() * 900)
@@ -1901,23 +1901,23 @@
       window._lastBookingEsNuevo = esClienteNuevo;
       var btnCrearClave = document.getElementById('btn-crear-clave');
       if (btnCrearClave) {
-        // Si el cliente ya existÃ­a, ocultar el botÃ³n de "Asignar Mi ContraseÃ±a" ya que ya tiene su contraseÃ±a segura establecida
+        // Si el cliente ya existía, ocultar el botón de "Asignar Mi Contraseña" ya que ya tiene su contraseña segura establecida
         btnCrearClave.style.display = esClienteNuevo ? 'inline-flex' : 'none';
       }
 
-      // Banner dinÃ¡mico de confirmaciÃ³n con Ã©nfasis en seguridad
+      // Banner dinámico de confirmación con énfasis en seguridad
       var noticeBox = document.getElementById('res-notice-box');
       if (noticeBox) {
         var instruccionAcceso = '';
         if (esClienteNuevo) {
           instruccionAcceso = `
-            <div>â€¢ <strong>Acceso con tu Documento:</strong> Pulsa <em>Ingresar a Mi Portal</em> con tu correo <strong>${payload.email || 'registrado'}</strong> y tu nÃºmero de documento/cÃ©dula como contraseÃ±a de acceso.</div>
-            <div>â€¢ <strong>VerificaciÃ³n RÃ¡pida:</strong> Al ingresar por primera vez, podrÃ¡s verificar tus datos de forma segura para activar todas las funciones y agendar nuevos servicios.</div>
+            <div>• <strong>Acceso con tu Documento:</strong> Pulsa <em>Ingresar a Mi Portal</em> con tu correo <strong>${payload.email || 'registrado'}</strong> y tu número de documento/cédula como contraseña de acceso.</div>
+            <div>• <strong>Verificación Rápida:</strong> Al ingresar por primera vez, podrás verificar tus datos de forma segura para activar todas las funciones y agendar nuevos servicios.</div>
           `;
         } else {
           instruccionAcceso = `
-            <div>â€¢ <strong>Iniciar SesiÃ³n:</strong> Pulsa <em>Ingresar a Mi Portal</em> e introduce tu contraseÃ±a registrada para acceder a tus predios y solicitudes.</div>
-            <div>â€¢ <strong>Â¿Olvidaste tu contraseÃ±a?:</strong> En la ventana de ingreso podrÃ¡s restablecerla mediante cÃ³digo de seguridad de 8 dÃ­gitos enviado a tu correo.</div>
+            <div>• <strong>Iniciar Sesión:</strong> Pulsa <em>Ingresar a Mi Portal</em> e introduce tu contraseña registrada para acceder a tus predios y solicitudes.</div>
+            <div>• <strong>¿Olvidaste tu contraseña?:</strong> En la ventana de ingreso podrás restablecerla mediante código de seguridad de 8 dígitos enviado a tu correo.</div>
           `;
         }
 
@@ -1925,10 +1925,10 @@
           noticeBox.innerHTML = `
             <div style="background: rgba(28, 130, 173, 0.08); border: 1.5px solid #1C82AD; border-radius: 14px; padding: 14px 18px; text-align: left; margin-bottom: 12px;">
               <div style="font-weight: 800; color: #003049; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-file-invoice-dollar" style="color: #1C82AD;"></i> Â¡Vuelo Registrado como Servicio Normal!
+                <i class="fa-solid fa-file-invoice-dollar" style="color: #1C82AD;"></i> ¡Vuelo Registrado como Servicio Normal!
               </div>
               <div style="font-size: 0.85rem; color: #334155; margin-top: 5px; line-height: 1.45;">
-                ${data.ya_tuvo_demo ? 'Detectamos que tu cuenta ya disfrutÃ³ previamente de la demostraciÃ³n gratuita. Por tanto, tu solicitud fue radicada automÃ¡ticamente como <strong>Servicio Normal para CotizaciÃ³n Comercial</strong>.' : 'Tu solicitud de vuelo fue radicada formalmente como <strong>Servicio Normal para CotizaciÃ³n Comercial</strong>.'}
+                ${data.ya_tuvo_demo ? 'Detectamos que tu cuenta ya disfrutó previamente de la demostración gratuita. Por tanto, tu solicitud fue radicada automáticamente como <strong>Servicio Normal para Cotización Comercial</strong>.' : 'Tu solicitud de vuelo fue radicada formalmente como <strong>Servicio Normal para Cotización Comercial</strong>.'}
               </div>
             </div>
             <div style="background: rgba(28, 130, 173, 0.08); border: 1.5px solid rgba(28, 130, 173, 0.3); border-radius: 14px; padding: 14px 18px; text-align: left;">
@@ -1948,7 +1948,7 @@
           noticeBox.innerHTML = `
             <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid #10b981; border-radius: 14px; padding: 14px 18px; text-align: left; margin-bottom: 12px;">
               <div style="font-weight: 800; color: #065f46; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-gift" style="color: #10b981;"></i> Â¡AnÃ¡lisis del Terreno Agendado Exitosamente!
+                <i class="fa-solid fa-gift" style="color: #10b981;"></i> ¡Análisis del Terreno Agendado Exitosamente!
               </div>
               <div style="font-size: 0.85rem; color: #334155; margin-top: 5px; line-height: 1.45;">
                 Hemos registrado formalmente tu solicitud para el nuevo predio <strong>${payload.nombre_finca}</strong> con radicado <strong>${cod}</strong>.
@@ -1959,7 +1959,7 @@
                 <i class="fa-solid fa-shield-halved" style="color: #1C82AD;"></i> Acceso Seguro a tu Portal de Clientes
               </div>
               <div style="font-size: 0.85rem; color: #334155; margin-top: 6px; line-height: 1.45;">
-                Tu predio y tu anÃ¡lisis del terreno sin costo ya estÃ¡n registrados en la plataforma:
+                Tu predio y tu análisis del terreno sin costo ya están registrados en la plataforma:
                 <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
                   ${instruccionAcceso}
                 </div>
@@ -1970,21 +1970,21 @@
         }
       }
 
-      // Obtener nÃºmero oficial y plantilla de WhatsApp configurada en base de datos
+      // Obtener número oficial y plantilla de WhatsApp configurada en base de datos
       var apiBase = (window.location.protocol === 'file:'
         ? 'http://localhost:3000'
         : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
 
       var waNumber = '573155429714';
-      var template = `Hola Flymetrics Colombia, acabo de agendar una solicitud de servicio / demostraciÃ³n:
+      var template = `Hola Flymetrics Colombia, acabo de agendar una solicitud de servicio / demostración:
 Radicado: {radicado}
 Productor: {nombre} (CC/NIT: {cedula})
 Finca: {finca} en {municipio} ({departamento})
 Cultivo: {cultivo} ({hectareas} Ha)
 Servicio: {servicio}
 Fecha programada: {fecha}
-UbicaciÃ³n / Maps: {ubicacion_maps}
-Deseo coordinar detalles tÃ©cnicos de campo con el piloto.`;
+Ubicación / Maps: {ubicacion_maps}
+Deseo coordinar detalles técnicos de campo con el piloto.`;
 
       try {
         var cfgRes = await fetch(apiBase + '/contacto/config/sistema').catch(() => null);
@@ -2002,12 +2002,12 @@ Deseo coordinar detalles tÃ©cnicos de campo con el piloto.`;
           }
         }
       } catch (e) {
-        console.debug('Usando configuraciÃ³n por defecto de WhatsApp');
+        console.debug('Usando configuración por defecto de WhatsApp');
       }
 
       var ubicacionStr = payload.maps_link ? payload.maps_link : (payload.direccion_ubicacion || `${payload.vereda_corregimiento}, ${payload.municipio}`);
 
-      // Reemplazo limpio y dinÃ¡mico de etiquetas sin etiquetas HTML rotas
+      // Reemplazo limpio y dinámico de etiquetas sin etiquetas HTML rotas
       var filledText = template
         .replace(/\{radicado\}/g, cod)
         .replace(/\{nombre\}/g, payload.nombre_completo)

@@ -1,22 +1,22 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flymetrics</title>
   <meta http-equiv="Permissions-Policy" content="geolocation=*, compute-pressure=*" />
-  <meta name="description" content="Portal de operaciones de vuelo para pilotos y tÃ©cnicos de Flymetrics." />
+  <meta name="description" content="Portal de operaciones de vuelo para pilotos y técnicos de Flymetrics." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/fontawesome/css/all.min.css" />
-  <link rel="stylesheet" href="css/admin.css" />
-  <link rel="stylesheet" href="css/tecnico.css?v=20260922_142500" />
+  <link rel="stylesheet" href="../css/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+  <link rel="stylesheet" href="../css/tecnico.css?v=20260922_142500" />
 </head>
 <body>
 
 <!-- =====================================================
-     APP LAYOUT (IDÃ‰NTICO AL PANEL ADMIN)
+     APP LAYOUT (IDÉNTICO AL PANEL ADMIN)
 ===================================================== -->
 <div class="app-layout">
 
@@ -28,7 +28,7 @@
           <img src="img/logo_bird_blue.png" alt="Flymetrics Logo" class="brand-bird-img" onerror="this.src='img/logo.png'" style="height:36px; width:auto; max-width:54px; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0, 48, 73, 0.22));" />
           <div class="sidebar-logo-text">
             <span class="sidebar-logo-name" style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; color:#003049;">Fly<span style="color:#1C82AD;">metrics</span></span>
-            <span class="sidebar-logo-sub" style="font-size:0.72rem; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Portal TÃ©cnico</span>
+            <span class="sidebar-logo-sub" style="font-size:0.72rem; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Portal Técnico</span>
           </div>
         </div>
         <button onclick="toggleTecnicoSidebarCollapse()" style="border: none; background: transparent; cursor: pointer; color: var(--text-2); font-size: 0.95rem; padding: 6px;" title="Contraer / Expandir Barra Lateral">
@@ -38,7 +38,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-section-label">MenÃº Operativo</div>
+      <div class="nav-section-label">Menú Operativo</div>
 
       <button class="nav-item active" data-panel="dashboard" onclick="navigateTo('dashboard')" title="Dashboard Piloto">
         <span class="nav-icon"><i class="fa-solid fa-chart-pie"></i></span>
@@ -57,7 +57,7 @@
       </button>
 
 
-      <div class="nav-section-label" style="margin-top:12px">ConfiguraciÃ³n Personal</div>
+      <div class="nav-section-label" style="margin-top:12px">Configuración Personal</div>
 
       <button class="nav-item" data-panel="perfil" onclick="navigateTo('perfil')" title="Mi Perfil Profesional">
         <span class="nav-icon"><i class="fa-solid fa-user-gear"></i></span>
@@ -69,13 +69,13 @@
       <div class="sidebar-user">
         <div class="sidebar-avatar" id="sidebarUserInitials">TP</div>
         <div class="sidebar-user-info">
-          <div class="sidebar-user-name" id="sidebarUserName">TÃ©cnico Piloto</div>
+          <div class="sidebar-user-name" id="sidebarUserName">Técnico Piloto</div>
           <div class="sidebar-user-role" id="sidebarUserEmail">tecnico@flymetrics.co</div>
         </div>
       </div>
-      <button class="btn-logout" id="logoutBtn" onclick="logout()" title="Cerrar SesiÃ³n">
+      <button class="btn-logout" id="logoutBtn" onclick="logout()" title="Cerrar Sesión">
         <i class="fa-solid fa-power-off"></i>
-        <span>Cerrar sesiÃ³n</span>
+        <span>Cerrar sesión</span>
       </button>
     </div>
   </aside>
@@ -87,12 +87,12 @@
     <!-- TOPBAR (MATCH ADMIN.HTML EXACT LAYOUT & ENLARGED BRANDING) -->
     <header class="topbar" style="height: 72px; padding: 0 32px; background: #ffffff; border-bottom: 2px solid rgba(28, 130, 173, 0.2); box-shadow: 0 4px 18px rgba(0, 48, 73, 0.04);">
       <div style="display: flex; align-items: center; gap: 14px; flex: 1;">
-        <button class="topbar-toggle" id="sidebarToggle" onclick="toggleTecnicoSidebarCollapse(event)" aria-label="Toggle Sidebar" title="MenÃº lateral">
+        <button class="topbar-toggle" id="sidebarToggle" onclick="toggleTecnicoSidebarCollapse(event)" aria-label="Toggle Sidebar" title="Menú lateral">
           <i class="fa-solid fa-bars"></i>
         </button>
         
         <div class="topbar-title" id="topbarTitle" style="font-size: 1.25rem; font-weight: 800; color: #003049; font-family: 'Space Grotesk', sans-serif; display: flex; align-items: center; gap: 8px;">
-          <span>Portal TÃ©cnico</span> <span id="topbarSub" style="color: #1c82ad; font-weight: 600; font-size: 0.92rem;">â€” Operaciones & Vuelos</span>
+          <span>Portal Técnico</span> <span id="topbarSub" style="color: #1c82ad; font-weight: 600; font-size: 0.92rem;">— Operaciones & Vuelos</span>
         </div>
       </div>
 
@@ -104,9 +104,9 @@
           <span>Recargar</span>
         </button>
 
-        <button onclick="logout()" class="btn btn-sm" style="padding: 8px 16px; border-radius: 12px; font-weight: 800; font-size: 0.84rem; display: flex; align-items: center; gap: 7px; background: rgba(239, 68, 68, 0.08); color: #ef4444; border: 1.5px solid rgba(239, 68, 68, 0.28); font-family: 'Space Grotesk', sans-serif; cursor: pointer; transition: all 0.2s;" title="Cerrar SesiÃ³n">
+        <button onclick="logout()" class="btn btn-sm" style="padding: 8px 16px; border-radius: 12px; font-weight: 800; font-size: 0.84rem; display: flex; align-items: center; gap: 7px; background: rgba(239, 68, 68, 0.08); color: #ef4444; border: 1.5px solid rgba(239, 68, 68, 0.28); font-family: 'Space Grotesk', sans-serif; cursor: pointer; transition: all 0.2s;" title="Cerrar Sesión">
           <i class="fa-solid fa-power-off"></i>
-          <span>Cerrar SesiÃ³n</span>
+          <span>Cerrar Sesión</span>
         </button>
       </div>
     </header>
@@ -123,17 +123,17 @@
           <div class="stat-card blue">
             <span class="stat-icon"><i class="fa-solid fa-helicopter"></i></span>
             <div class="stat-label">Total Vuelos Asignados</div>
-            <div class="stat-value" id="statTotalVuelos">â€”</div>
+            <div class="stat-value" id="statTotalVuelos">—</div>
           </div>
           <div class="stat-card orange">
             <span class="stat-icon"><i class="fa-solid fa-hourglass-half"></i></span>
             <div class="stat-label">Pendientes por Confirmar</div>
-            <div class="stat-value" id="statPendientes">â€”</div>
+            <div class="stat-value" id="statPendientes">—</div>
           </div>
           <div class="stat-card red">
             <span class="stat-icon"><i class="fa-solid fa-circle-check"></i></span>
             <div class="stat-label">Servicios Completados</div>
-            <div class="stat-value" id="statCompletados">â€”</div>
+            <div class="stat-value" id="statCompletados">—</div>
           </div>
         </div>
 
@@ -143,7 +143,7 @@
           <!-- Recent Flights -->
           <div class="card" style="padding:24px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-              <h3 style="margin:0; font-family:'Syne',sans-serif; color:var(--primary); font-size:1.1rem;"><i class="fa-solid fa-calendar-days" style="color:var(--accent); margin-right:6px;"></i> PrÃ³ximos Vuelos Agendados</h3>
+              <h3 style="margin:0; font-family:'Syne',sans-serif; color:var(--primary); font-size:1.1rem;"><i class="fa-solid fa-calendar-days" style="color:var(--accent); margin-right:6px;"></i> Próximos Vuelos Agendados</h3>
               <button class="btn btn-sm btn-ghost" onclick="navigateTo('agenda')">Ver todos <i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div class="table-wrap">
@@ -155,7 +155,7 @@
                     <th>Finca</th>
                     <th>Servicio</th>
                     <th>Estado</th>
-                    <th>AcciÃ³n</th>
+                    <th>Acción</th>
                   </tr>
                 </thead>
                 <tbody id="dashRecentAgendaBody">
@@ -165,14 +165,14 @@
             </div>
           </div>
 
-          <!-- Resumen del Piloto TÃ©cnico -->
+          <!-- Resumen del Piloto Técnico -->
           <div class="card" style="padding:24px; display:flex; flex-direction:column; gap:16px;">
             <h3 style="margin:0; color:var(--primary); font-size:1.1rem; font-weight:800;"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Mi Ficha Operativa</h3>
             
             <div style="background:rgba(28,130,173,0.06); border:1px solid rgba(28,130,173,0.2); border-radius:16px; padding:18px; text-align:center;">
               <div class="sidebar-avatar" id="dashPilotAvatar" style="width:64px; height:64px; margin:0 auto 12px; font-size:1.4rem; border-radius:16px; background:linear-gradient(135deg, #003049 0%, #1C82AD 100%); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800;">JP</div>
-              <h4 id="dashPilotName" style="margin:0 0 4px; color:var(--primary); font-weight:800; font-size:1.1rem;">Juan PÃ©rez</h4>
-              <div id="dashPilotCert" style="font-size:0.85rem; color:var(--accent); font-weight:700;">Piloto TÃ©cnico de Vuelo</div>
+              <h4 id="dashPilotName" style="margin:0 0 4px; color:var(--primary); font-weight:800; font-size:1.1rem;">Juan Pérez</h4>
+              <div id="dashPilotCert" style="font-size:0.85rem; color:var(--accent); font-weight:700;">Piloto Técnico de Vuelo</div>
               <div id="dashPilotEmail" style="font-size:0.8rem; color:var(--text-2); margin-top:4px;">tecnico@flymetrics.co</div>
             </div>
 
@@ -198,13 +198,13 @@
             <input type="date" id="agendaDateFilter" class="form-input" style="padding: 10px 14px; font-size: 0.88rem; border-radius: 10px; min-width: 145px;" onchange="filterTechAgenda()" title="Filtrar por fecha calendario" />
             
             <select id="agendaSortOrder" class="form-select" style="min-width: 195px; padding: 10px 14px; font-size: 0.88rem; border-radius: 10px;" onchange="filterTechAgenda()">
-              <option value="id_desc" selected><i class="fa-solid fa-arrow-down-9-1"></i> Por Turno ID (MÃ¡s Nuevas Arriba)</option>
+              <option value="id_desc" selected><i class="fa-solid fa-arrow-down-9-1"></i> Por Turno ID (Más Nuevas Arriba)</option>
               <option value="id_asc"><i class="fa-solid fa-arrow-down-1-9"></i> Por Turno ID (Menor a Mayor)</option>
-              <option value="fecha_asc"><i class="fa-solid fa-arrow-up-1-9"></i> Fecha (MÃ¡s prÃ³xima)</option>
-              <option value="fecha_desc"><i class="fa-solid fa-arrow-down-9-1"></i> Fecha (MÃ¡s lejana)</option>
+              <option value="fecha_asc"><i class="fa-solid fa-arrow-up-1-9"></i> Fecha (Más próxima)</option>
+              <option value="fecha_desc"><i class="fa-solid fa-arrow-down-9-1"></i> Fecha (Más lejana)</option>
               <option value="servicio"><i class="fa-solid fa-arrow-down-a-z"></i> Por Servicio</option>
               <option value="finca"><i class="fa-solid fa-house-chimney"></i> Por Finca</option>
-              <option value="hectareas_desc"><i class="fa-solid fa-chart-column"></i> HectÃ¡reas (Mayor)</option>
+              <option value="hectareas_desc"><i class="fa-solid fa-chart-column"></i> Hectáreas (Mayor)</option>
             </select>
             
             <select id="agendaStatusFilter" class="form-select" style="min-width: 165px; padding: 10px 14px; font-size: 0.88rem; border-radius: 10px;" onchange="filterTechAgenda()">
@@ -215,7 +215,7 @@
               <option value="Finalizado">Finalizados</option>
             </select>
             
-            <button type="button" class="btn btn-ghost" onclick="resetTechAgendaFilters()" style="padding: 10px 16px; font-size: 0.88rem; font-weight: 700; border-radius: 10px; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid rgba(28, 130, 173, 0.25); background: #ffffff; color: var(--navy-pilot);" title="Restablecer todos los filtros de bÃºsqueda">
+            <button type="button" class="btn btn-ghost" onclick="resetTechAgendaFilters()" style="padding: 10px 16px; font-size: 0.88rem; font-weight: 700; border-radius: 10px; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid rgba(28, 130, 173, 0.25); background: #ffffff; color: var(--navy-pilot);" title="Restablecer todos los filtros de búsqueda">
               <i class="fa-solid fa-broom"></i> <span>Limpiar</span>
             </button>
 
@@ -235,8 +235,8 @@
                   <th>Hora Inicio</th>
                   <th>Hora Fin</th>
                   <th>Finca</th>
-                  <th>UbicaciÃ³n</th>
-                  <th>HectÃ¡reas</th>
+                  <th>Ubicación</th>
+                  <th>Hectáreas</th>
                   <th>Servicio</th>
                   <th>Estado</th>
                   <th>Acciones</th>
@@ -262,7 +262,7 @@
               <i class="fa-solid fa-file-signature" style="color: #1C82AD; margin-right: 8px;"></i> Informes Ejecutivos & Entregables
             </div>
             <div class="section-subtitle" style="color: var(--text-2); font-size: 0.9rem;">
-              Selecciona el radicado de tu vuelo asignado y notifica que el informe ejecutivo ya estÃ¡ listo para el cliente.
+              Selecciona el radicado de tu vuelo asignado y notifica que el informe ejecutivo ya está listo para el cliente.
             </div>
           </div>
         </div>
@@ -282,7 +282,7 @@
                 </select>
               </div>
 
-              <!-- Banner dinÃ¡mico de estado SharePoint si ya fue cargado -->
+              <!-- Banner dinámico de estado SharePoint si ya fue cargado -->
               <div id="subirInformeStatusBadge" style="display: none; margin-bottom: 16px;"></div>
 
               <div class="form-group" style="margin-bottom: 20px;">
@@ -295,11 +295,11 @@
                 <div style="position:relative;">
                   <input type="url" id="subirInformeSharepointLink" class="form-input" placeholder="https://flymetrics.sharepoint.com/... o enlace de nube" required style="width: 100%; padding: 11px 14px; border-radius: 12px; font-size: 0.9rem;" />
                 </div>
-                <small id="subirInformeHelpText" style="color:var(--text-3); font-size:0.78rem; margin-top:6px; display:block;">Pega o modifica aquÃ­ el enlace de la carpeta de SharePoint o archivo entregable del vuelo.</small>
+                <small id="subirInformeHelpText" style="color:var(--text-3); font-size:0.78rem; margin-top:6px; display:block;">Pega o modifica aquí el enlace de la carpeta de SharePoint o archivo entregable del vuelo.</small>
               </div>
 
               <button type="submit" id="btnSubmitSubirInforme" class="btn btn-primary btn-full" style="padding: 14px; font-weight: 800; font-size: 1rem; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border:none; color:#ffffff; box-shadow:0 4px 14px rgba(16,185,129,0.35); cursor:pointer; transition:all 0.25s;">
-                <i class="fa-solid fa-circle-check" style="font-size:1.15rem;"></i> Trabajo Realizado â€” Finalizar y Notificar al Cliente
+                <i class="fa-solid fa-circle-check" style="font-size:1.15rem;"></i> Trabajo Realizado — Finalizar y Notificar al Cliente
               </button>
             </form>
           </div>
@@ -353,13 +353,13 @@
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px;">
-          <!-- Left Info Card: Credencial & EstadÃ­sticas -->
+          <!-- Left Info Card: Credencial & Estadísticas -->
           <div class="card" style="padding: 28px; border-radius: 20px; background: #ffffff; border: 1.5px solid rgba(28, 130, 173, 0.2); box-shadow: 0 4px 20px rgba(0,48,73,0.05);">
             <div style="display: flex; align-items: center; gap: 18px; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 20px; margin-bottom: 20px;">
               <div class="sidebar-avatar" id="mainProfileAvatar" style="width: 72px; height: 72px; font-size: 1.6rem; border-radius: 18px; background: linear-gradient(135deg, #003049 0%, #1C82AD 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 6px 18px rgba(0,48,73,0.25);">JP</div>
               <div>
-                <h2 id="mainProfileName" style="margin: 0 0 4px; color: var(--primary); font-size: 1.25rem; font-weight: 800;">Juan PÃ©rez</h2>
-                <div id="mainProfileCert" style="font-size: 0.88rem; color: #1C82AD; font-weight: 700;">Piloto TÃ©cnico de Vuelo</div>
+                <h2 id="mainProfileName" style="margin: 0 0 4px; color: var(--primary); font-size: 1.25rem; font-weight: 800;">Juan Pérez</h2>
+                <div id="mainProfileCert" style="font-size: 0.88rem; color: #1C82AD; font-weight: 700;">Piloto Técnico de Vuelo</div>
                 <div id="mainProfileEmail" style="font-size: 0.82rem; color: var(--text-2);">tecnico@flymetrics.co</div>
               </div>
             </div>
@@ -378,10 +378,10 @@
             <form id="techProfileForm" onsubmit="saveTechProfile(event)">
               <div class="form-group" style="margin-bottom: 16px;">
                 <label class="form-label" style="font-weight: 700; color: #003049; font-size: 0.88rem;">Nombre Completo:</label>
-                <input type="text" id="techProfNombre" class="form-input" required readonly style="width: 100%; padding: 11px 14px; border-radius: 10px; background-color: #f8fafc; cursor: not-allowed;" value="TÃ©cnico" />
+                <input type="text" id="techProfNombre" class="form-input" required readonly style="width: 100%; padding: 11px 14px; border-radius: 10px; background-color: #f8fafc; cursor: not-allowed;" value="Técnico" />
               </div>
               <div class="form-group" style="margin-bottom: 22px;">
-                <label class="form-label" style="font-weight: 700; color: #003049; font-size: 0.88rem;">TelÃ©fono / WhatsApp Operativo:</label>
+                <label class="form-label" style="font-weight: 700; color: #003049; font-size: 0.88rem;">Teléfono / WhatsApp Operativo:</label>
                 <input type="text" id="techProfTel" class="form-input" required style="width: 100%; padding: 11px 14px; border-radius: 10px;" value="3001234567" />
               </div>
               <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px; font-weight: 800; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
@@ -402,9 +402,9 @@
 <div id="checkoutModal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,48,73,0.5); display:flex; align-items:center; justify-content:center; z-index:2000; backdrop-filter:blur(28px); padding:16px;">
   <div class="modal-content liquid-glass" style="width:95%; max-width:540px; max-height:calc(100vh - 32px); overflow-y:auto; padding:28px; border-radius:24px; background:rgba(255, 255, 255, 0.98); border:1px solid rgba(28, 130, 173, 0.3);">
     <h3 style="margin-top:0; font-family:'Space Grotesk',sans-serif; font-size:1.3rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-      <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Modificar InformaciÃ³n de BitÃ¡cora / Vuelo
+      <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Modificar Información de Bitácora / Vuelo
     </h3>
-    <p style="font-size:0.85rem; color:var(--text-2); margin-bottom:18px;">Modifica o actualiza los datos tÃ©cnicos del vuelo (insumos, agua, baterÃ­as, recomendaciones y enlaces).</p>
+    <p style="font-size:0.85rem; color:var(--text-2); margin-bottom:18px;">Modifica o actualiza los datos técnicos del vuelo (insumos, agua, baterías, recomendaciones y enlaces).</p>
     
     <form id="checkoutForm" onsubmit="submitCheckout(event)">
       <input type="hidden" id="checkoutTurnoId" />
@@ -422,13 +422,13 @@
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;">
         <div>
-          <label class="form-label"><i class="fa-solid fa-battery-three-quarters" style="color:#10b981;"></i> BaterÃ­as Usadas</label>
+          <label class="form-label"><i class="fa-solid fa-battery-three-quarters" style="color:#10b981;"></i> Baterías Usadas</label>
           <input type="number" id="chkBaterias" class="form-input" min="0" required style="width:100%;" value="4" />
         </div>
         <div>
-          <label class="form-label"><i class="fa-solid fa-shield-halved" style="color:#6366f1;"></i> RegulaciÃ³n de Vuelo</label>
+          <label class="form-label"><i class="fa-solid fa-shield-halved" style="color:#6366f1;"></i> Regulación de Vuelo</label>
           <select id="chkRac" class="form-select" required style="width:100%;">
-            <option value="1">Cumple regulaciÃ³n aeronÃ¡utica</option>
+            <option value="1">Cumple regulación aeronáutica</option>
             <option value="0">No cumple</option>
           </select>
         </div>
@@ -440,8 +440,8 @@
       </div>
 
       <div class="form-group" style="margin-bottom:14px;">
-        <label class="form-label"><i class="fa-solid fa-seedling" style="color:#10b981;"></i> Recomendaciones AgronÃ³micas para el Cliente</label>
-        <textarea id="chkRecomendaciones" class="form-input" style="width:100%; height:70px; resize:none;" placeholder="Escribe las sugerencias de fertilizaciÃ³n, estado del cultivo y tiempo de reingreso al lote..."></textarea>
+        <label class="form-label"><i class="fa-solid fa-seedling" style="color:#10b981;"></i> Recomendaciones Agronómicas para el Cliente</label>
+        <textarea id="chkRecomendaciones" class="form-input" style="width:100%; height:70px; resize:none;" placeholder="Escribe las sugerencias de fertilización, estado del cultivo y tiempo de reingreso al lote..."></textarea>
       </div>
 
       <div class="form-group" style="margin-bottom:14px;">
@@ -450,7 +450,7 @@
       </div>
 
       <div class="form-group" style="margin-bottom:20px;">
-        <label class="form-label"><i class="fa-solid fa-clock-rotate-left" style="color:#f59e0b;"></i> JustificaciÃ³n de Retraso (Opcional)</label>
+        <label class="form-label"><i class="fa-solid fa-clock-rotate-left" style="color:#f59e0b;"></i> Justificación de Retraso (Opcional)</label>
         <input type="text" id="chkRetraso" class="form-input" style="width:100%;" placeholder="Motivo de cualquier novedad o retraso en tiempo" />
       </div>
 
@@ -465,7 +465,7 @@
 </div>
 
 <!-- =====================================================
-     REGISTRO DE PAGO PARA TÃ‰CNICOS MODAL
+     REGISTRO DE PAGO PARA TÉCNICOS MODAL
 ===================================================== -->
 <div id="techPagoModal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,48,73,0.5); display:flex; align-items:center; justify-content:center; z-index:2000; backdrop-filter:blur(28px);">
   <div class="modal-content liquid-glass" style="width:95%; max-width:520px; padding:32px; border-radius:24px; background:rgba(255, 255, 255, 0.95); border:1px solid rgba(28, 130, 173, 0.3);">
@@ -488,7 +488,7 @@
 
 
       <div class="form-group" style="margin-bottom:16px;">
-        <label class="form-label">MÃ©todo de Pago *</label>
+        <label class="form-label">Método de Pago *</label>
         <select id="techPagoMetodo" class="form-select" required style="width:100%;">
           <option value="Transferencia">Transferencia bancaria</option>
           <option value="Efectivo">Efectivo</option>
@@ -498,10 +498,10 @@
       </div>
 
       <div class="form-group" style="margin-bottom:24px;">
-        <label class="form-label">AcciÃ³n / Estado del Pago *</label>
+        <label class="form-label">Acción / Estado del Pago *</label>
         <select id="techPagoEstado" class="form-select" required style="width:100%;">
           <option value="Pagado">Registrar como Pagado</option>
-          <option value="Pendiente">Pasar Pago a AdministraciÃ³n (Por Validar)</option>
+          <option value="Pendiente">Pasar Pago a Administración (Por Validar)</option>
         </select>
       </div>
 
@@ -518,7 +518,7 @@
 ===================================================== -->
 <div id="entregableModal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,48,73,0.5); display:flex; align-items:center; justify-content:center; z-index:2000; backdrop-filter:blur(28px);">
   <div class="modal-content liquid-glass" style="width:95%; max-width:620px; padding:32px; border-radius:24px; background:rgba(255, 255, 255, 0.95); border:1px solid rgba(28, 130, 173, 0.3);">
-    <h3 style="margin-top:0; font-family:'Syne',sans-serif; font-size:1.4rem; color:var(--primary); display:flex; align-items:center; gap:8px;">ðŸ“ Subir Entregable de Vuelo</h3>
+    <h3 style="margin-top:0; font-family:'Syne',sans-serif; font-size:1.4rem; color:var(--primary); display:flex; align-items:center; gap:8px;">📁 Subir Entregable de Vuelo</h3>
     <p style="font-size:0.85rem; color:var(--text-2); margin-bottom:20px;">Asocia mapas procesados (Multiespectral, Ortofoto TIF) o informes al turno.</p>
 
     <form id="entregableFormModal" onsubmit="submitEntregableModal(event)">
@@ -527,10 +527,10 @@
       <div class="form-group" style="margin-bottom:16px;">
         <label class="form-label" style="color:var(--primary);">Tipo de Archivo *</label>
         <select id="entTipoArchivoModal" class="form-select" required style="width:100%;">
-          <option value="ortofoto">Ortofoto de Alta ResoluciÃ³n (TIF/GeoTIFF)</option>
+          <option value="ortofoto">Ortofoto de Alta Resolución (TIF/GeoTIFF)</option>
           <option value="multiespectral">Mapa Multiespectral de Vigor Vegetativo</option>
-          <option value="reporte_pdf">Reporte TÃ©cnico de Vuelo (PDF)</option>
-          <option value="video_dron">GrabaciÃ³n / Video AÃ©reo 4K</option>
+          <option value="reporte_pdf">Reporte Técnico de Vuelo (PDF)</option>
+          <option value="video_dron">Grabación / Video Aéreo 4K</option>
         </select>
       </div>
 
@@ -551,21 +551,21 @@
 </div>
 
 <!-- =====================================================
-     PETICION DE AUTORIZACIÃ“N AL ADMINISTRADOR MODAL
+     PETICION DE AUTORIZACIÓN AL ADMINISTRADOR MODAL
 ===================================================== -->
 <div id="solicitudModal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,48,73,0.5); display:flex; align-items:center; justify-content:center; z-index:2000; backdrop-filter:blur(28px);">
   <div class="modal-content liquid-glass" style="width:95%; max-width:560px; padding:32px; border-radius:24px; background:rgba(255, 255, 255, 0.95); border:1px solid rgba(28, 130, 173, 0.3);">
-    <h3 style="margin-top:0; font-family:'Syne',sans-serif; font-size:1.4rem; color:var(--primary); display:flex; align-items:center; gap:8px;">ðŸ“© Enviar Solicitud de AutorizaciÃ³n al Admin</h3>
-    <p style="font-size:0.85rem; color:var(--text-2); margin-bottom:20px;">Solicita aprobaciÃ³n oficial para cancelaciones, reprogramaciones, viÃ¡ticos o novedades de equipo.</p>
+    <h3 style="margin-top:0; font-family:'Syne',sans-serif; font-size:1.4rem; color:var(--primary); display:flex; align-items:center; gap:8px;">📩 Enviar Solicitud de Autorización al Admin</h3>
+    <p style="font-size:0.85rem; color:var(--text-2); margin-bottom:20px;">Solicita aprobación oficial para cancelaciones, reprogramaciones, viáticos o novedades de equipo.</p>
 
     <form id="solicitudFormModal" onsubmit="submitSolicitudTecnico(event)">
       <div class="form-group" style="margin-bottom:16px;">
         <label class="form-label" style="color:var(--primary);">Tipo de Solicitud *</label>
         <select id="solTipo" class="form-select" required style="width:100%;">
-          <option value="Cancelacion">Solicitud de CancelaciÃ³n de Vuelo</option>
-          <option value="Reprogramacion">Cambio de Fecha / ReprogramaciÃ³n</option>
-          <option value="Viaticos">Aumento de ViÃ¡ticos / Gastos de Campo</option>
-          <option value="Novedad_Equipo">Novedad de Drone / BaterÃ­as</option>
+          <option value="Cancelacion">Solicitud de Cancelación de Vuelo</option>
+          <option value="Reprogramacion">Cambio de Fecha / Reprogramación</option>
+          <option value="Viaticos">Aumento de Viáticos / Gastos de Campo</option>
+          <option value="Novedad_Equipo">Novedad de Drone / Baterías</option>
         </select>
       </div>
 
@@ -577,18 +577,18 @@
       </div>
 
       <div class="form-group" style="margin-bottom:16px;">
-        <label class="form-label" style="color:var(--primary);">TÃ­tulo Breve de la PeticiÃ³n *</label>
-        <input type="text" id="solTitulo" class="form-input" required style="width:100%;" placeholder="Ej: CancelaciÃ³n por clima torrencial en Yopal" />
+        <label class="form-label" style="color:var(--primary);">Título Breve de la Petición *</label>
+        <input type="text" id="solTitulo" class="form-input" required style="width:100%;" placeholder="Ej: Cancelación por clima torrencial en Yopal" />
       </div>
 
       <div class="form-group" style="margin-bottom:24px;">
-        <label class="form-label" style="color:var(--primary);">JustificaciÃ³n de Campo *</label>
-        <textarea id="solJustificacion" class="form-input" required style="width:100%; height:90px; resize:none;" placeholder="Explica detalladamente las razones de la solicitud para evaluaciÃ³n del administrador..."></textarea>
+        <label class="form-label" style="color:var(--primary);">Justificación de Campo *</label>
+        <textarea id="solJustificacion" class="form-input" required style="width:100%; height:90px; resize:none;" placeholder="Explica detalladamente las razones de la solicitud para evaluación del administrador..."></textarea>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:12px;">
         <button type="button" class="btn btn-ghost" onclick="closeSolicitudModal()">Cancelar</button>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-bolt"></i> Enviar PeticiÃ³n al Admin</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-bolt"></i> Enviar Petición al Admin</button>
       </div>
     </form>
   </div>
@@ -597,7 +597,7 @@
 </div>
 
 <!-- =====================================================
-     DETALLE COMPLETO DE SERVICIO Y CLIENTE MODAL (TÃ‰CNICO)
+     DETALLE COMPLETO DE SERVICIO Y CLIENTE MODAL (TÉCNICO)
 ===================================================== -->
 <div id="detalleVueloModal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,48,73,0.55); display:flex; align-items:center; justify-content:center; z-index:2000; backdrop-filter:blur(28px);">
   <div class="modal-content liquid-glass" style="width:95%; max-width:760px; max-height:90vh; overflow-y:auto; padding:32px; border-radius:24px; background:rgba(255, 255, 255, 0.98); border:1px solid rgba(28, 130, 173, 0.3); box-shadow:0 20px 50px rgba(0,0,0,0.25);">
@@ -609,9 +609,9 @@
           <span style="font-size:1.4rem; font-weight:800; font-family:'Syne',sans-serif; color:var(--primary);" id="detTurnoId">#0</span>
           <span id="detEstadoBadgeHolder"></span>
         </div>
-        <p style="margin:4px 0 0 0; font-size:0.9rem; font-weight:600; color:var(--primary);" id="detServicioNombre">Servicio AgrÃ­cola Dron</p>
+        <p style="margin:4px 0 0 0; font-size:0.9rem; font-weight:600; color:var(--primary);" id="detServicioNombre">Servicio Agrícola Dron</p>
       </div>
-      <button type="button" onclick="closeDetalleVueloModal()" style="background:none; border:none; font-size:1.6rem; color:var(--text-2); cursor:pointer; padding:0 8px; font-weight:bold;">âœ•</button>
+      <button type="button" onclick="closeDetalleVueloModal()" style="background:none; border:none; font-size:1.6rem; color:var(--text-2); cursor:pointer; padding:0 8px; font-weight:bold;">✕</button>
     </div>
 
     <!-- Quick Action Bar -->
@@ -620,7 +620,7 @@
         <i class="fa-brands fa-whatsapp" style="font-size:1.1rem;"></i> Contactar por WhatsApp
       </a>
       <a id="detBtnMap" href="#" target="_blank" class="btn btn-ghost btn-sm" style="font-weight:700; border-radius:10px; border:1px solid rgba(28,130,173,0.3); text-decoration:none; display:inline-flex; align-items:center; gap:6px; padding:10px 16px;">
-        <i class="fa-solid fa-map-location-dot"></i> UbicaciÃ³n GPS / Mapa
+        <i class="fa-solid fa-map-location-dot"></i> Ubicación GPS / Mapa
       </a>
     </div>
 
@@ -634,10 +634,10 @@
         </h4>
         <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem;">
           <div><strong style="color:var(--primary);">Nombre / Cliente:</strong> <span id="detClienteNombre" style="font-weight:600;">Cargando...</span></div>
-          <div><strong style="color:var(--primary);">TelÃ©fono / WhatsApp:</strong> <span id="detClienteTelefono">â€”</span></div>
-          <div><strong style="color:var(--primary);">Correo ElectrÃ³nico:</strong> <span id="detClienteEmail">â€”</span></div>
-          <div><strong style="color:var(--primary);">Documento / CÃ©dula:</strong> <span id="detClienteCedula">â€”</span></div>
-          <div><strong style="color:var(--primary);">Estado VerificaciÃ³n:</strong> <span id="detClienteVerificado" class="badge">Verificado</span></div>
+          <div><strong style="color:var(--primary);">Teléfono / WhatsApp:</strong> <span id="detClienteTelefono">—</span></div>
+          <div><strong style="color:var(--primary);">Correo Electrónico:</strong> <span id="detClienteEmail">—</span></div>
+          <div><strong style="color:var(--primary);">Documento / Cédula:</strong> <span id="detClienteCedula">—</span></div>
+          <div><strong style="color:var(--primary);">Estado Verificación:</strong> <span id="detClienteVerificado" class="badge">Verificado</span></div>
         </div>
       </div>
 
@@ -648,30 +648,30 @@
         </h4>
         <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem;">
           <div><strong style="color:var(--primary);">Nombre Finca / Predio:</strong> <span id="detFincaNombre" style="font-weight:600;">Cargando...</span></div>
-          <div><strong style="color:var(--primary);">UbicaciÃ³n / Municipio:</strong> <span id="detFincaUbicacion">â€”</span></div>
-          <div><strong style="color:var(--primary);">HectÃ¡reas Operativas:</strong> <span id="detFincaHectareas" style="font-weight:700; color:#0369a1;">10 ha</span></div>
-          <div><strong style="color:var(--primary);">Cultivo Principal:</strong> <span id="detFincaCultivo" style="font-weight:700; color:#059669;">MaÃ­z / AgrÃ­cola</span></div>
-          <div><strong style="color:var(--primary);">Coordenadas GPS / UbicaciÃ³n:</strong> <span id="detFincaCoords">â€”</span></div>
+          <div><strong style="color:var(--primary);">Ubicación / Municipio:</strong> <span id="detFincaUbicacion">—</span></div>
+          <div><strong style="color:var(--primary);">Hectáreas Operativas:</strong> <span id="detFincaHectareas" style="font-weight:700; color:#0369a1;">10 ha</span></div>
+          <div><strong style="color:var(--primary);">Cultivo Principal:</strong> <span id="detFincaCultivo" style="font-weight:700; color:#059669;">Maíz / Agrícola</span></div>
+          <div><strong style="color:var(--primary);">Coordenadas GPS / Ubicación:</strong> <span id="detFincaCoords">—</span></div>
           <div style="margin-top:6px;">
             <a id="detCardMapsBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="display:inline-flex; align-items:center; gap:6px; background:#003049; color:#ffffff; font-weight:700; border-radius:8px; padding:7px 14px; font-size:0.82rem; text-decoration:none;">
-              <i class="fa-solid fa-map-location-dot" style="color:#38bdf8;"></i> Ir a su ubicaciÃ³n en Google Maps
+              <i class="fa-solid fa-map-location-dot" style="color:#38bdf8;"></i> Ir a su ubicación en Google Maps
             </a>
           </div>
         </div>
       </div>
 
-      <!-- Card 3: Datos de la OperaciÃ³n de Vuelo -->
+      <!-- Card 3: Datos de la Operación de Vuelo -->
       <div style="background:rgba(0, 48, 73, 0.03); border:1px solid rgba(28, 130, 173, 0.2); border-radius:16px; padding:20px;">
         <h4 style="margin:0 0 14px 0; color:var(--primary); font-family:'Syne',sans-serif; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-plane-up"></i> OperaciÃ³n de Vuelo & Dron
+          <i class="fa-solid fa-plane-up"></i> Operación de Vuelo & Dron
         </h4>
         <div style="display:flex; flex-direction:column; gap:10px; font-size:0.88rem;">
-          <div><strong style="color:var(--primary);">Fecha Programada:</strong> <span id="detVueloFecha">â€”</span></div>
-          <div><strong style="color:var(--primary);">Horario Estimado:</strong> <span id="detVueloHorario">â€”</span></div>
+          <div><strong style="color:var(--primary);">Fecha Programada:</strong> <span id="detVueloFecha">—</span></div>
+          <div><strong style="color:var(--primary);">Horario Estimado:</strong> <span id="detVueloHorario">—</span></div>
         </div>
       </div>
 
-      <!-- Card 4: Servicios Solicitados & TripulaciÃ³n Asignada -->
+      <!-- Card 4: Servicios Solicitados & Tripulación Asignada -->
       <div style="background:rgba(0, 48, 73, 0.03); border:1.5px solid rgba(28, 130, 173, 0.25); border-radius:16px; padding:20px;">
         <h4 style="margin:0 0 14px 0; color:var(--primary); font-family:'Syne',sans-serif; font-size:1.05rem; display:flex; align-items:center; gap:8px;">
           <i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> Servicios Solicitados & Piloto
@@ -680,12 +680,12 @@
           <div>
             <strong style="color:var(--primary); font-size:0.85rem; display:block; margin-bottom:6px;"><i class="fa-solid fa-cubes" style="color:var(--accent);"></i> Servicios del Vuelo:</strong>
             <div id="detServiciosBadges" style="display:flex; flex-wrap:wrap; gap:6px;">
-              <!-- Badges dinÃ¡micos de servicios -->
+              <!-- Badges dinámicos de servicios -->
             </div>
           </div>
           <div style="border-top:1px dashed rgba(28,130,173,0.2); padding-top:10px;">
-            <strong style="color:var(--primary); font-size:0.85rem;"><i class="fa-solid fa-user-gear" style="color:var(--accent);"></i> Piloto TÃ©cnico Asignado:</strong>
-            <div id="detTecnicoAsignadoNombre" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
+            <strong style="color:var(--primary); font-size:0.85rem;"><i class="fa-solid fa-user-gear" style="color:var(--accent);"></i> Piloto Técnico Asignado:</strong>
+            <div id="detTecnicoAsignadoNombre" style="font-weight:700; color:#003049; margin-top:2px;">—</div>
           </div>
           <div id="detObsClienteExtraContainer" style="display:none; border-top:1px dashed rgba(28,130,173,0.2); padding-top:10px;">
             <strong style="color:var(--primary); font-size:0.82rem;"><i class="fa-solid fa-comment-dots" style="color:#10b981;"></i> Observaciones Adicionales:</strong>
@@ -700,7 +700,7 @@
           <i class="fa-solid fa-clock-rotate-left" style="color:var(--accent);"></i> Motivo del Reagendamiento
         </h4>
         <p id="detMotivoReagendamiento" style="margin:0; font-size:0.88rem; color:#003049; font-weight:700; line-height:1.5;">
-          â€”
+          —
         </p>
       </div>
 
@@ -716,6 +716,6 @@
 
 
 
-<script src="js/tecnico.js?v=20261016_185200"></script>
+<script src="../js/tecnico.js?v=20261016_185200"></script>
 </body>
 </html>

@@ -3751,4 +3751,56 @@ section:not(#hero) {
 }
 
 
-
+
+
+
+/* FIX RESPONSIVE NAVBAR FULL & ELEGANT */
+.navbar-container {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 14px 20px 0 !important;
+  box-sizing: border-box !important;
+}
+
+.navbar, .navbar.liquid-glass {
+  width: 100% !important;
+  max-width: 1320px !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  box-sizing: border-box !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+}
+
+.nav-links {
+  gap: 4px !important;
+}
+
+.nav-link {
+  padding: 6px 14px !important;
+  font-size: 0.88rem !important;
+  white-space: nowrap !important;
+}
+
+.access-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.access-actions .btn-glass,
+.access-actions .btn-solid,
+.access-actions .btn-nav-register {
+  padding: 8px 16px !important;
+  font-size: 0.86rem !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 1120px) {
+  .nav-link {
+    padding: 6px 8px !important;
+    font-size: 0.82rem !important;
+  }
+}
