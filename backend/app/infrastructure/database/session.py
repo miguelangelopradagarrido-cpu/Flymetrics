@@ -10,12 +10,20 @@ ca_path = getattr(settings, 'DB_SSL_CA', None)
 if ca_path:
     # Si la ruta es relativa (ej: ca.pem), resolverla contra la carpeta backend o cwd
     if not os.path.isabs(ca_path):
-        from app.infrastructure.config.settings import _BACKEND_DIR
-        candidate = _BACKEND_DIR / ca_path
-        if candidate.exists():
-            ca_path = str(candidate)
-        elif os.path.exists(ca_path):
-            ca_path = os.path.abspath(ca_path)
+        from pathlib import Path
+        possible_locations = [
+            Path(__file__).resolve().parent.parent.parent.parent / ca_path,
+            Path.cwd() / ca_path,
+            Path("/app") / ca_path,
+            Path("/app/backend") / ca_path,
+        ]
+        for loc in possible_locations:
+            if loc.exists():
+                ca_path = str(loc)
+                break
+        else:
+            if os.path.exists(ca_path):
+                ca_path = os.path.abspath(ca_path)
     
     if os.path.exists(ca_path):
         connect_args["ssl"] = {"ca": ca_path}
