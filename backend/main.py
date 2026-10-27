@@ -237,41 +237,59 @@ def get_config_sistema_root(db: Session = Depends(get_db)):
 
 
 # Rutas transparentes para servir vistas HTML desde la carpeta pages/
+def _safe_serve_page(filename: str):
+    candidate_paths = [
+        FRONTEND_DIR / "pages" / filename,
+        FRONTEND_DIR / filename,
+        BASE_DIR / "frontend" / "pages" / filename,
+        BASE_DIR / "frontend" / filename,
+    ]
+    for p in candidate_paths:
+        if p.exists():
+            return FileResponse(str(p))
+    return {
+        "status": "online",
+        "app": "Flymetrics API OS",
+        "docs": "/docs",
+        "health": "/health",
+        "message": f"Endpoint standalone para {filename}. Frontend activo en https://www.flymetrics.com.co"
+    }
+
 @app.get("/", include_in_schema=False)
 @app.get("/index", include_in_schema=False)
 @app.get("/index.html", include_in_schema=False)
 @app.get("/pages/index.html", include_in_schema=False)
 def serve_index():
-    return FileResponse(str(FRONTEND_DIR / "pages" / "index.html"))
+    return _safe_serve_page("index.html")
 
 @app.get("/admin", include_in_schema=False)
 @app.get("/admin.html", include_in_schema=False)
 @app.get("/pages/admin.html", include_in_schema=False)
 def serve_admin():
-    return FileResponse(str(FRONTEND_DIR / "pages" / "admin.html"))
+    return _safe_serve_page("admin.html")
 
 @app.get("/cliente", include_in_schema=False)
 @app.get("/cliente.html", include_in_schema=False)
 @app.get("/pages/cliente.html", include_in_schema=False)
 def serve_cliente():
-    return FileResponse(str(FRONTEND_DIR / "pages" / "cliente.html"))
+    return _safe_serve_page("cliente.html")
 
 @app.get("/tecnico", include_in_schema=False)
 @app.get("/tecnico.html", include_in_schema=False)
 @app.get("/pages/tecnico.html", include_in_schema=False)
 def serve_tecnico():
-    return FileResponse(str(FRONTEND_DIR / "pages" / "tecnico.html"))
+    return _safe_serve_page("tecnico.html")
 
 @app.get("/agendar", include_in_schema=False)
 @app.get("/agendar.html", include_in_schema=False)
 @app.get("/pages/agendar.html", include_in_schema=False)
 def serve_agendar():
-    return FileResponse(str(FRONTEND_DIR / "pages" / "agendar.html"))
+    return _safe_serve_page("agendar.html")
 
 @app.get("/staff.html", include_in_schema=False)
 @app.get("/pages/staff.html", include_in_schema=False)
 def serve_staff():
-    return FileResponse(str(FRONTEND_DIR / "pages" / "staff.html"))
+    return _safe_serve_page("staff.html")
 
 # Favicon y Fallback
 @app.get("/favicon.ico", include_in_schema=False)
