@@ -113,14 +113,20 @@ def get_me(db: Session = Depends(get_db), current_user: UsuarioModel = Depends(g
 def get_cliente_detail(
     id_cliente: int,
     db: Session = Depends(get_db),
-    current_user: UsuarioModel = Depends(admin_or_tech)
+    current_user: UsuarioModel = Depends(get_current_user)
 ):
     """Detalle completo de un cliente incluyendo sus fincas y correo de acceso."""
     from app.shared.exceptions.exceptions import NotFoundException
-    cliente = db.query(ClienteModel).options(
-        joinedload(ClienteModel.usuario),
-        selectinload(ClienteModel.fincas).selectinload(FincaModel.turnos).joinedload(AgendaModel.servicio)
-    ).filter(ClienteModel.id_cliente == id_cliente).first()
+    if current_user.rol == "cliente":
+        cliente = db.query(ClienteModel).options(
+            joinedload(ClienteModel.usuario),
+            selectinload(ClienteModel.fincas).selectinload(FincaModel.turnos).joinedload(AgendaModel.servicio)
+        ).filter(ClienteModel.id_usuario == current_user.id_usuarios).first()
+    else:
+        cliente = db.query(ClienteModel).options(
+            joinedload(ClienteModel.usuario),
+            selectinload(ClienteModel.fincas).selectinload(FincaModel.turnos).joinedload(AgendaModel.servicio)
+        ).filter(ClienteModel.id_cliente == id_cliente).first()
     if not cliente:
         raise NotFoundException("Cliente no encontrado")
     

@@ -3784,11 +3784,7 @@ section:not(#hero) {
   white-space: nowrap !important;
 }
 
-.access-actions {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-}
+/* access-actions styles handled in media queries */
 
 .access-actions .btn-glass,
 .access-actions .btn-solid,
@@ -3802,5 +3798,62 @@ section:not(#hero) {
   .nav-link {
     padding: 6px 8px !important;
     font-size: 0.82rem !important;
+  }
+}
+
+
+/* ============================================================
+   RESPONSIVE NAVBAR & BURGER MENU DEFINITIVE RULES
+   ============================================================ */
+@media (min-width: 1025px) {
+  .burger-menu {
+    display: none !important;
+  }
+  .nav-links {
+    display: flex !important;
+    gap: 4px !important;
+  }
+  .access-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .nav-links {
+    display: none !important;
+  }
+  .access-actions {
+    display: none !important;
+  }
+  .burger-menu {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+    z-index: 10001 !important;
+  }
+  .navbar-container {
+    padding: 10px 14px !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+  .navbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 56px !important;
+    padding: 0 16px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+  .brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 !important;
   }
 }

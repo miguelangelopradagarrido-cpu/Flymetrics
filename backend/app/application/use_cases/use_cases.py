@@ -354,15 +354,20 @@ class ClienteUseCases:
 
     @staticmethod
     def update_profile(db: Session, cliente_id: int, request: schemas.ClienteUpdate, current_user: UsuarioModel) -> ClienteModel:
-        cliente = db.query(ClienteModel).filter(ClienteModel.id_cliente == cliente_id).first()
-        if not cliente:
+        if current_user.rol == "cliente":
             cliente = db.query(ClienteModel).filter(ClienteModel.id_usuario == current_user.id_usuarios).first()
             if not cliente:
-                raise NotFoundException("Perfil de cliente no encontrado")
-            
-        # Regla de negocio: El cliente solo puede editar su propio perfil
-        if current_user.rol != "administrador" and cliente.id_usuario and cliente.id_usuario != current_user.id_usuarios:
-            raise ForbiddenException("No tienes permisos para editar este perfil de cliente")
+                cliente = ClienteModel(id_usuario=current_user.id_usuarios, nombre="Cliente", verificado=False)
+                db.add(cliente)
+                db.flush()
+        else:
+            cliente = db.query(ClienteModel).filter(ClienteModel.id_cliente == cliente_id).first()
+            if not cliente:
+                cliente = db.query(ClienteModel).filter(ClienteModel.id_usuario == current_user.id_usuarios).first()
+                if not cliente:
+                    raise NotFoundException("Perfil de cliente no encontrado")
+            if current_user.rol != "administrador" and cliente.id_usuario and cliente.id_usuario != current_user.id_usuarios:
+                raise ForbiddenException("No tienes permisos para editar este perfil de cliente")
             
         data = request.model_dump(exclude_unset=True)
         ced = data.pop("cedula", None)

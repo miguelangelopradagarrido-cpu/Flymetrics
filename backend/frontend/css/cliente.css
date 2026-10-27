@@ -2044,7 +2044,7 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .mobile-menu-btn {
         display: inline-flex !important;
       }
@@ -2272,7 +2272,7 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .cpanel-main {
         padding-left: 0 !important;
       }

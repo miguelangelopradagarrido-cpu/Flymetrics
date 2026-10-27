@@ -2,6 +2,58 @@
 <html lang="es">
 
 <head>
+  <script>
+    // Fail-safe Early Stubs: Garantizar que ningún botón en el DOM arroje ReferenceError
+    window.showPanel = function(panelName) {
+      panelName = panelName || 'dashboard';
+      window._currentActivePanel = panelName;
+      try {
+        var panels = document.querySelectorAll('.cp-panel');
+        var navItems = document.querySelectorAll('.cp-nav-item');
+        if (panels.length) {
+          panels.forEach(function(p) { p.classList.remove('active'); });
+          navItems.forEach(function(n) { n.classList.remove('active'); });
+          var targetP = document.getElementById('panel-' + panelName);
+          if (targetP) targetP.classList.add('active');
+          var targetN = document.querySelector('.cp-nav-item[data-panel="' + panelName + '"]');
+          if (targetN) targetN.classList.add('active');
+        }
+      } catch(e) {}
+    };
+    window.focusCedulaInput = function() {
+      setTimeout(function() {
+        var inp = document.getElementById('profCedula') || document.getElementById('verif-cedula');
+        if (inp) { inp.focus(); inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      }, 150);
+    };
+    window.toggleSidebarCollapse = function() {
+      var sidebar = document.getElementById('mainSidebar') || document.querySelector('.cpanel-sidebar');
+      var overlay = document.getElementById('mobileSidebarOverlay');
+      if (!sidebar) return;
+      if (window.innerWidth <= 1024) {
+        var isOpen = sidebar.classList.contains('mobile-open');
+        if (isOpen) {
+          sidebar.classList.remove('mobile-open');
+          if (overlay) overlay.classList.remove('active');
+          document.body.style.overflow = '';
+        } else {
+          sidebar.classList.add('mobile-open');
+          if (overlay) overlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      } else {
+        sidebar.classList.toggle('collapsed');
+      }
+    };
+    window.checkVerifiedOrBlock = function() { return true; };
+    window.openNewAgendaModal = function() {};
+    window.openNewFincaModal = function() {};
+    window.refreshData = function() {};
+    window.logout = function() {
+      try { sessionStorage.clear(); localStorage.removeItem('fm_token'); } catch(e){}
+      window.location.href = 'index.html';
+    };
+  </script>
       <script>
     window.API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       ? 'http://localhost:3000'

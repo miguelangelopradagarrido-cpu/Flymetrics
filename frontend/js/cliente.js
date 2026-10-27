@@ -442,7 +442,7 @@ window.BASE_URL = API_BASE;
       const overlay = document.getElementById('mobileSidebarOverlay');
       if (!sidebar) return;
 
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 1024) {
         const isOpen = sidebar.classList.contains('mobile-open');
         if (isOpen) {
           sidebar.classList.remove('mobile-open');
@@ -543,7 +543,7 @@ window.BASE_URL = API_BASE;
     function showPanel(panelName) {
       panelName = panelName || 'dashboard';
 
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 1024) {
         const sidebar = document.getElementById('mainSidebar');
         const overlay = document.getElementById('mobileSidebarOverlay');
         if (sidebar && sidebar.classList.contains('mobile-open')) {
@@ -710,7 +710,7 @@ window.BASE_URL = API_BASE;
               sessionStorage.setItem('fm_email', email);
             }
           }
-        } else if (res.status === 401 || res.status === 403) {
+        } else if (res.status === 401) {
           try {
             sessionStorage.removeItem('fm_token');
             sessionStorage.removeItem('fm_email');
@@ -2793,7 +2793,10 @@ window.BASE_URL = API_BASE;
         showToast('Guardando en Base de Datos y activando Verificación...', 'info');
         const idC = (_clientProfile && _clientProfile.id_cliente) ? _clientProfile.id_cliente : 1;
         
-        let res = await fetch(`${API_BASE}/clientes/${idC}`, {
+        const targetUrl = (_clientProfile && _clientProfile.id_cliente && _clientProfile.id_cliente > 0)
+          ? `${API_BASE}/clientes/${_clientProfile.id_cliente}`
+          : `${API_BASE}/clientes/me`;
+        let res = await fetch(targetUrl, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
