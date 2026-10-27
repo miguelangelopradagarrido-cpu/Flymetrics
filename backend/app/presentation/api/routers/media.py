@@ -34,9 +34,12 @@ else:
 UPLOADS_IMG_DIR = UPLOADS_DIR / "images"
 UPLOADS_VID_DIR = UPLOADS_DIR / "videos"
 
-# Asegurar directorios
-UPLOADS_IMG_DIR.mkdir(parents=True, exist_ok=True)
-UPLOADS_VID_DIR.mkdir(parents=True, exist_ok=True)
+# Asegurar directorios sin fallar si el contenedor tiene carpetas de solo lectura
+try:
+    UPLOADS_IMG_DIR.mkdir(parents=True, exist_ok=True)
+    UPLOADS_VID_DIR.mkdir(parents=True, exist_ok=True)
+except Exception:
+    pass
 
 ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".svg", ".gif"}
 ALLOWED_VIDEO_EXTS = {".mp4", ".webm", ".mov", ".m4v"}

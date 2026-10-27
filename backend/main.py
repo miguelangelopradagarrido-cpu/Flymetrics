@@ -302,14 +302,20 @@ if target_dir.exists():
         app.mount("/pages/video", StaticFiles(directory=str(target_dir / "video")), name="pages_video")
     # Uploads directos
     uploads_dir = target_dir / "uploads"
-    uploads_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        uploads_dir.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
     app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
     app.mount("/pages/uploads", StaticFiles(directory=str(uploads_dir)), name="pages_uploads")
     app.mount("/", StaticFiles(directory=str(target_dir), html=True), name="frontend")
 else:
     # Backend desplegado de forma independiente: asegurar y servir /uploads localmente
     standalone_uploads = BASE_DIR / "uploads"
-    standalone_uploads.mkdir(parents=True, exist_ok=True)
+    try:
+        standalone_uploads.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
     app.mount("/uploads", StaticFiles(directory=str(standalone_uploads)), name="uploads")
 
 if __name__ == "__main__":

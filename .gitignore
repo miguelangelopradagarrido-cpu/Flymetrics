@@ -7,17 +7,17 @@ ENV/
 # Cache de Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.class
 *.so
 .pytest_cache/
 
-# Archivos de configuración de editor
+# Archivos de configuracion de editor
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Configuración del agente local
+# Configuracion del agente local
 .agents/
 
 # Base de datos SQLite local obsoleta
@@ -31,7 +31,3 @@ __pycache__/
 scratch/
 backend/scratch/
 docs/
-
-# Archivos pesados temporales de uploads si no se quieren en el repo
-frontend/uploads/
-backend/uploads/
