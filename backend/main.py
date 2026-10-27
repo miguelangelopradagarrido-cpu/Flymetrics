@@ -57,16 +57,16 @@ async def lifespan(app: FastAPI):
             if not admin_user:
                 admin_user = UsuarioModel(
                     email=default_admin_email,
-                    contraseña=hash_password(default_admin_password),
                     rol="administrador"
                 )
+                admin_user.password_hash = hash_password(default_admin_password)
                 db_session.add(admin_user)
                 db_session.commit()
                 print(f"[STARTUP] Usuario Administrador creado exitosamente: {default_admin_email}")
             else:
                 # Actualizar siempre al iniciar para garantizar acceso con la clave oficial
                 admin_user.rol = "administrador"
-                admin_user.contraseña = hash_password(default_admin_password)
+                admin_user.password_hash = hash_password(default_admin_password)
                 db_session.commit()
                 print(f"[STARTUP] Contraseña de Administrador actualizada a la oficial: {default_admin_email}")
     except Exception as e:
