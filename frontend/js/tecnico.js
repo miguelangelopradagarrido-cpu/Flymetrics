@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
   // ── ANTI-XSS ESCAPING HELPER ──
   function escapeHtml(str) {
@@ -69,9 +69,9 @@
     currentUser = JSON.parse(uStr) || {};
   } catch(e) {}
 
-  const API_BASE = (window.location.protocol === 'file:'
+  const API_BASE = window.BASE_URL || ((window.location.protocol === 'file:'
     ? 'http://localhost:3000'
-    : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+    : (window.API_BASE || 'https://flymetrics-api.hostless.app')) + '/api/v1';
 
   let _allTurnos = [];
   let _invoices = [];

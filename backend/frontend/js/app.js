@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════
    Flymetrics — app.js
    Lógica interactiva nativa y animaciones de cristal líquido
    ═══════════════════════════════════════════════════════════ */
@@ -1693,7 +1693,7 @@ async function syncDynamicWhatsApp() {
   try {
     const apiBase = (window.location.protocol === 'file:'
       ? 'http://localhost:3000'
-      : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+      : (window.API_BASE || 'https://flymetrics-api.hostless.app')) + '/api/v1';
 
     let res = await fetch(apiBase + '/contacto/config/sistema').catch(() => null);
     if (!res || !res.ok) {
