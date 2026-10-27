@@ -262,6 +262,7 @@ function checkUrlAuthParams() {
 }
 
 /* ── MENÚ MÓVIL (DRAWER) ─────────────────────────────────── */
+/*  MEN MVIL (DRAWER) ROBUSTO Y FLUIDO  */
 function initMobileDrawer() {
   const burgerBtn = document.getElementById('burger-btn');
   const mobileDrawer = document.getElementById('mobile-drawer');
@@ -270,7 +271,9 @@ function initMobileDrawer() {
 
   if (!burgerBtn || !mobileDrawer || !drawerOverlay) return;
 
-  const toggleDrawer = () => {
+  const toggleDrawer = function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopPropagation) e.stopPropagation();
     const isOpen = mobileDrawer.classList.toggle('open');
     burgerBtn.classList.toggle('open', isOpen);
     drawerOverlay.classList.toggle('active', isOpen);
@@ -278,7 +281,8 @@ function initMobileDrawer() {
     document.body.style.overflow = isOpen ? 'hidden' : '';
   };
 
-  const closeDrawer = () => {
+  const closeDrawer = function(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     mobileDrawer.classList.remove('open');
     burgerBtn.classList.remove('open');
     drawerOverlay.classList.remove('active');
@@ -286,14 +290,17 @@ function initMobileDrawer() {
     document.body.style.overflow = '';
   };
 
-  burgerBtn.addEventListener('click', toggleDrawer);
-  drawerOverlay.addEventListener('click', closeDrawer);
+  // Exponer globalmente como único handler confiable
+  window.toggleMobileDrawer = toggleDrawer;
+  window.closeMobileDrawer = closeDrawer;
 
-  // Cerrar al hacer clic en un enlace
+  // Un único evento click (evita doble toggle que cerraba el menú de inmediato)
+  burgerBtn.onclick = toggleDrawer;
+  drawerOverlay.onclick = closeDrawer;
+
+  // Cerrar al hacer clic en un enlace del drawer
   drawerLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      closeDrawer();
-    });
+    link.addEventListener('click', closeDrawer);
   });
 
   // Cerrar con tecla Escape
@@ -302,17 +309,6 @@ function initMobileDrawer() {
       closeDrawer();
     }
   });
-
-  // Exponer toggleMobileDrawer globalmente para navegación y drawer
-  window.toggleMobileDrawer = function(forceState) {
-    if (forceState === false) {
-      closeDrawer();
-    } else if (forceState === true) {
-      if (!mobileDrawer.classList.contains('open')) toggleDrawer();
-    } else {
-      toggleDrawer();
-    }
-  };
 }
 
 function initScrollEffects() {

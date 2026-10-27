@@ -80,6 +80,20 @@
 
   <!-- Early Global Declarations to ensure instant click responsiveness -->
   <script>
+        window.toggleMobileDrawer = function (e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (e && e.stopPropagation) e.stopPropagation();
+      var drawer = document.getElementById('mobile-drawer');
+      var overlay = document.getElementById('drawer-overlay');
+      var burger = document.getElementById('burger-btn');
+      if (!drawer) return;
+      var isOpen = drawer.classList.toggle('open');
+      if (burger) burger.classList.toggle('open', isOpen);
+      if (overlay) overlay.classList.toggle('active', isOpen);
+      document.body.classList.toggle('drawer-open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
     window.togglePasswordVisibility = function (inputId, btn) {
       var inp = document.getElementById(inputId);
       if (!inp) return;
@@ -588,7 +602,7 @@
       </div>
 
       <!-- Mobile Burger Button -->
-      <button class="burger-menu" id="burger-btn" aria-label="Abrir Menú" onclick="window.toggleMobileDrawer && window.toggleMobileDrawer()">
+      <button class="burger-menu" id="burger-btn" aria-label="Abrir Menú" onclick="window.toggleMobileDrawer && window.toggleMobileDrawer(event)">
         <span></span>
         <span></span>
         <span></span>

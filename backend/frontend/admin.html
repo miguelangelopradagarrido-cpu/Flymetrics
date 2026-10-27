@@ -19,6 +19,29 @@
   <link rel="stylesheet" href="css/admin.css?v=20261016_v9_redesign_hd" />
   <script>
     // Fail-safe inmediato para modales: disponible antes de evaluar cualquier otra línea
+        window.toggleAdminSidebar = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('adminSidebarOverlay');
+      if (!sidebar) return;
+      const isOpen = sidebar.classList.toggle('open');
+      if (overlay) {
+        if (isOpen) {
+          overlay.classList.remove('hidden');
+          overlay.classList.add('active');
+          overlay.style.display = 'block';
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'all';
+        } else {
+          overlay.style.opacity = '0';
+          overlay.classList.remove('active');
+          overlay.classList.add('hidden');
+          overlay.style.pointerEvents = 'none';
+          setTimeout(() => { if (!sidebar.classList.contains('open')) overlay.style.display = 'none'; }, 250);
+        }
+      }
+    };
+
     window.openModal = function(id) {
       const el = document.getElementById(id);
       if (!el) return;

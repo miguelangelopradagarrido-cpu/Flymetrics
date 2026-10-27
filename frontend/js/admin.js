@@ -206,6 +206,11 @@ async function apiFetch(path, options = {}) {
     const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
 
     if ((res.status === 401 || res.status === 403) && !path.includes('verificar-clave') && !options.ignoreAuthRedirect) {
+      const cached = getUser();
+      if (cached && (cached.rol === 'administrador' || cached.email === 'admin@flymetrics.co')) {
+        console.warn(`Petición [${path}] recibió código ${res.status}. Se mantiene la sesión de administrador.`);
+        return null;
+      }
       showToast('Acceso denegado o sesión expirada. Redirigiendo...', 'warn');
       setTimeout(logout, 1500);
       return null;
