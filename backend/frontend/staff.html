@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <script>
+    if (!window.API_BASE) {
+      window.API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://localhost:3000'
+        : 'https://flymetrics-api.hostless.app';
+      window.BASE_URL = window.API_BASE + '/api/v1';
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Flymetrics — Portal de Acceso para Personal Técnico y Administrativo." />
+  <title>Flymetrics — Portal del Personal</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="../css/fontawesome/css/all.min.css" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="../css/style.css?v=20260618101500" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #001a30 0%, #003049 50%, #00101c 100%) !important;
+      color: #ffffff;
+      font-family: 'Barlow', 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+    .staff-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 24px;
+      position: relative;
+      z-index: 10;
+    }
+    .staff-card {
+      width: 100%;
+      max-width: 470px;
+      border-radius: 28px;
+      padding: 42px 36px;
+      background: rgba(255, 255, 255, 0.97) !important;
+      border: 1.5px solid rgba(28, 130, 173, 0.35) !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 35px rgba(28, 130, 173, 0.15) !important;
+    }
+    .staff-logo-text {
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.3rem;
+      color: #003049 !important;
+      letter-spacing: -0.03em;
+      margin-bottom: 2px;
+      -webkit-text-fill-color: initial !important;
+    }
+    .auth-tabs-wrap {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 4px;
+      display: flex;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 4px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #64748b;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .auth-tab-btn.active {
+      color: #003049;
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 48, 73, 0.14);
+      border: 1px solid rgba(28, 130, 173, 0.2);
+    }
+    .auth-custom-label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #003049;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .auth-custom-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #ffffff !important;
+      border: 1.5px solid rgba(28, 130, 173, 0.35) !important;
+      color: #003049 !important;
+      font-size: 0.95rem;
+      font-weight: 700;
+      outline: none;
+      transition: all 0.25s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      box-sizing: border-box;
+    }
+    .auth-custom-input:focus {
+      border-color: #1c82ad !important;
+      box-shadow: 0 0 0 4px rgba(28, 130, 173, 0.18) !important;
+    }
+    .auth-custom-btn {
+      width: 100%;
+      padding: 15px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #003049 0%, #1c82ad 100%) !important;
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 48, 73, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .auth-custom-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(0, 48, 73, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── BLURRY MULTICOLOR BACKGROUND ── -->
+  <div class="background-canvas" aria-hidden="true">
+    <div class="bg-blob blob-blue"></div>
+    <div class="bg-blob blob-cyan"></div>
+    <div class="bg-blob blob-purple"></div>
+  </div>
+
+  <div class="staff-container">
+    <div class="staff-card">
+      <div style="text-align: center; margin-bottom: 22px;">
+        <div style="display: inline-flex; align-items: center; justify-content: center; width: 62px; height: 62px; border-radius: 18px; background: linear-gradient(135deg, rgba(0,48,73,0.06) 0%, rgba(28,130,173,0.14) 100%); margin-bottom: 12px; border: 1px solid rgba(28,130,173,0.25); box-shadow: 0 8px 20px rgba(0,48,73,0.08);">
+          <i class="fa-solid fa-shield-halved" style="font-size: 1.8rem; color: #1C82AD;"></i>
+        </div>
+        <div class="staff-logo-text">Fly<span style="color: #1C82AD;">metrics</span></div>
+        <span style="font-size: 0.76rem; color: #1C82AD; text-transform: uppercase; font-weight: 800; letter-spacing: 0.14em; display: block; margin-top: 2px;">
+          <i class="fa-solid fa-lock" style="font-size: 0.72rem; margin-right: 4px;"></i> Portal Corporativo de Personal
+        </span>
+      </div>
+
+      <!-- 2 Tab Selector for Roles -->
+      <div class="auth-tabs-wrap">
+        <button class="auth-tab-btn active" id="tab-tecnico" onclick="selectStaffRole('tecnico')">
+          <i class="fa-solid fa-plane-circle-check" style="margin-right:6px; color:#1C82AD;"></i> Técnico de Campo
+        </button>
+        <button class="auth-tab-btn" id="tab-admin" onclick="selectStaffRole('administrador')">
+          <i class="fa-solid fa-user-shield" style="margin-right:6px; color:#003049;"></i> Administración
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h3 id="portal-title" style="font-size: 1.2rem; margin: 0 0 6px 0; color: #003049; font-family: 'Syne', sans-serif; font-weight: 800;">
+          <i class="fa-solid fa-plane-departure" style="color: #1C82AD; margin-right: 6px;"></i>Acceso Piloto Técnico
+        </h3>
+        <p id="portal-subtitle" style="font-size: 0.82rem; margin: 0; color: #475569; line-height: 1.45;">
+          Portal operativo para ejecución de órdenes de vuelo, checkin de campo, telemetría y bitácora RAC-100.
+        </p>
+      </div>
+
+      <!-- Alert Box -->
+      <div id="staff-error-box" style="display: none; margin-bottom: 18px; padding: 12px; border-radius: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #dc2626; font-size: 0.82rem; font-weight: 700; text-align: center;"></div>
+
+      <form id="form-staff-login" onsubmit="handleStaffLogin(event)" style="display: flex; flex-direction: column; gap: 16px;">
+        <input type="hidden" id="login-role" value="tecnico" />
+
+        <!-- Email Input with Icon -->
+        <div>
+          <label class="auth-custom-label"><i class="fa-solid fa-envelope" style="color:#1C82AD; margin-right:4px;"></i> Correo Institucional</label>
+          <div style="position: relative;">
+            <input type="email" placeholder="nombre@flymetrics.com" id="staff-email" required class="auth-custom-input" style="padding-left: 42px;" />
+            <i class="fa-solid fa-at" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.95rem;"></i>
+          </div>
+        </div>
+
+        <!-- Password Input with Icon & Eye Toggle -->
+        <div>
+          <label class="auth-custom-label"><i class="fa-solid fa-key" style="color:#1C82AD; margin-right:4px;"></i> Contraseña de Acceso</label>
+          <div style="position: relative;">
+            <input type="password" placeholder="••••••••" id="staff-password" required class="auth-custom-input" style="padding-left: 42px; padding-right: 46px;" />
+            <i class="fa-solid fa-lock" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.95rem;"></i>
+            <button type="button" onclick="toggleStaffPassword()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748b; padding: 4px;" aria-label="Mostrar u ocultar contraseña">
+              <i class="fa-solid fa-eye" id="eye-icon-fa" style="font-size: 1rem; color: #1C82AD;"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-staff-submit" class="auth-custom-btn" style="margin-top: 6px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-right-to-bracket"></i> Ingresar al Panel de Trabajo
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 20px; font-size: 0.82rem; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+        <a href="index.html" style="color: #64748b; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='#003049'" onmouseout="this.style.color='#64748b'">
+          <i class="fa-solid fa-arrow-left"></i> Volver al Portal de Clientes
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- API & Core logic -->
+  <script src="js/api.js?v=20260822231500"></script>
+  <script>
+    let currentRole = 'tecnico';
+
+    function selectStaffRole(role) {
+      currentRole = role;
+      document.getElementById('login-role').value = role;
+      
+      const tabTecnico = document.getElementById('tab-tecnico');
+      const tabAdmin = document.getElementById('tab-admin');
+      const title = document.getElementById('portal-title');
+      const subtitle = document.getElementById('portal-subtitle');
+      
+      if (tabTecnico) tabTecnico.classList.remove('active');
+      if (tabAdmin) tabAdmin.classList.remove('active');
+
+      if (role === 'administrador') {
+        if (tabAdmin) tabAdmin.classList.add('active');
+        title.innerHTML = '<i class="fa-solid fa-user-shield" style="color: #003049; margin-right: 6px;"></i>Acceso Administrador General';
+        subtitle.textContent = "Ingresa al panel central de administración, usuarios, facturación y catálogo.";
+      } else {
+        if (tabTecnico) tabTecnico.classList.add('active');
+        title.innerHTML = '<i class="fa-solid fa-plane-departure" style="color: #1C82AD; margin-right: 6px;"></i>Acceso Piloto Técnico';
+        subtitle.textContent = "Portal operativo para ejecución de órdenes de vuelo, checkin de campo, telemetría y bitácora RAC-100.";
+      }
+      hideError();
+    }
+
+    function toggleStaffPassword() {
+      const pwdInput = document.getElementById('staff-password');
+      const eyeIcon = document.getElementById('eye-icon-fa');
+      if (!pwdInput) return;
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        if (eyeIcon) eyeIcon.className = 'fa-solid fa-eye-slash';
+      } else {
+        pwdInput.type = 'password';
+        if (eyeIcon) eyeIcon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    function showError(message) {
+      const errBox = document.getElementById('staff-error-box');
+      errBox.textContent = message;
+      errBox.style.display = 'block';
+    }
+
+    function hideError() {
+      const errBox = document.getElementById('staff-error-box');
+      errBox.style.display = 'none';
+      errBox.textContent = '';
+    }
+
+    async function handleStaffLogin(e) {
+      e.preventDefault();
+      hideError();
+
+      const email = document.getElementById('staff-email').value.trim();
+      const password = document.getElementById('staff-password').value;
+      const submitBtn = document.getElementById('btn-staff-submit');
+      const originalText = submitBtn.textContent;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Ingresando...';
+
+      try {
+        const data = await API.login(email, password);
+        const token = data.token || data.access_token || (data.data && (data.data.token || data.data.access_token));
+        if (!token) {
+          throw new Error('No se recibió token de autenticación del servidor');
+        }
+        API.setToken(token);
+
+        const profileRes = await API.getMe(token);
+        const userObj = profileRes.data || profileRes;
+        const actualRole = userObj.rol;
+
+        if (actualRole === 'cliente') {
+          showError('Acceso denegado. Los clientes deben ingresar únicamente por el portal principal.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+          return;
+        }
+
+        sessionStorage.setItem('fm_role', actualRole);
+        sessionStorage.setItem('fm_email', userObj.email || email);
+        sessionStorage.setItem('fm_logged_in', 'true');
+        sessionStorage.setItem('fm_user', JSON.stringify(userObj));
+        try {
+          localStorage.setItem('fm_token', token);
+          localStorage.setItem('fm_user', JSON.stringify(userObj));
+          localStorage.setItem('fm_role', actualRole);
+        } catch(e) {}
+
+        setTimeout(() => {
+          if (actualRole === 'administrador') {
+            window.location.href = 'admin.html?panel=dashboard';
+          } else if (actualRole === 'tecnico') {
+            window.location.href = 'tecnico.html';
+          }
+        }, 500);
+
+      } catch (error) {
+        showError(error.message || 'Contraseña o correo institucional incorrectos.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
+  </script>
+</body>
+</html>

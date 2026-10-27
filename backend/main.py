@@ -14,7 +14,13 @@ import uvicorn
 # Configurar path base
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = BASE_DIR.parent
-FRONTEND_DIR = PROJECT_ROOT / "frontend"
+# Auto-detectar frontend tanto si se ejecuta en la raiz del repo como dentro del contenedor /backend
+if (BASE_DIR / "frontend").exists():
+    FRONTEND_DIR = BASE_DIR / "frontend"
+elif (PROJECT_ROOT / "frontend").exists():
+    FRONTEND_DIR = PROJECT_ROOT / "frontend"
+else:
+    FRONTEND_DIR = BASE_DIR / "frontend"
 
 # Asegurar que BASE_DIR esté en sys.path
 sys.path.insert(0, str(BASE_DIR))
