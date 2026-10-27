@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    Flymetrics Admin Dashboard — admin.js
    Complete JS: API calls, panels, CRUD, modals, calendar
    ============================================================ */
@@ -6,7 +6,13 @@
 'use strict';
 
 var _adminIsDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port && window.location.port !== '3000';
-var API_BASE = window.BASE_URL || ((window.location.protocol === 'file:' || _adminIsDev ? 'http://localhost:3000/api/v1' : 'https://flymetrics-api.hostless.app/api/v1'));
+var API_BASE = window.BASE_URL || (
+  (window.location.protocol === 'file:' || _adminIsDev)
+    ? 'http://localhost:3000/api/v1'
+    : ((window.API_BASE || 'https://flymetrics-api.hostless.app') + '/api/v1')
+);
+window.API_BASE = API_BASE.replace(/\/api\/v1\/?$/, '');
+window.BASE_URL = API_BASE;
 
 // ─────────────────────────────────────────
 // ANTI-XSS UTILITY HELPER

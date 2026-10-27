@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <script>
-    if (!window.API_BASE) {
-      window.API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-        ? 'http://localhost:3000'
-        : 'https://flymetrics-api.hostless.app';
-      window.BASE_URL = window.API_BASE + '/api/v1';
-    }
+      <script>
+    window.API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000'
+      : 'https://flymetrics-api.hostless.app';
+    window.BASE_URL = window.API_BASE + '/api/v1';
   </script>
   <meta charset="UTF-8">
   <title>Autenticando con Google...</title>

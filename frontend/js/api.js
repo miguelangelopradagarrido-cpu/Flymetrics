@@ -14,9 +14,12 @@
   // Si está en un túnel público o puerto 3000 o servidor de producción, el backend está en el mismo origin.
   // Si está en LiveServer o protocolo file://, apunta a http://localhost:3000
   // Soporte unificado: Si el backend sirve el frontend, _origin es exactamente la API (sin problemas de CORS)
-  var apiBase = global.API_BASE || ((_protocol === 'file:' || isDevPort)
+  var isStaticFrontend = _hostname.includes('flymetrics.hostless.site') || _hostname.includes('flymetrics.com.co') || _hostname.includes('github.io');
+  var isLocal = (_protocol === 'file:' || isDevPort);
+  
+  var apiBase = global.API_BASE || (isLocal
     ? 'http://localhost:3000'
-    : (_origin || 'https://flymetrics-api.hostless.app'));
+    : (isStaticFrontend ? 'https://flymetrics-api.hostless.app' : (_origin || 'https://flymetrics-api.hostless.app')));
 
   var baseUrl = (apiBase.replace(/\/+$/, '')) + '/api/v1';
 

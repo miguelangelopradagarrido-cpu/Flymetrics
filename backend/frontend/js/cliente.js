@@ -1,6 +1,14 @@
-﻿'use strict';
+'use strict';
 
-    // ── ANTI-XSS ESCAPING HELPER ──
+// Configuración Global y Resiliente de API Flymetrics
+const API_BASE = window.BASE_URL || (
+  (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000/api/v1'
+    : ((window.API_BASE || 'https://flymetrics-api.hostless.app') + '/api/v1')
+);
+window.API_BASE = API_BASE.replace(/\/api\/v1\/?$/, '');
+window.BASE_URL = API_BASE;
+// ── ANTI-XSS ESCAPING HELPER ──
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
       return String(str)
@@ -104,7 +112,7 @@
       }
 
       const activeToken = _token || sessionStorage.getItem('fm_token') || localStorage.getItem('fm_token') || '';
-      const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:3000/api/v1');
+      const apiBase = API_BASE;
 
       try {
         const res = await fetch(`${apiBase}/clientes/seguridad/solicitar-codigo-perfil`, {
@@ -177,7 +185,7 @@
       }
 
       const activeToken = _token || sessionStorage.getItem('fm_token') || localStorage.getItem('fm_token') || '';
-      const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:3000/api/v1');
+      const apiBase = API_BASE;
 
       try {
         const res = await fetch(`${apiBase}/clientes/seguridad/verificar-codigo-perfil`, {
@@ -352,7 +360,7 @@
       }
 
       const activeToken = _token || sessionStorage.getItem('fm_token') || localStorage.getItem('fm_token') || '';
-      const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:3000/api/v1');
+      const apiBase = API_BASE;
 
       try {
         const res = await fetch(`${apiBase}/clientes/seguridad/perfil-seguro`, {
@@ -455,9 +463,7 @@
     }
     window.toggleSidebarCollapse = toggleSidebarCollapse;
 
-    const API_BASE = window.BASE_URL || ((window.location.protocol === 'file:'
-      ? 'http://localhost:3000'
-      : (window.API_BASE || 'https://flymetrics-api.hostless.app')) + '/api/v1';
+    // API_BASE is declared globally at top of file
     let _token = null;
     let _clientProfile = null;
     let _myAgendas = [];
@@ -3239,7 +3245,7 @@
     window.responderCotizacionClientModal = async function (accion) {
       if (!window._currentNegotiationTurnoId) return;
       const idTurno = window._currentNegotiationTurnoId;
-      const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:3000/api/v1');
+      const apiBase = API_BASE;
 
       let payload = { accion };
       if (accion === 'modificar') {
@@ -3302,7 +3308,7 @@
         let turno = (_myAgendas || []).find(a => Number(a.id_turno || a.id) === targetId);
         if (!turno) {
           try {
-            const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:3000/api/v1');
+            const apiBase = API_BASE;
             const res = await fetch(`${apiBase}/agenda/${idTurno}`, {
               headers: { 'Authorization': `Bearer ${_token}` }
             });
@@ -3496,7 +3502,7 @@
 
       try {
         const activeToken = _token || sessionStorage.getItem('fm_token') || localStorage.getItem('fm_token') || '';
-        const apiBase = (typeof API_BASE !== 'undefined' ? API_BASE : 'http://localhost:3000/api/v1');
+        const apiBase = API_BASE;
         const res = await fetch(`${apiBase}/agenda/${idTurno}`, {
           method: 'PATCH',
           headers: {
@@ -4686,10 +4692,13 @@ window.showBlockingVerificationUI = function (e) {
       try {
         const res = await fetch(`${API_BASE}/publicidad/collage?t=${Date.now()}`);
         if (res.ok) {
-          const body = await res.json();
-          const items = body.data || body;
-          if (Array.isArray(items) && items.length) {
-            _clientCollageItems = items.filter(x => x.activo !== false);
+          const contentType = res.headers.get('content-type') || '';
+          if (contentType.includes('application/json')) {
+            const body = await res.json();
+            const items = body.data || body;
+            if (Array.isArray(items) && items.length) {
+              _clientCollageItems = items.filter(x => x.activo !== false);
+            }
           }
         }
       } catch (e) {

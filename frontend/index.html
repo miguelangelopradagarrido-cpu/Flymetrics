@@ -37,8 +37,8 @@
       }
     };
   </script>
-  <script>
-    window.API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    <script>
+    window.API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       ? 'http://localhost:3000'
       : 'https://flymetrics-api.hostless.app';
     window.BASE_URL = window.API_BASE + '/api/v1';
@@ -4085,8 +4085,8 @@
   </style>
 
   <!-- Script Files -->
-  <script src="js/api.js?v=20260911205500"></script>
-  <script src="js/app.js?v=20260911205500"></script>
+  <script src="js/api.js?v=20261027_220000"></script>
+  <script src="js/app.js?v=20261027_220000"></script>
   <script>
     // ── RECUPERACIÓN DE CONTRASEÑA CON CÓDIGO DE 8 DÍGITOS ──
     function openRecoveryView() {
