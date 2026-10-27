@@ -1,0 +1,1893 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Permissions-Policy" content="geolocation=*, compute-pressure=*" />
+  <title>Flymetrics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/cliente.css?v=20260912_1" />
+</head>
+
+<body class="cpanel-body">
+
+  <div id="mobileSidebarOverlay" onclick="toggleSidebarCollapse()"></div>
+  <div id="toast">NotificaciÃ³n</div>
+
+  <!-- â•â•â• FIXED EXECUTIVE LEFT SIDEBAR (LIKE ADMIN PANEL) â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <aside class="cpanel-sidebar" id="mainSidebar">
+    <div class="cp-logo-section">
+      <a href="#" class="brand-emblem-box" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+        <img src="img/logo_bird_white.png" alt="Flymetrics Logo" class="brand-bird-img" onerror="this.onerror=null;this.src='img/logo_bird_blue.png'" style="height:36px; width:auto; max-width:52px; object-fit:contain; filter:drop-shadow(0 3px 14px rgba(28, 130, 173, 0.55)) brightness(1.1);" />
+        <div class="brand-text-container">
+          <span class="brand-title" style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; color:#ffffff;">Fly<span style="color:#38bdf8;">metrics</span></span>
+          <span class="brand-sub" style="font-size:0.72rem; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Portal Cliente</span>
+        </div>
+      </a>
+      <button class="sidebar-toggle-btn" id="sidebarCollapseBtn" onclick="toggleSidebarCollapse()"
+        title="Contraer / Expandir Barra Lateral">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+    </div>
+
+    <div class="cp-user-profile"
+      onclick="showPanel('perfil'); showToast('Accediendo a la gestiÃ³n de tu perfil de cuenta', 'info');"
+      title="Gestionar tu cuenta y perfil">
+      <div class="cp-avatar" id="sidebarAvatar">FM</div>
+      <div class="cp-user-info">
+        <div class="cp-user-name" id="sidebarUserName">Cliente Flymetrics</div>
+        <div style="font-size: 0.65rem; color: #1C82AD; font-weight: 700; text-transform: uppercase;">Cuenta Activa <i
+            class="fa-solid fa-circle-check" style="font-size:0.65rem;"></i></div>
+      </div>
+    </div>
+
+    <nav class="cp-nav">
+      <div class="nav-section-label"
+        style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); margin: 10px 0 4px 6px;">
+        MenÃº Principal</div>
+      <div class="cp-nav-item active" data-panel="dashboard" onclick="showPanel('dashboard')" title="Dashboard General">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Dashboard</span>
+      </div>
+      <div class="cp-nav-item" data-panel="agendas" onclick="showPanel('agendas')" title="Mis Agendas y Solicitudes">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Mis Agendas</span>
+      </div>
+      <div class="cp-nav-item" data-panel="fincas" onclick="showPanel('fincas')" title="GestiÃ³n de Fincas">
+        <i class="fa-solid fa-house-chimney-window"></i>
+        <span>Mis Fincas</span>
+      </div>
+
+      <div class="nav-section-label"
+        style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); margin: 14px 0 4px 6px;">
+        Documentos & OperaciÃ³n</div>
+      
+      <div class="cp-nav-item" id="navItemInformes" data-panel="informes-ejecutivos" onclick="showDocSection('informes')" title="Informes Ejecutivos & Entregables">
+        <i class="fa-solid fa-file-signature" style="color: #38bdf8;"></i>
+        <span>Informes Ejecutivos</span>
+      </div>
+      <div class="cp-nav-item" data-panel="facturacion" onclick="showPanel('facturacion')" title="Mis Facturas, Comprobantes y Servicios">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <span>Facturas & Comprobantes</span>
+      </div>
+      <div class="cp-nav-item" data-panel="perfil" onclick="showPanel('perfil')" title="Mi Perfil de Cliente">
+        <i class="fa-solid fa-user-shield"></i>
+        <span>Mi Perfil</span>
+      </div>
+      <div class="cp-nav-item" data-panel="soporte" onclick="showPanel('soporte')" title="Soporte y AtenciÃ³n TÃ©cnico">
+        <i class="fa-solid fa-headset"></i>
+        <span>Soporte</span>
+      </div>
+
+      <!-- Cerrar SesiÃ³n Visible Inmediatamente -->
+      <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12);">
+        <button class="cp-logout-btn" onclick="logout()" title="Cerrar SesiÃ³n" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 0.88rem; cursor: pointer; transition: all 0.2s ease;">
+          <i class="fa-solid fa-power-off" style="color: #ef4444; font-size: 1rem;"></i>
+          <span>Cerrar SesiÃ³n</span>
+        </button>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- â•â•â• MAIN DASHBOARD AREA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <main class="cpanel-main">
+
+    <!-- Executive Topbar Header (Unified & Uncluttered) -->
+    <header class="cpanel-topbar liquid-glass">
+      <div class="cp-topbar-left">
+        <button id="mobileMenuBtn" class="mobile-menu-btn" onclick="toggleSidebarCollapse()" title="MenÃº">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h2 id="topbarTitle"
+          style="color: var(--primary); font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.35rem; margin: 0; letter-spacing: -0.02em;">
+          Dashboard General</h2>
+      </div>
+      <div class="cp-topbar-right">
+        <div id="topbarCertBadge">
+          <button onclick="showPanel('perfil'); window.focusCedulaInput();" class="cp-unverified-pill"
+            style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(220, 38, 38, 0.08) 100%); color: #dc2626; border: 1.5px solid rgba(239, 68, 68, 0.35); font-weight: 800; padding: 8px 18px; border-radius: 9999px; cursor: pointer; font-size: 0.82rem; display: flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif; transition: all 0.25s ease; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.08);">
+            <i class="fa-solid fa-user-shield" style="font-size: 0.95rem; color: #ef4444;"></i>
+            <span>Sin Verificar â€” Completar CÃ©dula <i class="fa-solid fa-arrow-right" style="font-size:0.75rem; margin-left:2px;"></i></span>
+          </button>
+        </div>
+        <button class="btn btn-primary btn-sm"
+          onclick="if(checkVerifiedOrBlock('solicitar un vuelo')) openNewAgendaModal();"
+          style="padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif; background: linear-gradient(135deg, #1C82AD 0%, #003049 100%); border: none; box-shadow: 0 4px 14px rgba(28, 130, 173, 0.35); cursor: pointer; color: #ffffff;">
+          <i class="fa-solid fa-calendar-plus"></i>
+          <span>Agendar servicio</span>
+        </button>
+        <button class="btn btn-ghost btn-sm desktop-only-btn"
+          onclick="if(checkVerifiedOrBlock('registrar una finca')) openNewFincaModal();"
+          style="padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 0.86rem; display: flex; align-items: center; gap: 8px; border: 1.5px solid rgba(28, 130, 173, 0.25); color: var(--primary); font-family: 'Outfit', sans-serif; background: #ffffff; cursor: pointer;">
+          <i class="fa-solid fa-house-chimney-medical"></i>
+          <span>Registrar Finca</span>
+        </button>
+        <button onclick="refreshData()" class="btn btn-ghost btn-sm"
+          style="padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: 0.86rem; display: flex; align-items: center; gap: 8px; border: 1.5px solid rgba(28, 130, 173, 0.25); color: #003049; font-family: 'Outfit', sans-serif; background: #ffffff; cursor: pointer; transition: all 0.2s;"
+          title="Recargar datos y agendas en tiempo real">
+          <i class="fa-solid fa-rotate" style="color: #1C82AD;"></i>
+          <span>Recargar</span>
+        </button>
+        <button onclick="logout()" class="btn btn-sm desktop-only-btn"
+          style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1.5px solid rgba(239, 68, 68, 0.35); font-family: 'Outfit', sans-serif; cursor: pointer; transition: all 0.22s ease;"
+          title="Cerrar SesiÃ³n">
+          <i class="fa-solid fa-power-off" style="font-size: 0.9rem;"></i>
+          <span>Cerrar SesiÃ³n</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content Pane -->
+    <div class="cpanel-content-pane">
+
+      <!-- â”€â”€ PANEL 1: DASHBOARD â”€â”€ -->
+      <section id="panel-dashboard" class="cp-panel active">
+        <div class="panel-head">
+
+          <!-- Alerta de identidad obligatoria -->
+          <div id="dashboard-unverified-alert" class="hidden"
+            style="display: none; padding: 16px 20px; background: rgba(255, 77, 109, 0.08); border: 1px solid rgba(255, 77, 109, 0.25); border-radius: 12px; margin-bottom: 24px; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+              <span style="font-size: 1.5rem; color: #FF4D6D;"><i class="fa-solid fa-lock"></i></span>
+              <div>
+                <h4 style="margin: 0 0 4px 0; color: #FF4D6D; font-family: 'Syne', sans-serif; font-size: 0.9rem;">
+                  Solicitud Denegada para Acciones CrÃ­ticas</h4>
+                <p style="margin: 0; color: var(--text-2); font-size: 0.78rem; line-height: 1.4;">
+                  Debes verificar tu identidad primero para poder registrar fincas o agendar nuevos vuelos.
+                </p>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="showPanel('perfil'); window.focusCedulaInput();"
+              style="background: rgba(255, 77, 109, 0.12); border-color: rgba(255, 77, 109, 0.35); color: #FF4D6D; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              Verificar Identidad <i class="fa-solid fa-arrow-right" style="margin-left: 2px;"></i>
+            </button>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label" style="font-weight: 700; font-size: 0.85rem; color: var(--text-2);">Agendas
+                Activas</div>
+              <div class="stat-value primary" id="statActiveAgendas"
+                style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 2.2rem; color: var(--primary);">0
+              </div>
+              <span class="stat-icon"
+                style="background: rgba(28, 130, 173, 0.12); color: var(--accent); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-calendar-days"></i>
+              </span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label" style="font-weight: 700; font-size: 0.85rem; color: var(--text-2);">Servicios
+                Completados</div>
+              <div class="stat-value" id="statCompletedServices"
+                style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 2.2rem; color: #10B981;">0</div>
+              <span class="stat-icon"
+                style="background: rgba(16, 185, 129, 0.12); color: #10B981; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-circle-check"></i>
+              </span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label" style="font-weight: 700; font-size: 0.85rem; color: var(--text-2);">PrÃ³ximo
+                Servicio</div>
+              <div class="stat-value"
+                style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; margin-top: 6px; color: var(--primary);"
+                id="statNextServiceDate">Sin programar</div>
+              <span class="stat-icon"
+                style="background: rgba(0, 48, 73, 0.1); color: var(--primary); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-plane-up"></i>
+              </span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label" style="font-weight: 700; font-size: 0.85rem; color: var(--text-2);">Reportes
+                Listos</div>
+              <div class="stat-value accent" id="statReadyDocs"
+                style="font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 2.2rem; color: var(--accent);">0
+              </div>
+              <span class="stat-icon"
+                style="background: rgba(28, 130, 173, 0.12); color: var(--accent); width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                <i class="fa-solid fa-file-contract"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- Real-Time Operational Notifications & Change Control Box -->
+          <div id="liveNotificationCard" class="card-box liquid-glass"
+            style="margin-bottom: 24px; padding: 22px 24px; background: rgba(255, 255, 255, 0.95); border: 1.5px solid rgba(28, 130, 173, 0.25); border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 48, 73, 0.06); display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 48, 73, 0.08); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 38px; height: 38px; border-radius: 10px; background: rgba(28, 130, 173, 0.12); color: #1C82AD; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                  <i class="fa-solid fa-bell"></i>
+                </span>
+                <div>
+                  <h3 style="margin: 0; font-family: 'Outfit', sans-serif; color: #003049; font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                    Control de Notificaciones & Estado Operativo
+                    <span id="notifActiveDot" style="width: 8px; height: 8px; background: #10B981; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #10B981;"></span>
+                  </h3>
+                  <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #6C757D; font-weight: 500;" id="notifSubText">
+                    Registro de cambios de estado, asignaciÃ³n de pilotos y validaciÃ³n de vuelos en tus predios.
+                  </p>
+                </div>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="refreshData()" style="border-radius: 8px; font-weight: 700; font-size: 0.8rem; padding: 6px 14px;">
+                <i class="fa-solid fa-rotate"></i> Actualizar
+              </button>
+            </div>
+
+            <!-- Notification Feed Items Container -->
+            <div id="clientNotifFeed" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Dynamic live notifications will be rendered here -->
+              <div style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: rgba(28, 130, 173, 0.04); border: 1px solid rgba(28, 130, 173, 0.15); border-radius: 12px;">
+                <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 1.1rem; margin-top: 2px;"></i>
+                <div style="flex: 1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: #003049; font-size: 0.88rem; font-weight: 800;">Sistema Operacional Activo</strong>
+                    <span style="font-size: 0.72rem; color: #6C757D; font-weight: 600;">En lÃ­nea</span>
+                  </div>
+                  <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #4A5568;">Todas tus solicitudes y telemetrÃ­a de predios estÃ¡n sincronizadas con la central de control Flymetrics.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Collage & Medios Rotativos para Clientes -->
+          <div id="clientCollageSection" style="margin-bottom: 24px; display: none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+              <div>
+                <h3 style="margin:0; font-family:'Outfit',sans-serif; color:#003049; font-size:1.12rem; font-weight:800; display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-photo-film" style="color:#1C82AD;"></i> GalerÃ­a de Operaciones & Medios Especializados
+                </h3>
+                <p style="margin:2px 0 0 0; font-size:0.78rem; color:#64748b;">
+                  Innovaciones, vuelos agronÃ³micos y cobertura satelital activa en campo
+                </p>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <button type="button" class="btn btn-sm btn-ghost" onclick="scrollClientCollage(-1)" style="padding:6px 12px; border-radius:8px; border:1px solid rgba(0,48,73,0.15);" title="Anterior">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-ghost" onclick="scrollClientCollage(1)" style="padding:6px 12px; border-radius:8px; border:1px solid rgba(0,48,73,0.15);" title="Siguiente">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+            <div id="clientCollageTrack" style="display:flex; gap:16px; overflow-x:auto; scroll-behavior:smooth; padding-bottom:12px; scrollbar-width:thin;">
+              <!-- Dynamic collage cards rendered by JS -->
+            </div>
+          </div>
+
+          <div class="dashboard-split">
+            <!-- Left side: Next appointment + Recent Activity -->
+            <div class="card-box">
+              <div class="card-box-h">
+                <h3 class="card-box-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--accent); margin-right:6px;"></i> Actividad reciente</h3>
+                <button class="btn btn-ghost btn-sm" onclick="showPanel('agendas')">Ver todo</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Servicio</th>
+                      <th>Finca</th>
+                      <th>Fecha</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentActivityTableBody">
+                    <tr>
+                      <td colspan="5" class="text-center text-muted">No hay actividad reciente</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: Quick actions -->
+          <div>
+            <div class="card-box">
+              <h3 class="card-box-title" style="margin-bottom:16px;">Acciones rÃ¡pidas</h3>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn btn-ghost" onclick="showPanel('facturacion')">
+                  <i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent);"></i> <span>Ver mis facturas y comprobantes</span>
+                </button>
+                <button class="btn btn-ghost" onclick="showPanel('fincas')">
+                  <i class="fa-solid fa-mountain-sun" style="color:var(--accent);"></i> <span>Ver mis fincas</span>
+                </button>
+                <button class="btn btn-ghost" onclick="showPanel('documentos')">
+                  <i class="fa-solid fa-file-pdf" style="color:var(--accent);"></i> <span>Descargar reportes</span>
+                </button>
+                <button class="btn btn-ghost" onclick="openWAMessage()">
+                  <i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> <span>Soporte vÃ­a WhatsApp</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="card-box" style="background: rgba(255,255,255,0.015);">
+              <h3 class="card-box-title" style="margin-bottom:10px;"><i class="fa-solid fa-shield-halved" style="color:var(--accent); margin-right:6px;"></i> OperaciÃ³n Segura y Certificada</h3>
+              <p style="font-size:0.8rem; color:var(--text-2); line-height:1.6; margin:0 0 14px 0;">Flymetrics opera
+                bajo estricto cumplimiento de la reglamentaciÃ³n aeronÃ¡utica. Todas tus operaciones cuentan con pÃ³liza de
+                responsabilidad civil extracontractual y pilotos certificados.</p>
+              <span class="badge badge-completed"
+                style="border: 1px solid rgba(28, 130, 173,0.3); color: var(--accent); background: rgba(28, 130, 173,0.05);"><i class="fa-solid fa-check"></i>
+                OperaciÃ³n 100% Segura</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- â”€â”€ SHOWCASE / COLLAGE PUBLICITARIO FLYMETRICS â”€â”€ -->
+        <div style="margin-top: 32px; border-top: 1.5px dashed rgba(28, 130, 173, 0.25); padding-top: 28px;">
+          <div class="panel-head" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <span class="badge" style="background: rgba(28,130,173,0.12); color: #1C82AD; font-weight: 800; padding: 4px 12px; border-radius: 9999px; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                <i class="fa-solid fa-bullhorn"></i> InnovaciÃ³n & Soluciones
+              </span>
+              <h3 style="color: #003049; font-family: 'Outfit', 'Syne', sans-serif; font-size: 1.35rem; font-weight: 900; margin: 0; display:flex; align-items:center; gap:10px;">
+                Ecosistema AgroTecnolÃ³gico Flymetrics
+              </h3>
+              <p style="color: var(--text-2); font-size: 0.86rem; margin: 4px 0 0 0;">
+                Descubre cÃ³mo maximizar la rentabilidad de tus hectÃ¡reas con nuestra flota avanzada y anÃ¡lisis agronÃ³mico.
+              </p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="if(checkVerifiedOrBlock('solicitar un vuelo')) openNewAgendaModal();" style="border-radius: 10px; font-weight: 800; font-size: 0.82rem; padding: 8px 18px; display: inline-flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-calendar-plus"></i> Cotizar Nuevo Vuelo
+            </button>
+          </div>
+
+          <!-- Collage Publicitario DinÃ¡mico y Rotativo -->
+          <div id="collage-publicitario-container" style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-bottom: 24px; transition: opacity 0.5s ease;">
+            <!-- Renderizado dinÃ¡mico desde /api/v1/publicidad/collage con rotaciÃ³n automÃ¡tica -->
+            <div style="grid-column: span 12; text-align:center; padding:40px; color:#64748b;">
+              <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem; color:var(--accent);"></i>
+              <div style="margin-top:8px; font-size:0.85rem;">Cargando ecosistema agrotecnolÃ³gico...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- â”€â”€ PANEL 2: MIS AGENDAS â”€â”€ -->
+      <section id="panel-agendas" class="cp-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+          <div class="filter-bar" id="agendaFilters" style="margin-bottom:0; display:flex; gap:10px; flex-wrap:wrap;">
+            <div class="filter-pill active" onclick="filterAgendas('Todos')">Todos</div>
+            <div class="filter-pill" onclick="filterAgendas('Pendiente')">Pendientes</div>
+            <div class="filter-pill" onclick="filterAgendas('Confirmado')">Confirmados</div>
+            <div class="filter-pill" onclick="filterAgendas('En proceso')">En proceso</div>
+            <div class="filter-pill" onclick="filterAgendas('Completado')">Completados</div>
+            <div class="filter-pill" onclick="filterAgendas('Cancelado')">Cancelados</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="refreshData()" style="border-radius:10px; border:1px solid rgba(28,130,173,0.3); font-weight:800; font-size:0.84rem; padding:8px 16px; background:#ffffff; color:#003049; display:inline-flex; align-items:center; gap:8px; cursor:pointer;" title="Actualizar lista de agendas">
+            <i class="fa-solid fa-rotate" style="color:#1C82AD;"></i> Actualizar Agendas
+          </button>
+        </div>
+
+        <div class="card-box"
+          style="background:#ffffff; border-radius:18px; padding:24px; border:1px solid rgba(28, 130, 173, 0.25); box-shadow:0 10px 30px rgba(0, 0, 0, 0.04);">
+          <div class="table-wrap">
+            <table style="width:100%; border-collapse:separate; border-spacing:0;">
+              <thead>
+                <tr style="border-bottom:2px solid rgba(28, 130, 173, 0.2);">
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
+                    ID</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
+                    Servicio</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
+                    Finca / Predio</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
+                    Fecha</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
+                    Hora</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
+                    TÃ©cnico Piloto</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px; text-align:center;">
+                    CotizaciÃ³n</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
+                    Estado</th>
+                  <th
+                    style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px; text-align:right">
+                    Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="agendasTableBody">
+                <tr>
+                  <td colspan="9" class="text-center text-muted" style="padding:32px;">Cargando agendas...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- â”€â”€ PANEL 3: MIS FINCAS â”€â”€ -->
+      <section id="panel-fincas" class="cp-panel">
+        <div class="fincas-grid" id="fincasGrid">
+          <div style="grid-column: 1/-1; text-align:center; padding: 40px;" class="text-muted">Cargando fincas...</div>
+        </div>
+      </section>
+
+
+      <!-- â”€â”€ PANEL 4: INFORMES EJECUTIVOS (SHAREPOINT) â”€â”€ -->
+      <section id="panel-documentos" class="cp-panel">
+        <!-- 1. Texto Explicativo Superior: CÃ³mo funciona SharePoint -->
+        <div style="background: #ffffff; border-radius: 20px; padding: 24px 28px; border: 1.5px solid rgba(28, 130, 173, 0.25); box-shadow: 0 8px 24px rgba(0, 48, 73, 0.04); margin-bottom: 22px;">
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:48px; height:48px; border-radius:14px; background:rgba(28, 130, 173, 0.12); color:#1c82ad; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">
+              <i class="fa-solid fa-file-signature"></i>
+            </div>
+            <div>
+              <h3 style="margin:0 0 6px 0; color:#003049; font-size:1.15rem; font-weight:800; font-family:'Outfit', sans-serif;">
+                Â¿CÃ³mo funcionan tus Informes Ejecutivos en SharePoint con Flymetrics?
+              </h3>
+              <p style="margin:0; color:#475569; font-size:0.90rem; line-height:1.55;">
+                Flymetrics centraliza y almacena de forma segura todos tus informes ejecutivos, bitÃ¡coras de vuelo, mapas multiespectrales y entregables agronÃ³micos en tu carpeta privada de <strong>Microsoft SharePoint / OneDrive</strong>. Toda tu documentaciÃ³n tÃ©cnica oficial estÃ¡ disponible en la nube en tiempo real. A continuaciÃ³n, puedes acceder directamente a tu carpeta vinculada con un solo clic o solicitar asistencia tÃ©cnica.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Tarjeta Principal: Informes Ejecutivos & Acceso a Carpeta SharePoint -->
+        <div class="card-box" style="background: #ffffff; border-radius: 22px; padding: 32px 28px; border: 1.5px solid rgba(28, 130, 173, 0.3); box-shadow: 0 10px 30px rgba(0, 48, 73, 0.06); text-align: center; max-width: 720px; margin: 0 auto;">
+          <div style="width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #003049 0%, #1c82ad 100%); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 16px; box-shadow: 0 8px 20px rgba(0, 48, 73, 0.2);">
+            <i class="fa-solid fa-folder-open"></i>
+          </div>
+
+          <h2 style="margin: 0 0 8px 0; color: #003049; font-size: 1.45rem; font-weight: 900; font-family: 'Outfit', sans-serif;">
+            Informes Ejecutivos & Entregables (SharePoint)
+          </h2>
+
+          <div id="sharepointStatusBadgeContainer" style="margin-bottom: 16px;">
+            <span class="badge" style="background: rgba(245, 158, 11, 0.12); color: #d97706; font-weight: 800; padding: 6px 16px; border-radius: 20px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-clock"></i> Carpeta SharePoint Pendiente de VinculaciÃ³n
+            </span>
+          </div>
+
+          <p id="sharepointDescText" style="color: #475569; font-size: 0.94rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.55;">
+            Tu carpeta personalizada de informes ejecutivos en SharePoint estÃ¡ siendo configurada por el equipo de Flymetrics. ComunÃ­cate con nuestro equipo de soporte vÃ­a WhatsApp para solicitar su vinculaciÃ³n:
+          </p>
+
+          <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+            <button type="button" id="btnAccederSharepoint" onclick="window.solicitarEnlaceSharepointSoporte()" class="btn" style="padding: 14px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 14px; display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: transform 0.2s;">
+              <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Solicitar VinculaciÃ³n por WhatsApp
+            </button>
+          </div>
+
+          <div id="sharepointNoLinkNotice" style="margin-top: 22px; padding: 14px 18px; background: rgba(245, 158, 11, 0.08); border: 1.5px dashed rgba(245, 158, 11, 0.4); border-radius: 14px; font-size: 0.86rem; color: #b45309; text-align: center;">
+            <i class="fa-solid fa-clock" style="margin-right: 6px;"></i> Tu enlace de SharePoint aÃºn no ha sido asignado por el administrador. Puedes solicitarlo vÃ­a WhatsApp a nuestro equipo de soporte para que vinculen tu acceso a los informes ejecutivos.
+          </div>
+        </div>
+      </section>
+
+
+      <!-- â”€â”€ PANEL 5: FACTURACIÃ“N & ESTADOS DE CUENTA (ALEGRA) â”€â”€ -->
+      <section id="panel-facturacion" class="cp-panel">
+        <!-- 1. Texto Explicativo Superior: CÃ³mo funciona Alegra -->
+        <div style="background: #ffffff; border-radius: 20px; padding: 24px 28px; border: 1.5px solid rgba(28, 130, 173, 0.25); box-shadow: 0 8px 24px rgba(0, 48, 73, 0.04); margin-bottom: 22px;">
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:48px; height:48px; border-radius:14px; background:rgba(28, 130, 173, 0.12); color:#1c82ad; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">
+              <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div>
+              <h3 style="margin:0 0 6px 0; color:#003049; font-size:1.15rem; font-weight:800; font-family:'Outfit', sans-serif;">
+                Â¿CÃ³mo funciona tu facturaciÃ³n con Alegra en Flymetrics?
+              </h3>
+              <p style="margin:0; color:#475569; font-size:0.90rem; line-height:1.55;">
+                Flymetrics Colombia estÃ¡ 100% integrado con el software contable y de facturaciÃ³n electrÃ³nica de <strong>Alegra</strong> (autorizado por la DIAN). Toda la facturaciÃ³n de tus servicios agrÃ­colas, recibos oficiales, cotizaciones y estados de cuenta se generan y administran de forma segura en la nube. A continuaciÃ³n, puedes consultar tu facturaciÃ³n registrada con un solo clic.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Tarjeta Principal: FacturaciÃ³n con Alegra & Acceso Directo a Mi Factura -->
+        <div class="card-box" style="background: #ffffff; border-radius: 22px; padding: 32px 28px; border: 1.5px solid rgba(28, 130, 173, 0.3); box-shadow: 0 10px 30px rgba(0, 48, 73, 0.06); text-align: center; max-width: 720px; margin: 0 auto;">
+          <div style="width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #003049 0%, #1c82ad 100%); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 16px; box-shadow: 0 8px 20px rgba(0, 48, 73, 0.2);">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+
+          <h2 style="margin: 0 0 8px 0; color: #003049; font-size: 1.45rem; font-weight: 900; font-family: 'Outfit', sans-serif;">
+            FacturaciÃ³n con Alegra
+          </h2>
+
+          <div id="alegraStatusBadgeContainer" style="margin-bottom: 16px;">
+            <span class="badge" style="background: rgba(245, 158, 11, 0.12); color: #d97706; font-weight: 800; padding: 6px 16px; border-radius: 20px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-clock"></i> Enlace en Proceso de GeneraciÃ³n
+            </span>
+          </div>
+
+          <p id="alegraDescText" style="color: #475569; font-size: 0.94rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.55;">
+            Tu enlace personalizado de facturas electrÃ³nicas estÃ¡ siendo preparado por el equipo de Flymetrics. Puedes solicitarlo con administraciÃ³n:
+          </p>
+
+          <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+            <button type="button" id="btnAccederFacturaAlegra" onclick="window.solicitarEnlaceAlegraSoporte()" class="btn" style="padding: 14px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 14px; display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: transform 0.2s;">
+              <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Solicitar Enlace a Soporte
+            </button>
+          </div>
+
+          <div id="alegraNoLinkNotice" style="margin-top: 22px; padding: 14px 18px; background: rgba(245, 158, 11, 0.08); border: 1.5px dashed rgba(245, 158, 11, 0.4); border-radius: 14px; font-size: 0.86rem; color: #b45309; text-align: center;">
+            <i class="fa-solid fa-clock" style="margin-right: 6px;"></i> Tu enlace de factura personalizado aÃºn no ha sido asignado por el administrador. Puedes solicitarlo vÃ­a WhatsApp a nuestro equipo de soporte.
+          </div>
+        </div>
+      </section>
+
+
+      <!-- â”€â”€ PANEL 6: MI PERFIL â”€â”€ -->
+      <section id="panel-perfil" class="cp-panel">
+        <div class="profile-split">
+          <div class="profile-avatar-col">
+            <div class="profile-avatar-big" id="profileAvatar">FM</div>
+            <h3 id="profileFullName" style="margin:0 0 6px 0; font-size:1.15rem;">Cliente Flymetrics</h3>
+            <p id="profileUserEmail" style="margin:0 0 16px 0; font-size:0.84rem; color:var(--text-2);">correo@correo.co
+            </p>
+            <span class="cp-verified-badge" id="profileCertBadge" style="cursor: pointer;"
+              onclick="if(!isClientVerified()) showBlockingVerificationUI();"
+              title="Haz clic para verificar tu identidad">Verificado <i class="fa-solid fa-check"></i></span>
+          </div>
+
+          <div class="card-box"
+            style="background:#ffffff; border-radius:20px; padding:28px; border:1px solid rgba(28, 130, 173, 0.25); box-shadow:0 10px 30px rgba(0, 48, 73, 0.04);">
+            <div
+              style="background: rgba(28, 130, 173, 0.08); border-left: 4px solid var(--accent-blue); padding: 14px 18px; border-radius: 14px; margin-bottom: 20px;">
+              <h4
+                style="margin: 0 0 4px 0; color: var(--primary); font-family: 'Syne', sans-serif; font-size: 0.98rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-shield-halved" style="color: var(--accent-blue);"></i> Registro Obligatorio de
+                Perfil e Identidad
+              </h4>
+              <p style="margin: 0; font-size: 0.83rem; color: var(--text-2); line-height: 1.5;">
+                Completa tus datos oficiales por Ãºnica vez para validar tu cuenta y habilitar la solicitud de reservas
+                de vuelo en tus fincas.
+              </p>
+            </div>
+
+            <form id="profileForm" onsubmit="saveProfile(event)"
+              style="display: flex; flex-direction: column; gap: 14px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="profNombre"
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Nombre Completo / Titular *</label>
+                  <input type="text" id="profNombre" class="form-input" required placeholder="Ej. MIGUEL ÃNGEL PRADA"
+                    style="border-radius: 12px; padding: 11px 14px; text-transform: uppercase;" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="profEmpresa"
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Empresa / RazÃ³n Social (Opcional)</label>
+                  <input type="text" id="profEmpresa" class="form-input" placeholder="Ej. AGROCOLOMBIA S.A.S."
+                    style="border-radius: 12px; padding: 11px 14px; text-transform: uppercase;" />
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="profTel"
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">TelÃ©fono de
+                    Contacto / WhatsApp *</label>
+                  <input type="tel" id="profTel" class="form-input" required placeholder="Ej. 3054061764"
+                    style="border-radius: 12px; padding: 11px 14px;" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="profEmail"
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Correo
+                    ElectrÃ³nico (Solo lectura)</label>
+                  <input type="email" id="profEmail" class="form-input" disabled
+                    style="opacity: 0.7; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 11px 14px;" />
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="profTipoDoc"
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Tipo de IdentificaciÃ³n *</label>
+                  <select id="profTipoDoc" class="form-input" style="border-radius: 12px; padding: 11px 14px; font-weight:700; appearance: auto;" onchange="ajustarValidacionPerfilDoc()">
+                    <option value="CC" selected>CÃ©dula de CiudadanÃ­a (CC)</option>
+                    <option value="NIT">NIT (Empresa - 9 dÃ­gitos sin DV)</option>
+                    <option value="CE">CÃ©dula de ExtranjerÃ­a (CE)</option>
+                    <option value="PASAPORTE">Pasaporte</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="profCedula" id="lblProfCedula"
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">NÃºmero de
+                    Documento / CÃ©dula *</label>
+                  <input type="text" id="profCedula" class="form-input" required
+                    placeholder="Ingresa tu nÃºmero de documento" maxlength="10" inputmode="numeric" autocomplete="off"
+                    oninput="if(!document.getElementById('profTipoDoc')||document.getElementById('profTipoDoc').value==='CC'||document.getElementById('profTipoDoc').value==='NIT'){ this.value=this.value.replace(/\D/g,'').slice(0,10); }"
+                    style="border-radius: 12px; padding: 11px 14px;" />
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="profExpedicion"
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Fecha de
+                    ExpediciÃ³n del Documento (Hasta Ayer) *</label>
+                  <input type="date" id="profExpedicion" class="form-input" required
+                    onchange="const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); const yStr = yesterday.toISOString().split('T')[0]; if(this.value > yStr){ showToast('La fecha de expediciÃ³n debe ser igual o anterior a ayer.', 'warning'); this.value = yStr; }"
+                    style="border-radius: 12px; padding: 11px 14px;" />
+                </div>
+              </div>
+
+              <div style="margin-top: 18px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;" id="profileActionBtnsContainer">
+                <button type="button" id="btnOpenSecureProfile" onclick="openSecureProfileModal()" class="btn btn-primary"
+                  style="padding: 14px 28px; font-weight: 800; font-size: 0.95rem; border-radius: 12px; background: linear-gradient(135deg, #003049 0%, #1C82AD 100%); border: none; color: #ffffff; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,48,73,0.2); transition: all 0.2s;"
+                  onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='none';">
+                  <i class="fa-solid fa-shield-halved" style="color: #E4C7A1; font-size: 1.1rem;"></i>
+                  <span>Â¿Deseas actualizar informaciÃ³n?</span>
+                </button>
+                <button type="submit" id="btnSubmitProfile" class="btn btn-primary hidden"
+                  style="display:none; padding: 13px 24px; font-weight: 800; font-size: 0.90rem; border-radius: 12px; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--primary) 100%); border: none; color: #ffffff; cursor: pointer; box-shadow: 0 8px 24px rgba(0,48,73,0.15); align-items: center; gap: 8px;">
+                  <i class="fa-solid fa-circle-check"></i> <span>Guardar y Activar Cuenta Verificada</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- â”€â”€ PANEL 7: SOPORTE Y ASISTENCIA TÃ‰CNICA â”€â”€ -->
+      <section id="panel-soporte" class="cp-panel">
+        <div class="panel-head">
+          <h1 class="panel-title">AtenciÃ³n y Soporte WhatsApp</h1>
+          <p class="panel-sub">ComunicaciÃ³n directa e instantÃ¡nea con la administraciÃ³n y equipo de operaciones de
+            Flymetrics S.A.S.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <!-- Left Column: WhatsApp Portal -->
+          <div
+            style="background: #ffffff; border: 1px solid rgba(28, 130, 173, 0.3); border-radius: 20px; padding: 28px; box-shadow: 0 10px 30px rgba(0, 48, 73, 0.08); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+                <div
+                  style="width: 56px; height: 56px; border-radius: 16px; background: #25D366; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);">
+                  <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div>
+                  <h3
+                    style="margin: 0; color: #003049; font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800;">
+                    AtenciÃ³n Oficial WhatsApp</h3>
+                  <span style="font-size: 0.8rem; color: #10B981; font-weight: 700;"><i class="fa-solid fa-circle" style="font-size:0.55rem; vertical-align:middle; margin-right:4px;"></i> En lÃ­nea â€¢ Respuesta
+                    inmediata</span>
+                </div>
+              </div>
+
+              <p style="color: #4a5568; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
+                Resuelve dudas sobre tu agendamiento, solicita apoyo agronÃ³mico o comunÃ­cate con la torre de control en
+                tiempo real a travÃ©s del canal oficial de WhatsApp de Flymetrics.
+              </p>
+
+              <div
+                style="background: rgba(28, 130, 173, 0.08); border-radius: 12px; padding: 14px; border: 1px dashed rgba(28, 130, 173, 0.3); margin-bottom: 20px;">
+                <div style="font-weight: 800; color: #003049; font-size: 0.85rem; margin-bottom: 4px;"><i class="fa-solid fa-thumbtack" style="color:var(--accent); margin-right:4px;"></i> Servicios
+                  disponibles por WhatsApp:</div>
+                <ul style="margin: 0; padding-left: 18px; font-size: 0.82rem; color: #4a5568; line-height: 1.5;">
+                  <li>Consulta de estado de vuelos y mapas multiespectrales</li>
+                  <li>Reagendamiento o ajuste de fechas por clima</li>
+                  <li>AtenciÃ³n a peticiones, quejas y reclamos (PQR)</li>
+                </ul>
+              </div>
+            </div>
+
+            <a id="supportWaBtn" href="https://wa.me/573143764972?text=Hola%20Flymetrics%20S.A.S.,%20requiero%20asistencia%20y%20soporte%20t%C3%A9cnico%20con%20mi%20servicio."
+              target="_blank" class="btn"
+              style="background: #25D366; color: #ffffff; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 14px; font-size: 1.05rem; text-decoration: none; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35); text-transform: uppercase; border: none;">
+              <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i> Conectar con Asesor en WhatsApp
+            </a>
+          </div>
+
+          <!-- Right Column: Email Support & Working Hours -->
+          <div
+            style="background: #ffffff; border: 1px solid rgba(28, 130, 173, 0.3); border-radius: 20px; padding: 28px; box-shadow: 0 10px 30px rgba(0, 48, 73, 0.08); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 18px;">
+                <div
+                  style="width: 56px; height: 56px; border-radius: 16px; background: rgba(0, 48, 73, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #003049;">
+                  <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div>
+                  <h3
+                    style="margin: 0; color: #003049; font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800;">
+                    Soporte por Correo Institucional</h3>
+                  <span style="font-size: 0.8rem; color: #6c757d; font-weight: 600;">Respuesta en menos de 24
+                    horas</span>
+                </div>
+              </div>
+
+              <p style="color: #4a5568; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
+                Para solicitudes institucionales, facturaciÃ³n electrÃ³nica o certificaciones especiales RAC-100, puedes
+                enviarnos un correo oficial.
+              </p>
+
+              <div style="background: rgba(0, 48, 73, 0.04); border-radius: 12px; padding: 14px; margin-bottom: 20px;">
+                <div style="font-weight: 800; color: #003049; font-size: 0.85rem; margin-bottom: 6px;"><i
+                    class="fa-solid fa-clock"></i> Horario de AtenciÃ³n Operativa:</div>
+                <div style="font-size: 0.82rem; color: #4a5568;">Lunes a SÃ¡bado: 6:00 AM â€“ 7:00 PM (Hora Colombia)</div>
+                <div style="font-size: 0.82rem; color: #4a5568;">Emergencias de Vuelo: 24/7 vÃ­a WhatsApp</div>
+              </div>
+            </div>
+
+            <a id="supportEmailBtn" href="mailto:comercial@flymetrics.com.co?subject=Soporte%20Flymetrics%20-%20Cliente" class="btn"
+              style="background: rgba(0, 48, 73, 0.08); border: 1.5px solid rgba(0, 48, 73, 0.2); color: #003049; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 14px; font-weight: 800; text-decoration: none; transition: all 0.3s ease;">
+              <i class="fa-solid fa-paper-plane"></i> Enviar Correo Oficial
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- â”€â”€ PANEL 9: VIDEOS E INFORMACIÃ“N â”€â”€ -->
+      <section id="panel-videos" class="cp-panel">
+        <div class="panel-head" style="margin-bottom: 24px;">
+          <h1 class="panel-title"
+            style="color: #003049; font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 800; margin: 0 0 6px 0;">
+            <i class="fa-solid fa-film"></i> Biblioteca de Videos e InformaciÃ³n AgrÃ­cola</h1>
+          <p class="panel-sub" style="color: var(--text-2); font-size: 0.86rem; margin: 0;">Material audiovisual, guÃ­as
+            tÃ©cnicas de fumigaciÃ³n con drones, anÃ¡lisis multiespectral y normativas operacionales en campo.</p>
+        </div>
+
+        <!-- Video Cards Grid with Real Embedded Players -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 30px;">
+
+          <!-- Video Card 1 -->
+          <div class="card-box" style="background: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(28, 130, 173, 0.25); box-shadow: 0 10px 28px rgba(0,48,73,0.06); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 16/9; margin-bottom: 16px;">
+                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/5D3mE2iK2gY" title="OperaciÃ³n AgrÃ­cola con Drones" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="badge" style="background:rgba(28,130,173,0.1); color:#1c82ad; font-weight:800; font-size:0.7rem; text-transform:uppercase;">DemostraciÃ³n de Campo</span>
+              </div>
+              <h3 style="margin: 0 0 8px 0; color: #003049; font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800;">
+                OperaciÃ³n y FumigaciÃ³n con Dron AgrÃ­cola DJI Agras</h3>
+              <p style="margin: 0 0 14px 0; color: #4a5568; font-size: 0.83rem; line-height: 1.5;">
+                DemostraciÃ³n tÃ©cnica del patrÃ³n de gota atomizada, calibraciÃ³n y cobertura homogÃ©nea sobre cultivos en tiempo real.
+              </p>
+            </div>
+          </div>
+
+          <!-- Video Card 2 -->
+          <div class="card-box" style="background: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(28, 130, 173, 0.25); box-shadow: 0 10px 28px rgba(0,48,73,0.06); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 16/9; margin-bottom: 16px;">
+                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/tW3VnZzK5m0" title="InterpretaciÃ³n de AnÃ¡lisis Multiespectral y Salud Vegetal" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="badge" style="background:rgba(16,185,129,0.1); color:#10b981; font-weight:800; font-size:0.7rem; text-transform:uppercase;">AnÃ¡lisis Multiespectral</span>
+              </div>
+              <h3 style="margin: 0 0 8px 0; color: #003049; font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800;">
+                InterpretaciÃ³n de Mapas Multiespectrales</h3>
+              <p style="margin: 0 0 14px 0; color: #4a5568; font-size: 0.83rem; line-height: 1.5;">
+                Aprende a analizar los gradientes de color de vigor fotosintÃ©tico para identificar zonas de estrÃ©s hÃ­drico, malezas o plagas.
+              </p>
+            </div>
+          </div>
+
+          <!-- Video Card 3 -->
+          <div class="card-box" style="background: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(28, 130, 173, 0.25); box-shadow: 0 10px 28px rgba(0,48,73,0.06); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 16/9; margin-bottom: 16px;">
+                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/hLdQfV6N-Jg" title="FotogrametrÃ­a y TopografÃ­a con Drones" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span class="badge" style="background:rgba(245,158,11,0.1); color:#f59e0b; font-weight:800; font-size:0.7rem; text-transform:uppercase;">TopografÃ­a y Mapeo</span>
+              </div>
+              <h3 style="margin: 0 0 8px 0; color: #003049; font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800;">
+                FotogrametrÃ­a 3D y Curvas de Nivel en Predios</h3>
+              <p style="margin: 0 0 14px 0; color: #4a5568; font-size: 0.83rem; line-height: 1.5;">
+                GeneraciÃ³n de ortomosaicos georreferenciados, modelos digitales de elevaciÃ³n y cÃ¡lculo de Ã¡reas con precisiÃ³n centimÃ©trica.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+
+      </section>
+
+      <!-- â”€â”€ PANEL 8: VALIDACIÃ“N DE CÃ‰DULA POR CÃMARA â”€â”€ -->
+      <section id="panel-verificar" class="cp-panel">
+        <div class="panel-header">
+          <div>
+            <h1 class="panel-title">VerificaciÃ³n de CÃ©dula (CÃ¡mara IA)</h1>
+            <p class="panel-sub">Escanea la CÃ©dula de CiudadanÃ­a colombiana del operador o cliente para verificar su
+              autenticidad.</p>
+          </div>
+        </div>
+
+        <div class="card-box" style="max-width: 800px; margin: 0 auto;">
+          <div id="scanner-init-view" style="text-align: center; padding: 40px 20px;">
+            <div style="font-size: 4rem; margin-bottom: 20px;"><i class="fa-solid fa-id-card"></i></div>
+            <h3>ValidaciÃ³n de Identidad por EscÃ¡ner</h3>
+            <p style="color: var(--text-2); max-width: 500px; margin: 12px auto 24px;">
+              Este sistema utiliza la cÃ¡mara de tu dispositivo para capturar y analizar los hologramas de seguridad,
+              cÃ³digos bidimensionales y datos OCR de la tarjeta de identificaciÃ³n.
+            </p>
+            <button class="btn btn-primary" onclick="startScanner()">
+              <i class="fa-solid fa-camera"></i> <span>Iniciar CÃ¡mara EscÃ¡ner</span>
+            </button>
+          </div>
+
+          <div id="scanner-active-view" class="hidden"
+            style="position: relative; overflow: hidden; border-radius: 12px; background: #000; border: 1px solid var(--border);">
+            <!-- Webcam container -->
+            <div
+              style="position: relative; width: 100%; max-width: 640px; margin: 0 auto; aspect-ratio: 4/3; overflow: hidden;">
+              <video id="scanner-video" autoplay playsinline
+                style="width:100%; height:100%; object-fit: cover;"></video>
+              <canvas id="scanner-canvas" class="hidden"
+                style="width:100%; height:100%; object-fit: cover; position: absolute; inset:0;"></canvas>
+
+              <!-- Card alignment helper overlay -->
+              <div class="card-guide"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; height: 55%; border: 3px dashed var(--primary); border-radius: 12px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); pointer-events: none;">
+                <div id="scanner-step-label"
+                  style="position: absolute; top: 12px; left: 12px; color: var(--primary); font-size: 0.75rem; font-family: monospace; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px;">
+                  ALINEAR FRENTE DE CÃ‰DULA</div>
+              </div>
+
+              <!-- Pulsing scanning line -->
+              <div id="scanner-laser" class="scanner-laser"
+                style="position: absolute; left: 5%; width: 90%; height: 3px; background: rgba(28, 130, 173, 0.8); box-shadow: 0 0 10px rgba(28, 130, 173, 0.8); z-index: 10; display: none;">
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <div
+              style="display:flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid var(--border); background: #080808; gap: 8px; flex-wrap: wrap;">
+              <button class="btn btn-ghost btn-sm" onclick="stopScanner()"><i class="fa-solid fa-stop"></i> Detener cÃ¡mara</button>
+              <input type="file" id="scanner-file-fallback" class="hidden" accept="image/*"
+                onchange="handleScannerFileFallback(event)" />
+              <button class="btn btn-ghost btn-sm" onclick="document.getElementById('scanner-file-fallback').click()"><i class="fa-solid fa-folder-open"></i>
+                Subir Foto</button>
+              <button class="btn btn-primary btn-sm" id="btn-capture-scan" onclick="captureAndScan()">
+                <i class="fa-solid fa-camera"></i> <span>Capturar</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step logs / Scanning progress view -->
+          <div id="scanner-progress-view" class="hidden"
+            style="padding: 24px; border: 1px solid var(--border); border-radius: 12px; margin-top: 20px; background: rgba(255,255,255,0.01);">
+            <div style="display:flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+              <div class="spinner-small"
+                style="width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite;">
+              </div>
+              <h4 style="margin:0;">Procesando anÃ¡lisis de la tarjeta...</h4>
+            </div>
+            <div id="scan-log-container"
+              style="font-family: monospace; font-size: 0.82rem; color: var(--text-2); display: flex; flex-direction: column; gap: 8px;">
+              <!-- Logs inserted dynamically -->
+            </div>
+          </div>
+
+          <!-- Final verification result -->
+          <div id="scanner-result-view" class="hidden"
+            style="border: 1px solid rgba(28, 130, 173,0.3); border-radius: 12px; margin-top: 20px; background: rgba(28, 130, 173,0.02); overflow: hidden;">
+            <div
+              style="background: rgba(28, 130, 173,0.08); padding: 16px; border-bottom: 1px solid rgba(28, 130, 173,0.2); display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 1.5rem; color:#10B981;"><i class="fa-solid fa-circle-check"></i></span>
+              <div>
+                <h4 style="margin:0; color: var(--accent);">TARJETA 100% AUTÃ‰NTICA</h4>
+                <p style="margin:2px 0 0; font-size: 0.75rem; color: var(--text-2);">Firmas digitales y datos validados
+                  ante la RegistradurÃ­a</p>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 24px; align-items: start;">
+              <!-- Simulated document picture -->
+              <div
+                style="width:120px; height:150px; background: #151515; border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative;">
+                <i class="fa-solid fa-user"></i>
+                <span
+                  style="position: absolute; bottom: 8px; font-size: 0.6rem; color: var(--text-3); text-transform: uppercase;">Foto
+                  OCR</span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                  <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">Nombre
+                    Completo</span>
+                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-nombre">MIGUEL ÃNGEL
+                    TORRES PRADA</div>
+                </div>
+                <div>
+                  <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">NÂ° CÃ©dula
+                    (Col)</span>
+                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px; color: var(--primary);"
+                    id="res-scan-documento">1.044.490.043</div>
+                </div>
+                <div>
+                  <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">Fecha de
+                    ExpediciÃ³n</span>
+                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-expedicion">
+                    14-MAY-2012</div>
+                </div>
+                <div>
+                  <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">Lugar de
+                    ExpediciÃ³n</span>
+                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-lugar">BOGOTÃ D.C.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              style="padding: 16px; background: rgba(255,255,255,0.01); border-top: 1px solid rgba(28, 130, 173,0.1); text-align: center;">
+              <button class="btn btn-ghost btn-sm" onclick="resetScanner()">Escanear otra tarjeta</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- â•â•â• MODAL: AGENDAR NUEVO SERVICIO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <div class="modal-overlay hidden" id="modalNewAgenda" onclick="if(event.target===this) closeNewAgendaModal()">
+    <div class="modal-box"
+      style="max-width: 960px; width: 95%; max-height: 90vh; display: flex; flex-direction: column; background: linear-gradient(145deg, #ffffff, #f0f4f9); border: 2px solid rgba(28, 130, 173, 0.35); box-shadow: 0 25px 60px rgba(0, 48, 73, 0.25); border-radius: 24px; overflow: hidden;">
+      <div class="modal-h"
+        style="border-bottom: 1px solid rgba(28, 130, 173, 0.15); padding: 18px 28px; display: flex; justify-content: space-between; align-items: center; background: rgba(28, 130, 173, 0.04);">
+        <h3 class="modal-title"
+          style="color: #003049; font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-paper-plane" style="color:#1C82AD;"></i> <span>Agendamiento TecnolÃ³gico
+            Inteligente</span>
+        </h3>
+        <button class="modal-close" onclick="closeNewAgendaModal()"
+          style="background: rgba(0, 48, 73, 0.05); border: none; color: #003049; font-size: 1.3rem; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; transition: all 0.2s; font-weight: bold;"
+          onmouseover="this.style.background='#1c82ad'; this.style.color='#fff'"
+          onmouseout="this.style.background='rgba(0, 48, 73, 0.05)'; this.style.color='#003049'">âœ•</button>
+      </div>
+
+      <form id="newAgendaForm" onsubmit="event.preventDefault(); window.submitNewAgenda(event); return false;"
+        style="display: flex; flex-direction: column; overflow: hidden;">
+        <div class="modal-body" style="padding: 24px 28px; max-height: calc(90vh - 130px); overflow-y: auto;">
+          <div class="agenda-layout" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px;">
+            <!-- Column 1: Config -->
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label" for="agFinca"
+                  style="font-size: 0.78rem; text-transform: uppercase; color: #003049; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;"><i
+                    class="fa-solid fa-house-chimney" style="color:#1C82AD;"></i> Finca para el servicio</label>
+                <select id="agFinca" class="form-select" onchange="onAgendaConfigChanged(); updateAgFincaContactInfo();" required
+                  style="width: 100%; padding: 12px 14px; background: #f8fafc; border: 2px solid rgba(28, 130, 173, 0.25); border-radius: 12px; color: #003049; font-weight: 600; font-size: 0.92rem;">
+                  <!-- Populated by JS -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label"
+                  style="font-size: 0.78rem; text-transform: uppercase; color: #003049; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;"><i
+                    class="fa-solid fa-list-check" style="color:#1C82AD;"></i> Servicios Requeridos</label>
+                <div id="agServiciosContainer"
+                  style="display: flex; flex-direction: column; gap: 8px; max-height: 160px; overflow-y: auto; background: #ffffff; border: 2px solid rgba(28, 130, 173, 0.2); border-radius: 12px; padding: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                  <!-- Populated dynamically with multi-select checkboxes -->
+                </div>
+              </div>
+
+              <div
+                style="font-size: 0.82rem; color: #003049; background: linear-gradient(135deg, rgba(28, 130, 173, 0.1), rgba(0, 48, 73, 0.04)); border: 1px solid rgba(28, 130, 173, 0.3); padding: 12px 16px; border-radius: 12px; display: flex; align-items: center; gap: 10px; line-height: 1.4;">
+                <i class="fa-solid fa-user-gear" style="color:#1C82AD; font-size:1.3rem;"></i>
+                <div>
+                  <strong style="color: #1c82ad;">AsignaciÃ³n Inteligente de Piloto:</strong> El centro de control
+                  asignarÃ¡ automÃ¡ticamente la aeronave y el tÃ©cnico disponible.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label class="form-label" for="agCel"
+                    style="font-size: 0.78rem; text-transform: uppercase; color: #003049; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;">
+                    <i class="fa-solid fa-phone" style="color:#1C82AD;"></i> TelÃ©fono en campo
+                  </label>
+                  <span id="agResponsableDisplay" style="font-size: 0.76rem; color: #1C82AD; font-weight: 800;"></span>
+                </div>
+                <input type="tel" id="agCel" class="form-input" placeholder="Ej: 3001234567" required
+                  style="width: 100%; padding: 12px 14px; background: #f8fafc; border: 2px solid rgba(28, 130, 173, 0.25); border-radius: 12px; color: #003049; font-weight: 600; font-size: 0.92rem;" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="agObs"
+                  style="font-size: 0.78rem; text-transform: uppercase; color: #003049; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;"><i
+                    class="fa-solid fa-pen" style="color:#1C82AD;"></i> Observaciones adicionales</label>
+                <textarea id="agObs" class="form-textarea"
+                  placeholder="Ej: maleza alta, dosel irregular, cables elÃ©ctricos..."
+                  style="width: 100%; height: 75px; padding: 12px 14px; background: #f8fafc; border: 2px solid rgba(28, 130, 173, 0.25); border-radius: 12px; color: #003049; font-weight: 500; font-size: 0.88rem; resize: none;"></textarea>
+              </div>
+            </div>
+
+            <!-- Column 2: Calendar and Slots -->
+            <div
+              style="display: flex; flex-direction: column; gap: 16px; background: #ffffff; border: 1.5px solid rgba(28, 130, 173, 0.2); border-radius: 16px; padding: 18px; box-shadow: 0 4px 15px rgba(0, 48, 73, 0.04);">
+              <h4
+                style="margin:0; font-size: 0.88rem; color: #003049; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(28, 130, 173, 0.15); padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-calendar-days"
+                    style="color:#1C82AD;"></i> Fecha y Hora de OperaciÃ³n</span>
+              </h4>
+
+              <!-- Technological Calendar -->
+              <div class="tech-calendar-container"
+                style="background: #f8fafc; border: 1px solid rgba(28, 130, 173, 0.2); border-radius: 12px; padding: 14px;">
+                <div class="calendar-header"
+                  style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <button type="button" class="btn-cal-nav" onclick="changeCalMonth(-1)"
+                    style="background: #ffffff; border: 1px solid rgba(28,130,173,0.3); color: #003049; padding: 4px 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">&lt;</button>
+                  <div style="display: flex; gap: 6px;">
+                    <select id="calMonthSelect" onchange="onCalMonthSelectChange()"
+                      style="background: #ffffff; border: 1px solid rgba(28,130,173,0.3); color: #003049; font-weight: 800; font-size: 0.85rem; padding: 4px 10px; border-radius: 8px; outline: none; cursor: pointer;">
+                      <option value="0">Enero</option>
+                      <option value="1">Febrero</option>
+                      <option value="2">Marzo</option>
+                      <option value="3">Abril</option>
+                      <option value="4">Mayo</option>
+                      <option value="5">Junio</option>
+                      <option value="6">Julio</option>
+                      <option value="7">Agosto</option>
+                      <option value="8">Septiembre</option>
+                      <option value="9">Octubre</option>
+                      <option value="10">Noviembre</option>
+                      <option value="11">Diciembre</option>
+                    </select>
+                    <select id="calYearSelect" onchange="onCalMonthSelectChange()"
+                      style="background: #ffffff; border: 1px solid rgba(28,130,173,0.3); color: #003049; font-weight: 800; font-size: 0.85rem; padding: 4px 10px; border-radius: 8px; outline: none; cursor: pointer;">
+                      <option value="2026">2026</option>
+                      <option value="2027">2027</option>
+                      <option value="2028">2028</option>
+                    </select>
+                  </div>
+                  <button type="button" class="btn-cal-nav" onclick="changeCalMonth(1)"
+                    style="background: #ffffff; border: 1px solid rgba(28,130,173,0.3); color: #003049; padding: 4px 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">&gt;</button>
+                </div>
+                <div class="calendar-weekdays"
+                  style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.7rem; color: #6c757d; font-weight: 800; margin-bottom: 8px;">
+                  <div>DOM</div>
+                  <div>LUN</div>
+                  <div>MAR</div>
+                  <div>MIE</div>
+                  <div>JUE</div>
+                  <div>VIE</div>
+                  <div>SAB</div>
+                </div>
+                <div id="calendarDaysGrid"
+                  style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;">
+                  <!-- Dynamic days -->
+                </div>
+              </div>
+
+              <!-- Time Selection Section -->
+              <div class="time-slots-container"
+                style="background: #f8fafc; border: 1.5px solid rgba(28, 130, 173, 0.2); border-radius: 14px; padding: 14px;">
+                <h5
+                  style="margin: 0 0 10px; font-size: 0.78rem; color: #003049; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;">
+                  <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-clock"
+                      style="color:#1C82AD;"></i> Hora de OperaciÃ³n</span>
+                  <span style="font-size: 0.72rem; color: #6c757d; font-weight: 600;">Cualquier hora exacta</span>
+                </h5>
+
+                <!-- Custom Time Selector Input -->
+                <div
+                  style="display: flex; gap: 10px; align-items: center; margin-bottom: 12px; background: #ffffff; padding: 8px 12px; border-radius: 12px; border: 1px solid rgba(28,130,173,0.3);">
+                  <label for="agCustomTimePicker"
+                    style="font-size: 0.82rem; font-weight: 700; color: #003049; white-space: nowrap; display:flex; align-items:center; gap:6px;"><i
+                      class="fa-regular fa-clock" style="color:#1C82AD;"></i> Hora exacta:</label>
+                  <input type="time" id="agCustomTimePicker" value="08:30"
+                    onchange="window.onCustomTimeChanged(this.value)"
+                    style="flex: 1; padding: 6px 10px; border-radius: 8px; border: 1.5px solid #1C82AD; background: #ffffff; color: #003049; font-weight: 800; font-size: 0.95rem; font-family: 'Outfit', sans-serif; cursor: pointer;" />
+                </div>
+
+                <div style="font-size: 0.73rem; font-weight: 700; color: #4a5c6a; margin-bottom: 8px;">O elige una
+                  franja rÃ¡pida:</div>
+                <div id="agSlotsPlaceholder"
+                  style="font-size: 0.8rem; color: #6c757d; text-align: center; padding: 12px; border: 1px dashed rgba(28,130,173,0.3); border-radius: 10px; background: #ffffff; display: none;">
+                  Selecciona una fecha en el calendario
+                </div>
+                <div id="agSlotsGrid"
+                  style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; max-height: 110px; overflow-y: auto;">
+                  <!-- Dynamic quick slots -->
+                </div>
+              </div>
+
+              <!-- Resumen de Agendamiento -->
+              <div id="agSummaryBox"
+                style="margin-top: auto; padding: 14px 16px; background: linear-gradient(135deg, rgba(28, 130, 173, 0.08), rgba(0, 48, 73, 0.04)); border: 1.5px solid rgba(28, 130, 173, 0.3); border-radius: 14px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px;">
+                <div style="display: flex; justify-content: space-between;"><span
+                    style="color: #003049; font-weight: 600;">Ãrea Estimada:</span><span id="agSummaryArea"
+                    style="color: #003049; font-weight: 800;">--</span></div>
+                <div style="display: flex; justify-content: space-between;"><span
+                    style="color: #003049; font-weight: 600;">Horario Programado:</span><span id="agSummaryDateTime"
+                    style="color: #003049; font-weight: 800;">No seleccionada</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-f"
+          style="border-top: 1px solid rgba(28, 130, 173, 0.15); padding: 18px 28px; display: flex; justify-content: flex-end; gap: 14px; background: #ffffff;">
+          <button type="button" class="btn btn-ghost" onclick="closeNewAgendaModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitAgenda"
+            style="padding: 12px 28px; font-size: 0.95rem; background: linear-gradient(135deg, #1C82AD 0%, #003049 100%); border:none; color:#ffffff; font-weight:800; border-radius:12px; cursor:pointer;"><i
+              class="fa-solid fa-paper-plane"></i> Agendar Vuelo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- â•â•â• MODAL: AGREGAR NUEVA FINCA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <div class="modal-overlay hidden" id="modalNewFinca" onclick="if(event.target===this) closeNewFincaModal()">
+    <div class="modal-box" style="max-width:560px;">
+      <div class="modal-h">
+        <h3 class="modal-title"><i class="fa-solid fa-wheat-awn" style="color:var(--accent); margin-right:6px;"></i> Registrar Nueva Finca / Predio</h3>
+        <button class="modal-close" onclick="closeNewFincaModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="newFincaForm" onsubmit="event.preventDefault(); window.submitNewFinca(event); return false;">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="fincNombre">Nombre del Proyecto o Predio *</label>
+            <input type="text" id="fincNombre" class="form-input" placeholder="Ej: Proyecto Palma Central / Hacienda San Mateo" required />
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="fincResponsable">Responsable en Campo / Encargado *</label>
+              <input type="text" id="fincResponsable" class="form-input" placeholder="Ej: Carlos Mendoza" required />
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="fincTelAdmin">TelÃ©fono del Administrador *</label>
+              <input type="tel" id="fincTelAdmin" class="form-input" placeholder="Ej: 3101234567" required oninput="this.value = this.value.replace(/[^0-9+\s-]/g, '')" />
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label" for="fincDepto">Departamento (Colombia) *</label>
+              <select id="fincDepto" class="form-select" onchange="window.updateMunicipios('fincDepto', 'fincMuni')" required>
+                <!-- Populated dynamically with 32 departments -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="fincMuni">Municipio Oficial *</label>
+              <select id="fincMuni" class="form-select" required>
+                <!-- Populated dynamically based on chosen department -->
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fincHa">ExtensiÃ³n Operativa (HectÃ¡reas) *</label>
+            <input type="number" id="fincHa" class="form-input" placeholder="Min. 0.1 ha â€” MÃ¡x. 5.000 ha (permite decimales, ej: 12.5)" min="0.1" max="5000" step="0.1" required />
+            <small style="color:var(--text-3); font-size:0.75rem; margin-top:3px; display:block;">Rango permitido: 0.1 ha a 5.000 ha (soporta decimales ej: 4.5, 18.75).</small>
+          </div>
+
+          <!-- MÃ³dulo Integrado de UbicaciÃ³n & Google Maps -->
+          <div style="background: rgba(28, 130, 173, 0.05); border: 1.5px solid rgba(28, 130, 173, 0.22); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label" for="fincMapsUrl" style="display:flex; justify-content:space-between; align-items:center;">
+                <span><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:4px;"></i> Enlace Google Maps (Opcional)</span>
+                <span style="font-size:0.72rem; color:var(--accent); font-weight:700;">Auto-extrae coordenadas</span>
+              </label>
+              <input type="url" id="fincMapsUrl" class="form-input" placeholder="Pega el link de Maps (ej: https://maps.app.goo.gl/... o https://google.com/maps?q=5.33,-72.39)" oninput="window.autoExtractMapsCoords('fincMapsUrl', 'fincLat', 'fincLng')" />
+              <small style="color:var(--text-3); font-size:0.73rem; margin-top:3px; display:block;">Pega el enlace compartido desde Google Maps de tu finca para posicionamiento inmediato.</small>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom: 12px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="fincLat" style="font-size:0.76rem;">Latitud GPS</label>
+                <input type="number" id="fincLat" class="form-input" placeholder="Ej: 5.337800" step="0.000001" style="background:#ffffff;" oninput="window.updateMapsPreviewLive('fincLat', 'fincLng', 'fincMapsLiveBox', 'fincMapsLiveLink')" />
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="fincLng" style="font-size:0.76rem;">Longitud GPS</label>
+                <input type="number" id="fincLng" class="form-input" placeholder="Ej: -72.395900" step="0.000001" style="background:#ffffff;" oninput="window.updateMapsPreviewLive('fincLat', 'fincLng', 'fincMapsLiveBox', 'fincMapsLiveLink')" />
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-ghost btn-sm" onclick="gpsCapture()" id="btnGps" style="width:100%; border: 1.5px dashed rgba(28, 130, 173, 0.4); background:#ffffff; color:#003049; font-weight:700; border-radius:10px; padding:9px 12px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+              <i class="fa-solid fa-location-crosshairs" style="color:var(--accent);"></i>
+              <span id="btnGpsText">Capturar mi GPS actual en tiempo real</span>
+            </button>
+
+            <!-- PrevisualizaciÃ³n Inmediata en Google Maps sin guardar -->
+            <div id="fincMapsLiveBox" style="display:none; margin-top:10px; padding:10px 14px; background:#ffffff; border-radius:10px; border:1.5px solid #0284c7; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(2,132,199,0.1);">
+              <span style="font-size:0.80rem; color:#003049; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-location-dot" style="color:#ef4444; font-size:1rem;"></i> UbicaciÃ³n GPS detectada
+              </span>
+              <a id="fincMapsLiveLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:#0284c7; color:#ffffff; font-weight:800; text-decoration:none; padding:6px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; font-size:0.80rem;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver en Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="modal-f">
+          <button type="button" class="btn btn-ghost" onclick="closeNewFincaModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Registrar Finca</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- â•â•â• MODAL: EDITAR FINCA EXISTENTE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <div class="modal-overlay hidden" id="modalEditFinca" onclick="if(event.target===this) closeEditFincaModal()">
+    <div class="modal-box" style="max-width:560px;">
+      <div class="modal-h">
+        <h3 class="modal-title"><i class="fa-solid fa-pen-to-square" style="color:var(--accent); margin-right:6px;"></i> Editar Finca</h3>
+        <button class="modal-close" onclick="closeEditFincaModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="editFincaForm" onsubmit="submitEditFinca(event)">
+        <input type="hidden" id="editFincId" />
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="editFincNombre">Nombre del Proyecto o Predio *</label>
+            <input type="text" id="editFincNombre" class="form-input" placeholder="Ej: Proyecto Palma Central / La Esperanza" required />
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:12px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="editFincResponsable">Responsable en Campo / Encargado *</label>
+              <input type="text" id="editFincResponsable" class="form-input" placeholder="Ej: Carlos Mendoza" required />
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="editFincTelAdmin">TelÃ©fono del Administrador *</label>
+              <input type="tel" id="editFincTelAdmin" class="form-input" placeholder="Ej: 3101234567" required oninput="this.value = this.value.replace(/[^0-9+\s-]/g, '')" />
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+            <div class="form-group">
+              <label class="form-label" for="editFincDepto">Departamento (Colombia) *</label>
+              <select id="editFincDepto" class="form-select" onchange="window.updateMunicipios('editFincDepto', 'editFincMuni')" required>
+                <!-- Populated dynamically with 32 departments -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editFincMuni">Municipio Oficial *</label>
+              <select id="editFincMuni" class="form-select" required>
+                <!-- Populated dynamically based on chosen department -->
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editFincHa">ExtensiÃ³n Operativa (HectÃ¡reas) *</label>
+            <input type="text" id="editFincHa" class="form-input" placeholder="Min. 0.1 ha â€” MÃ¡x. 5.000 ha (ej: 44.6 o 44,6)" required oninput="this.value = this.value.replace(/[^0-9.,]/g, '')" />
+            <small style="color:var(--text-3); font-size:0.75rem; margin-top:3px; display:block;">Rango permitido: 0.1 ha a 5.000 ha (soporta decimales ej: 44.6 o 44,6).</small>
+          </div>
+
+          <!-- MÃ³dulo Integrado de UbicaciÃ³n & Google Maps -->
+          <div style="background: rgba(28, 130, 173, 0.05); border: 1.5px solid rgba(28, 130, 173, 0.22); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label" for="editFincMapsUrl" style="display:flex; justify-content:space-between; align-items:center;">
+                <span><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:4px;"></i> Enlace Google Maps (Opcional)</span>
+                <span style="font-size:0.72rem; color:var(--accent); font-weight:700;">Auto-extrae coordenadas</span>
+              </label>
+              <input type="url" id="editFincMapsUrl" class="form-input" placeholder="Pega el link de Maps (ej: https://maps.app.goo.gl/... o https://google.com/maps?q=5.33,-72.39)" oninput="window.autoExtractMapsCoords('editFincMapsUrl', 'editFincLat', 'editFincLng')" />
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom: 12px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="editFincLat" style="font-size:0.76rem;">Latitud GPS</label>
+                <input type="number" id="editFincLat" class="form-input" placeholder="Ej: 5.337800" step="0.000001" style="background:#ffffff;" oninput="window.updateMapsPreviewLive('editFincLat', 'editFincLng', 'editFincMapsLiveBox', 'editFincMapsLiveLink')" />
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" for="editFincLng" style="font-size:0.76rem;">Longitud GPS</label>
+                <input type="number" id="editFincLng" class="form-input" placeholder="Ej: -72.395900" step="0.000001" style="background:#ffffff;" oninput="window.updateMapsPreviewLive('editFincLat', 'editFincLng', 'editFincMapsLiveBox', 'editFincMapsLiveLink')" />
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-ghost btn-sm" onclick="gpsCaptureEdit()" id="btnGpsEdit" style="width:100%; border: 1.5px dashed rgba(28, 130, 173, 0.4); background:#ffffff; color:#003049; font-weight:700; border-radius:10px; padding:9px 12px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+              <i class="fa-solid fa-location-crosshairs" style="color:var(--accent);"></i>
+              <span id="btnGpsEditText">Capturar mi GPS actual en tiempo real</span>
+            </button>
+
+            <!-- PrevisualizaciÃ³n Inmediata en Google Maps sin guardar (EdiciÃ³n) -->
+            <div id="editFincMapsLiveBox" style="display:none; margin-top:10px; padding:10px 14px; background:#ffffff; border-radius:10px; border:1.5px solid #0284c7; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(2,132,199,0.1);">
+              <span style="font-size:0.80rem; color:#003049; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-location-dot" style="color:#ef4444; font-size:1rem;"></i> UbicaciÃ³n GPS detectada
+              </span>
+              <a id="editFincMapsLiveLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:#0284c7; color:#ffffff; font-weight:800; text-decoration:none; padding:6px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; font-size:0.80rem;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver en Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="modal-f">
+          <button type="button" class="btn btn-ghost" onclick="closeEditFincaModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- â•â•â• MODAL: DETALLE DE INFORME O BITÃCORA CLIENTE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+  <div class="modal-overlay hidden" id="modalRecomendacionesCliente" onclick="if(event.target===this) closeRecomendacionesModal()">
+    <div class="modal-box" style="max-width:640px; width:92%; border-radius:24px; background:#ffffff; box-shadow:0 20px 50px rgba(0,48,73,0.15); border:1.5px solid rgba(28,130,173,0.2);">
+      <div class="modal-h" style="border-bottom:1px solid rgba(28,130,173,0.15); padding:18px 24px; display:flex; justify-content:space-between; align-items:center;">
+        <h3 class="modal-title" id="modalDocDetailTitle" style="margin:0; font-family:'Outfit',sans-serif; color:#003049; font-size:1.15rem; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-file-signature" style="color:#1c82ad;"></i> Detalle del Registro
+        </h3>
+        <button class="modal-close" onclick="closeRecomendacionesModal()" style="background:none; border:none; color:#64748b; font-size:1.2rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="recomendacionesModalContent" style="padding:20px 24px; font-size:0.92rem; line-height:1.6; max-height:75vh; overflow-y:auto;">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Subir Recibo de Pago -->
+  <div class="modal-overlay hidden" id="modalUploadReceipt" onclick="if(event.target===this) closeUploadReceiptModal()">
+    <div class="modal-box"
+      style="max-width: 500px; width: 90%; background: rgba(10, 10, 10, 0.95); border: 1px solid rgba(28, 130, 173, 0.25); box-shadow: 0 0 50px rgba(0,0,0,0.8); backdrop-filter: blur(20px); border-radius: 16px; overflow: hidden; position: relative; margin: 10% auto;">
+      <div class="modal-h"
+        style="border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="modal-title"
+          style="color: #fff; font-family: 'Syne', sans-serif; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent);"></i> Subir Comprobante de Pago
+        </h3>
+        <button class="modal-close" onclick="closeUploadReceiptModal()"
+          style="background: none; border: none; color: var(--text-3); font-size: 1.3rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="uploadReceiptForm" onsubmit="submitReceiptProof(event)" style="padding: 24px;">
+        <input type="hidden" id="receiptTurnoId" />
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label"
+            style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-2); font-weight: bold; margin-bottom: 6px; display: block;">Seleccionar
+            archivo comprobante (.pdf, .png, .jpg)</label>
+          <input type="file" id="receiptFile" class="form-input" required
+            style="width: 100%; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;" />
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-label"
+            style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-2); font-weight: bold; margin-bottom: 6px; display: block;">MÃ©todo
+            de Pago Utilizado</label>
+          <select id="receiptMethod" class="form-select" required
+            style="width: 100%; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
+            <option value="Transferencia">Transferencia Bancaria (Bancolombia/Nequi)</option>
+            <option value="Tarjeta">Tarjeta de CrÃ©dito / PSE</option>
+            <option value="Efectivo">Efectivo / Corresponsal</option>
+          </select>
+        </div>
+        <div style="display: flex; justify-content: right; gap: 12px;">
+          <button type="button" class="btn btn-ghost" onclick="closeUploadReceiptModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary"
+            style="background: var(--accent); border-color: var(--accent); color: #000; font-weight: bold;">Subir y
+            Validar Pago</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Modificar InformaciÃ³n de Perfil Seguro (8 DÃ­gitos) -->
+  <div class="modal-overlay hidden" id="modalModificarPerfilSeguro" onclick="if(event.target===this) closeSecureProfileModal()"
+    style="position:fixed; inset:0; background:rgba(0,48,73,0.65); backdrop-filter:blur(15px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+    <div class="modal-box"
+      style="max-width: 640px; width: 92%; background: #ffffff; border: 1.5px solid rgba(28,130,173,0.3); box-shadow: 0 20px 60px rgba(0,48,73,0.25); border-radius: 20px; overflow: hidden; position: relative; margin: auto; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-h"
+        style="background: #003049; padding: 20px 26px; display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="modal-title"
+          style="color: #fff; font-family: 'Syne', sans-serif; font-size: 1.15rem; display: flex; align-items: center; gap: 10px; margin: 0;">
+          <i class="fa-solid fa-shield-halved" style="color:#E4C7A1;"></i> Modificar InformaciÃ³n de Perfil
+        </h3>
+        <button type="button" onclick="closeSecureProfileModal()"
+          style="background: none; border: none; color: #E4C7A1; font-size: 1.3rem; cursor: pointer;">âœ•</button>
+      </div>
+      <div style="padding: 24px 28px;">
+
+        <!-- â•â•â• PASO 1: VERIFICACIÃ“N POR CÃ“DIGO DE 8 DÃGITOS â•â•â• -->
+        <div id="secProfStep1">
+          <div style="background: rgba(0,48,73,0.04); border-left: 4px solid #1C82AD; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="margin: 0; font-size: 0.84rem; color: #343a40; line-height: 1.5;">
+              Por seguridad de tu cuenta y para garantizar la validez legal de tus contratos y bitÃ¡coras de vuelo, solicita un <strong>cÃ³digo de autorizaciÃ³n de 8 dÃ­gitos</strong> a tu correo registrado. Al validarlo y aceptarlo, se desplegarÃ¡ el mÃ³dulo para modificar tus datos (incluyendo nombre, telÃ©fono, documento y correo).
+            </p>
+          </div>
+
+          <!-- Correo registrado y botÃ³n de solicitud -->
+          <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-weight: 800; color: #003049; font-size: 0.88rem;">Paso 1: Solicita tu cÃ³digo</div>
+              <div style="font-size: 0.80rem; color: #64748b;">Se enviarÃ¡ a: <strong id="secProfEmailTarget" style="color:#003049;">â€”</strong></div>
+            </div>
+            <button type="button" id="btnReqProfileOtp" onclick="solicitarCodigoPerfilModal()" class="btn btn-sm"
+              style="background: #003049; color: #ffffff; border: 1px solid #1C82AD; border-radius: 8px; padding: 9px 16px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+              <i class="fa-solid fa-paper-plane" style="color: #E4C7A1;"></i> Enviar CÃ³digo (8 DÃ­gitos)
+            </button>
+          </div>
+
+          <!-- Input para el cÃ³digo de 8 dÃ­gitos -->
+          <div style="margin-bottom: 16px;">
+            <label style="font-size: 0.84rem; font-weight: 800; color: #003049; display: block; margin-bottom: 6px;">
+              INGRESA EL CÃ“DIGO DE 8 DÃGITOS *
+            </label>
+            <input type="text" id="secProfCodigo" maxlength="12" placeholder="1234 - 5678"
+              class="form-input" style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 900; letter-spacing: 4px; text-align: center; color: #003049; background: #ffffff; border: 2px solid #1C82AD; border-radius: 10px; width: 100%; box-sizing: border-box; padding: 12px;" oninput="formatearInput8DigitosModal(this)" />
+          </div>
+
+          <div id="secProfAlertBox1" style="display: none; padding: 10px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-align: center; margin-bottom: 14px;"></div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px;">
+            <button type="button" onclick="closeSecureProfileModal()" class="btn btn-ghost" style="font-weight: 700; border-radius: 10px;">
+              Cancelar
+            </button>
+            <button type="button" id="btnVerifyProfileOtp" onclick="verificarCodigoPerfilModal()" class="btn btn-primary"
+              style="background: linear-gradient(135deg, #003049 0%, #1C82AD 100%); color: #fff; font-weight: 800; border-radius: 10px; padding: 12px 24px; border:none; cursor:pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,48,73,0.3);">
+              <i class="fa-solid fa-check-double" style="color: #E4C7A1;"></i> Aceptar y Verificar CÃ³digo
+            </button>
+          </div>
+        </div>
+
+        <!-- â•â•â• PASO 2: DESPLIEGUE DE INFORMACIÃ“N MODIFICABLE (TODO MENOS CONTRASEÃ‘A, HASTA EL CORREO) â•â•â• -->
+        <div id="secProfStep2" style="display: none;">
+          <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; font-size: 0.86rem; color: #1e40af; font-weight: 600; line-height: 1.5;">
+            <i class="fa-solid fa-circle-check" style="color: #2563eb; margin-right: 6px; font-size: 1rem;"></i> CÃ³digo verificado exitosamente. Ahora puedes modificar tus datos personales y de contacto.
+          </div>
+
+          <form id="secureProfileEditForm" onsubmit="submitSecureProfileChanges(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Nombre Completo / Titular *</label>
+                <input type="text" id="secProfNombre" required class="form-input" style="text-transform: uppercase; border-radius: 10px; width: 100%; box-sizing: border-box;" />
+              </div>
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Empresa / RazÃ³n Social</label>
+                <input type="text" id="secProfEmpresa" class="form-input" style="text-transform: uppercase; border-radius: 10px; width: 100%; box-sizing: border-box;" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">TelÃ©fono / WhatsApp *</label>
+                <input type="tel" id="secProfTel" required class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
+              </div>
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Correo ElectrÃ³nico (Gmail/Email) *</label>
+                <input type="email" id="secProfEmail" required class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Tipo de IdentificaciÃ³n *</label>
+                <select id="secProfTipoDoc" class="form-input" onchange="if(typeof ajustarValidacionSecProfDoc==='function')ajustarValidacionSecProfDoc();" style="border-radius: 10px; width: 100%; box-sizing: border-box; font-weight:600;">
+                  <option value="CC">CÃ©dula de CiudadanÃ­a (CC)</option>
+                  <option value="NIT">NIT (Empresa)</option>
+                  <option value="CE">CÃ©dula de ExtranjerÃ­a (CE)</option>
+                  <option value="PASAPORTE">Pasaporte</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">NÃºmero de Documento *</label>
+                <input type="text" id="secProfCedula" required maxlength="10" inputmode="numeric" autocomplete="off"
+                  oninput="if(!document.getElementById('secProfTipoDoc')||document.getElementById('secProfTipoDoc').value==='CC'||document.getElementById('secProfTipoDoc').value==='NIT'){ this.value=this.value.replace(/\D/g,'').slice(0,10); }"
+                  class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px;">
+              <div>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Fecha de ExpediciÃ³n (Hasta Ayer)</label>
+                <input type="date" id="secProfExpedicion" class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
+              </div>
+            </div>
+
+            <div id="secProfAlertBox2" style="display: none; padding: 10px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; text-align: center; margin-bottom: 14px;"></div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+              <button type="button" onclick="closeSecureProfileModal()" class="btn btn-ghost" style="font-weight: 700; border-radius: 10px;">
+                Cancelar
+              </button>
+              <button type="submit" id="btnSaveSecureProfile" class="btn btn-primary" style="background: linear-gradient(135deg, #003049 0%, #1C82AD 100%); color: #fff; font-weight: 800; border-radius: 10px; padding: 12px 24px; border:none; cursor:pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,48,73,0.3);">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+  
+
+  
+
+  <!-- <i class="fa-solid fa-credit-card"></i> MODAL SUBIR COMPROBANTE DE PAGO DE CLIENTE <i class="fa-solid fa-credit-card"></i> -->
+  <div id="modalSubirComprobante"
+    style="display:none; position:fixed; inset:0; background:rgba(0,48,73,0.6); backdrop-filter:blur(15px); z-index:99999; align-items:center; justify-content:center; padding:20px;">
+    <div
+      style="background:#ffffff; border-radius:24px; max-width:480px; width:100%; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); border:1px solid rgba(28,130,173,0.3);">
+      <div
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:12px;">
+        <h3 style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.3rem;"><i class="fa-solid fa-upload"></i> Adjuntar Comprobante de
+          Pago</h3>
+        <button onclick="cerrarModalSubirComprobante()"
+          style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#6c757d;">âœ•</button>
+      </div>
+      <p style="font-size:0.88rem; color:#4a5568; margin-bottom:16px;">
+        Subiendo comprobante para el Pago <strong id="compPagoIdDisplay">#1</strong>.
+      </p>
+
+      <form onsubmit="submitComprobantePago(event)">
+        <div style="margin-bottom:16px;">
+          <label style="font-size:0.8rem; font-weight:700; color:#003049; display:block; margin-bottom:6px;">Referencia
+            / NÂ° de TransacciÃ³n *</label>
+          <input type="text" id="compRefInput" placeholder="Ej: Nequi 984012 o Ref. Bancolombia 48219" required
+            style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; font-size:0.95rem;" />
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="font-size:0.8rem; font-weight:700; color:#003049; display:block; margin-bottom:6px;">Seleccionar
+            Foto / PDF del Soporte</label>
+          <input type="file" accept="image/*,application/pdf"
+            style="width:100%; padding:10px; border:1px dashed #1c82ad; border-radius:10px; background:rgba(28,130,173,0.05);" />
+        </div>
+
+        <div style="display:flex; gap:12px;">
+          <button type="button" onclick="cerrarModalSubirComprobante()" class="btn"
+            style="flex:1; padding:12px; background:#e2e8f0; color:#4a5568; font-weight:700; border-radius:10px; border:none; cursor:pointer;">Cancelar</button>
+          <button type="submit" class="btn"
+            style="flex:2; padding:12px; background:#1c82ad; color:white; font-weight:800; border-radius:10px; border:none; cursor:pointer;"><i class="fa-solid fa-sparkles"></i>
+            Enviar Comprobante</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--  MODAL DE TRANSFERENCIA Y AUTENTICACIÃ“N DE CUENTA ANTERIOR  -->
+  <div id="modalTransferNitAuth" class="hidden" onclick="if(event.target===this) closeTransferAuthModal()"
+    style="display:none; position:fixed; inset:0; background:rgba(0,48,73,0.7); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+    <div class="modal-box liquid-glass"
+      style="background:linear-gradient(145deg, #ffffff, #f0f7ff); border-radius:26px; max-width:500px; width:100%; padding:30px; box-shadow:0 25px 60px rgba(0,48,73,0.4); border:1px solid rgba(28,130,173,0.4); position:relative; animation:fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+      
+      <!-- Encabezado del Modal -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; border-bottom:1px solid rgba(28,130,173,0.15); padding-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, #f59e0b, #d97706); display:flex; align-items:center; justify-content:center; color:#ffffff; font-size:1.2rem; box-shadow:0 4px 12px rgba(245,158,11,0.35);">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h3 id="transferModalTitle" style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.25rem; font-weight:800;">
+              Autorizar Transferencia de Documento
+            </h3>
+            <span style="font-size:0.78rem; color:#6c757d; font-weight:600;">VerificaciÃ³n de Titularidad Previa</span>
+          </div>
+        </div>
+        <button onclick="closeTransferAuthModal()"
+          style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#6c757d; padding:4px; line-height:1; transition:color 0.2s;"
+          onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#6c757d'">âœ•</button>
+      </div>
+
+      <!-- Tarjeta informativa de la cuenta anterior -->
+      <div style="background:rgba(28,130,173,0.06); border:1px solid rgba(28,130,173,0.25); border-radius:16px; padding:16px; margin-bottom:20px;">
+        <p id="transferModalDocDesc" style="margin:0 0 10px 0; font-size:0.88rem; color:#003049; line-height:1.45;">
+          El documento <strong id="transferNitDisplay" style="color:#1C82AD; font-size:0.95rem;"></strong> ya se encuentra registrado y verificado en el sistema a nombre de:
+        </p>
+        
+        <div style="background:#ffffff; border-radius:12px; padding:12px 14px; display:flex; align-items:center; gap:12px; border:1px solid rgba(0,0,0,0.06); box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+          <div style="width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg, #1C82AD, #003049); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.95rem;">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+          <div>
+            <div id="transferTitularNameDisplay" style="font-weight:800; color:#003049; font-size:0.95rem;">
+              Titular de la cuenta
+            </div>
+            <div id="transferTitularEmailDisplay" style="font-size:0.8rem; color:#64748b; font-weight:600;">
+              cuenta@flymetrics.co
+            </div>
+          </div>
+        </div>
+
+        <p id="transferModalNote" style="margin:12px 0 0 0; font-size:0.8rem; color:#475569; line-height:1.4;">
+           <em>Para transferir la titularidad de este documento a tu cuenta actual, por favor ingresa la contraseÃ±a de la cuenta anterior. Al autorizarla, tu cuenta nueva quedarÃ¡ verificada.</em>
+        </p>
+      </div>
+
+      <!-- Alerta de error dinÃ¡mica -->
+      <div id="transferAuthError" class="hidden"
+        style="display:none; background:#fef2f2; border:1px solid #f87171; color:#991b1b; padding:10px 14px; border-radius:10px; font-size:0.84rem; font-weight:600; margin-bottom:16px;">
+      </div>
+
+      <!-- Formulario de validaciÃ³n de contraseÃ±a de la cuenta anterior -->
+      <form onsubmit="submitTransferAccountAuth(event)">
+        <div style="margin-bottom:20px;">
+          <label style="font-size:0.82rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:6px; margin-bottom:6px; text-transform:uppercase;">
+            <i class="fa-solid fa-lock" style="color:#1C82AD;"></i> ContraseÃ±a de la cuenta anterior *
+          </label>
+          <input type="password" id="transferAccountPassword" required placeholder="Ingresa la contraseÃ±a de la cuenta anterior"
+            style="width:100%; padding:13px 15px; border-radius:12px; border:1.5px solid #cbd5e1; font-size:0.95rem; font-family:'Outfit',sans-serif; background:#ffffff; box-shadow:inset 0 1px 3px rgba(0,0,0,0.05); transition:border 0.2s;"
+            onfocus="this.style.borderColor='#1C82AD'" onblur="this.style.borderColor='#cbd5e1'" />
+        </div>
+
+        <div style="display:flex; gap:12px;">
+          <button type="button" onclick="closeTransferAuthModal()" class="btn"
+            style="flex:1; padding:13px; background:#e2e8f0; color:#475569; font-weight:700; border-radius:12px; border:none; cursor:pointer; font-size:0.92rem; transition:background 0.2s;">
+            Cancelar
+          </button>
+          <button type="submit" id="btnSubmitTransferAuth" class="btn"
+            style="flex:2; padding:13px; background:linear-gradient(135deg, #1C82AD 0%, #003049 100%); color:#ffffff; font-weight:800; border-radius:12px; border:none; cursor:pointer; font-size:0.95rem; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 18px rgba(0,48,73,0.3); transition:all 0.2s;">
+            <i class="fa-solid fa-key"></i> <span id="transferModalBtnText">Iniciar SesiÃ³n y Transferir</span>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+  <!-- MODAL REVISIÃ“N Y NEGOCIACIÃ“N DE COTIZACIÃ“N (PORTAL CLIENTE) -->
+  <div id="modalClientNegotiation" class="modal-overlay hidden" onclick="if(event.target===this) closeClientNegotiationModal()"
+    style="position:fixed; inset:0; background:rgba(0,48,73,0.7); backdrop-filter:blur(15px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+    <div class="modal-box"
+      style="background:#ffffff; border-radius:24px; max-width:580px; width:100%; padding:28px; box-shadow:0 25px 60px rgba(0,0,0,0.35); border:1px solid rgba(28,130,173,0.3); max-height:92vh; overflow-y:auto; position:relative; margin:auto;">
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #e2e8f0; padding-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, #10b981, #059669); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+            <i class="fa-solid fa-handshake"></i>
+          </div>
+          <div>
+            <h3 style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.25rem;">RevisiÃ³n de CotizaciÃ³n</h3>
+            <div id="clientNegRadicado" style="font-size:0.8rem; font-weight:800; color:#1C82AD;">#RAD-000</div>
+          </div>
+        </div>
+        <button onclick="closeClientNegotiationModal()" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#64748b;">âœ•</button>
+      </div>
+
+      <!-- Resumen del servicio -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px; margin-bottom:18px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.84rem;">
+          <div>
+            <span style="color:#64748b; font-weight:600;">Servicio:</span>
+            <div id="clientNegServicio" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
+          </div>
+          <div>
+            <span style="color:#64748b; font-weight:600;">Predio / Finca:</span>
+            <div id="clientNegFinca" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
+          </div>
+          <div>
+            <span style="color:#64748b; font-weight:600;">Fecha y Hora:</span>
+            <div id="clientNegFechaHora" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
+          </div>
+          <div>
+            <span style="color:#64748b; font-weight:600;">Piloto Asignado:</span>
+            <div id="clientNegPiloto" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Precio Propuesto -->
+      <div style="background:linear-gradient(135deg, #ecfdf5, #d1fae5); border:1px solid #a7f3d0; border-radius:14px; padding:16px; text-align:center; margin-bottom:18px;">
+        <div style="font-size:0.8rem; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
+          CotizaciÃ³n Oficial Flymetrics
+        </div>
+        <div id="clientNegPrecio" style="font-size:1.8rem; font-weight:900; color:#047857; letter-spacing:0.5px;">
+          $ 0 COP
+        </div>
+        <div id="clientNegEstadoBadge" style="margin-top:6px;">
+          <!-- Badge -->
+        </div>
+      </div>
+
+      <!-- ObservaciÃ³n del Administrador si existe -->
+      <div id="clientNegAdminMsgBox" style="display:none; background:#f0f9ff; border-left:4px solid #1c82ad; border-radius:8px; padding:12px 16px; margin-bottom:16px;">
+        <div style="font-size:0.78rem; font-weight:800; color:#0369a1; text-transform:uppercase;">Nota de Operaciones Flymetrics:</div>
+        <div id="clientNegAdminMsg" style="font-size:0.85rem; color:#0c4a6e; margin-top:3px; line-height:1.4;"></div>
+      </div>
+
+      <!-- Historial de negociaciÃ³n -->
+      <div id="clientNegHistorialBox" style="display:none; margin-bottom:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px;">
+        <div style="font-size:0.78rem; font-weight:800; color:#475569; text-transform:uppercase; margin-bottom:8px;">
+          <i class="fa-solid fa-clock-rotate-left"></i> Historial de NegociaciÃ³n
+        </div>
+        <div id="clientNegHistorialList" style="max-height:130px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+
+      <!-- SecciÃ³n de modificaciÃ³n / sugerencia (Oculta por defecto) -->
+      <div id="clientNegModificarSection" style="display:none; margin-bottom:18px; background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:16px;">
+        <label style="font-size:0.82rem; font-weight:800; color:#92400e; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+          <i class="fa-solid fa-pen"></i> Â¿QuÃ© cambios deseas proponer? (Tarifa, fecha o condiciones)
+        </label>
+        <textarea id="clientNegSugerencia" rows="3" placeholder="Ej: Solicito ajuste en la tarifa por volumen de hectÃ¡reas, o prefiero que el vuelo inicie a las 06:30 AM..."
+          style="width:100%; padding:10px; border-radius:8px; border:1px solid #d97706; font-size:0.88rem; font-family:'Outfit',sans-serif; box-sizing:border-box;"></textarea>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:10px;">
+          <button type="button" onclick="document.getElementById('clientNegModificarSection').style.display='none'" class="btn btn-sm"
+            style="padding:6px 12px; background:#e2e8f0; color:#475569; border-radius:6px; border:none; font-weight:700; cursor:pointer;">Cancelar</button>
+          <button type="button" id="btnEnviarSugerencia" onclick="window.responderCotizacionClientModal('modificar')" class="btn btn-sm"
+            style="padding:6px 14px; background:#d97706; color:#ffffff; border-radius:6px; border:none; font-weight:800; cursor:pointer;">
+            <i class="fa-solid fa-paper-plane"></i> Enviar Propuesta a Flymetrics
+          </button>
+        </div>
+      </div>
+
+      <!-- Botones de AcciÃ³n -->
+      <div id="clientNegActionButtons" style="display:flex; flex-direction:column; gap:10px;">
+        <button type="button" id="btnAceptarCotizacion" onclick="window.responderCotizacionClientModal('aceptar')" class="btn"
+          style="width:100%; padding:14px; background:linear-gradient(135deg, #059669 0%, #047857 100%); color:#ffffff; font-weight:800; font-size:1rem; border-radius:12px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 16px rgba(5,150,105,0.35); transition:transform 0.15s;">
+          <i class="fa-solid fa-circle-check"></i> Aceptar CotizaciÃ³n y Confirmar Vuelo
+        </button>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <button type="button" onclick="document.getElementById('clientNegModificarSection').style.display='block'; document.getElementById('clientNegSugerencia').focus();" class="btn"
+            style="padding:11px; background:#ffffff; color:#003049; border:2px solid #003049; font-weight:800; font-size:0.85rem; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <i class="fa-solid fa-pen-to-square"></i> Negociar / Modificar
+          </button>
+          <button type="button" onclick="window.confirmarOrdenWA(window._currentNegotiationTurnoId)" class="btn"
+            style="padding:11px; background:#25D366; color:#ffffff; border:none; font-weight:800; font-size:0.85rem; border-radius:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 10px rgba(37,211,102,0.25);">
+            <i class="fa-brands fa-whatsapp"></i> Hablar con Asesor
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR AGENDAMIENTO (MODIFICAR SOLICITUD PENDIENTE) -->
+  <div id="modalEditAgenda" class="modal-overlay hidden" onclick="if(event.target===this) closeEditAgendaModal()"
+    style="position:fixed; inset:0; background:rgba(0,48,73,0.65); backdrop-filter:blur(15px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+    <div class="modal-box"
+      style="background:#ffffff; border-radius:24px; max-width:540px; width:100%; padding:28px; box-shadow:0 25px 60px rgba(0,0,0,0.35); border:1px solid rgba(28,130,173,0.3); max-height:90vh; overflow-y:auto; position:relative; margin:auto;">
+      <div
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:12px;">
+        <h3
+          style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.3rem; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-pen-to-square" style="color:#1C82AD;"></i> Modificar Solicitud de Vuelo
+        </h3>
+        <button onclick="closeEditAgendaModal()"
+          style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#6c757d;">âœ•</button>
+      </div>
+      <p style="font-size:0.86rem; color:#4a5568; margin-bottom:18px; line-height:1.45;">
+        Puedes modificar la finca, servicios, fecha, hora u observaciones especiales de tu orden de vuelo.
+      </p>
+
+      <form onsubmit="submitEditAgenda(event)">
+        <input type="hidden" id="editAgendaId" />
+
+        <!-- Finca Select -->
+        <div style="margin-bottom:16px;">
+          <label
+            style="font-size:0.8rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:6px; margin-bottom:6px; text-transform:uppercase;">
+            <i class="fa-solid fa-house-chimney" style="color:#1C82AD;"></i> Finca para el servicio *
+          </label>
+          <select id="editAgendaFinca" required
+            style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; font-size:0.92rem; font-weight:600; color:#003049; background:#f8fafc;">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <!-- Servicios Checkboxes -->
+        <div style="margin-bottom:16px;">
+          <label
+            style="font-size:0.8rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:6px; margin-bottom:6px; text-transform:uppercase;">
+            <i class="fa-solid fa-list-check" style="color:#1C82AD;"></i> Servicios Requeridos *
+          </label>
+          <div id="editAgendaServiciosContainer"
+            style="display:flex; flex-direction:column; gap:8px; max-height:140px; overflow-y:auto; background:#ffffff; border:1px solid #ccc; border-radius:10px; padding:10px;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Fecha y Hora Exacta -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div>
+            <label
+              style="font-size:0.8rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:6px; margin-bottom:6px; text-transform:uppercase;">
+              <i class="fa-solid fa-calendar-days" style="color:#1C82AD;"></i> Fecha de Vuelo *
+            </label>
+            <input type="date" id="editAgendaFecha" required
+              style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; font-size:0.92rem; font-weight:600;" />
+          </div>
+
+          <div>
+            <label
+              style="font-size:0.8rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:6px; margin-bottom:6px; text-transform:uppercase;">
+              <i class="fa-solid fa-clock" style="color:#1C82AD;"></i> Hora Exacta *
+            </label>
+            <input type="time" id="editAgendaHora" required
+              style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; font-size:0.92rem; font-weight:600;" />
+          </div>
+        </div>
+
+        <!-- Observaciones Especiales -->
+        <div style="margin-bottom:20px;">
+          <label
+            style="font-size:0.8rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:6px; margin-bottom:6px; text-transform:uppercase;">
+            <i class="fa-solid fa-pen" style="color:#1C82AD;"></i> Observaciones Especiales
+          </label>
+          <textarea id="editAgendaObs" rows="3"
+            placeholder="Ej: maleza alta, coordinar entrada con encargado de finca..."
+            style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; font-size:0.9rem; font-family:'Outfit',sans-serif;"></textarea>
+        </div>
+
+        <div style="display:flex; gap:12px;">
+          <button type="button" onclick="closeEditAgendaModal()" class="btn"
+            style="flex:1; padding:12px; background:#e2e8f0; color:#4a5568; font-weight:700; border-radius:10px; border:none; cursor:pointer;">Cancelar</button>
+          <button type="submit" class="btn"
+            style="flex:2; padding:12px; background:linear-gradient(135deg, #1c82ad, #003049); color:white; font-weight:800; border-radius:10px; border:none; cursor:pointer; font-size:0.95rem;">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- FLOATING WHATSAPP SUPPORT WIDGET -->
+  <a id="btn-floating-whatsapp" href="https://wa.me/573143764972?text=Hola%20Flymetrics,%20necesito%20atenci%C3%B3n%20y%20soporte%20sobre%20mi%20cuenta."
+    target="_blank"
+    style="position:fixed; bottom:25px; right:25px; z-index:99999; background:#25D366; color:#ffffff; border-radius:50px; padding:12px 22px; font-weight:800; font-size:0.95rem; display:flex; align-items:center; gap:8px; text-decoration:none; box-shadow:0 10px 30px rgba(37,211,102,0.4); border:2px solid #ffffff; transition:transform 0.2s;"
+    onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+    <i class="fa-brands fa-whatsapp" style="font-size:1.4rem;"></i> WhatsApp
+  </a>
+  <!-- ========================================
+       MODAL LIGHTBOX VISOR DE FOTOS COLLAGE
+  ======================================== -->
+  <div class="modal-overlay hidden" id="modalCollageLightbox" style="z-index: 999999; background: rgba(0, 24, 40, 0.85); backdrop-filter: blur(12px);">
+    <div style="position: relative; max-width: 960px; width: 94%; max-height: 92vh; background: #ffffff; border: 1.5px solid rgba(28, 130, 173, 0.25); border-radius: 24px; overflow: hidden; box-shadow: 0 30px 70px rgba(0, 48, 73, 0.4); display: flex; flex-direction: column;">
+      <!-- Header Bar -->
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span id="lightboxBadge" class="badge" style="background:#e0f2fe; color:#0284c7; font-weight:800; font-size:0.78rem; padding:5px 12px; border-radius:8px; border:1px solid #bae6fd;">Vuelo AgrÃ­cola</span>
+          <span id="lightboxCounter" style="color:#64748b; font-size:0.84rem; font-weight:700;">Foto 1 de 6</span>
+        </div>
+        <button type="button" onclick="closeCollageLightbox()" style="background:#f1f5f9; border:none; color:#475569; font-size:1.2rem; cursor:pointer; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: all 0.2s ease;" onmouseover="this.style.background='#fee2e2'; this.style.color='#ef4444';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#475569';">âœ•</button>
+      </div>
+
+      <!-- Media Display Area -->
+      <div style="position: relative; width: 100%; min-height: 380px; max-height: 62vh; background: #0b1320; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+        <img id="lightboxImg" src="" style="width: 100%; height: 100%; object-fit: contain; max-height: 62vh; transition: opacity 0.3s;" />
+        <video id="lightboxVideo" src="" controls autoplay loop playsinline style="display:none; width: 100%; height: 100%; max-height: 62vh;"></video>
+
+        <!-- Navigation Buttons -->
+        <button type="button" onclick="navigateCollageLightbox(-1)" style="position:absolute; left:16px; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:50%; background:rgba(0,48,73,0.75); color:#fff; border:1.5px solid rgba(255,255,255,0.4); font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px); transition:all 0.2s; box-shadow:0 4px 14px rgba(0,0,0,0.4);" onmouseover="this.style.background='#1C82AD'; this.style.transform='translateY(-50%) scale(1.08)';" onmouseout="this.style.background='rgba(0,48,73,0.75)'; this.style.transform='translateY(-50%) scale(1)';">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button type="button" onclick="navigateCollageLightbox(1)" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:50%; background:rgba(0,48,73,0.75); color:#fff; border:1.5px solid rgba(255,255,255,0.4); font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px); transition:all 0.2s; box-shadow:0 4px 14px rgba(0,0,0,0.4);" onmouseover="this.style.background='#1C82AD'; this.style.transform='translateY(-50%) scale(1.08)';" onmouseout="this.style.background='rgba(0,48,73,0.75)'; this.style.transform='translateY(-50%) scale(1)';">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- Footer / Caption & Actions -->
+      <div style="padding: 18px 24px; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+        <div style="flex: 1; min-width: 250px;">
+          <h4 id="lightboxTitle" style="color: #003049; font-family: 'Barlow', sans-serif; font-size: 1.2rem; font-weight: 800; margin: 0 0 4px 0;"></h4>
+          <p id="lightboxSub" style="color: #64748b; font-size: 0.85rem; margin: 0; line-height: 1.45;"></p>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button id="lightboxCtaBtn" class="btn btn-primary" onclick="if(checkVerifiedOrBlock('solicitar un vuelo')) { closeCollageLightbox(); openNewAgendaModal(); }" style="font-weight: 800; border-radius: 10px; padding: 11px 20px; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; background: #003049; border-color: #003049; box-shadow: 0 4px 14px rgba(0,48,73,0.25);">
+            <i class="fa-solid fa-plane-up" style="color:#E4C7A1;"></i> Cotizar Este Servicio
+          </button>
+          <button class="btn btn-ghost" onclick="openWAMessage()" style="border: 1.5px solid #25D366; color: #166534; background: #f0fdf4; font-weight: 800; border-radius: 10px; padding: 11px 18px; font-size: 0.88rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 1.15rem;"></i> WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/cliente.js?v=20261016_200000"></script>
+</body>
+
+</html>

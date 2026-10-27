@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -9,17 +9,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/fontawesome/css/all.min.css" />
-  <link rel="stylesheet" href="../css/admin.css" />
-  <link rel="stylesheet" href="../css/cliente.css?v=20260912_1" />
+  <link rel="stylesheet" href="css/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/cliente.css?v=20260912_1" />
 </head>
 
 <body class="cpanel-body">
 
   <div id="mobileSidebarOverlay" onclick="toggleSidebarCollapse()"></div>
-  <div id="toast">Notificación</div>
+  <div id="toast">NotificaciÃ³n</div>
 
-  <!-- ═══ FIXED EXECUTIVE LEFT SIDEBAR (LIKE ADMIN PANEL) ════════════════════════════════ -->
+  <!-- â•â•â• FIXED EXECUTIVE LEFT SIDEBAR (LIKE ADMIN PANEL) â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <aside class="cpanel-sidebar" id="mainSidebar">
     <div class="cp-logo-section">
       <a href="#" class="brand-emblem-box" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
@@ -36,7 +36,7 @@
     </div>
 
     <div class="cp-user-profile"
-      onclick="showPanel('perfil'); showToast('Accediendo a la gestión de tu perfil de cuenta', 'info');"
+      onclick="showPanel('perfil'); showToast('Accediendo a la gestiÃ³n de tu perfil de cuenta', 'info');"
       title="Gestionar tu cuenta y perfil">
       <div class="cp-avatar" id="sidebarAvatar">FM</div>
       <div class="cp-user-info">
@@ -49,7 +49,7 @@
     <nav class="cp-nav">
       <div class="nav-section-label"
         style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); margin: 10px 0 4px 6px;">
-        Menú Principal</div>
+        MenÃº Principal</div>
       <div class="cp-nav-item active" data-panel="dashboard" onclick="showPanel('dashboard')" title="Dashboard General">
         <i class="fa-solid fa-chart-pie"></i>
         <span>Dashboard</span>
@@ -58,14 +58,14 @@
         <i class="fa-solid fa-calendar-days"></i>
         <span>Mis Agendas</span>
       </div>
-      <div class="cp-nav-item" data-panel="fincas" onclick="showPanel('fincas')" title="Gestión de Fincas">
+      <div class="cp-nav-item" data-panel="fincas" onclick="showPanel('fincas')" title="GestiÃ³n de Fincas">
         <i class="fa-solid fa-house-chimney-window"></i>
         <span>Mis Fincas</span>
       </div>
 
       <div class="nav-section-label"
         style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); margin: 14px 0 4px 6px;">
-        Documentos & Operación</div>
+        Documentos & OperaciÃ³n</div>
       
       <div class="cp-nav-item" id="navItemInformes" data-panel="informes-ejecutivos" onclick="showDocSection('informes')" title="Informes Ejecutivos & Entregables">
         <i class="fa-solid fa-file-signature" style="color: #38bdf8;"></i>
@@ -79,28 +79,28 @@
         <i class="fa-solid fa-user-shield"></i>
         <span>Mi Perfil</span>
       </div>
-      <div class="cp-nav-item" data-panel="soporte" onclick="showPanel('soporte')" title="Soporte y Atención Técnico">
+      <div class="cp-nav-item" data-panel="soporte" onclick="showPanel('soporte')" title="Soporte y AtenciÃ³n TÃ©cnico">
         <i class="fa-solid fa-headset"></i>
         <span>Soporte</span>
       </div>
 
-      <!-- Cerrar Sesión Visible Inmediatamente -->
+      <!-- Cerrar SesiÃ³n Visible Inmediatamente -->
       <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.12);">
-        <button class="cp-logout-btn" onclick="logout()" title="Cerrar Sesión" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 0.88rem; cursor: pointer; transition: all 0.2s ease;">
+        <button class="cp-logout-btn" onclick="logout()" title="Cerrar SesiÃ³n" style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-weight: 800; font-family: 'Outfit', sans-serif; font-size: 0.88rem; cursor: pointer; transition: all 0.2s ease;">
           <i class="fa-solid fa-power-off" style="color: #ef4444; font-size: 1rem;"></i>
-          <span>Cerrar Sesión</span>
+          <span>Cerrar SesiÃ³n</span>
         </button>
       </div>
     </nav>
   </aside>
 
-  <!-- ═══ MAIN DASHBOARD AREA ════════════════════════════════ -->
+  <!-- â•â•â• MAIN DASHBOARD AREA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <main class="cpanel-main">
 
     <!-- Executive Topbar Header (Unified & Uncluttered) -->
     <header class="cpanel-topbar liquid-glass">
       <div class="cp-topbar-left">
-        <button id="mobileMenuBtn" class="mobile-menu-btn" onclick="toggleSidebarCollapse()" title="Menú">
+        <button id="mobileMenuBtn" class="mobile-menu-btn" onclick="toggleSidebarCollapse()" title="MenÃº">
           <i class="fa-solid fa-bars"></i>
         </button>
         <h2 id="topbarTitle"
@@ -112,7 +112,7 @@
           <button onclick="showPanel('perfil'); window.focusCedulaInput();" class="cp-unverified-pill"
             style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(220, 38, 38, 0.08) 100%); color: #dc2626; border: 1.5px solid rgba(239, 68, 68, 0.35); font-weight: 800; padding: 8px 18px; border-radius: 9999px; cursor: pointer; font-size: 0.82rem; display: flex; align-items: center; gap: 8px; font-family: 'Outfit', sans-serif; transition: all 0.25s ease; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.08);">
             <i class="fa-solid fa-user-shield" style="font-size: 0.95rem; color: #ef4444;"></i>
-            <span>Sin Verificar — Completar Cédula <i class="fa-solid fa-arrow-right" style="font-size:0.75rem; margin-left:2px;"></i></span>
+            <span>Sin Verificar â€” Completar CÃ©dula <i class="fa-solid fa-arrow-right" style="font-size:0.75rem; margin-left:2px;"></i></span>
           </button>
         </div>
         <button class="btn btn-primary btn-sm"
@@ -135,9 +135,9 @@
         </button>
         <button onclick="logout()" class="btn btn-sm desktop-only-btn"
           style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.86rem; display: flex; align-items: center; gap: 8px; background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1.5px solid rgba(239, 68, 68, 0.35); font-family: 'Outfit', sans-serif; cursor: pointer; transition: all 0.22s ease;"
-          title="Cerrar Sesión">
+          title="Cerrar SesiÃ³n">
           <i class="fa-solid fa-power-off" style="font-size: 0.9rem;"></i>
-          <span>Cerrar Sesión</span>
+          <span>Cerrar SesiÃ³n</span>
         </button>
       </div>
     </header>
@@ -145,7 +145,7 @@
     <!-- Content Pane -->
     <div class="cpanel-content-pane">
 
-      <!-- ── PANEL 1: DASHBOARD ── -->
+      <!-- â”€â”€ PANEL 1: DASHBOARD â”€â”€ -->
       <section id="panel-dashboard" class="cp-panel active">
         <div class="panel-head">
 
@@ -156,7 +156,7 @@
               <span style="font-size: 1.5rem; color: #FF4D6D;"><i class="fa-solid fa-lock"></i></span>
               <div>
                 <h4 style="margin: 0 0 4px 0; color: #FF4D6D; font-family: 'Syne', sans-serif; font-size: 0.9rem;">
-                  Solicitud Denegada para Acciones Críticas</h4>
+                  Solicitud Denegada para Acciones CrÃ­ticas</h4>
                 <p style="margin: 0; color: var(--text-2); font-size: 0.78rem; line-height: 1.4;">
                   Debes verificar tu identidad primero para poder registrar fincas o agendar nuevos vuelos.
                 </p>
@@ -191,7 +191,7 @@
               </span>
             </div>
             <div class="stat-card">
-              <div class="stat-label" style="font-weight: 700; font-size: 0.85rem; color: var(--text-2);">Próximo
+              <div class="stat-label" style="font-weight: 700; font-size: 0.85rem; color: var(--text-2);">PrÃ³ximo
                 Servicio</div>
               <div class="stat-value"
                 style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; margin-top: 6px; color: var(--primary);"
@@ -228,7 +228,7 @@
                     <span id="notifActiveDot" style="width: 8px; height: 8px; background: #10B981; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #10B981;"></span>
                   </h3>
                   <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #6C757D; font-weight: 500;" id="notifSubText">
-                    Registro de cambios de estado, asignación de pilotos y validación de vuelos en tus predios.
+                    Registro de cambios de estado, asignaciÃ³n de pilotos y validaciÃ³n de vuelos en tus predios.
                   </p>
                 </div>
               </div>
@@ -245,9 +245,9 @@
                 <div style="flex: 1;">
                   <div style="display: flex; justify-content: space-between; align-items: center;">
                     <strong style="color: #003049; font-size: 0.88rem; font-weight: 800;">Sistema Operacional Activo</strong>
-                    <span style="font-size: 0.72rem; color: #6C757D; font-weight: 600;">En línea</span>
+                    <span style="font-size: 0.72rem; color: #6C757D; font-weight: 600;">En lÃ­nea</span>
                   </div>
-                  <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #4A5568;">Todas tus solicitudes y telemetría de predios están sincronizadas con la central de control Flymetrics.</p>
+                  <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #4A5568;">Todas tus solicitudes y telemetrÃ­a de predios estÃ¡n sincronizadas con la central de control Flymetrics.</p>
                 </div>
               </div>
             </div>
@@ -258,10 +258,10 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
               <div>
                 <h3 style="margin:0; font-family:'Outfit',sans-serif; color:#003049; font-size:1.12rem; font-weight:800; display:flex; align-items:center; gap:8px;">
-                  <i class="fa-solid fa-photo-film" style="color:#1C82AD;"></i> Galería de Operaciones & Medios Especializados
+                  <i class="fa-solid fa-photo-film" style="color:#1C82AD;"></i> GalerÃ­a de Operaciones & Medios Especializados
                 </h3>
                 <p style="margin:2px 0 0 0; font-size:0.78rem; color:#64748b;">
-                  Innovaciones, vuelos agronómicos y cobertura satelital activa en campo
+                  Innovaciones, vuelos agronÃ³micos y cobertura satelital activa en campo
                 </p>
               </div>
               <div style="display:flex; gap:8px; align-items:center;">
@@ -309,7 +309,7 @@
           <!-- Right side: Quick actions -->
           <div>
             <div class="card-box">
-              <h3 class="card-box-title" style="margin-bottom:16px;">Acciones rápidas</h3>
+              <h3 class="card-box-title" style="margin-bottom:16px;">Acciones rÃ¡pidas</h3>
               <div style="display:flex; flex-direction:column; gap:12px;">
                 <button class="btn btn-ghost" onclick="showPanel('facturacion')">
                   <i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent);"></i> <span>Ver mis facturas y comprobantes</span>
@@ -321,35 +321,35 @@
                   <i class="fa-solid fa-file-pdf" style="color:var(--accent);"></i> <span>Descargar reportes</span>
                 </button>
                 <button class="btn btn-ghost" onclick="openWAMessage()">
-                  <i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> <span>Soporte vía WhatsApp</span>
+                  <i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> <span>Soporte vÃ­a WhatsApp</span>
                 </button>
               </div>
             </div>
 
             <div class="card-box" style="background: rgba(255,255,255,0.015);">
-              <h3 class="card-box-title" style="margin-bottom:10px;"><i class="fa-solid fa-shield-halved" style="color:var(--accent); margin-right:6px;"></i> Operación Segura y Certificada</h3>
+              <h3 class="card-box-title" style="margin-bottom:10px;"><i class="fa-solid fa-shield-halved" style="color:var(--accent); margin-right:6px;"></i> OperaciÃ³n Segura y Certificada</h3>
               <p style="font-size:0.8rem; color:var(--text-2); line-height:1.6; margin:0 0 14px 0;">Flymetrics opera
-                bajo estricto cumplimiento de la reglamentación aeronáutica. Todas tus operaciones cuentan con póliza de
+                bajo estricto cumplimiento de la reglamentaciÃ³n aeronÃ¡utica. Todas tus operaciones cuentan con pÃ³liza de
                 responsabilidad civil extracontractual y pilotos certificados.</p>
               <span class="badge badge-completed"
                 style="border: 1px solid rgba(28, 130, 173,0.3); color: var(--accent); background: rgba(28, 130, 173,0.05);"><i class="fa-solid fa-check"></i>
-                Operación 100% Segura</span>
+                OperaciÃ³n 100% Segura</span>
             </div>
           </div>
         </div>
 
-        <!-- ── SHOWCASE / COLLAGE PUBLICITARIO FLYMETRICS ── -->
+        <!-- â”€â”€ SHOWCASE / COLLAGE PUBLICITARIO FLYMETRICS â”€â”€ -->
         <div style="margin-top: 32px; border-top: 1.5px dashed rgba(28, 130, 173, 0.25); padding-top: 28px;">
           <div class="panel-head" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
             <div>
               <span class="badge" style="background: rgba(28,130,173,0.12); color: #1C82AD; font-weight: 800; padding: 4px 12px; border-radius: 9999px; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                <i class="fa-solid fa-bullhorn"></i> Innovación & Soluciones
+                <i class="fa-solid fa-bullhorn"></i> InnovaciÃ³n & Soluciones
               </span>
               <h3 style="color: #003049; font-family: 'Outfit', 'Syne', sans-serif; font-size: 1.35rem; font-weight: 900; margin: 0; display:flex; align-items:center; gap:10px;">
-                Ecosistema AgroTecnológico Flymetrics
+                Ecosistema AgroTecnolÃ³gico Flymetrics
               </h3>
               <p style="color: var(--text-2); font-size: 0.86rem; margin: 4px 0 0 0;">
-                Descubre cómo maximizar la rentabilidad de tus hectáreas con nuestra flota avanzada y análisis agronómico.
+                Descubre cÃ³mo maximizar la rentabilidad de tus hectÃ¡reas con nuestra flota avanzada y anÃ¡lisis agronÃ³mico.
               </p>
             </div>
             <button class="btn btn-primary btn-sm" onclick="if(checkVerifiedOrBlock('solicitar un vuelo')) openNewAgendaModal();" style="border-radius: 10px; font-weight: 800; font-size: 0.82rem; padding: 8px 18px; display: inline-flex; align-items: center; gap: 6px;">
@@ -357,19 +357,19 @@
             </button>
           </div>
 
-          <!-- Collage Publicitario Dinámico y Rotativo -->
+          <!-- Collage Publicitario DinÃ¡mico y Rotativo -->
           <div id="collage-publicitario-container" style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-bottom: 24px; transition: opacity 0.5s ease;">
-            <!-- Renderizado dinámico desde /api/v1/publicidad/collage con rotación automática -->
+            <!-- Renderizado dinÃ¡mico desde /api/v1/publicidad/collage con rotaciÃ³n automÃ¡tica -->
             <div style="grid-column: span 12; text-align:center; padding:40px; color:#64748b;">
               <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem; color:var(--accent);"></i>
-              <div style="margin-top:8px; font-size:0.85rem;">Cargando ecosistema agrotecnológico...</div>
+              <div style="margin-top:8px; font-size:0.85rem;">Cargando ecosistema agrotecnolÃ³gico...</div>
             </div>
           </div>
         </div>
       </section>
 
 
-      <!-- ── PANEL 2: MIS AGENDAS ── -->
+      <!-- â”€â”€ PANEL 2: MIS AGENDAS â”€â”€ -->
       <section id="panel-agendas" class="cp-panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
           <div class="filter-bar" id="agendaFilters" style="margin-bottom:0; display:flex; gap:10px; flex-wrap:wrap;">
@@ -408,10 +408,10 @@
                     Hora</th>
                   <th
                     style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
-                    Técnico Piloto</th>
+                    TÃ©cnico Piloto</th>
                   <th
                     style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px; text-align:center;">
-                    Cotización</th>
+                    CotizaciÃ³n</th>
                   <th
                     style="padding:14px 16px; font-size:0.8rem; font-weight:800; color:#003049; text-transform:uppercase; letter-spacing:0.5px;">
                     Estado</th>
@@ -431,7 +431,7 @@
       </section>
 
 
-      <!-- ── PANEL 3: MIS FINCAS ── -->
+      <!-- â”€â”€ PANEL 3: MIS FINCAS â”€â”€ -->
       <section id="panel-fincas" class="cp-panel">
         <div class="fincas-grid" id="fincasGrid">
           <div style="grid-column: 1/-1; text-align:center; padding: 40px;" class="text-muted">Cargando fincas...</div>
@@ -439,9 +439,9 @@
       </section>
 
 
-      <!-- ── PANEL 4: INFORMES EJECUTIVOS (SHAREPOINT) ── -->
+      <!-- â”€â”€ PANEL 4: INFORMES EJECUTIVOS (SHAREPOINT) â”€â”€ -->
       <section id="panel-documentos" class="cp-panel">
-        <!-- 1. Texto Explicativo Superior: Cómo funciona SharePoint -->
+        <!-- 1. Texto Explicativo Superior: CÃ³mo funciona SharePoint -->
         <div style="background: #ffffff; border-radius: 20px; padding: 24px 28px; border: 1.5px solid rgba(28, 130, 173, 0.25); box-shadow: 0 8px 24px rgba(0, 48, 73, 0.04); margin-bottom: 22px;">
           <div style="display:flex; align-items:flex-start; gap:16px;">
             <div style="width:48px; height:48px; border-radius:14px; background:rgba(28, 130, 173, 0.12); color:#1c82ad; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">
@@ -449,10 +449,10 @@
             </div>
             <div>
               <h3 style="margin:0 0 6px 0; color:#003049; font-size:1.15rem; font-weight:800; font-family:'Outfit', sans-serif;">
-                ¿Cómo funcionan tus Informes Ejecutivos en SharePoint con Flymetrics?
+                Â¿CÃ³mo funcionan tus Informes Ejecutivos en SharePoint con Flymetrics?
               </h3>
               <p style="margin:0; color:#475569; font-size:0.90rem; line-height:1.55;">
-                Flymetrics centraliza y almacena de forma segura todos tus informes ejecutivos, bitácoras de vuelo, mapas multiespectrales y entregables agronómicos en tu carpeta privada de <strong>Microsoft SharePoint / OneDrive</strong>. Toda tu documentación técnica oficial está disponible en la nube en tiempo real. A continuación, puedes acceder directamente a tu carpeta vinculada con un solo clic o solicitar asistencia técnica.
+                Flymetrics centraliza y almacena de forma segura todos tus informes ejecutivos, bitÃ¡coras de vuelo, mapas multiespectrales y entregables agronÃ³micos en tu carpeta privada de <strong>Microsoft SharePoint / OneDrive</strong>. Toda tu documentaciÃ³n tÃ©cnica oficial estÃ¡ disponible en la nube en tiempo real. A continuaciÃ³n, puedes acceder directamente a tu carpeta vinculada con un solo clic o solicitar asistencia tÃ©cnica.
               </p>
             </div>
           </div>
@@ -470,30 +470,30 @@
 
           <div id="sharepointStatusBadgeContainer" style="margin-bottom: 16px;">
             <span class="badge" style="background: rgba(245, 158, 11, 0.12); color: #d97706; font-weight: 800; padding: 6px 16px; border-radius: 20px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 6px;">
-              <i class="fa-solid fa-clock"></i> Carpeta SharePoint Pendiente de Vinculación
+              <i class="fa-solid fa-clock"></i> Carpeta SharePoint Pendiente de VinculaciÃ³n
             </span>
           </div>
 
           <p id="sharepointDescText" style="color: #475569; font-size: 0.94rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.55;">
-            Tu carpeta personalizada de informes ejecutivos en SharePoint está siendo configurada por el equipo de Flymetrics. Comunícate con nuestro equipo de soporte vía WhatsApp para solicitar su vinculación:
+            Tu carpeta personalizada de informes ejecutivos en SharePoint estÃ¡ siendo configurada por el equipo de Flymetrics. ComunÃ­cate con nuestro equipo de soporte vÃ­a WhatsApp para solicitar su vinculaciÃ³n:
           </p>
 
           <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
             <button type="button" id="btnAccederSharepoint" onclick="window.solicitarEnlaceSharepointSoporte()" class="btn" style="padding: 14px 26px; font-size: 0.95rem; font-weight: 800; border-radius: 14px; display: inline-flex; align-items: center; gap: 10px; background: #25D366; color: #ffffff; border: none; cursor: pointer; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: transform 0.2s;">
-              <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Solicitar Vinculación por WhatsApp
+              <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Solicitar VinculaciÃ³n por WhatsApp
             </button>
           </div>
 
           <div id="sharepointNoLinkNotice" style="margin-top: 22px; padding: 14px 18px; background: rgba(245, 158, 11, 0.08); border: 1.5px dashed rgba(245, 158, 11, 0.4); border-radius: 14px; font-size: 0.86rem; color: #b45309; text-align: center;">
-            <i class="fa-solid fa-clock" style="margin-right: 6px;"></i> Tu enlace de SharePoint aún no ha sido asignado por el administrador. Puedes solicitarlo vía WhatsApp a nuestro equipo de soporte para que vinculen tu acceso a los informes ejecutivos.
+            <i class="fa-solid fa-clock" style="margin-right: 6px;"></i> Tu enlace de SharePoint aÃºn no ha sido asignado por el administrador. Puedes solicitarlo vÃ­a WhatsApp a nuestro equipo de soporte para que vinculen tu acceso a los informes ejecutivos.
           </div>
         </div>
       </section>
 
 
-      <!-- ── PANEL 5: FACTURACIÓN & ESTADOS DE CUENTA (ALEGRA) ── -->
+      <!-- â”€â”€ PANEL 5: FACTURACIÃ“N & ESTADOS DE CUENTA (ALEGRA) â”€â”€ -->
       <section id="panel-facturacion" class="cp-panel">
-        <!-- 1. Texto Explicativo Superior: Cómo funciona Alegra -->
+        <!-- 1. Texto Explicativo Superior: CÃ³mo funciona Alegra -->
         <div style="background: #ffffff; border-radius: 20px; padding: 24px 28px; border: 1.5px solid rgba(28, 130, 173, 0.25); box-shadow: 0 8px 24px rgba(0, 48, 73, 0.04); margin-bottom: 22px;">
           <div style="display:flex; align-items:flex-start; gap:16px;">
             <div style="width:48px; height:48px; border-radius:14px; background:rgba(28, 130, 173, 0.12); color:#1c82ad; display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0;">
@@ -501,33 +501,33 @@
             </div>
             <div>
               <h3 style="margin:0 0 6px 0; color:#003049; font-size:1.15rem; font-weight:800; font-family:'Outfit', sans-serif;">
-                ¿Cómo funciona tu facturación con Alegra en Flymetrics?
+                Â¿CÃ³mo funciona tu facturaciÃ³n con Alegra en Flymetrics?
               </h3>
               <p style="margin:0; color:#475569; font-size:0.90rem; line-height:1.55;">
-                Flymetrics Colombia está 100% integrado con el software contable y de facturación electrónica de <strong>Alegra</strong> (autorizado por la DIAN). Toda la facturación de tus servicios agrícolas, recibos oficiales, cotizaciones y estados de cuenta se generan y administran de forma segura en la nube. A continuación, puedes consultar tu facturación registrada con un solo clic.
+                Flymetrics Colombia estÃ¡ 100% integrado con el software contable y de facturaciÃ³n electrÃ³nica de <strong>Alegra</strong> (autorizado por la DIAN). Toda la facturaciÃ³n de tus servicios agrÃ­colas, recibos oficiales, cotizaciones y estados de cuenta se generan y administran de forma segura en la nube. A continuaciÃ³n, puedes consultar tu facturaciÃ³n registrada con un solo clic.
               </p>
             </div>
           </div>
         </div>
 
-        <!-- 2. Tarjeta Principal: Facturación con Alegra & Acceso Directo a Mi Factura -->
+        <!-- 2. Tarjeta Principal: FacturaciÃ³n con Alegra & Acceso Directo a Mi Factura -->
         <div class="card-box" style="background: #ffffff; border-radius: 22px; padding: 32px 28px; border: 1.5px solid rgba(28, 130, 173, 0.3); box-shadow: 0 10px 30px rgba(0, 48, 73, 0.06); text-align: center; max-width: 720px; margin: 0 auto;">
           <div style="width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #003049 0%, #1c82ad 100%); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 16px; box-shadow: 0 8px 20px rgba(0, 48, 73, 0.2);">
             <i class="fa-solid fa-receipt"></i>
           </div>
 
           <h2 style="margin: 0 0 8px 0; color: #003049; font-size: 1.45rem; font-weight: 900; font-family: 'Outfit', sans-serif;">
-            Facturación con Alegra
+            FacturaciÃ³n con Alegra
           </h2>
 
           <div id="alegraStatusBadgeContainer" style="margin-bottom: 16px;">
             <span class="badge" style="background: rgba(245, 158, 11, 0.12); color: #d97706; font-weight: 800; padding: 6px 16px; border-radius: 20px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 6px;">
-              <i class="fa-solid fa-clock"></i> Enlace en Proceso de Generación
+              <i class="fa-solid fa-clock"></i> Enlace en Proceso de GeneraciÃ³n
             </span>
           </div>
 
           <p id="alegraDescText" style="color: #475569; font-size: 0.94rem; max-width: 540px; margin: 0 auto 24px; line-height: 1.55;">
-            Tu enlace personalizado de facturas electrónicas está siendo preparado por el equipo de Flymetrics. Puedes solicitarlo con administración:
+            Tu enlace personalizado de facturas electrÃ³nicas estÃ¡ siendo preparado por el equipo de Flymetrics. Puedes solicitarlo con administraciÃ³n:
           </p>
 
           <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
@@ -537,13 +537,13 @@
           </div>
 
           <div id="alegraNoLinkNotice" style="margin-top: 22px; padding: 14px 18px; background: rgba(245, 158, 11, 0.08); border: 1.5px dashed rgba(245, 158, 11, 0.4); border-radius: 14px; font-size: 0.86rem; color: #b45309; text-align: center;">
-            <i class="fa-solid fa-clock" style="margin-right: 6px;"></i> Tu enlace de factura personalizado aún no ha sido asignado por el administrador. Puedes solicitarlo vía WhatsApp a nuestro equipo de soporte.
+            <i class="fa-solid fa-clock" style="margin-right: 6px;"></i> Tu enlace de factura personalizado aÃºn no ha sido asignado por el administrador. Puedes solicitarlo vÃ­a WhatsApp a nuestro equipo de soporte.
           </div>
         </div>
       </section>
 
 
-      <!-- ── PANEL 6: MI PERFIL ── -->
+      <!-- â”€â”€ PANEL 6: MI PERFIL â”€â”€ -->
       <section id="panel-perfil" class="cp-panel">
         <div class="profile-split">
           <div class="profile-avatar-col">
@@ -566,7 +566,7 @@
                 Perfil e Identidad
               </h4>
               <p style="margin: 0; font-size: 0.83rem; color: var(--text-2); line-height: 1.5;">
-                Completa tus datos oficiales por única vez para validar tu cuenta y habilitar la solicitud de reservas
+                Completa tus datos oficiales por Ãºnica vez para validar tu cuenta y habilitar la solicitud de reservas
                 de vuelo en tus fincas.
               </p>
             </div>
@@ -577,12 +577,12 @@
                 <div class="form-group">
                   <label class="form-label" for="profNombre"
                     style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Nombre Completo / Titular *</label>
-                  <input type="text" id="profNombre" class="form-input" required placeholder="Ej. MIGUEL ÁNGEL PRADA"
+                  <input type="text" id="profNombre" class="form-input" required placeholder="Ej. MIGUEL ÃNGEL PRADA"
                     style="border-radius: 12px; padding: 11px 14px; text-transform: uppercase;" />
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="profEmpresa"
-                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Empresa / Razón Social (Opcional)</label>
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Empresa / RazÃ³n Social (Opcional)</label>
                   <input type="text" id="profEmpresa" class="form-input" placeholder="Ej. AGROCOLOMBIA S.A.S."
                     style="border-radius: 12px; padding: 11px 14px; text-transform: uppercase;" />
                 </div>
@@ -591,7 +591,7 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                 <div class="form-group">
                   <label class="form-label" for="profTel"
-                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Teléfono de
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">TelÃ©fono de
                     Contacto / WhatsApp *</label>
                   <input type="tel" id="profTel" class="form-input" required placeholder="Ej. 3054061764"
                     style="border-radius: 12px; padding: 11px 14px;" />
@@ -599,7 +599,7 @@
                 <div class="form-group">
                   <label class="form-label" for="profEmail"
                     style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Correo
-                    Electrónico (Solo lectura)</label>
+                    ElectrÃ³nico (Solo lectura)</label>
                   <input type="email" id="profEmail" class="form-input" disabled
                     style="opacity: 0.7; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 11px 14px;" />
                 </div>
@@ -608,20 +608,20 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                 <div class="form-group">
                   <label class="form-label" for="profTipoDoc"
-                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Tipo de Identificación *</label>
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Tipo de IdentificaciÃ³n *</label>
                   <select id="profTipoDoc" class="form-input" style="border-radius: 12px; padding: 11px 14px; font-weight:700; appearance: auto;" onchange="ajustarValidacionPerfilDoc()">
-                    <option value="CC" selected>Cédula de Ciudadanía (CC)</option>
-                    <option value="NIT">NIT (Empresa - 9 dígitos sin DV)</option>
-                    <option value="CE">Cédula de Extranjería (CE)</option>
+                    <option value="CC" selected>CÃ©dula de CiudadanÃ­a (CC)</option>
+                    <option value="NIT">NIT (Empresa - 9 dÃ­gitos sin DV)</option>
+                    <option value="CE">CÃ©dula de ExtranjerÃ­a (CE)</option>
                     <option value="PASAPORTE">Pasaporte</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="profCedula" id="lblProfCedula"
-                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Número de
-                    Documento / Cédula *</label>
+                    style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">NÃºmero de
+                    Documento / CÃ©dula *</label>
                   <input type="text" id="profCedula" class="form-input" required
-                    placeholder="Ingresa tu número de documento" maxlength="10" inputmode="numeric" autocomplete="off"
+                    placeholder="Ingresa tu nÃºmero de documento" maxlength="10" inputmode="numeric" autocomplete="off"
                     oninput="if(!document.getElementById('profTipoDoc')||document.getElementById('profTipoDoc').value==='CC'||document.getElementById('profTipoDoc').value==='NIT'){ this.value=this.value.replace(/\D/g,'').slice(0,10); }"
                     style="border-radius: 12px; padding: 11px 14px;" />
                 </div>
@@ -631,9 +631,9 @@
                 <div class="form-group">
                   <label class="form-label" for="profExpedicion"
                     style="color: var(--primary); font-weight: 700; font-size: 0.88rem; margin-bottom: 6px;">Fecha de
-                    Expedición del Documento (Hasta Ayer) *</label>
+                    ExpediciÃ³n del Documento (Hasta Ayer) *</label>
                   <input type="date" id="profExpedicion" class="form-input" required
-                    onchange="const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); const yStr = yesterday.toISOString().split('T')[0]; if(this.value > yStr){ showToast('La fecha de expedición debe ser igual o anterior a ayer.', 'warning'); this.value = yStr; }"
+                    onchange="const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); const yStr = yesterday.toISOString().split('T')[0]; if(this.value > yStr){ showToast('La fecha de expediciÃ³n debe ser igual o anterior a ayer.', 'warning'); this.value = yStr; }"
                     style="border-radius: 12px; padding: 11px 14px;" />
                 </div>
               </div>
@@ -643,7 +643,7 @@
                   style="padding: 14px 28px; font-weight: 800; font-size: 0.95rem; border-radius: 12px; background: linear-gradient(135deg, #003049 0%, #1C82AD 100%); border: none; color: #ffffff; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(0,48,73,0.2); transition: all 0.2s;"
                   onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='none';">
                   <i class="fa-solid fa-shield-halved" style="color: #E4C7A1; font-size: 1.1rem;"></i>
-                  <span>¿Deseas actualizar información?</span>
+                  <span>Â¿Deseas actualizar informaciÃ³n?</span>
                 </button>
                 <button type="submit" id="btnSubmitProfile" class="btn btn-primary hidden"
                   style="display:none; padding: 13px 24px; font-weight: 800; font-size: 0.90rem; border-radius: 12px; background: linear-gradient(135deg, var(--accent-blue) 0%, var(--primary) 100%); border: none; color: #ffffff; cursor: pointer; box-shadow: 0 8px 24px rgba(0,48,73,0.15); align-items: center; gap: 8px;">
@@ -656,11 +656,11 @@
       </section>
 
 
-      <!-- ── PANEL 7: SOPORTE Y ASISTENCIA TÉCNICA ── -->
+      <!-- â”€â”€ PANEL 7: SOPORTE Y ASISTENCIA TÃ‰CNICA â”€â”€ -->
       <section id="panel-soporte" class="cp-panel">
         <div class="panel-head">
-          <h1 class="panel-title">Atención y Soporte WhatsApp</h1>
-          <p class="panel-sub">Comunicación directa e instantánea con la administración y equipo de operaciones de
+          <h1 class="panel-title">AtenciÃ³n y Soporte WhatsApp</h1>
+          <p class="panel-sub">ComunicaciÃ³n directa e instantÃ¡nea con la administraciÃ³n y equipo de operaciones de
             Flymetrics S.A.S.</p>
         </div>
 
@@ -677,15 +677,15 @@
                 <div>
                   <h3
                     style="margin: 0; color: #003049; font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800;">
-                    Atención Oficial WhatsApp</h3>
-                  <span style="font-size: 0.8rem; color: #10B981; font-weight: 700;"><i class="fa-solid fa-circle" style="font-size:0.55rem; vertical-align:middle; margin-right:4px;"></i> En línea • Respuesta
+                    AtenciÃ³n Oficial WhatsApp</h3>
+                  <span style="font-size: 0.8rem; color: #10B981; font-weight: 700;"><i class="fa-solid fa-circle" style="font-size:0.55rem; vertical-align:middle; margin-right:4px;"></i> En lÃ­nea â€¢ Respuesta
                     inmediata</span>
                 </div>
               </div>
 
               <p style="color: #4a5568; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
-                Resuelve dudas sobre tu agendamiento, solicita apoyo agronómico o comunícate con la torre de control en
-                tiempo real a través del canal oficial de WhatsApp de Flymetrics.
+                Resuelve dudas sobre tu agendamiento, solicita apoyo agronÃ³mico o comunÃ­cate con la torre de control en
+                tiempo real a travÃ©s del canal oficial de WhatsApp de Flymetrics.
               </p>
 
               <div
@@ -695,7 +695,7 @@
                 <ul style="margin: 0; padding-left: 18px; font-size: 0.82rem; color: #4a5568; line-height: 1.5;">
                   <li>Consulta de estado de vuelos y mapas multiespectrales</li>
                   <li>Reagendamiento o ajuste de fechas por clima</li>
-                  <li>Atención a peticiones, quejas y reclamos (PQR)</li>
+                  <li>AtenciÃ³n a peticiones, quejas y reclamos (PQR)</li>
                 </ul>
               </div>
             </div>
@@ -726,15 +726,15 @@
               </div>
 
               <p style="color: #4a5568; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
-                Para solicitudes institucionales, facturación electrónica o certificaciones especiales RAC-100, puedes
+                Para solicitudes institucionales, facturaciÃ³n electrÃ³nica o certificaciones especiales RAC-100, puedes
                 enviarnos un correo oficial.
               </p>
 
               <div style="background: rgba(0, 48, 73, 0.04); border-radius: 12px; padding: 14px; margin-bottom: 20px;">
                 <div style="font-weight: 800; color: #003049; font-size: 0.85rem; margin-bottom: 6px;"><i
-                    class="fa-solid fa-clock"></i> Horario de Atención Operativa:</div>
-                <div style="font-size: 0.82rem; color: #4a5568;">Lunes a Sábado: 6:00 AM – 7:00 PM (Hora Colombia)</div>
-                <div style="font-size: 0.82rem; color: #4a5568;">Emergencias de Vuelo: 24/7 vía WhatsApp</div>
+                    class="fa-solid fa-clock"></i> Horario de AtenciÃ³n Operativa:</div>
+                <div style="font-size: 0.82rem; color: #4a5568;">Lunes a SÃ¡bado: 6:00 AM â€“ 7:00 PM (Hora Colombia)</div>
+                <div style="font-size: 0.82rem; color: #4a5568;">Emergencias de Vuelo: 24/7 vÃ­a WhatsApp</div>
               </div>
             </div>
 
@@ -746,14 +746,14 @@
         </div>
       </section>
 
-      <!-- ── PANEL 9: VIDEOS E INFORMACIÓN ── -->
+      <!-- â”€â”€ PANEL 9: VIDEOS E INFORMACIÃ“N â”€â”€ -->
       <section id="panel-videos" class="cp-panel">
         <div class="panel-head" style="margin-bottom: 24px;">
           <h1 class="panel-title"
             style="color: #003049; font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 800; margin: 0 0 6px 0;">
-            <i class="fa-solid fa-film"></i> Biblioteca de Videos e Información Agrícola</h1>
-          <p class="panel-sub" style="color: var(--text-2); font-size: 0.86rem; margin: 0;">Material audiovisual, guías
-            técnicas de fumigación con drones, análisis multiespectral y normativas operacionales en campo.</p>
+            <i class="fa-solid fa-film"></i> Biblioteca de Videos e InformaciÃ³n AgrÃ­cola</h1>
+          <p class="panel-sub" style="color: var(--text-2); font-size: 0.86rem; margin: 0;">Material audiovisual, guÃ­as
+            tÃ©cnicas de fumigaciÃ³n con drones, anÃ¡lisis multiespectral y normativas operacionales en campo.</p>
         </div>
 
         <!-- Video Cards Grid with Real Embedded Players -->
@@ -763,15 +763,15 @@
           <div class="card-box" style="background: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(28, 130, 173, 0.25); box-shadow: 0 10px 28px rgba(0,48,73,0.06); display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 16/9; margin-bottom: 16px;">
-                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/5D3mE2iK2gY" title="Operación Agrícola con Drones" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/5D3mE2iK2gY" title="OperaciÃ³n AgrÃ­cola con Drones" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span class="badge" style="background:rgba(28,130,173,0.1); color:#1c82ad; font-weight:800; font-size:0.7rem; text-transform:uppercase;">Demostración de Campo</span>
+                <span class="badge" style="background:rgba(28,130,173,0.1); color:#1c82ad; font-weight:800; font-size:0.7rem; text-transform:uppercase;">DemostraciÃ³n de Campo</span>
               </div>
               <h3 style="margin: 0 0 8px 0; color: #003049; font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800;">
-                Operación y Fumigación con Dron Agrícola DJI Agras</h3>
+                OperaciÃ³n y FumigaciÃ³n con Dron AgrÃ­cola DJI Agras</h3>
               <p style="margin: 0 0 14px 0; color: #4a5568; font-size: 0.83rem; line-height: 1.5;">
-                Demostración técnica del patrón de gota atomizada, calibración y cobertura homogénea sobre cultivos en tiempo real.
+                DemostraciÃ³n tÃ©cnica del patrÃ³n de gota atomizada, calibraciÃ³n y cobertura homogÃ©nea sobre cultivos en tiempo real.
               </p>
             </div>
           </div>
@@ -780,15 +780,15 @@
           <div class="card-box" style="background: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(28, 130, 173, 0.25); box-shadow: 0 10px 28px rgba(0,48,73,0.06); display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 16/9; margin-bottom: 16px;">
-                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/tW3VnZzK5m0" title="Interpretación de Análisis Multiespectral y Salud Vegetal" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/tW3VnZzK5m0" title="InterpretaciÃ³n de AnÃ¡lisis Multiespectral y Salud Vegetal" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span class="badge" style="background:rgba(16,185,129,0.1); color:#10b981; font-weight:800; font-size:0.7rem; text-transform:uppercase;">Análisis Multiespectral</span>
+                <span class="badge" style="background:rgba(16,185,129,0.1); color:#10b981; font-weight:800; font-size:0.7rem; text-transform:uppercase;">AnÃ¡lisis Multiespectral</span>
               </div>
               <h3 style="margin: 0 0 8px 0; color: #003049; font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800;">
-                Interpretación de Mapas Multiespectrales</h3>
+                InterpretaciÃ³n de Mapas Multiespectrales</h3>
               <p style="margin: 0 0 14px 0; color: #4a5568; font-size: 0.83rem; line-height: 1.5;">
-                Aprende a analizar los gradientes de color de vigor fotosintético para identificar zonas de estrés hídrico, malezas o plagas.
+                Aprende a analizar los gradientes de color de vigor fotosintÃ©tico para identificar zonas de estrÃ©s hÃ­drico, malezas o plagas.
               </p>
             </div>
           </div>
@@ -797,15 +797,15 @@
           <div class="card-box" style="background: #ffffff; border-radius: 20px; padding: 20px; border: 1px solid rgba(28, 130, 173, 0.25); box-shadow: 0 10px 28px rgba(0,48,73,0.06); display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="position: relative; border-radius: 14px; overflow: hidden; background: #000; aspect-ratio: 16/9; margin-bottom: 16px;">
-                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/hLdQfV6N-Jg" title="Fotogrametría y Topografía con Drones" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe style="width:100%; height:100%; border:none;" src="https://www.youtube.com/embed/hLdQfV6N-Jg" title="FotogrametrÃ­a y TopografÃ­a con Drones" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span class="badge" style="background:rgba(245,158,11,0.1); color:#f59e0b; font-weight:800; font-size:0.7rem; text-transform:uppercase;">Topografía y Mapeo</span>
+                <span class="badge" style="background:rgba(245,158,11,0.1); color:#f59e0b; font-weight:800; font-size:0.7rem; text-transform:uppercase;">TopografÃ­a y Mapeo</span>
               </div>
               <h3 style="margin: 0 0 8px 0; color: #003049; font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 800;">
-                Fotogrametría 3D y Curvas de Nivel en Predios</h3>
+                FotogrametrÃ­a 3D y Curvas de Nivel en Predios</h3>
               <p style="margin: 0 0 14px 0; color: #4a5568; font-size: 0.83rem; line-height: 1.5;">
-                Generación de ortomosaicos georreferenciados, modelos digitales de elevación y cálculo de áreas con precisión centimétrica.
+                GeneraciÃ³n de ortomosaicos georreferenciados, modelos digitales de elevaciÃ³n y cÃ¡lculo de Ã¡reas con precisiÃ³n centimÃ©trica.
               </p>
             </div>
           </div>
@@ -815,12 +815,12 @@
 
       </section>
 
-      <!-- ── PANEL 8: VALIDACIÓN DE CÉDULA POR CÁMARA ── -->
+      <!-- â”€â”€ PANEL 8: VALIDACIÃ“N DE CÃ‰DULA POR CÃMARA â”€â”€ -->
       <section id="panel-verificar" class="cp-panel">
         <div class="panel-header">
           <div>
-            <h1 class="panel-title">Verificación de Cédula (Cámara IA)</h1>
-            <p class="panel-sub">Escanea la Cédula de Ciudadanía colombiana del operador o cliente para verificar su
+            <h1 class="panel-title">VerificaciÃ³n de CÃ©dula (CÃ¡mara IA)</h1>
+            <p class="panel-sub">Escanea la CÃ©dula de CiudadanÃ­a colombiana del operador o cliente para verificar su
               autenticidad.</p>
           </div>
         </div>
@@ -828,13 +828,13 @@
         <div class="card-box" style="max-width: 800px; margin: 0 auto;">
           <div id="scanner-init-view" style="text-align: center; padding: 40px 20px;">
             <div style="font-size: 4rem; margin-bottom: 20px;"><i class="fa-solid fa-id-card"></i></div>
-            <h3>Validación de Identidad por Escáner</h3>
+            <h3>ValidaciÃ³n de Identidad por EscÃ¡ner</h3>
             <p style="color: var(--text-2); max-width: 500px; margin: 12px auto 24px;">
-              Este sistema utiliza la cámara de tu dispositivo para capturar y analizar los hologramas de seguridad,
-              códigos bidimensionales y datos OCR de la tarjeta de identificación.
+              Este sistema utiliza la cÃ¡mara de tu dispositivo para capturar y analizar los hologramas de seguridad,
+              cÃ³digos bidimensionales y datos OCR de la tarjeta de identificaciÃ³n.
             </p>
             <button class="btn btn-primary" onclick="startScanner()">
-              <i class="fa-solid fa-camera"></i> <span>Iniciar Cámara Escáner</span>
+              <i class="fa-solid fa-camera"></i> <span>Iniciar CÃ¡mara EscÃ¡ner</span>
             </button>
           </div>
 
@@ -853,7 +853,7 @@
                 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; height: 55%; border: 3px dashed var(--primary); border-radius: 12px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); pointer-events: none;">
                 <div id="scanner-step-label"
                   style="position: absolute; top: 12px; left: 12px; color: var(--primary); font-size: 0.75rem; font-family: monospace; background: rgba(0,0,0,0.7); padding: 2px 6px; border-radius: 4px;">
-                  ALINEAR FRENTE DE CÉDULA</div>
+                  ALINEAR FRENTE DE CÃ‰DULA</div>
               </div>
 
               <!-- Pulsing scanning line -->
@@ -865,7 +865,7 @@
             <!-- Controls -->
             <div
               style="display:flex; justify-content: space-between; align-items: center; padding: 16px; border-top: 1px solid var(--border); background: #080808; gap: 8px; flex-wrap: wrap;">
-              <button class="btn btn-ghost btn-sm" onclick="stopScanner()"><i class="fa-solid fa-stop"></i> Detener cámara</button>
+              <button class="btn btn-ghost btn-sm" onclick="stopScanner()"><i class="fa-solid fa-stop"></i> Detener cÃ¡mara</button>
               <input type="file" id="scanner-file-fallback" class="hidden" accept="image/*"
                 onchange="handleScannerFileFallback(event)" />
               <button class="btn btn-ghost btn-sm" onclick="document.getElementById('scanner-file-fallback').click()"><i class="fa-solid fa-folder-open"></i>
@@ -883,7 +883,7 @@
               <div class="spinner-small"
                 style="width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite;">
               </div>
-              <h4 style="margin:0;">Procesando análisis de la tarjeta...</h4>
+              <h4 style="margin:0;">Procesando anÃ¡lisis de la tarjeta...</h4>
             </div>
             <div id="scan-log-container"
               style="font-family: monospace; font-size: 0.82rem; color: var(--text-2); display: flex; flex-direction: column; gap: 8px;">
@@ -898,9 +898,9 @@
               style="background: rgba(28, 130, 173,0.08); padding: 16px; border-bottom: 1px solid rgba(28, 130, 173,0.2); display: flex; align-items: center; gap: 12px;">
               <span style="font-size: 1.5rem; color:#10B981;"><i class="fa-solid fa-circle-check"></i></span>
               <div>
-                <h4 style="margin:0; color: var(--accent);">TARJETA 100% AUTÉNTICA</h4>
+                <h4 style="margin:0; color: var(--accent);">TARJETA 100% AUTÃ‰NTICA</h4>
                 <p style="margin:2px 0 0; font-size: 0.75rem; color: var(--text-2);">Firmas digitales y datos validados
-                  ante la Registraduría</p>
+                  ante la RegistradurÃ­a</p>
               </div>
             </div>
 
@@ -918,25 +918,25 @@
                 <div>
                   <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">Nombre
                     Completo</span>
-                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-nombre">MIGUEL ÁNGEL
+                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-nombre">MIGUEL ÃNGEL
                     TORRES PRADA</div>
                 </div>
                 <div>
-                  <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">N° Cédula
+                  <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">NÂ° CÃ©dula
                     (Col)</span>
                   <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px; color: var(--primary);"
                     id="res-scan-documento">1.044.490.043</div>
                 </div>
                 <div>
                   <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">Fecha de
-                    Expedición</span>
+                    ExpediciÃ³n</span>
                   <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-expedicion">
                     14-MAY-2012</div>
                 </div>
                 <div>
                   <span style="font-size: 0.75rem; color: var(--text-2); text-transform: uppercase;">Lugar de
-                    Expedición</span>
-                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-lugar">BOGOTÁ D.C.
+                    ExpediciÃ³n</span>
+                  <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px;" id="res-scan-lugar">BOGOTÃ D.C.
                   </div>
                 </div>
               </div>
@@ -954,7 +954,7 @@
     </div>
   </main>
 
-  <!-- ═══ MODAL: AGENDAR NUEVO SERVICIO ═════════════════════ -->
+  <!-- â•â•â• MODAL: AGENDAR NUEVO SERVICIO â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <div class="modal-overlay hidden" id="modalNewAgenda" onclick="if(event.target===this) closeNewAgendaModal()">
     <div class="modal-box"
       style="max-width: 960px; width: 95%; max-height: 90vh; display: flex; flex-direction: column; background: linear-gradient(145deg, #ffffff, #f0f4f9); border: 2px solid rgba(28, 130, 173, 0.35); box-shadow: 0 25px 60px rgba(0, 48, 73, 0.25); border-radius: 24px; overflow: hidden;">
@@ -962,13 +962,13 @@
         style="border-bottom: 1px solid rgba(28, 130, 173, 0.15); padding: 18px 28px; display: flex; justify-content: space-between; align-items: center; background: rgba(28, 130, 173, 0.04);">
         <h3 class="modal-title"
           style="color: #003049; font-family: 'Syne', sans-serif; font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 10px;">
-          <i class="fa-solid fa-paper-plane" style="color:#1C82AD;"></i> <span>Agendamiento Tecnológico
+          <i class="fa-solid fa-paper-plane" style="color:#1C82AD;"></i> <span>Agendamiento TecnolÃ³gico
             Inteligente</span>
         </h3>
         <button class="modal-close" onclick="closeNewAgendaModal()"
           style="background: rgba(0, 48, 73, 0.05); border: none; color: #003049; font-size: 1.3rem; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; transition: all 0.2s; font-weight: bold;"
           onmouseover="this.style.background='#1c82ad'; this.style.color='#fff'"
-          onmouseout="this.style.background='rgba(0, 48, 73, 0.05)'; this.style.color='#003049'">✕</button>
+          onmouseout="this.style.background='rgba(0, 48, 73, 0.05)'; this.style.color='#003049'">âœ•</button>
       </div>
 
       <form id="newAgendaForm" onsubmit="event.preventDefault(); window.submitNewAgenda(event); return false;"
@@ -1001,8 +1001,8 @@
                 style="font-size: 0.82rem; color: #003049; background: linear-gradient(135deg, rgba(28, 130, 173, 0.1), rgba(0, 48, 73, 0.04)); border: 1px solid rgba(28, 130, 173, 0.3); padding: 12px 16px; border-radius: 12px; display: flex; align-items: center; gap: 10px; line-height: 1.4;">
                 <i class="fa-solid fa-user-gear" style="color:#1C82AD; font-size:1.3rem;"></i>
                 <div>
-                  <strong style="color: #1c82ad;">Asignación Inteligente de Piloto:</strong> El centro de control
-                  asignará automáticamente la aeronave y el técnico disponible.
+                  <strong style="color: #1c82ad;">AsignaciÃ³n Inteligente de Piloto:</strong> El centro de control
+                  asignarÃ¡ automÃ¡ticamente la aeronave y el tÃ©cnico disponible.
                 </div>
               </div>
 
@@ -1010,7 +1010,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                   <label class="form-label" for="agCel"
                     style="font-size: 0.78rem; text-transform: uppercase; color: #003049; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;">
-                    <i class="fa-solid fa-phone" style="color:#1C82AD;"></i> Teléfono en campo
+                    <i class="fa-solid fa-phone" style="color:#1C82AD;"></i> TelÃ©fono en campo
                   </label>
                   <span id="agResponsableDisplay" style="font-size: 0.76rem; color: #1C82AD; font-weight: 800;"></span>
                 </div>
@@ -1023,7 +1023,7 @@
                   style="font-size: 0.78rem; text-transform: uppercase; color: #003049; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;"><i
                     class="fa-solid fa-pen" style="color:#1C82AD;"></i> Observaciones adicionales</label>
                 <textarea id="agObs" class="form-textarea"
-                  placeholder="Ej: maleza alta, dosel irregular, cables eléctricos..."
+                  placeholder="Ej: maleza alta, dosel irregular, cables elÃ©ctricos..."
                   style="width: 100%; height: 75px; padding: 12px 14px; background: #f8fafc; border: 2px solid rgba(28, 130, 173, 0.25); border-radius: 12px; color: #003049; font-weight: 500; font-size: 0.88rem; resize: none;"></textarea>
               </div>
             </div>
@@ -1034,7 +1034,7 @@
               <h4
                 style="margin:0; font-size: 0.88rem; color: #003049; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(28, 130, 173, 0.15); padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
                 <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-calendar-days"
-                    style="color:#1C82AD;"></i> Fecha y Hora de Operación</span>
+                    style="color:#1C82AD;"></i> Fecha y Hora de OperaciÃ³n</span>
               </h4>
 
               <!-- Technological Calendar -->
@@ -1092,7 +1092,7 @@
                 <h5
                   style="margin: 0 0 10px; font-size: 0.78rem; color: #003049; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between;">
                   <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-clock"
-                      style="color:#1C82AD;"></i> Hora de Operación</span>
+                      style="color:#1C82AD;"></i> Hora de OperaciÃ³n</span>
                   <span style="font-size: 0.72rem; color: #6c757d; font-weight: 600;">Cualquier hora exacta</span>
                 </h5>
 
@@ -1108,7 +1108,7 @@
                 </div>
 
                 <div style="font-size: 0.73rem; font-weight: 700; color: #4a5c6a; margin-bottom: 8px;">O elige una
-                  franja rápida:</div>
+                  franja rÃ¡pida:</div>
                 <div id="agSlotsPlaceholder"
                   style="font-size: 0.8rem; color: #6c757d; text-align: center; padding: 12px; border: 1px dashed rgba(28,130,173,0.3); border-radius: 10px; background: #ffffff; display: none;">
                   Selecciona una fecha en el calendario
@@ -1123,7 +1123,7 @@
               <div id="agSummaryBox"
                 style="margin-top: auto; padding: 14px 16px; background: linear-gradient(135deg, rgba(28, 130, 173, 0.08), rgba(0, 48, 73, 0.04)); border: 1.5px solid rgba(28, 130, 173, 0.3); border-radius: 14px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px;">
                 <div style="display: flex; justify-content: space-between;"><span
-                    style="color: #003049; font-weight: 600;">Área Estimada:</span><span id="agSummaryArea"
+                    style="color: #003049; font-weight: 600;">Ãrea Estimada:</span><span id="agSummaryArea"
                     style="color: #003049; font-weight: 800;">--</span></div>
                 <div style="display: flex; justify-content: space-between;"><span
                     style="color: #003049; font-weight: 600;">Horario Programado:</span><span id="agSummaryDateTime"
@@ -1145,7 +1145,7 @@
   </div>
 
 
-  <!-- ═══ MODAL: AGREGAR NUEVA FINCA ════════════════════════ -->
+  <!-- â•â•â• MODAL: AGREGAR NUEVA FINCA â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <div class="modal-overlay hidden" id="modalNewFinca" onclick="if(event.target===this) closeNewFincaModal()">
     <div class="modal-box" style="max-width:560px;">
       <div class="modal-h">
@@ -1164,7 +1164,7 @@
               <input type="text" id="fincResponsable" class="form-input" placeholder="Ej: Carlos Mendoza" required />
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="fincTelAdmin">Teléfono del Administrador *</label>
+              <label class="form-label" for="fincTelAdmin">TelÃ©fono del Administrador *</label>
               <input type="tel" id="fincTelAdmin" class="form-input" placeholder="Ej: 3101234567" required oninput="this.value = this.value.replace(/[^0-9+\s-]/g, '')" />
             </div>
           </div>
@@ -1183,12 +1183,12 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fincHa">Extensión Operativa (Hectáreas) *</label>
-            <input type="number" id="fincHa" class="form-input" placeholder="Min. 0.1 ha — Máx. 5.000 ha (permite decimales, ej: 12.5)" min="0.1" max="5000" step="0.1" required />
+            <label class="form-label" for="fincHa">ExtensiÃ³n Operativa (HectÃ¡reas) *</label>
+            <input type="number" id="fincHa" class="form-input" placeholder="Min. 0.1 ha â€” MÃ¡x. 5.000 ha (permite decimales, ej: 12.5)" min="0.1" max="5000" step="0.1" required />
             <small style="color:var(--text-3); font-size:0.75rem; margin-top:3px; display:block;">Rango permitido: 0.1 ha a 5.000 ha (soporta decimales ej: 4.5, 18.75).</small>
           </div>
 
-          <!-- Módulo Integrado de Ubicación & Google Maps -->
+          <!-- MÃ³dulo Integrado de UbicaciÃ³n & Google Maps -->
           <div style="background: rgba(28, 130, 173, 0.05); border: 1.5px solid rgba(28, 130, 173, 0.22); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
             <div class="form-group" style="margin-bottom: 12px;">
               <label class="form-label" for="fincMapsUrl" style="display:flex; justify-content:space-between; align-items:center;">
@@ -1215,10 +1215,10 @@
               <span id="btnGpsText">Capturar mi GPS actual en tiempo real</span>
             </button>
 
-            <!-- Previsualización Inmediata en Google Maps sin guardar -->
+            <!-- PrevisualizaciÃ³n Inmediata en Google Maps sin guardar -->
             <div id="fincMapsLiveBox" style="display:none; margin-top:10px; padding:10px 14px; background:#ffffff; border-radius:10px; border:1.5px solid #0284c7; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(2,132,199,0.1);">
               <span style="font-size:0.80rem; color:#003049; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
-                <i class="fa-solid fa-location-dot" style="color:#ef4444; font-size:1rem;"></i> Ubicación GPS detectada
+                <i class="fa-solid fa-location-dot" style="color:#ef4444; font-size:1rem;"></i> UbicaciÃ³n GPS detectada
               </span>
               <a id="fincMapsLiveLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:#0284c7; color:#ffffff; font-weight:800; text-decoration:none; padding:6px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; font-size:0.80rem;">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver en Google Maps
@@ -1234,7 +1234,7 @@
     </div>
   </div>
 
-  <!-- ═══ MODAL: EDITAR FINCA EXISTENTE ══════════════════════ -->
+  <!-- â•â•â• MODAL: EDITAR FINCA EXISTENTE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <div class="modal-overlay hidden" id="modalEditFinca" onclick="if(event.target===this) closeEditFincaModal()">
     <div class="modal-box" style="max-width:560px;">
       <div class="modal-h">
@@ -1254,7 +1254,7 @@
               <input type="text" id="editFincResponsable" class="form-input" placeholder="Ej: Carlos Mendoza" required />
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="editFincTelAdmin">Teléfono del Administrador *</label>
+              <label class="form-label" for="editFincTelAdmin">TelÃ©fono del Administrador *</label>
               <input type="tel" id="editFincTelAdmin" class="form-input" placeholder="Ej: 3101234567" required oninput="this.value = this.value.replace(/[^0-9+\s-]/g, '')" />
             </div>
           </div>
@@ -1273,12 +1273,12 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label" for="editFincHa">Extensión Operativa (Hectáreas) *</label>
-            <input type="text" id="editFincHa" class="form-input" placeholder="Min. 0.1 ha — Máx. 5.000 ha (ej: 44.6 o 44,6)" required oninput="this.value = this.value.replace(/[^0-9.,]/g, '')" />
+            <label class="form-label" for="editFincHa">ExtensiÃ³n Operativa (HectÃ¡reas) *</label>
+            <input type="text" id="editFincHa" class="form-input" placeholder="Min. 0.1 ha â€” MÃ¡x. 5.000 ha (ej: 44.6 o 44,6)" required oninput="this.value = this.value.replace(/[^0-9.,]/g, '')" />
             <small style="color:var(--text-3); font-size:0.75rem; margin-top:3px; display:block;">Rango permitido: 0.1 ha a 5.000 ha (soporta decimales ej: 44.6 o 44,6).</small>
           </div>
 
-          <!-- Módulo Integrado de Ubicación & Google Maps -->
+          <!-- MÃ³dulo Integrado de UbicaciÃ³n & Google Maps -->
           <div style="background: rgba(28, 130, 173, 0.05); border: 1.5px solid rgba(28, 130, 173, 0.22); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
             <div class="form-group" style="margin-bottom: 12px;">
               <label class="form-label" for="editFincMapsUrl" style="display:flex; justify-content:space-between; align-items:center;">
@@ -1304,10 +1304,10 @@
               <span id="btnGpsEditText">Capturar mi GPS actual en tiempo real</span>
             </button>
 
-            <!-- Previsualización Inmediata en Google Maps sin guardar (Edición) -->
+            <!-- PrevisualizaciÃ³n Inmediata en Google Maps sin guardar (EdiciÃ³n) -->
             <div id="editFincMapsLiveBox" style="display:none; margin-top:10px; padding:10px 14px; background:#ffffff; border-radius:10px; border:1.5px solid #0284c7; align-items:center; justify-content:space-between; box-shadow:0 4px 12px rgba(2,132,199,0.1);">
               <span style="font-size:0.80rem; color:#003049; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
-                <i class="fa-solid fa-location-dot" style="color:#ef4444; font-size:1rem;"></i> Ubicación GPS detectada
+                <i class="fa-solid fa-location-dot" style="color:#ef4444; font-size:1rem;"></i> UbicaciÃ³n GPS detectada
               </span>
               <a id="editFincMapsLiveLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background:#0284c7; color:#ffffff; font-weight:800; text-decoration:none; padding:6px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; font-size:0.80rem;">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver en Google Maps
@@ -1324,7 +1324,7 @@
   </div>
 
 
-  <!-- ═══ MODAL: DETALLE DE INFORME O BITÁCORA CLIENTE ══════════════════════ -->
+  <!-- â•â•â• MODAL: DETALLE DE INFORME O BITÃCORA CLIENTE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <div class="modal-overlay hidden" id="modalRecomendacionesCliente" onclick="if(event.target===this) closeRecomendacionesModal()">
     <div class="modal-box" style="max-width:640px; width:92%; border-radius:24px; background:#ffffff; box-shadow:0 20px 50px rgba(0,48,73,0.15); border:1.5px solid rgba(28,130,173,0.2);">
       <div class="modal-h" style="border-bottom:1px solid rgba(28,130,173,0.15); padding:18px 24px; display:flex; justify-content:space-between; align-items:center;">
@@ -1363,12 +1363,12 @@
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
           <label class="form-label"
-            style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-2); font-weight: bold; margin-bottom: 6px; display: block;">Método
+            style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-2); font-weight: bold; margin-bottom: 6px; display: block;">MÃ©todo
             de Pago Utilizado</label>
           <select id="receiptMethod" class="form-select" required
             style="width: 100%; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
             <option value="Transferencia">Transferencia Bancaria (Bancolombia/Nequi)</option>
-            <option value="Tarjeta">Tarjeta de Crédito / PSE</option>
+            <option value="Tarjeta">Tarjeta de CrÃ©dito / PSE</option>
             <option value="Efectivo">Efectivo / Corresponsal</option>
           </select>
         </div>
@@ -1382,7 +1382,7 @@
     </div>
   </div>
 
-  <!-- Modal Modificar Información de Perfil Seguro (8 Dígitos) -->
+  <!-- Modal Modificar InformaciÃ³n de Perfil Seguro (8 DÃ­gitos) -->
   <div class="modal-overlay hidden" id="modalModificarPerfilSeguro" onclick="if(event.target===this) closeSecureProfileModal()"
     style="position:fixed; inset:0; background:rgba(0,48,73,0.65); backdrop-filter:blur(15px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
     <div class="modal-box"
@@ -1391,37 +1391,37 @@
         style="background: #003049; padding: 20px 26px; display: flex; justify-content: space-between; align-items: center;">
         <h3 class="modal-title"
           style="color: #fff; font-family: 'Syne', sans-serif; font-size: 1.15rem; display: flex; align-items: center; gap: 10px; margin: 0;">
-          <i class="fa-solid fa-shield-halved" style="color:#E4C7A1;"></i> Modificar Información de Perfil
+          <i class="fa-solid fa-shield-halved" style="color:#E4C7A1;"></i> Modificar InformaciÃ³n de Perfil
         </h3>
         <button type="button" onclick="closeSecureProfileModal()"
-          style="background: none; border: none; color: #E4C7A1; font-size: 1.3rem; cursor: pointer;">✕</button>
+          style="background: none; border: none; color: #E4C7A1; font-size: 1.3rem; cursor: pointer;">âœ•</button>
       </div>
       <div style="padding: 24px 28px;">
 
-        <!-- ═══ PASO 1: VERIFICACIÓN POR CÓDIGO DE 8 DÍGITOS ═══ -->
+        <!-- â•â•â• PASO 1: VERIFICACIÃ“N POR CÃ“DIGO DE 8 DÃGITOS â•â•â• -->
         <div id="secProfStep1">
           <div style="background: rgba(0,48,73,0.04); border-left: 4px solid #1C82AD; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;">
             <p style="margin: 0; font-size: 0.84rem; color: #343a40; line-height: 1.5;">
-              Por seguridad de tu cuenta y para garantizar la validez legal de tus contratos y bitácoras de vuelo, solicita un <strong>código de autorización de 8 dígitos</strong> a tu correo registrado. Al validarlo y aceptarlo, se desplegará el módulo para modificar tus datos (incluyendo nombre, teléfono, documento y correo).
+              Por seguridad de tu cuenta y para garantizar la validez legal de tus contratos y bitÃ¡coras de vuelo, solicita un <strong>cÃ³digo de autorizaciÃ³n de 8 dÃ­gitos</strong> a tu correo registrado. Al validarlo y aceptarlo, se desplegarÃ¡ el mÃ³dulo para modificar tus datos (incluyendo nombre, telÃ©fono, documento y correo).
             </p>
           </div>
 
-          <!-- Correo registrado y botón de solicitud -->
+          <!-- Correo registrado y botÃ³n de solicitud -->
           <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 18px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
             <div>
-              <div style="font-weight: 800; color: #003049; font-size: 0.88rem;">Paso 1: Solicita tu código</div>
-              <div style="font-size: 0.80rem; color: #64748b;">Se enviará a: <strong id="secProfEmailTarget" style="color:#003049;">—</strong></div>
+              <div style="font-weight: 800; color: #003049; font-size: 0.88rem;">Paso 1: Solicita tu cÃ³digo</div>
+              <div style="font-size: 0.80rem; color: #64748b;">Se enviarÃ¡ a: <strong id="secProfEmailTarget" style="color:#003049;">â€”</strong></div>
             </div>
             <button type="button" id="btnReqProfileOtp" onclick="solicitarCodigoPerfilModal()" class="btn btn-sm"
               style="background: #003049; color: #ffffff; border: 1px solid #1C82AD; border-radius: 8px; padding: 9px 16px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-              <i class="fa-solid fa-paper-plane" style="color: #E4C7A1;"></i> Enviar Código (8 Dígitos)
+              <i class="fa-solid fa-paper-plane" style="color: #E4C7A1;"></i> Enviar CÃ³digo (8 DÃ­gitos)
             </button>
           </div>
 
-          <!-- Input para el código de 8 dígitos -->
+          <!-- Input para el cÃ³digo de 8 dÃ­gitos -->
           <div style="margin-bottom: 16px;">
             <label style="font-size: 0.84rem; font-weight: 800; color: #003049; display: block; margin-bottom: 6px;">
-              INGRESA EL CÓDIGO DE 8 DÍGITOS *
+              INGRESA EL CÃ“DIGO DE 8 DÃGITOS *
             </label>
             <input type="text" id="secProfCodigo" maxlength="12" placeholder="1234 - 5678"
               class="form-input" style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 900; letter-spacing: 4px; text-align: center; color: #003049; background: #ffffff; border: 2px solid #1C82AD; border-radius: 10px; width: 100%; box-sizing: border-box; padding: 12px;" oninput="formatearInput8DigitosModal(this)" />
@@ -1435,15 +1435,15 @@
             </button>
             <button type="button" id="btnVerifyProfileOtp" onclick="verificarCodigoPerfilModal()" class="btn btn-primary"
               style="background: linear-gradient(135deg, #003049 0%, #1C82AD 100%); color: #fff; font-weight: 800; border-radius: 10px; padding: 12px 24px; border:none; cursor:pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,48,73,0.3);">
-              <i class="fa-solid fa-check-double" style="color: #E4C7A1;"></i> Aceptar y Verificar Código
+              <i class="fa-solid fa-check-double" style="color: #E4C7A1;"></i> Aceptar y Verificar CÃ³digo
             </button>
           </div>
         </div>
 
-        <!-- ═══ PASO 2: DESPLIEGUE DE INFORMACIÓN MODIFICABLE (TODO MENOS CONTRASEÑA, HASTA EL CORREO) ═══ -->
+        <!-- â•â•â• PASO 2: DESPLIEGUE DE INFORMACIÃ“N MODIFICABLE (TODO MENOS CONTRASEÃ‘A, HASTA EL CORREO) â•â•â• -->
         <div id="secProfStep2" style="display: none;">
           <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; font-size: 0.86rem; color: #1e40af; font-weight: 600; line-height: 1.5;">
-            <i class="fa-solid fa-circle-check" style="color: #2563eb; margin-right: 6px; font-size: 1rem;"></i> Código verificado exitosamente. Ahora puedes modificar tus datos personales y de contacto.
+            <i class="fa-solid fa-circle-check" style="color: #2563eb; margin-right: 6px; font-size: 1rem;"></i> CÃ³digo verificado exitosamente. Ahora puedes modificar tus datos personales y de contacto.
           </div>
 
           <form id="secureProfileEditForm" onsubmit="submitSecureProfileChanges(event)">
@@ -1453,34 +1453,34 @@
                 <input type="text" id="secProfNombre" required class="form-input" style="text-transform: uppercase; border-radius: 10px; width: 100%; box-sizing: border-box;" />
               </div>
               <div>
-                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Empresa / Razón Social</label>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Empresa / RazÃ³n Social</label>
                 <input type="text" id="secProfEmpresa" class="form-input" style="text-transform: uppercase; border-radius: 10px; width: 100%; box-sizing: border-box;" />
               </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
               <div>
-                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Teléfono / WhatsApp *</label>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">TelÃ©fono / WhatsApp *</label>
                 <input type="tel" id="secProfTel" required class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
               </div>
               <div>
-                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Correo Electrónico (Gmail/Email) *</label>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Correo ElectrÃ³nico (Gmail/Email) *</label>
                 <input type="email" id="secProfEmail" required class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
               </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
               <div>
-                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Tipo de Identificación *</label>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Tipo de IdentificaciÃ³n *</label>
                 <select id="secProfTipoDoc" class="form-input" onchange="if(typeof ajustarValidacionSecProfDoc==='function')ajustarValidacionSecProfDoc();" style="border-radius: 10px; width: 100%; box-sizing: border-box; font-weight:600;">
-                  <option value="CC">Cédula de Ciudadanía (CC)</option>
+                  <option value="CC">CÃ©dula de CiudadanÃ­a (CC)</option>
                   <option value="NIT">NIT (Empresa)</option>
-                  <option value="CE">Cédula de Extranjería (CE)</option>
+                  <option value="CE">CÃ©dula de ExtranjerÃ­a (CE)</option>
                   <option value="PASAPORTE">Pasaporte</option>
                 </select>
               </div>
               <div>
-                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Número de Documento *</label>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">NÃºmero de Documento *</label>
                 <input type="text" id="secProfCedula" required maxlength="10" inputmode="numeric" autocomplete="off"
                   oninput="if(!document.getElementById('secProfTipoDoc')||document.getElementById('secProfTipoDoc').value==='CC'||document.getElementById('secProfTipoDoc').value==='NIT'){ this.value=this.value.replace(/\D/g,'').slice(0,10); }"
                   class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
@@ -1489,7 +1489,7 @@
 
             <div style="display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px;">
               <div>
-                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Fecha de Expedición (Hasta Ayer)</label>
+                <label style="font-size: 0.82rem; font-weight: 700; color: #003049; display: block; margin-bottom: 4px;">Fecha de ExpediciÃ³n (Hasta Ayer)</label>
                 <input type="date" id="secProfExpedicion" class="form-input" style="border-radius: 10px; width: 100%; box-sizing: border-box;" />
               </div>
             </div>
@@ -1526,7 +1526,7 @@
         <h3 style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.3rem;"><i class="fa-solid fa-upload"></i> Adjuntar Comprobante de
           Pago</h3>
         <button onclick="cerrarModalSubirComprobante()"
-          style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#6c757d;">✕</button>
+          style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#6c757d;">âœ•</button>
       </div>
       <p style="font-size:0.88rem; color:#4a5568; margin-bottom:16px;">
         Subiendo comprobante para el Pago <strong id="compPagoIdDisplay">#1</strong>.
@@ -1535,7 +1535,7 @@
       <form onsubmit="submitComprobantePago(event)">
         <div style="margin-bottom:16px;">
           <label style="font-size:0.8rem; font-weight:700; color:#003049; display:block; margin-bottom:6px;">Referencia
-            / N° de Transacción *</label>
+            / NÂ° de TransacciÃ³n *</label>
           <input type="text" id="compRefInput" placeholder="Ej: Nequi 984012 o Ref. Bancolombia 48219" required
             style="width:100%; padding:12px; border-radius:10px; border:1px solid #ccc; font-size:0.95rem;" />
         </div>
@@ -1558,7 +1558,7 @@
     </div>
   </div>
 
-  <!--  MODAL DE TRANSFERENCIA Y AUTENTICACIÓN DE CUENTA ANTERIOR  -->
+  <!--  MODAL DE TRANSFERENCIA Y AUTENTICACIÃ“N DE CUENTA ANTERIOR  -->
   <div id="modalTransferNitAuth" class="hidden" onclick="if(event.target===this) closeTransferAuthModal()"
     style="display:none; position:fixed; inset:0; background:rgba(0,48,73,0.7); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
     <div class="modal-box liquid-glass"
@@ -1574,12 +1574,12 @@
             <h3 id="transferModalTitle" style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.25rem; font-weight:800;">
               Autorizar Transferencia de Documento
             </h3>
-            <span style="font-size:0.78rem; color:#6c757d; font-weight:600;">Verificación de Titularidad Previa</span>
+            <span style="font-size:0.78rem; color:#6c757d; font-weight:600;">VerificaciÃ³n de Titularidad Previa</span>
           </div>
         </div>
         <button onclick="closeTransferAuthModal()"
           style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#6c757d; padding:4px; line-height:1; transition:color 0.2s;"
-          onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#6c757d'">✕</button>
+          onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#6c757d'">âœ•</button>
       </div>
 
       <!-- Tarjeta informativa de la cuenta anterior -->
@@ -1603,22 +1603,22 @@
         </div>
 
         <p id="transferModalNote" style="margin:12px 0 0 0; font-size:0.8rem; color:#475569; line-height:1.4;">
-           <em>Para transferir la titularidad de este documento a tu cuenta actual, por favor ingresa la contraseña de la cuenta anterior. Al autorizarla, tu cuenta nueva quedará verificada.</em>
+           <em>Para transferir la titularidad de este documento a tu cuenta actual, por favor ingresa la contraseÃ±a de la cuenta anterior. Al autorizarla, tu cuenta nueva quedarÃ¡ verificada.</em>
         </p>
       </div>
 
-      <!-- Alerta de error dinámica -->
+      <!-- Alerta de error dinÃ¡mica -->
       <div id="transferAuthError" class="hidden"
         style="display:none; background:#fef2f2; border:1px solid #f87171; color:#991b1b; padding:10px 14px; border-radius:10px; font-size:0.84rem; font-weight:600; margin-bottom:16px;">
       </div>
 
-      <!-- Formulario de validación de contraseña de la cuenta anterior -->
+      <!-- Formulario de validaciÃ³n de contraseÃ±a de la cuenta anterior -->
       <form onsubmit="submitTransferAccountAuth(event)">
         <div style="margin-bottom:20px;">
           <label style="font-size:0.82rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:6px; margin-bottom:6px; text-transform:uppercase;">
-            <i class="fa-solid fa-lock" style="color:#1C82AD;"></i> Contraseña de la cuenta anterior *
+            <i class="fa-solid fa-lock" style="color:#1C82AD;"></i> ContraseÃ±a de la cuenta anterior *
           </label>
-          <input type="password" id="transferAccountPassword" required placeholder="Ingresa la contraseña de la cuenta anterior"
+          <input type="password" id="transferAccountPassword" required placeholder="Ingresa la contraseÃ±a de la cuenta anterior"
             style="width:100%; padding:13px 15px; border-radius:12px; border:1.5px solid #cbd5e1; font-size:0.95rem; font-family:'Outfit',sans-serif; background:#ffffff; box-shadow:inset 0 1px 3px rgba(0,0,0,0.05); transition:border 0.2s;"
             onfocus="this.style.borderColor='#1C82AD'" onblur="this.style.borderColor='#cbd5e1'" />
         </div>
@@ -1630,7 +1630,7 @@
           </button>
           <button type="submit" id="btnSubmitTransferAuth" class="btn"
             style="flex:2; padding:13px; background:linear-gradient(135deg, #1C82AD 0%, #003049 100%); color:#ffffff; font-weight:800; border-radius:12px; border:none; cursor:pointer; font-size:0.95rem; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 18px rgba(0,48,73,0.3); transition:all 0.2s;">
-            <i class="fa-solid fa-key"></i> <span id="transferModalBtnText">Iniciar Sesión y Transferir</span>
+            <i class="fa-solid fa-key"></i> <span id="transferModalBtnText">Iniciar SesiÃ³n y Transferir</span>
           </button>
         </div>
       </form>
@@ -1639,7 +1639,7 @@
   </div>
 
 
-  <!-- MODAL REVISIÓN Y NEGOCIACIÓN DE COTIZACIÓN (PORTAL CLIENTE) -->
+  <!-- MODAL REVISIÃ“N Y NEGOCIACIÃ“N DE COTIZACIÃ“N (PORTAL CLIENTE) -->
   <div id="modalClientNegotiation" class="modal-overlay hidden" onclick="if(event.target===this) closeClientNegotiationModal()"
     style="position:fixed; inset:0; background:rgba(0,48,73,0.7); backdrop-filter:blur(15px); z-index:999999; align-items:center; justify-content:center; padding:20px;">
     <div class="modal-box"
@@ -1651,11 +1651,11 @@
             <i class="fa-solid fa-handshake"></i>
           </div>
           <div>
-            <h3 style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.25rem;">Revisión de Cotización</h3>
+            <h3 style="margin:0; color:#003049; font-family:'Syne',sans-serif; font-size:1.25rem;">RevisiÃ³n de CotizaciÃ³n</h3>
             <div id="clientNegRadicado" style="font-size:0.8rem; font-weight:800; color:#1C82AD;">#RAD-000</div>
           </div>
         </div>
-        <button onclick="closeClientNegotiationModal()" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#64748b;">✕</button>
+        <button onclick="closeClientNegotiationModal()" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#64748b;">âœ•</button>
       </div>
 
       <!-- Resumen del servicio -->
@@ -1663,19 +1663,19 @@
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.84rem;">
           <div>
             <span style="color:#64748b; font-weight:600;">Servicio:</span>
-            <div id="clientNegServicio" style="font-weight:700; color:#003049; margin-top:2px;">—</div>
+            <div id="clientNegServicio" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
           </div>
           <div>
             <span style="color:#64748b; font-weight:600;">Predio / Finca:</span>
-            <div id="clientNegFinca" style="font-weight:700; color:#003049; margin-top:2px;">—</div>
+            <div id="clientNegFinca" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
           </div>
           <div>
             <span style="color:#64748b; font-weight:600;">Fecha y Hora:</span>
-            <div id="clientNegFechaHora" style="font-weight:700; color:#003049; margin-top:2px;">—</div>
+            <div id="clientNegFechaHora" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
           </div>
           <div>
             <span style="color:#64748b; font-weight:600;">Piloto Asignado:</span>
-            <div id="clientNegPiloto" style="font-weight:700; color:#003049; margin-top:2px;">—</div>
+            <div id="clientNegPiloto" style="font-weight:700; color:#003049; margin-top:2px;">â€”</div>
           </div>
         </div>
       </div>
@@ -1683,7 +1683,7 @@
       <!-- Precio Propuesto -->
       <div style="background:linear-gradient(135deg, #ecfdf5, #d1fae5); border:1px solid #a7f3d0; border-radius:14px; padding:16px; text-align:center; margin-bottom:18px;">
         <div style="font-size:0.8rem; font-weight:800; color:#065f46; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
-          Cotización Oficial Flymetrics
+          CotizaciÃ³n Oficial Flymetrics
         </div>
         <div id="clientNegPrecio" style="font-size:1.8rem; font-weight:900; color:#047857; letter-spacing:0.5px;">
           $ 0 COP
@@ -1693,26 +1693,26 @@
         </div>
       </div>
 
-      <!-- Observación del Administrador si existe -->
+      <!-- ObservaciÃ³n del Administrador si existe -->
       <div id="clientNegAdminMsgBox" style="display:none; background:#f0f9ff; border-left:4px solid #1c82ad; border-radius:8px; padding:12px 16px; margin-bottom:16px;">
         <div style="font-size:0.78rem; font-weight:800; color:#0369a1; text-transform:uppercase;">Nota de Operaciones Flymetrics:</div>
         <div id="clientNegAdminMsg" style="font-size:0.85rem; color:#0c4a6e; margin-top:3px; line-height:1.4;"></div>
       </div>
 
-      <!-- Historial de negociación -->
+      <!-- Historial de negociaciÃ³n -->
       <div id="clientNegHistorialBox" style="display:none; margin-bottom:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px;">
         <div style="font-size:0.78rem; font-weight:800; color:#475569; text-transform:uppercase; margin-bottom:8px;">
-          <i class="fa-solid fa-clock-rotate-left"></i> Historial de Negociación
+          <i class="fa-solid fa-clock-rotate-left"></i> Historial de NegociaciÃ³n
         </div>
         <div id="clientNegHistorialList" style="max-height:130px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
       </div>
 
-      <!-- Sección de modificación / sugerencia (Oculta por defecto) -->
+      <!-- SecciÃ³n de modificaciÃ³n / sugerencia (Oculta por defecto) -->
       <div id="clientNegModificarSection" style="display:none; margin-bottom:18px; background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:16px;">
         <label style="font-size:0.82rem; font-weight:800; color:#92400e; display:flex; align-items:center; gap:6px; margin-bottom:6px;">
-          <i class="fa-solid fa-pen"></i> ¿Qué cambios deseas proponer? (Tarifa, fecha o condiciones)
+          <i class="fa-solid fa-pen"></i> Â¿QuÃ© cambios deseas proponer? (Tarifa, fecha o condiciones)
         </label>
-        <textarea id="clientNegSugerencia" rows="3" placeholder="Ej: Solicito ajuste en la tarifa por volumen de hectáreas, o prefiero que el vuelo inicie a las 06:30 AM..."
+        <textarea id="clientNegSugerencia" rows="3" placeholder="Ej: Solicito ajuste en la tarifa por volumen de hectÃ¡reas, o prefiero que el vuelo inicie a las 06:30 AM..."
           style="width:100%; padding:10px; border-radius:8px; border:1px solid #d97706; font-size:0.88rem; font-family:'Outfit',sans-serif; box-sizing:border-box;"></textarea>
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:10px;">
           <button type="button" onclick="document.getElementById('clientNegModificarSection').style.display='none'" class="btn btn-sm"
@@ -1724,11 +1724,11 @@
         </div>
       </div>
 
-      <!-- Botones de Acción -->
+      <!-- Botones de AcciÃ³n -->
       <div id="clientNegActionButtons" style="display:flex; flex-direction:column; gap:10px;">
         <button type="button" id="btnAceptarCotizacion" onclick="window.responderCotizacionClientModal('aceptar')" class="btn"
           style="width:100%; padding:14px; background:linear-gradient(135deg, #059669 0%, #047857 100%); color:#ffffff; font-weight:800; font-size:1rem; border-radius:12px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 16px rgba(5,150,105,0.35); transition:transform 0.15s;">
-          <i class="fa-solid fa-circle-check"></i> Aceptar Cotización y Confirmar Vuelo
+          <i class="fa-solid fa-circle-check"></i> Aceptar CotizaciÃ³n y Confirmar Vuelo
         </button>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -1758,7 +1758,7 @@
           <i class="fa-solid fa-pen-to-square" style="color:#1C82AD;"></i> Modificar Solicitud de Vuelo
         </h3>
         <button onclick="closeEditAgendaModal()"
-          style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#6c757d;">✕</button>
+          style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:#6c757d;">âœ•</button>
       </div>
       <p style="font-size:0.86rem; color:#4a5568; margin-bottom:18px; line-height:1.45;">
         Puedes modificar la finca, servicios, fecha, hora u observaciones especiales de tu orden de vuelo.
@@ -1849,10 +1849,10 @@
       <!-- Header Bar -->
       <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
         <div style="display:flex; align-items:center; gap:10px;">
-          <span id="lightboxBadge" class="badge" style="background:#e0f2fe; color:#0284c7; font-weight:800; font-size:0.78rem; padding:5px 12px; border-radius:8px; border:1px solid #bae6fd;">Vuelo Agrícola</span>
+          <span id="lightboxBadge" class="badge" style="background:#e0f2fe; color:#0284c7; font-weight:800; font-size:0.78rem; padding:5px 12px; border-radius:8px; border:1px solid #bae6fd;">Vuelo AgrÃ­cola</span>
           <span id="lightboxCounter" style="color:#64748b; font-size:0.84rem; font-weight:700;">Foto 1 de 6</span>
         </div>
-        <button type="button" onclick="closeCollageLightbox()" style="background:#f1f5f9; border:none; color:#475569; font-size:1.2rem; cursor:pointer; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: all 0.2s ease;" onmouseover="this.style.background='#fee2e2'; this.style.color='#ef4444';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#475569';">✕</button>
+        <button type="button" onclick="closeCollageLightbox()" style="background:#f1f5f9; border:none; color:#475569; font-size:1.2rem; cursor:pointer; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: all 0.2s ease;" onmouseover="this.style.background='#fee2e2'; this.style.color='#ef4444';" onmouseout="this.style.background='#f1f5f9'; this.style.color='#475569';">âœ•</button>
       </div>
 
       <!-- Media Display Area -->
@@ -1887,7 +1887,7 @@
     </div>
   </div>
 
-  <script src="../js/cliente.js?v=20261016_200000"></script>
+  <script src="js/cliente.js?v=20261016_200000"></script>
 </body>
 
 </html>

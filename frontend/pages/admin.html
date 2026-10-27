@@ -1,18 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flymetrics</title>
   <meta http-equiv="Permissions-Policy" content="geolocation=*, compute-pressure=*" />
-  <meta name="description" content="Panel de administración Flymetrics." />
+  <meta name="description" content="Panel de administraciÃ³n Flymetrics." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/fontawesome/css/all.min.css" />
-  <link rel="stylesheet" href="../css/admin.css?v=20261016_v9_redesign_hd" />
+  <link rel="stylesheet" href="css/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css?v=20261016_v9_redesign_hd" />
   <script>
-    // Fail-safe inmediato para modales: disponible antes de evaluar cualquier otra línea
+    // Fail-safe inmediato para modales: disponible antes de evaluar cualquier otra lÃ­nea
     window.openModal = function(id) {
       const el = document.getElementById(id);
       if (!el) return;
@@ -116,7 +116,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-top">
       <div class="sidebar-logo">
-        <img src="../img/logo_bird_blue.png" alt="Flymetrics Logo" class="brand-bird-img" onerror="this.src='../img/logo.png'" style="height:36px; width:auto; max-width:58px; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0, 48, 73, 0.22));" />
+        <img src="img/logo_bird_blue.png" alt="Flymetrics Logo" class="brand-bird-img" onerror="this.src='img/logo.png'" style="height:36px; width:auto; max-width:58px; object-fit:contain; filter:drop-shadow(0 3px 8px rgba(0, 48, 73, 0.22));" />
         <div class="sidebar-logo-text">
           <span class="sidebar-logo-name" style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.2rem; color:#003049;">Fly<span style="color:#1C82AD;">metrics</span></span>
           <span class="sidebar-logo-sub" style="font-size:0.72rem; color:var(--text-3); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Admin Enterprise</span>
@@ -125,7 +125,7 @@
     </div>
 
     <nav class="sidebar-nav">
-      <div class="nav-section-label">Menú principal</div>
+      <div class="nav-section-label">MenÃº principal</div>
 
       <button class="nav-item active" data-panel="dashboard" title="Dashboard">
         <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
@@ -143,9 +143,9 @@
         <span>Clientes</span>
       </button>
 
-      <button class="nav-item" data-panel="tecnicos" title="Técnicos">
+      <button class="nav-item" data-panel="tecnicos" title="TÃ©cnicos">
         <span class="nav-icon"><i class="fa-solid fa-user-gear"></i></span>
-        <span>Técnicos</span>
+        <span>TÃ©cnicos</span>
       </button>
 
       <div class="nav-section-label" style="margin-top:8px">Operaciones</div>
@@ -165,9 +165,9 @@
         <span>Reagendamiento</span>
       </button>
 
-      <button class="nav-item" data-panel="facturacion" title="Facturación">
+      <button class="nav-item" data-panel="facturacion" title="FacturaciÃ³n">
         <span class="nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>
-        <span>Facturación</span>
+        <span>FacturaciÃ³n</span>
       </button>
 
       <button class="nav-item" data-panel="informes-ejecutivos" title="Informes Ejecutivos">
@@ -193,16 +193,16 @@
         <span class="nav-badge" id="webContactoBadge" style="background:#10B981; color:#fff;">0</span>
       </button>
 
-      <button class="nav-item" data-panel="configuracion" title="Configuración">
+      <button class="nav-item" data-panel="configuracion" title="ConfiguraciÃ³n">
         <span class="nav-icon"><i class="fa-solid fa-sliders"></i></span>
-        <span>Configuración</span>
+        <span>ConfiguraciÃ³n</span>
       </button>
 
       <div class="nav-section-label" style="margin-top:8px">Acceso Externo</div>
 
-      <button class="nav-item" onclick="window.open('tecnico.html', '_blank')" title="Portal Técnico">
+      <button class="nav-item" onclick="window.open('tecnico.html', '_blank')" title="Portal TÃ©cnico">
         <span class="nav-icon"><i class="fa-solid fa-plane-departure"></i></span>
-        <span>Portal Técnico</span>
+        <span>Portal TÃ©cnico</span>
       </button>
     </nav>
 
@@ -214,9 +214,9 @@
           <div class="sidebar-user-role" id="sidebarUserRole">Administrador</div>
         </div>
       </div>
-      <button class="sidebar-logout" id="logoutBtn" onclick="logout()" title="Cerrar sesión">
+      <button class="sidebar-logout" id="logoutBtn" onclick="logout()" title="Cerrar sesiÃ³n">
         <i class="fa-solid fa-power-off"></i>
-        <span>Cerrar sesión</span>
+        <span>Cerrar sesiÃ³n</span>
       </button>
     </div>
   </aside>
@@ -227,7 +227,7 @@
 
     <header class="topbar">
       <div style="display:flex; align-items:center; gap:12px; flex:1;">
-        <button class="topbar-toggle" id="sidebarToggle" onclick="toggleAdminSidebar(event)" aria-label="Toggle Sidebar" title="Menú lateral"><i class="fa-solid fa-bars"></i></button>
+        <button class="topbar-toggle" id="sidebarToggle" onclick="toggleAdminSidebar(event)" aria-label="Toggle Sidebar" title="MenÃº lateral"><i class="fa-solid fa-bars"></i></button>
         <div style="width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg, #003049 0%, #1c82ad 100%); display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.85rem; flex-shrink:0;">
           <i class="fa-solid fa-helicopter"></i>
         </div>
@@ -266,19 +266,19 @@
           <div class="stat-card blue">
             <span class="stat-icon"><i class="fa-solid fa-calendar-days"></i></span>
             <div class="stat-label">Turnos hoy</div>
-            <div class="stat-value" id="statTurnosHoy">—</div>
-            <div class="stat-change up">↑ programados</div>
+            <div class="stat-value" id="statTurnosHoy">â€”</div>
+            <div class="stat-change up">â†‘ programados</div>
           </div>
           <div class="stat-card green">
             <span class="stat-icon"><i class="fa-solid fa-users"></i></span>
             <div class="stat-label">Clientes totales</div>
-            <div class="stat-value" id="statClientes">—</div>
-            <div class="stat-change up">↑ este mes</div>
+            <div class="stat-value" id="statClientes">â€”</div>
+            <div class="stat-change up">â†‘ este mes</div>
           </div>
           <div class="stat-card orange">
             <span class="stat-icon"><i class="fa-solid fa-user-gear"></i></span>
-            <div class="stat-label">Técnicos activos</div>
-            <div class="stat-value" id="statTecnicos">—</div>
+            <div class="stat-label">TÃ©cnicos activos</div>
+            <div class="stat-value" id="statTecnicos">â€”</div>
             <div class="stat-change">en campo</div>
           </div>
         </div>
@@ -288,7 +288,7 @@
           <div class="card" style="grid-column: 1 / -1">
             <div class="card-header">
               <span class="card-title"><i class="fa-solid fa-list-check" style="color:var(--accent); margin-right:6px;"></i> Turnos recientes</span>
-              <button class="btn btn-ghost btn-sm" data-panel="agenda" onclick="navigateTo('agenda')">Ver todos →</button>
+              <button class="btn btn-ghost btn-sm" data-panel="agenda" onclick="navigateTo('agenda')">Ver todos â†’</button>
             </div>
             <div class="table-wrap">
               <table>
@@ -299,7 +299,7 @@
                     <th>Servicio</th>
                     <th>Fecha / Hora</th>
                     <th>Estado</th>
-                    <th>Técnico</th>
+                    <th>TÃ©cnico</th>
                   </tr>
                 </thead>
                 <tbody id="recentAgendaBody">
@@ -318,7 +318,7 @@
           </div>
           <div class="quick-action-card" data-quick="tecnicos" onclick="navigateTo('tecnicos')" style="cursor:pointer;">
             <div class="quick-action-icon"><i class="fa-solid fa-user-gear"></i></div>
-            <div class="quick-action-label">Ver Técnicos</div>
+            <div class="quick-action-label">Ver TÃ©cnicos</div>
           </div>
           <div class="quick-action-card" data-quick="clientes" onclick="navigateTo('clientes')" style="cursor:pointer;">
             <div class="quick-action-icon"><i class="fa-solid fa-users"></i></div>
@@ -326,7 +326,7 @@
           </div>
           <div class="quick-action-card" data-quick="facturacion" onclick="navigateTo('facturacion')" style="cursor:pointer;">
             <div class="quick-action-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
-            <div class="quick-action-label">Facturación</div>
+            <div class="quick-action-label">FacturaciÃ³n</div>
           </div>
           <div class="quick-action-card" data-quick="informes" onclick="navigateTo('informes-ejecutivos')" style="cursor:pointer;">
             <div class="quick-action-icon"><i class="fa-solid fa-file-signature"></i></div>
@@ -350,7 +350,7 @@
         <div class="section-header">
           <div>
             <div class="section-title">Agenda de Servicios</div>
-            <div class="section-subtitle">Gestión completa de turnos y asignaciones</div>
+            <div class="section-subtitle">GestiÃ³n completa de turnos y asignaciones</div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-ghost" onclick="loadAgenda()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
@@ -366,8 +366,8 @@
                 <i class="fa-solid fa-calendar-days" style="color:var(--accent);"></i> Calendario de Vuelos
               </span>
               <div class="btn-group" style="display:inline-flex; border:1px solid #cbd5e1; border-radius:10px; overflow:hidden; background:#f8fafc;">
-                <button type="button" class="btn btn-sm btn-ghost" id="btnCalView7" onclick="setCalendarView('7days')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">7 Días</button>
-                <button type="button" class="btn btn-sm btn-ghost" id="btnCalView14" onclick="setCalendarView('14days')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">14 Días</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btnCalView7" onclick="setCalendarView('7days')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">7 DÃ­as</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="btnCalView14" onclick="setCalendarView('14days')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">14 DÃ­as</button>
                 <button type="button" class="btn btn-sm btn-ghost" id="btnCalViewMonth" onclick="setCalendarView('month')" style="padding:4px 12px; font-size:0.78rem; font-weight:700; border-radius:0;">Mes Completo</button>
               </div>
             </div>
@@ -388,7 +388,7 @@
         <div class="toolbar" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
           <div class="search-input-wrap" style="flex:1; min-width:240px;">
             <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="search-input" id="agendaSearch" placeholder="Buscar por ID, cliente, finca, servicio, técnico..." />
+            <input type="text" class="search-input" id="agendaSearch" placeholder="Buscar por ID, cliente, finca, servicio, tÃ©cnico..." />
           </div>
           <select class="filter-select form-select" id="agendaEstadoFilter" style="min-width:150px; font-weight:600;">
             <option value="">Todos los estados</option>
@@ -400,7 +400,7 @@
             <option value="Cancelado">Cancelado</option>
           </select>
           <select class="filter-select form-select" id="agendaTecnicoFilter" style="min-width:160px; font-weight:600;">
-            <option value="">Todos los técnicos</option>
+            <option value="">Todos los tÃ©cnicos</option>
           </select>
           <input type="date" class="filter-select form-input" id="agendaDateFilter" style="min-width:140px; font-weight:600;" />
           <button class="btn btn-ghost btn-sm" onclick="clearAgendaFilters()" style="font-weight:700; display:inline-flex; align-items:center; gap:6px;"><i class="fa-solid fa-filter-circle-xmark"></i> Limpiar</button>
@@ -420,7 +420,7 @@
                   <th>Observaciones</th>
                   <th>Precio</th>
                   <th>Estado</th>
-                  <th>Técnico</th>
+                  <th>TÃ©cnico</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -461,7 +461,7 @@
                 <tr>
                   <th>Cliente</th>
                   <th>Email</th>
-                  <th>Teléfono</th>
+                  <th>TelÃ©fono</th>
                   <th>Fincas</th>
                   <th>Turnos</th>
                   <th>Acciones</th>
@@ -476,17 +476,17 @@
       </section>
 
       <!-- ========================================
-           PANEL 4: TÉCNICOS
+           PANEL 4: TÃ‰CNICOS
       ======================================== -->
       <section class="panel" id="panel-tecnicos">
         <div class="section-header">
           <div>
-            <div class="section-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:8px;"></i>Monitoreo y Gestión de Técnicos</div>
-            <div class="section-subtitle">Supervisión en tiempo real de pilotos en campo, disponibilidad operativa y asignaciones de vuelo</div>
+            <div class="section-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:8px;"></i>Monitoreo y GestiÃ³n de TÃ©cnicos</div>
+            <div class="section-subtitle">SupervisiÃ³n en tiempo real de pilotos en campo, disponibilidad operativa y asignaciones de vuelo</div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-ghost" onclick="loadTecnicos()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
-            <button class="btn btn-primary" id="newTecnicoBtn" onclick="openNewTecnicoModal()"><i class="fa-solid fa-plus"></i> Nuevo técnico</button>
+            <button class="btn btn-primary" id="newTecnicoBtn" onclick="openNewTecnicoModal()"><i class="fa-solid fa-plus"></i> Nuevo tÃ©cnico</button>
           </div>
         </div>
 
@@ -495,24 +495,24 @@
           <div class="stat-card blue" style="padding: 14px 20px;">
             <span class="stat-icon"><i class="fa-solid fa-users-gear"></i></span>
             <div class="stat-label">Total Pilotos</div>
-            <div class="stat-value" id="statTotalTecnicos" style="font-size: 1.5rem;">—</div>
+            <div class="stat-value" id="statTotalTecnicos" style="font-size: 1.5rem;">â€”</div>
           </div>
           <div class="stat-card green" style="padding: 14px 20px;">
             <span class="stat-icon"><i class="fa-solid fa-circle-check"></i></span>
             <div class="stat-label">Disponibles</div>
-            <div class="stat-value" id="statTecnicosDisponibles" style="font-size: 1.5rem;">—</div>
+            <div class="stat-value" id="statTecnicosDisponibles" style="font-size: 1.5rem;">â€”</div>
           </div>
           <div class="stat-card" style="padding: 14px 20px; border-left: 4px solid #6b7280;">
             <span class="stat-icon"><i class="fa-solid fa-bed"></i></span>
             <div class="stat-label">En Descanso / Off</div>
-            <div class="stat-value" id="statTecnicosInactivos" style="font-size: 1.5rem;">—</div>
+            <div class="stat-value" id="statTecnicosInactivos" style="font-size: 1.5rem;">â€”</div>
           </div>
         </div>
 
         <div class="toolbar" style="margin-top:20px;">
           <div class="search-input-wrap">
             <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="search-input" id="tecnicosSearch" placeholder="Buscar técnico por nombre, apellido, teléfono..." />
+            <input type="text" class="search-input" id="tecnicosSearch" placeholder="Buscar tÃ©cnico por nombre, apellido, telÃ©fono..." />
           </div>
         </div>
 
@@ -521,8 +521,8 @@
             <table>
               <thead>
                 <tr>
-                  <th>Técnico</th>
-                  <th style="text-align:center; width:60px;" title="WhatsApp del Técnico"><i class="fa-brands fa-whatsapp" style="color:#25D366; font-size:1.2rem;"></i></th>
+                  <th>TÃ©cnico</th>
+                  <th style="text-align:center; width:60px;" title="WhatsApp del TÃ©cnico"><i class="fa-brands fa-whatsapp" style="color:#25D366; font-size:1.2rem;"></i></th>
                   <th>Estado</th>
                   <th>Turnos asignados</th>
                   <th>Acciones</th>
@@ -555,12 +555,12 @@
           <div class="stat-card blue" style="padding: 14px 20px;">
             <span class="stat-icon"><i class="fa-solid fa-helicopter"></i></span>
             <div class="stat-label">Total Drones</div>
-            <div class="stat-value" id="statTotalDrones" style="font-size: 1.5rem;">—</div>
+            <div class="stat-value" id="statTotalDrones" style="font-size: 1.5rem;">â€”</div>
           </div>
           <div class="stat-card green" style="padding: 14px 20px;">
             <span class="stat-icon"><i class="fa-solid fa-check"></i></span>
             <div class="stat-label">Disponibles / Habilitados</div>
-            <div class="stat-value" id="statDronesDisponibles" style="font-size: 1.5rem;">—</div>
+            <div class="stat-value" id="statDronesDisponibles" style="font-size: 1.5rem;">â€”</div>
           </div>
         </div>
 
@@ -599,11 +599,11 @@
         <div class="section-header">
           <div>
             <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:8px;"></i>Servicios Especializados & Multimedia</div>
-            <div class="section-subtitle">Catálogo de servicios agrícolas, videos demostrativos e imágenes de la página principal</div>
+            <div class="section-subtitle">CatÃ¡logo de servicios agrÃ­colas, videos demostrativos e imÃ¡genes de la pÃ¡gina principal</div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-ghost" onclick="openMediaGalleryModal()" style="border:1.5px solid var(--accent); color:var(--accent); font-weight:700; display:inline-flex; align-items:center; gap:6px;">
-              <i class="fa-solid fa-photo-film"></i> Galería Multimedia
+              <i class="fa-solid fa-photo-film"></i> GalerÃ­a Multimedia
             </button>
             <button class="btn btn-primary" onclick="openNewServicioModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;">
               <i class="fa-solid fa-plus"></i> Nuevo servicio
@@ -614,7 +614,7 @@
         <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
           <div class="search-input-wrap" style="flex:1; min-width:260px;">
             <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="search-input" id="serviciosSearch" placeholder="Buscar servicio por nombre, sistema, especificación..." oninput="renderServiciosTable()" />
+            <input type="text" class="search-input" id="serviciosSearch" placeholder="Buscar servicio por nombre, sistema, especificaciÃ³n..." oninput="renderServiciosTable()" />
           </div>
           <select id="serviciosFilterActivo" class="form-select" onchange="renderServiciosTable()" style="max-width:220px; font-weight:600;">
             <option value="">Todos los servicios</option>
@@ -630,13 +630,13 @@
                 <tr>
                   <th style="width:70px;">Media</th>
                   <th>Servicio & Icono</th>
-                  <th>Especificaciones Técnicas</th>
-                  <th style="text-align:center;">Página Principal</th>
+                  <th>Especificaciones TÃ©cnicas</th>
+                  <th style="text-align:center;">PÃ¡gina Principal</th>
                   <th style="text-align:center; width:130px;">Acciones</th>
                 </tr>
               </thead>
               <tbody id="serviciosTableBody">
-                <tr><td colspan="5"><div class="loading-state"><div class="spinner"></div>Cargando catálogo de servicios...</div></td></tr>
+                <tr><td colspan="5"><div class="loading-state"><div class="spinner"></div>Cargando catÃ¡logo de servicios...</div></td></tr>
               </tbody>
             </table>
           </div>
@@ -649,15 +649,15 @@
       <section class="panel" id="panel-publicidad">
         <div class="section-header">
           <div>
-            <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:var(--accent); margin-right:8px;"></i>Módulo de Publicidad & Medios</div>
-            <div class="section-subtitle">Administración de video principal, foto móvil, collage rotativo de clientes y redes sociales</div>
+            <div class="section-title"><i class="fa-solid fa-bullhorn" style="color:var(--accent); margin-right:8px;"></i>MÃ³dulo de Publicidad & Medios</div>
+            <div class="section-subtitle">AdministraciÃ³n de video principal, foto mÃ³vil, collage rotativo de clientes y redes sociales</div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-ghost" onclick="loadPublicidadPanel()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;">
               <i class="fa-solid fa-rotate"></i> Actualizar
             </button>
             <button class="btn btn-ghost" onclick="openMediaGalleryModal()" style="border:1.5px solid var(--accent); color:var(--accent); font-weight:700; display:inline-flex; align-items:center; gap:6px;">
-              <i class="fa-solid fa-photo-film"></i> Galería Multimedia
+              <i class="fa-solid fa-photo-film"></i> GalerÃ­a Multimedia
             </button>
             <button class="btn btn-primary" id="btnNuevoMedioPublicidad" onclick="openNewCollageModal()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;">
               <i class="fa-solid fa-plus"></i> + Agregar al Collage
@@ -665,13 +665,13 @@
           </div>
         </div>
 
-        <!-- Subtabs de Navegación -->
+        <!-- Subtabs de NavegaciÃ³n -->
         <div class="tab-nav" style="display:flex; gap:8px; border-bottom:1.5px solid #e2e8f0; margin-bottom:20px; padding-bottom:8px; flex-wrap:wrap;">
           <button class="btn btn-sm btn-ghost active pub-tab-btn" id="pubTabBtnCollage" onclick="switchPublicidadSubTab('collage')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1; background:rgba(28,130,173,0.1); color:var(--primary);">
             <i class="fa-solid fa-images" style="color:var(--accent); margin-right:6px;"></i> Collage Dashboard Cliente
           </button>
           <button class="btn btn-sm btn-ghost pub-tab-btn" id="pubTabBtnGlobal" onclick="switchPublicidadSubTab('global')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1;">
-            <i class="fa-solid fa-tv" style="color:#0284c7; margin-right:6px;"></i> Medios Globales (Video & Portada Móvil)
+            <i class="fa-solid fa-tv" style="color:#0284c7; margin-right:6px;"></i> Medios Globales (Video & Portada MÃ³vil)
           </button>
           <button class="btn btn-sm btn-ghost pub-tab-btn" id="pubTabBtnRedes" onclick="switchPublicidadSubTab('redes')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1;">
             <i class="fa-solid fa-share-nodes" style="color:#10b981; margin-right:6px;"></i> Redes Sociales Oficiales
@@ -680,7 +680,7 @@
 
         <!-- SUBTAB 1: COLLAGE DASHBOARD CLIENTE -->
         <div id="pubSubTabCollage" class="pub-subtab-content">
-          <!-- Zona de arrastrar y soltar imágenes -->
+          <!-- Zona de arrastrar y soltar imÃ¡genes -->
           <div id="collageDragZone"
             ondragover="event.preventDefault(); this.classList.add('drag-over')"
             ondragleave="this.classList.remove('drag-over')"
@@ -702,17 +702,17 @@
               <i class="fa-solid fa-plus" style="font-size:1.1rem; color:#10b981; margin-left:4px; vertical-align:super;"></i>
             </div>
             <div style="font-weight: 800; font-size: 1.05rem; color: var(--text-primary); margin-bottom: 6px;">
-              Arrastra aquí tus fotos y videos del collage
+              Arrastra aquÃ­ tus fotos y videos del collage
             </div>
             <div style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 14px;">
-              O haz clic para seleccionar desde tu equipo — <strong>sin límite de cantidad</strong>
+              O haz clic para seleccionar desde tu equipo â€” <strong>sin lÃ­mite de cantidad</strong>
             </div>
             <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
               <span style="background: rgba(28,130,173,0.1); color:#1c82ad; padding:4px 12px; border-radius:20px; font-size:0.78rem; font-weight:700;">
-                <i class="fa-solid fa-image" style="margin-right:4px;"></i> JPG · PNG · WEBP · SVG · GIF
+                <i class="fa-solid fa-image" style="margin-right:4px;"></i> JPG Â· PNG Â· WEBP Â· SVG Â· GIF
               </span>
               <span style="background: rgba(16,185,129,0.1); color:#059669; padding:4px 12px; border-radius:20px; font-size:0.78rem; font-weight:700;">
-                <i class="fa-solid fa-video" style="margin-right:4px;"></i> MP4 · WEBM · MOV
+                <i class="fa-solid fa-video" style="margin-right:4px;"></i> MP4 Â· WEBM Â· MOV
               </span>
             </div>
             <input type="file" id="collageMultiFileInput" multiple accept="image/*,video/*"
@@ -726,7 +726,7 @@
             font-weight:700; align-items:center; gap:12px; flex-direction: column;">
             <div style="display:flex; align-items:center; gap:10px; width:100%;">
               <i class="fa-solid fa-spinner fa-spin" style="font-size:1.2rem; color:#15803d;"></i>
-              <span id="collageBatchUploadText">Procesando lote de imágenes...</span>
+              <span id="collageBatchUploadText">Procesando lote de imÃ¡genes...</span>
             </div>
             <div style="width:100%; background:#d1fae5; border-radius:8px; height:8px; overflow:hidden;">
               <div id="collageBatchProgressBar" style="height:8px; border-radius:8px;
@@ -739,15 +739,15 @@
             </style>
           </div>
 
-          <!-- Toolbar de búsqueda y filtros -->
+          <!-- Toolbar de bÃºsqueda y filtros -->
           <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
             <div class="search-input-wrap" style="flex:1; min-width:260px;">
               <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-              <input type="text" class="search-input" id="pubCollageSearch" placeholder="Buscar en el collage por título, subtítulo o badge..." oninput="renderCollageTable()" />
+              <input type="text" class="search-input" id="pubCollageSearch" placeholder="Buscar en el collage por tÃ­tulo, subtÃ­tulo o badge..." oninput="renderCollageTable()" />
             </div>
             <select id="pubCollageFilterActivo" class="form-select" onchange="renderCollageTable()" style="max-width:200px; font-weight:600;">
               <option value="">Todos los estados</option>
-              <option value="activo">Solo Activos (En Rotación)</option>
+              <option value="activo">Solo Activos (En RotaciÃ³n)</option>
               <option value="inactivo">Pausados / Inactivos</option>
             </select>
             <button class="btn btn-primary btn-sm" onclick="openNewCollageModal()" style="font-weight:800; border-radius:10px; display:inline-flex; align-items:center; gap:6px;">
@@ -761,11 +761,11 @@
                 <thead>
                   <tr>
                     <th style="width:90px;">Miniatura</th>
-                    <th>Título &amp; Subtítulo</th>
+                    <th>TÃ­tulo &amp; SubtÃ­tulo</th>
                     <th style="text-align:center; width:90px;">Tipo</th>
-                    <th>Badge / Acción</th>
+                    <th>Badge / AcciÃ³n</th>
                     <th style="text-align:center; width:80px;">Orden</th>
-                    <th style="text-align:center; width:100px;">Rotación</th>
+                    <th style="text-align:center; width:100px;">RotaciÃ³n</th>
                     <th style="text-align:center; width:120px;">Acciones</th>
                   </tr>
                 </thead>
@@ -777,14 +777,14 @@
           </div>
         </div>
 
-        <!-- SUBTAB 2: MEDIOS GLOBALES (VIDEO HERO & PÓSTER MÓVIL) -->
+        <!-- SUBTAB 2: MEDIOS GLOBALES (VIDEO HERO & PÃ“STER MÃ“VIL) -->
         <div id="pubSubTabGlobal" class="pub-subtab-content" style="display:none;">
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap:24px; margin-bottom:24px;">
-            <!-- Tarjeta 1: Video Hero de la Página Principal -->
+            <!-- Tarjeta 1: Video Hero de la PÃ¡gina Principal -->
             <div class="card" style="padding:22px; border-radius:18px; border:1.5px solid rgba(28,130,173,0.25); display:flex; flex-direction:column; gap:16px;">
               <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
-                  <i class="fa-solid fa-film" style="color:#e11d48;"></i> Video Hero (Página Principal)
+                  <i class="fa-solid fa-film" style="color:#e11d48;"></i> Video Hero (PÃ¡gina Principal)
                 </h3>
                 <span class="badge" style="background:#fef2f2; color:#e11d48; border:1px solid #fecdd3;">Full Screen</span>
               </div>
@@ -804,7 +804,7 @@
                   <input type="text" id="pubHeroVideoInput" class="form-input" value="/video/hero.mp4" placeholder="/video/hero.mp4 o https://..." oninput="var v=document.getElementById('pubGlobalHeroPreview'); if(v){ v.src=this.value; v.load(); v.play().catch(()=>{}); }" style="font-size:0.82rem; flex:1; min-width:180px;" />
                   <input type="file" id="pubHeroVideoFileInput" accept="video/mp4,video/webm" style="display:none;" onchange="subirMedioGlobalDirecto(this, 'video')" />
                   <button type="button" class="btn btn-ghost btn-sm" onclick="openMediaGalleryModal('hero_video')" style="font-weight:700; white-space:nowrap; border:1px solid var(--accent); color:var(--accent);">
-                    <i class="fa-solid fa-photo-film"></i> Galería
+                    <i class="fa-solid fa-photo-film"></i> GalerÃ­a
                   </button>
                   <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('pubHeroVideoFileInput').click()" style="font-weight:700; white-space:nowrap;">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Subir
@@ -816,21 +816,21 @@
               </div>
             </div>
 
-            <!-- Tarjeta 2: Foto de Carga en Celulares (Poster Móvil) -->
+            <!-- Tarjeta 2: Foto de Carga en Celulares (Poster MÃ³vil) -->
             <div class="card" style="padding:22px; border-radius:18px; border:1.5px solid rgba(28,130,173,0.25); display:flex; flex-direction:column; gap:16px;">
               <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
-                  <i class="fa-solid fa-mobile-screen" style="color:#0284c7;"></i> Portada Móvil / Foto de Carga
+                  <i class="fa-solid fa-mobile-screen" style="color:#0284c7;"></i> Portada MÃ³vil / Foto de Carga
                 </h3>
                 <span class="badge" style="background:#f0f9ff; color:#0284c7; border:1px solid #bae6fd;">Ultra Ligera</span>
               </div>
               <p style="font-size:0.83rem; color:#64748b; margin:0;">
-                Imagen que se muestra inmediatamente en celulares para carga rápida sin gastar datos ni saturar el ancho de banda.
+                Imagen que se muestra inmediatamente en celulares para carga rÃ¡pida sin gastar datos ni saturar el ancho de banda.
               </p>
 
               <!-- Image Preview -->
               <div style="width:100%; height:200px; border-radius:12px; background:#001828; overflow:hidden; position:relative; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center;">
-                <img id="pubGlobalPosterPreview" src="/img/servicio_precision.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='../img/servicio_precision.jpg';" />
+                <img id="pubGlobalPosterPreview" src="/img/servicio_precision.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='img/servicio_precision.jpg';" />
               </div>
 
               <!-- Input y botones -->
@@ -840,7 +840,7 @@
                   <input type="text" id="pubMobilePosterInput" class="form-input" value="/img/servicio_precision.jpg" placeholder="/img/servicio_precision.jpg o /uploads/..." oninput="var p=document.getElementById('pubGlobalPosterPreview'); if(p){ p.src=this.value + (this.value.includes('?') ? '&' : '?') + 't=' + Date.now(); }" style="font-size:0.82rem; flex:1; min-width:180px;" />
                   <input type="file" id="pubMobilePosterFileInput" accept="image/*" style="display:none;" onchange="subirMedioGlobalDirecto(this, 'imagen')" />
                   <button type="button" class="btn btn-ghost btn-sm" onclick="openMediaGalleryModal('mobile_poster')" style="font-weight:700; white-space:nowrap; border:1px solid var(--accent); color:var(--accent);">
-                    <i class="fa-solid fa-photo-film"></i> Galería
+                    <i class="fa-solid fa-photo-film"></i> GalerÃ­a
                   </button>
                   <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('pubMobilePosterFileInput').click()" style="font-weight:700; white-space:nowrap;">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Subir
@@ -901,8 +901,8 @@
       <section class="panel" id="panel-reagendamiento">
         <div class="section-header">
           <div>
-            <div class="section-title"><i class="fa-solid fa-calendar-plus" style="color:var(--accent); margin-right:8px;"></i>Módulo de Reagendamiento</div>
-            <div class="section-subtitle">Gestión rápida para reprogramar fechas, horas estimadas, franjas diurnas/nocturnas y motivos de cambio</div>
+            <div class="section-title"><i class="fa-solid fa-calendar-plus" style="color:var(--accent); margin-right:8px;"></i>MÃ³dulo de Reagendamiento</div>
+            <div class="section-subtitle">GestiÃ³n rÃ¡pida para reprogramar fechas, horas estimadas, franjas diurnas/nocturnas y motivos de cambio</div>
           </div>
           <button class="btn btn-ghost" onclick="panelLoaders.reagendamiento()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar Turnos</button>
         </div>
@@ -910,7 +910,7 @@
         <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
           <div class="search-input-wrap" style="flex:1; min-width:260px;">
             <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="search-input" id="reagendarSearch" placeholder="Buscar turno por cliente, finca, ID, teléfono..." oninput="renderReagendamientoTable()" />
+            <input type="text" class="search-input" id="reagendarSearch" placeholder="Buscar turno por cliente, finca, ID, telÃ©fono..." oninput="renderReagendamientoTable()" />
           </div>
         </div>
 
@@ -925,7 +925,7 @@
                   <th>Fecha & Hora Actual</th>
                   <th>Observaciones / Jornada</th>
                   <th>Estado</th>
-                  <th style="text-align:center;">Acción de Reagendamiento</th>
+                  <th style="text-align:center;">AcciÃ³n de Reagendamiento</th>
                 </tr>
               </thead>
               <tbody id="reagendamientoTableBody">
@@ -937,13 +937,13 @@
       </section>
 
       <!-- ========================================
-           PANEL SOLICITUDES COTIZACIÓN 24 HORAS
+           PANEL SOLICITUDES COTIZACIÃ“N 24 HORAS
       ======================================== -->
       <section class="panel" id="panel-contacto-web">
         <div class="section-header">
           <div>
             <div class="section-title"><i class="fa-solid fa-headset" style="color:var(--accent); margin-right:8px;"></i>Cotizaciones & Contacto 24 Horas</div>
-            <div class="section-subtitle">Solicitudes de cotización e información recibidas desde la página principal con detalles de área y cultivo</div>
+            <div class="section-subtitle">Solicitudes de cotizaciÃ³n e informaciÃ³n recibidas desde la pÃ¡gina principal con detalles de Ã¡rea y cultivo</div>
           </div>
           <button class="btn btn-ghost" onclick="loadContactoWeb()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar Lista</button>
         </div>
@@ -951,7 +951,7 @@
         <div class="toolbar" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px;">
           <div class="search-input-wrap" style="flex:1; min-width:260px;">
             <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="search-input" id="contactoWebSearch" placeholder="Buscar por cliente, teléfono, cultivo, municipio..." />
+            <input type="text" class="search-input" id="contactoWebSearch" placeholder="Buscar por cliente, telÃ©fono, cultivo, municipio..." />
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
             <label style="font-weight:700; font-size:0.85rem; color:#003049;">Estado:</label>
@@ -973,8 +973,8 @@
                   <th># Ticket</th>
                   <th>Cliente / Contacto</th>
                   <th>Servicio & Cultivo</th>
-                  <th>Hectáreas (Ha)</th>
-                  <th>Ubicación / Finca</th>
+                  <th>HectÃ¡reas (Ha)</th>
+                  <th>UbicaciÃ³n / Finca</th>
                   <th>Mensaje / Requerimiento</th>
                   <th>Fecha</th>
                   <th>Estado</th>
@@ -982,7 +982,7 @@
                 </tr>
               </thead>
               <tbody id="contactoWebTableBody">
-                <tr><td colspan="9"><div class="loading-state"><div class="spinner"></div>Cargando solicitudes de cotización 24h...</div></td></tr>
+                <tr><td colspan="9"><div class="loading-state"><div class="spinner"></div>Cargando solicitudes de cotizaciÃ³n 24h...</div></td></tr>
               </tbody>
             </table>
           </div>
@@ -990,17 +990,17 @@
       </section>
 
       <!-- ========================================
-           PANEL 7: FACTURACIÓN (ALEGRA)
+           PANEL 7: FACTURACIÃ“N (ALEGRA)
       ======================================== -->
       <section class="panel" id="panel-facturacion">
         <div class="section-header">
           <div>
-            <div class="section-title"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent); margin-right:8px;"></i>Facturación & Integración Alegra</div>
-            <div class="section-subtitle">Gestión de facturación electrónica y vinculación de enlaces directos a la plataforma de Alegra por cada cliente</div>
+            <div class="section-title"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent); margin-right:8px;"></i>FacturaciÃ³n & IntegraciÃ³n Alegra</div>
+            <div class="section-subtitle">GestiÃ³n de facturaciÃ³n electrÃ³nica y vinculaciÃ³n de enlaces directos a la plataforma de Alegra por cada cliente</div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-ghost" onclick="loadFacturacion()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
-            <button class="btn btn-primary" onclick="openVincularAlegraModal()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-link"></i> Vincular Facturación Alegra</button>
+            <button class="btn btn-primary" onclick="openVincularAlegraModal()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;"><i class="fa-solid fa-link"></i> Vincular FacturaciÃ³n Alegra</button>
           </div>
         </div>
 
@@ -1020,13 +1020,13 @@
                   <th>Cliente</th>
                   <th>Documento / NIT</th>
                   <th>Contacto / WhatsApp</th>
-                  <th>Estado Facturación Alegra</th>
+                  <th>Estado FacturaciÃ³n Alegra</th>
                   <th>Enlace Directo Alegra</th>
                   <th style="text-align:center;">Acciones</th>
                 </tr>
               </thead>
               <tbody id="pagosTableBody">
-                <tr><td colspan="7"><div class="loading-state"><div class="spinner"></div>Cargando clientes y facturación Alegra...</div></td></tr>
+                <tr><td colspan="7"><div class="loading-state"><div class="spinner"></div>Cargando clientes y facturaciÃ³n Alegra...</div></td></tr>
               </tbody>
             </table>
           </div>
@@ -1039,8 +1039,8 @@
       <section class="panel" id="panel-informes-ejecutivos">
         <div class="section-header">
           <div>
-            <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--accent); margin-right:8px;"></i>Informes Ejecutivos & Integración SharePoint</div>
-            <div class="section-subtitle">Gestión y vinculación de carpetas oficiales de Microsoft SharePoint por cada cliente</div>
+            <div class="section-title"><i class="fa-solid fa-file-signature" style="color:var(--accent); margin-right:8px;"></i>Informes Ejecutivos & IntegraciÃ³n SharePoint</div>
+            <div class="section-subtitle">GestiÃ³n y vinculaciÃ³n de carpetas oficiales de Microsoft SharePoint por cada cliente</div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-ghost" onclick="loadInformesEjecutivosClientes()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
@@ -1078,36 +1078,36 @@
       </section>
 
       <!-- ========================================
-           PANEL: ADMIN-TÉCNICO (TORRE DE CONTROL)
+           PANEL: ADMIN-TÃ‰CNICO (TORRE DE CONTROL)
       ======================================== -->
       <section id="panel-admin-tecnico" class="panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
           <div>
             <h2 class="section-title" style="margin:0; display:flex; align-items:center; gap:10px;">
-              <span><i class="fa-solid fa-tower-broadcast" style="color:var(--accent); margin-right:6px;"></i> Torre de Control Admin-Técnico</span>
+              <span><i class="fa-solid fa-tower-broadcast" style="color:var(--accent); margin-right:6px;"></i> Torre de Control Admin-TÃ©cnico</span>
             </h2>
-            <div class="section-subtitle">Monitoreo individual de pilotos, matriz de ocupación de drones, informes ejecutivos y recálculo de rutas.</div>
+            <div class="section-subtitle">Monitoreo individual de pilotos, matriz de ocupaciÃ³n de drones, informes ejecutivos y recÃ¡lculo de rutas.</div>
           </div>
           <button class="btn btn-primary" onclick="loadAdminTecnicoModule()" style="display:inline-flex; align-items:center; gap:8px; font-weight:800; border-radius:12px; padding:10px 18px;">
             <i class="fa-solid fa-rotate"></i> Recargar Datos Operativos
           </button>
         </div>
 
-        <!-- Grid 1: Monitoreo Individual de Técnicos -->
+        <!-- Grid 1: Monitoreo Individual de TÃ©cnicos -->
         <div style="margin-bottom:28px;">
           <h3 style="font-family:'Syne',sans-serif; color:#003049; font-size:1.15rem; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
-            <span><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Monitoreo Individual de Pilotos Técnicos</span>
+            <span><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Monitoreo Individual de Pilotos TÃ©cnicos</span>
           </h3>
           <div id="tecnicosIndividualGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:18px;">
-            <div class="card" style="padding:20px; text-align:center; color:var(--text-3);">Cargando monitoreo de técnicos...</div>
+            <div class="card" style="padding:20px; text-align:center; color:var(--text-3);">Cargando monitoreo de tÃ©cnicos...</div>
           </div>
         </div>
 
-        <!-- Grid 2: Matriz de Ocupación y Edición Total -->
+        <!-- Grid 2: Matriz de OcupaciÃ³n y EdiciÃ³n Total -->
         <div class="card" style="padding:24px; border-radius:18px; border:1px solid rgba(28, 130, 173, 0.25);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
             <div>
-              <h3 style="font-family:'Syne',sans-serif; color:#003049; font-size:1.15rem; margin:0 0 4px 0;"><i class="fa-solid fa-helicopter" style="color:var(--accent); margin-right:6px;"></i> Matriz de Ocupación Dron + Piloto & Edición Total</h3>
+              <h3 style="font-family:'Syne',sans-serif; color:#003049; font-size:1.15rem; margin:0 0 4px 0;"><i class="fa-solid fa-helicopter" style="color:var(--accent); margin-right:6px;"></i> Matriz de OcupaciÃ³n Dron + Piloto & EdiciÃ³n Total</h3>
               <div style="font-size:0.83rem; color:#6c757d;">Gestiona asignaciones anti-choque, informes ejecutivos y enlaces directos de SharePoint.</div>
             </div>
           </div>
@@ -1127,7 +1127,7 @@
                 </tr>
               </thead>
               <tbody id="ocupacionDronesTableBody">
-                <tr><td colspan="8" style="text-align:center; padding:20px; color:#6c757d;">Cargando matriz de ocupación...</td></tr>
+                <tr><td colspan="8" style="text-align:center; padding:20px; color:#6c757d;">Cargando matriz de ocupaciÃ³n...</td></tr>
               </tbody>
             </table>
           </div>
@@ -1135,13 +1135,13 @@
       </section>
 
       <!-- ========================================
-           PANEL: GESTIÓN DE USUARIOS
+           PANEL: GESTIÃ“N DE USUARIOS
       ======================================== -->
       <section class="panel" id="panel-usuarios">
         <div class="section-header">
           <div>
-            <div class="section-title"><i class="fa-solid fa-users-gear" style="color:var(--accent); margin-right:8px;"></i>Gestión de Usuarios del Sistema</div>
-            <div class="section-subtitle">Administra cuentas, roles, verificación de clientes y contraseñas de todos los usuarios registrados</div>
+            <div class="section-title"><i class="fa-solid fa-users-gear" style="color:var(--accent); margin-right:8px;"></i>GestiÃ³n de Usuarios del Sistema</div>
+            <div class="section-subtitle">Administra cuentas, roles, verificaciÃ³n de clientes y contraseÃ±as de todos los usuarios registrados</div>
           </div>
           <button class="btn btn-primary" onclick="openNewUsuarioModal()"><i class="fa-solid fa-plus"></i> Nuevo usuario</button>
         </div>
@@ -1149,8 +1149,8 @@
         <div class="toolbar" style="margin-bottom:16px; display:flex; gap:10px; align-items:center;">
           <div class="search-input-wrap" style="flex:1; position:relative;">
             <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-            <input type="text" class="search-input" id="usuariosSearch" placeholder="Buscar por email, nombre, teléfono o rol..." oninput="renderUsuariosTable(this.value)" style="width:100%; padding-right:36px;" />
-            <button type="button" onclick="document.getElementById('usuariosSearch').value=''; renderUsuariosTable('');" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; font-size:1rem; cursor:pointer;" title="Limpiar filtro">✕</button>
+            <input type="text" class="search-input" id="usuariosSearch" placeholder="Buscar por email, nombre, telÃ©fono o rol..." oninput="renderUsuariosTable(this.value)" style="width:100%; padding-right:36px;" />
+            <button type="button" onclick="document.getElementById('usuariosSearch').value=''; renderUsuariosTable('');" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; font-size:1rem; cursor:pointer;" title="Limpiar filtro">âœ•</button>
           </div>
           <button class="btn btn-ghost btn-sm" onclick="loadUsuarios()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;" title="Recargar desde la base de datos"><i class="fa-solid fa-rotate"></i> Refrescar</button>
         </div>
@@ -1164,7 +1164,7 @@
                   <th>Nombre & Perfil</th>
                   <th>Rol</th>
                   <th>Fecha Registro</th>
-                  <th>Estado Verificación</th>
+                  <th>Estado VerificaciÃ³n</th>
                   <th>Acciones Admin</th>
                 </tr>
               </thead>
@@ -1184,7 +1184,7 @@
         <div class="section-header">
           <div>
             <div class="section-title"><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:8px;"></i>Zonas de Mayor Demanda</div>
-            <div class="section-subtitle">Gestión de bases operativas y zonas de demanda que se reflejan en el mapa interactivo de la página principal</div>
+            <div class="section-subtitle">GestiÃ³n de bases operativas y zonas de demanda que se reflejan en el mapa interactivo de la pÃ¡gina principal</div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <button class="btn btn-ghost" onclick="loadCorporateConfig()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-rotate"></i> Actualizar</button>
@@ -1207,13 +1207,13 @@
       </section>
 
       <!-- ========================================
-           PANEL 9: CONFIGURACIÓN DEL SISTEMA
+           PANEL 9: CONFIGURACIÃ“N DEL SISTEMA
       ======================================== -->
       <section class="panel" id="panel-configuracion">
         <div class="section-header">
           <div>
-            <div class="section-title"><i class="fa-solid fa-gears" style="color:var(--accent); margin-right:8px;"></i>Configuración del Sistema</div>
-            <div class="section-subtitle">Gestión integral de la empresa, datos corporativos y seguridad</div>
+            <div class="section-title"><i class="fa-solid fa-gears" style="color:var(--accent); margin-right:8px;"></i>ConfiguraciÃ³n del Sistema</div>
+            <div class="section-subtitle">GestiÃ³n integral de la empresa, datos corporativos y seguridad</div>
           </div>
           <button class="btn btn-primary" id="saveConfigBtn" onclick="saveCorporateConfig()" style="display:inline-flex; align-items:center; gap:8px; font-weight:700;">
             <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
@@ -1221,7 +1221,7 @@
         </div>
 
         <div class="grid-2">
-          <!-- 1. Información Corporativa -->
+          <!-- 1. InformaciÃ³n Corporativa -->
           <div class="settings-section" style="grid-column: 1 / -1;">
             <div class="settings-section-header">
               <div class="settings-section-title"><i class="fa-solid fa-building" style="color:var(--accent); margin-right:6px;"></i> Perfil Corporativo & Canales de Contacto</div>
@@ -1237,7 +1237,7 @@
                   <input id="cfgNit" class="form-input" value="900.123.456-7" />
                 </div>
                 <div class="form-field">
-                  <label>Teléfono Principal</label>
+                  <label>TelÃ©fono Principal</label>
                   <input id="cfgTelefono" class="form-input" value="+57 305 406 1764" />
                 </div>
                 <div class="form-field">
@@ -1245,32 +1245,32 @@
                   <input id="cfgWhatsapp" class="form-input" value="+57 314 3764972" />
                 </div>
                 <div class="form-field">
-                  <label>Correo Electrónico Oficial</label>
+                  <label>Correo ElectrÃ³nico Oficial</label>
                   <input id="cfgEmail" class="form-input" value="comercial@flymetrics.com.co" />
                 </div>
                 <div class="form-field">
-                  <label>Dirección / Sede Principal</label>
-                  <input id="cfgDireccion" class="form-input" value="Avenida El Dorado #68b-70, Bogotá D.C." />
+                  <label>DirecciÃ³n / Sede Principal</label>
+                  <input id="cfgDireccion" class="form-input" value="Avenida El Dorado #68b-70, BogotÃ¡ D.C." />
                 </div>
                 <div class="form-field full">
                   <label>Plantilla WhatsApp Respuesta 24h a Cotizaciones (Usa {nombre}, {servicio}, {hectareas})</label>
                   <input id="cfgWaTemplate24h" class="form-input" value="Hola {nombre}, te contactamos desde Flymetrics Colombia sobre tu solicitud de {servicio} ({hectareas} ha)." />
                 </div>
                 <div class="form-field full">
-                  <label>Plantilla WhatsApp Confirmación de Agendamiento Directo (Usa {radicado}, {nombre}, {cedula}, {finca}, {municipio}, {departamento}, {cultivo}, {hectareas}, {servicio}, {fecha}, {ubicacion_maps})</label>
-                  <textarea id="cfgWaTemplateAgendar" class="form-input" rows="3" style="resize: vertical; font-family: inherit; line-height: 1.4;">Hola Flymetrics Colombia, acabo de agendar una solicitud de servicio / demostración:
+                  <label>Plantilla WhatsApp ConfirmaciÃ³n de Agendamiento Directo (Usa {radicado}, {nombre}, {cedula}, {finca}, {municipio}, {departamento}, {cultivo}, {hectareas}, {servicio}, {fecha}, {ubicacion_maps})</label>
+                  <textarea id="cfgWaTemplateAgendar" class="form-input" rows="3" style="resize: vertical; font-family: inherit; line-height: 1.4;">Hola Flymetrics Colombia, acabo de agendar una solicitud de servicio / demostraciÃ³n:
 Radicado: {radicado}
 Productor: {nombre} (CC/NIT: {cedula})
 Finca: {finca} en {municipio} ({departamento})
 Cultivo: {cultivo} ({hectareas} Ha)
 Servicio: {servicio}
 Fecha programada: {fecha}
-Ubicación / Maps: {ubicacion_maps}
-Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
+UbicaciÃ³n / Maps: {ubicacion_maps}
+Deseo coordinar detalles tÃ©cnicos de campo con el piloto.</textarea>
                 </div>
                 <div class="form-field full">
-                  <label>Plantilla WhatsApp General (Botón flotante y enlaces)</label>
-                  <input id="cfgWaTemplateGeneral" class="form-input" value="Hola Flymetrics, deseo solicitar asesoría e información técnica sobre sus servicios de drones agrícolas." />
+                  <label>Plantilla WhatsApp General (BotÃ³n flotante y enlaces)</label>
+                  <input id="cfgWaTemplateGeneral" class="form-input" value="Hola Flymetrics, deseo solicitar asesorÃ­a e informaciÃ³n tÃ©cnica sobre sus servicios de drones agrÃ­colas." />
                 </div>
               </div>
             </div>
@@ -1289,11 +1289,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           </div>
         </div>
 
-        <!-- 2. Configuración de Servidor de Correos & Redirección de Botones (Protegido por Clave Maestra) -->
+        <!-- 2. ConfiguraciÃ³n de Servidor de Correos & RedirecciÃ³n de Botones (Protegido por Clave Maestra) -->
         <div class="settings-section" style="margin-top:20px; border:1.5px solid rgba(28, 130, 173, 0.35); border-radius:18px; overflow:hidden;">
           <div class="settings-section-header" style="background:rgba(28, 130, 173, 0.08); display:flex; justify-content:space-between; align-items:center;">
             <div class="settings-section-title">
-              <i class="fa-solid fa-envelope-circle-check" style="color:var(--accent); margin-right:6px;"></i> Servidor de Correos & Redirección de Botones (Protegido)
+              <i class="fa-solid fa-envelope-circle-check" style="color:var(--accent); margin-right:6px;"></i> Servidor de Correos & RedirecciÃ³n de Botones (Protegido)
             </div>
             <button type="button" class="btn btn-sm" id="btnDesbloquearCorreo" onclick="openMasterKeyModal()" style="font-weight:700; background:linear-gradient(135deg, #1c82ad, #003049); color:#fff; border:none; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
               <i class="fa-solid fa-lock" id="iconLockCorreo"></i> <span id="textLockCorreo">Desbloquear con Clave Maestra</span>
@@ -1302,9 +1302,9 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           
           <div id="boxCorreoBloqueado" style="padding: 24px; text-align: center; color: #64748b;">
             <i class="fa-solid fa-shield-halved" style="font-size: 2.2rem; color: #1c82ad; margin-bottom: 10px;"></i>
-            <div style="font-weight: 700; color: #003049; font-size: 1rem;">Módulo Protegido por Contraseña Maestra de Administrador</div>
+            <div style="font-weight: 700; color: #003049; font-size: 1rem;">MÃ³dulo Protegido por ContraseÃ±a Maestra de Administrador</div>
             <div style="font-size: 0.85rem; max-width: 520px; margin: 6px auto 14px auto;">
-              Para proteger las credenciales de despacho (SMTP) y la dirección web donde dirigen los botones de los correos a los clientes, ingresa tu clave maestra. Si es tu primera vez, podrás crearla ahora mismo.
+              Para proteger las credenciales de despacho (SMTP) y la direcciÃ³n web donde dirigen los botones de los correos a los clientes, ingresa tu clave maestra. Si es tu primera vez, podrÃ¡s crearla ahora mismo.
             </div>
             <button type="button" class="btn btn-primary btn-sm" onclick="openMasterKeyModal()" style="font-weight: 700;">
               <i class="fa-solid fa-key"></i> Autenticar con Clave Maestra
@@ -1316,11 +1316,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
               <div class="form-grid form-grid-2">
                 <div class="form-field full" style="background: rgba(16, 185, 129, 0.06); padding: 12px 16px; border-radius: 12px; border: 1px solid #10b981; margin-bottom: 8px;">
                   <label style="color: #065f46; font-weight: 800; display: flex; align-items: center; gap: 6px;">
-                    <i class="fa-solid fa-link"></i> Dirección de Redirección para Botones de Correo (URL de Acceso al Portal):
+                    <i class="fa-solid fa-link"></i> DirecciÃ³n de RedirecciÃ³n para Botones de Correo (URL de Acceso al Portal):
                   </label>
                   <input type="text" id="cfgUrlBotonesCorreo" class="form-input" placeholder="http://localhost:3000/pages/cliente.html o https://tu-dominio.com/pages/cliente.html" required style="font-weight: 700; color: #003049; background: #fff;" />
                   <div style="font-size: 0.78rem; color: #059669; margin-top: 4px;">
-                    Todos los correos enviados (bienvenida, confirmación de vuelo, reportes listos, pagos) usarán este enlace para los botones de acción como "Ingresar a mi Portal" o "Ver mi Vuelo".
+                    Todos los correos enviados (bienvenida, confirmaciÃ³n de vuelo, reportes listos, pagos) usarÃ¡n este enlace para los botones de acciÃ³n como "Ingresar a mi Portal" o "Ver mi Vuelo".
                   </div>
                 </div>
 
@@ -1333,7 +1333,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
                   <input type="number" id="cfgSmtpPort" class="form-input" placeholder="587" value="587" autocomplete="off" required />
                 </div>
                 <div class="form-field">
-                  <label>Correo Remitente (Cuenta de Envío)</label>
+                  <label>Correo Remitente (Cuenta de EnvÃ­o)</label>
                   <input type="email" id="cfgSmtpUser" class="form-input" placeholder="comercial@flymetrics.com.co o tu-correo@hotmail.com" autocomplete="off" required />
                 </div>
                 <div class="form-field">
@@ -1341,7 +1341,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
                   <input type="text" id="cfgSenderName" class="form-input" placeholder="Flymetrics Colombia" value="Flymetrics Colombia" autocomplete="off" required />
                 </div>
                 <div class="form-field">
-                  <label>Contraseña de Aplicación / Password SMTP</label>
+                  <label>ContraseÃ±a de AplicaciÃ³n / Password SMTP</label>
                   <input type="password" id="cfgSmtpPassword" class="form-input" autocomplete="new-password" placeholder="Dejar en blanco para mantener la actual" />
                   <span id="cfgSmtpPassStatus" style="font-size: 0.75rem; color: #10b981; font-weight: 700; margin-top: 3px; display: block;"></span>
                 </div>
@@ -1352,7 +1352,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
               </div>
 
               <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
-                <button type="button" class="btn btn-ghost" onclick="bloquearModuloCorreo()">Bloquear Módulo</button>
+                <button type="button" class="btn btn-ghost" onclick="bloquearModuloCorreo()">Bloquear MÃ³dulo</button>
                 <button type="submit" class="btn btn-primary" style="font-weight: 800; padding: 10px 24px;">
                   <i class="fa-solid fa-floppy-disk"></i> Guardar Credenciales y Enlaces
                 </button>
@@ -1361,21 +1361,21 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           </div>
         </div>
 
-        <!-- 3. Información del Sistema -->
+        <!-- 3. InformaciÃ³n del Sistema -->
         <div class="settings-section" style="margin-top:20px;">
           <div class="settings-section-header">
-            <div class="settings-section-title"><i class="fa-solid fa-circle-info" style="color:var(--accent); margin-right:6px;"></i> Diagnóstico & Estado de Sesión</div>
+            <div class="settings-section-title"><i class="fa-solid fa-circle-info" style="color:var(--accent); margin-right:6px;"></i> DiagnÃ³stico & Estado de SesiÃ³n</div>
           </div>
           <div class="settings-row">
             <div class="settings-row-label"><strong>Plataforma</strong></div>
             <span style="font-size:0.85rem;color:var(--accent);font-weight:700">Flymetrics Enterprise v2.5</span>
           </div>
           <div class="settings-row">
-            <div class="settings-row-label"><strong>Hora de Inicio de Sesión</strong></div>
-            <span style="font-size:0.85rem;color:var(--text-2)" id="cfgSessionTime">—</span>
+            <div class="settings-row-label"><strong>Hora de Inicio de SesiÃ³n</strong></div>
+            <span style="font-size:0.85rem;color:var(--text-2)" id="cfgSessionTime">â€”</span>
           </div>
           <div class="settings-row">
-            <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('¿Cerrar sesión de administrador?'))logout()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-power-off"></i> Cerrar Sesión</button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('Â¿Cerrar sesiÃ³n de administrador?'))logout()" style="display:inline-flex; align-items:center; gap:6px; font-weight:700;"><i class="fa-solid fa-power-off"></i> Cerrar SesiÃ³n</button>
           </div>
         </div>
       </section>
@@ -1395,7 +1395,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:680px">
     <div class="modal-header">
       <span class="modal-title" id="zoneModalTitle"><i class="fa-solid fa-map-location-dot" style="color:var(--accent); margin-right:6px;"></i> <span id="zoneModalTitleText">Zona de Mayor Demanda</span></span>
-      <button class="modal-close" onclick="closeZoneModal()">✕</button>
+      <button class="modal-close" onclick="closeZoneModal()">âœ•</button>
     </div>
     <form id="zoneForm" onsubmit="return saveZoneFromModal(event)">
       <div class="modal-body">
@@ -1418,12 +1418,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="number" step="any" id="zoneLng" class="form-input" placeholder="-74.0721" required />
           </div>
           <div class="form-field full">
-            <label>Descripción</label>
-            <textarea id="zoneDescripcion" class="form-input" rows="2" placeholder="Ej. Sabana de Bogotá, Facatativá, Chía, Madrid — Flores, Papa y Hortalizas"></textarea>
+            <label>DescripciÃ³n</label>
+            <textarea id="zoneDescripcion" class="form-input" rows="2" placeholder="Ej. Sabana de BogotÃ¡, FacatativÃ¡, ChÃ­a, Madrid â€” Flores, Papa y Hortalizas"></textarea>
           </div>
           <div class="form-field full">
             <label>Servicio *</label>
-            <input type="text" id="zoneServicio" class="form-input" placeholder="Ej. Monitoreo Multiespectral, Cartografía y Aspersión" required />
+            <input type="text" id="zoneServicio" class="form-input" placeholder="Ej. Monitoreo Multiespectral, CartografÃ­a y AspersiÃ³n" required />
           </div>
           <div class="form-field full">
             <label>Demanda *</label>
@@ -1439,12 +1439,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-<!-- Modal: Nuevo Técnico / Admin (Staff) -->
+<!-- Modal: Nuevo TÃ©cnico / Admin (Staff) -->
 <div class="modal-overlay hidden" id="newStaffModal">
   <div class="modal" style="max-width:560px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-user-plus" style="color:var(--accent); margin-right:6px;"></i> Crear nuevo usuario</span>
-      <button class="modal-close" onclick="closeModal('newStaffModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('newStaffModal')">âœ•</button>
     </div>
     <form id="newStaffForm" onsubmit="submitNewStaff(event)">
       <div class="modal-body">
@@ -1454,7 +1454,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="radio" name="staffRol" value="tecnico" id="staffRolTecnico" checked onchange="onStaffRolChange()" style="display:none">
             <div class="staff-rol-card" id="cardRolTecnico" style="border:2px solid var(--accent);background:rgba(28, 130, 173,0.06);border-radius:12px;padding:16px;text-align:center;transition:all 0.2s">
               <div style="font-size:1.8rem;margin-bottom:6px;color:var(--accent);"><i class="fa-solid fa-user-gear"></i></div>
-              <div style="font-weight:600;color:var(--accent)">Técnico</div>
+              <div style="font-weight:600;color:var(--accent)">TÃ©cnico</div>
               <div style="font-size:0.72rem;color:var(--text-2);margin-top:4px">Piloto RPAS certificado</div>
             </div>
           </label>
@@ -1471,10 +1471,10 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         <div class="form-grid form-grid-2">
           <div class="form-field full">
             <label>Nombre Completo *</label>
-            <input type="text" id="staffNombre" class="form-input" placeholder="Ej. CARLOS RODRÍGUEZ GÓMEZ" required style="text-transform: uppercase;" />
+            <input type="text" id="staffNombre" class="form-input" placeholder="Ej. CARLOS RODRÃGUEZ GÃ“MEZ" required style="text-transform: uppercase;" />
           </div>
           <div class="form-field full">
-            <label>Teléfono / WhatsApp</label>
+            <label>TelÃ©fono / WhatsApp</label>
             <input type="tel" id="staffTelefono" class="form-input" placeholder="3001234567" />
           </div>
           <div class="form-field full">
@@ -1482,11 +1482,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="email" id="staffEmail" class="form-input" placeholder="tecnico@flymetrics.co" required />
           </div>
           <div class="form-field">
-            <label>Contraseña *</label>
-            <input type="password" id="staffPassword" class="form-input" placeholder="Mín. 8 caracteres" required minlength="6" />
+            <label>ContraseÃ±a *</label>
+            <input type="password" id="staffPassword" class="form-input" placeholder="MÃ­n. 8 caracteres" required minlength="6" />
           </div>
           <div class="form-field" id="staffCertificacionField">
-            <label>Certificación</label>
+            <label>CertificaciÃ³n</label>
             <input type="text" id="staffCertificacion" class="form-input" placeholder="Piloto RPAS Nivel A" value="Piloto RPAS Nivel A" />
           </div>
         </div>
@@ -1496,7 +1496,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <div class="modal-footer">
         <button type="button" class="btn btn-ghost" onclick="closeModal('newStaffModal')">Cancelar</button>
         <button type="submit" class="btn btn-primary" id="btnCrearStaff">
-          ＋ Crear usuario
+          ï¼‹ Crear usuario
         </button>
       </div>
     </form>
@@ -1508,7 +1508,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:400px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-rotate" style="color:var(--accent); margin-right:6px;"></i> Cambiar rol</span>
-      <button class="modal-close" onclick="closeModal('cambiarRolModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('cambiarRolModal')">âœ•</button>
     </div>
     <form id="cambiarRolForm" onsubmit="event.preventDefault(); var cId=document.getElementById('cambiarRolUserId').value; var cRol=document.getElementById('cambiarRolSelect').value; if(cId&&cRol) changeUsuarioRol(cId,cRol);">
       <div class="modal-body">
@@ -1520,7 +1520,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           <label>Nuevo rol</label>
           <select id="cambiarRolSelect" required>
             <option value="administrador">Administrador</option>
-            <option value="tecnico">Técnico</option>
+            <option value="tecnico">TÃ©cnico</option>
             <option value="cliente">Cliente</option>
           </select>
         </div>
@@ -1538,7 +1538,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal modal-sm">
     <div class="modal-header">
       <span class="modal-title">Resetear contrasea</span>
-      <button class="modal-close" onclick="closeModal('resetPasswordModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('resetPasswordModal')">âœ•</button>
     </div>
     <form id="resetPasswordForm" onsubmit="event.preventDefault(); var id=document.getElementById('resetPasswordUserId')?.value; var pw=document.getElementById('resetPasswordInput')?.value; if(id&&pw) resetUsuarioPassword(id,pw);">
       <div class="modal-body">
@@ -1564,7 +1564,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal">
     <div class="modal-header">
       <span class="modal-title" id="detailModalTitle">Detalle de agenda</span>
-      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('detailModal')">âœ•</button>
     </div>
     <div class="modal-body" id="detailModalBody"></div>
     <div class="modal-footer">
@@ -1578,15 +1578,15 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:480px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-calendar-plus" style="color:var(--accent); margin-right:6px;"></i> Reagendar / Editar Turno</span>
-      <button class="modal-close" onclick="closeModal('reagendarModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('reagendarModal')">âœ•</button>
     </div>
     <form id="reagendarForm" onsubmit="event.preventDefault(); submitReagendamiento();">
       <div class="modal-body">
         <input type="hidden" id="reagendarTurnoId">
         <div id="reagendarErrMsg" class="modal-alert-error" style="display:none;"><i class="fa-solid fa-triangle-exclamation"></i><span id="reagendarErrMsgText"></span></div>
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:14px;">
-          <div style="font-weight:700; color:#003049; font-size:0.92rem;" id="reagendarInfoTitle">Turno #—</div>
-          <div style="font-size:0.80rem; color:#64748b;" id="reagendarInfoSub">Cliente — | Finca —</div>
+          <div style="font-weight:700; color:#003049; font-size:0.92rem;" id="reagendarInfoTitle">Turno #â€”</div>
+          <div style="font-size:0.80rem; color:#64748b;" id="reagendarInfoSub">Cliente â€” | Finca â€”</div>
         </div>
         <div class="form-grid form-grid-2">
           <div class="form-field">
@@ -1610,8 +1610,8 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           </div>
           <div class="form-field full">
             <label><i class="fa-solid fa-clock-rotate-left"></i> Motivo del Reagendamiento *</label>
-            <textarea id="reagendarMotivo" class="form-textarea" rows="3" placeholder="Explique la razón del reagendamiento (ej. Lluvia intensa, solicitud del productor, mantenimiento preventivo de dron)..." required></textarea>
-            <small style="font-size:0.75rem; color:#64748b; margin-top:2px;">Este motivo se guardará en un campo independiente y no modificará los datos de la finca ni las notas originales.</small>
+            <textarea id="reagendarMotivo" class="form-textarea" rows="3" placeholder="Explique la razÃ³n del reagendamiento (ej. Lluvia intensa, solicitud del productor, mantenimiento preventivo de dron)..." required></textarea>
+            <small style="font-size:0.75rem; color:#64748b; margin-top:2px;">Este motivo se guardarÃ¡ en un campo independiente y no modificarÃ¡ los datos de la finca ni las notas originales.</small>
           </div>
         </div>
       </div>
@@ -1630,7 +1630,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal modal-lg">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-calendar-days"></i> Nueva agenda</span>
-      <button class="modal-close" onclick="closeModal('newAgendaModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('newAgendaModal')">âœ•</button>
     </div>
     <form id="newAgendaForm" onsubmit="submitNewAgenda(event)" novalidate>
       <div class="modal-body">
@@ -1643,7 +1643,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             </select>
           </div>
           
-          <!-- Mini-módulo de Fincas del Cliente -->
+          <!-- Mini-mÃ³dulo de Fincas del Cliente -->
           <div class="form-field full" id="newAgendaFincaContainer" style="display:none; background:#f0f9ff; border:1.5px solid #bae6fd; border-radius:14px; padding:14px; margin-bottom:4px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
               <label style="font-weight:700; color:#0369a1; font-size:0.86rem; margin:0; display:flex; align-items:center; gap:6px;">
@@ -1657,7 +1657,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
               <option value="">-- Seleccionar finca registrada o escribir manualmente abajo --</option>
             </select>
 
-            <!-- Mini-form inline para creación rápida de finca -->
+            <!-- Mini-form inline para creaciÃ³n rÃ¡pida de finca -->
             <div id="newFincaInlineForm" style="display:none; margin-top:12px; padding-top:12px; border-top:1px dashed #93c5fd;">
               <div style="font-weight:700; font-size:0.82rem; color:#003049; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
                 <i class="fa-solid fa-map-pin" style="color:var(--accent);"></i> Registrar Nueva Finca para este Cliente:
@@ -1665,7 +1665,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
               <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                 <input type="text" id="inlineFincaNombre" class="form-input" placeholder="Nombre de Finca / Predio *" style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
                 <input type="text" id="inlineFincaUbicacion" class="form-input" placeholder="Municipio / Vereda *" style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
-                <input type="number" id="inlineFincaHa" class="form-input" placeholder="Hectáreas (ej. 15.0)" step="0.1" style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
+                <input type="number" id="inlineFincaHa" class="form-input" placeholder="HectÃ¡reas (ej. 15.0)" step="0.1" style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
                 <input type="text" id="inlineFincaMaps" class="form-input" placeholder="Link Google Maps o Coordenadas GPS *" required style="font-size:0.84rem; padding:8px 12px; border-radius:8px;" />
               </div>
               <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:10px;">
@@ -1685,15 +1685,15 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="email" id="newAgendaEmail" placeholder="cliente@email.com" required />
           </div>
           <div class="form-field">
-            <label>Teléfono</label>
+            <label>TelÃ©fono</label>
             <input type="tel" id="newAgendaTel" placeholder="3001234567" />
           </div>
           <div class="form-field">
             <label>Nombre de la finca *</label>
-            <input type="text" id="newAgendaFinca" placeholder="Finca El Paraíso" required />
+            <input type="text" id="newAgendaFinca" placeholder="Finca El ParaÃ­so" required />
           </div>
           <div class="form-field">
-            <label><i class="fa-solid fa-location-dot" style="color:var(--accent); margin-right:4px;"></i> Ubicación / Municipio *</label>
+            <label><i class="fa-solid fa-location-dot" style="color:var(--accent); margin-right:4px;"></i> UbicaciÃ³n / Municipio *</label>
             <input type="text" id="newAgendaUbicacion" placeholder="Ej. Villavicencio, Vereda El Triunfo" required />
           </div>
           <div class="form-field full">
@@ -1701,17 +1701,17 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="text" id="newAgendaMaps" placeholder="Ej. https://maps.app.goo.gl/... o 4.1420, -73.6266" required />
           </div>
           <div class="form-field full">
-            <label style="font-weight:700; color:#003049; margin-bottom:6px; display:block;"><i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:4px;"></i> Servicios Requeridos * (Selección múltiple permitida)</label>
+            <label style="font-weight:700; color:#003049; margin-bottom:6px; display:block;"><i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:4px;"></i> Servicios Requeridos * (SelecciÃ³n mÃºltiple permitida)</label>
             <div id="newAgendaServiciosContainer" style="display:flex; flex-wrap:wrap; gap:10px; background:#f8fafc; border:1.5px solid #cbd5e1; padding:12px; border-radius:12px;">
               <!-- Dynamic checkboxes loaded from loadServicios -->
             </div>
           </div>
           <div class="form-field">
             <label><i class="fa-solid fa-seedling" style="color:var(--accent); margin-right:4px;"></i> Cultivo Principal</label>
-            <input type="text" id="newAgendaCultivo" placeholder="Ej. Arroz, Palma, Maíz, Frutales..." />
+            <input type="text" id="newAgendaCultivo" placeholder="Ej. Arroz, Palma, MaÃ­z, Frutales..." />
           </div>
           <div class="form-field">
-            <label>Hectáreas *</label>
+            <label>HectÃ¡reas *</label>
             <input type="number" id="newAgendaHa" placeholder="10.5" min="0.1" max="5000" step="0.1" value="10" required />
           </div>
           <div class="form-field">
@@ -1723,7 +1723,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="time" id="newAgendaHora" required value="08:00" />
           </div>
           <div class="form-field">
-            <label>Técnico asignado</label>
+            <label>TÃ©cnico asignado</label>
             <select id="newAgendaTecnico">
               <option value="">Sin asignar</option>
             </select>
@@ -1754,12 +1754,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width: 600px;">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-user-plus" style="color:var(--accent); margin-right:6px;"></i> Registrar Nuevo Cliente</span>
-      <button class="modal-close" onclick="closeModal('newClienteModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('newClienteModal')">âœ•</button>
     </div>
     <form id="newClienteForm" onsubmit="submitNewCliente(event)" novalidate>
       <div class="modal-body">
         <div style="font-size:0.84rem; color:var(--text-muted); margin-bottom:14px;">
-          Completa los datos del titular y su ubicación de cultivo/predio para registrarlo en el sistema.
+          Completa los datos del titular y su ubicaciÃ³n de cultivo/predio para registrarlo en el sistema.
         </div>
 
         <div style="font-weight:700; color:var(--primary); font-size:0.88rem; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
@@ -1769,24 +1769,24 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         <div class="form-grid form-grid-2">
           <div class="form-field full">
             <label>Nombre Completo *</label>
-            <input type="text" id="newClienteNombre" placeholder="Ej. CARLOS ANDRÉS MENDOZA DÍAZ" required style="text-transform: uppercase;" />
+            <input type="text" id="newClienteNombre" placeholder="Ej. CARLOS ANDRÃ‰S MENDOZA DÃAZ" required style="text-transform: uppercase;" />
           </div>
           <div class="form-field">
             <label>Email (Opcional)</label>
             <input type="email" id="newClienteEmail" placeholder="cliente@email.com (opcional)" />
           </div>
           <div class="form-field">
-            <label>Teléfono / WhatsApp *</label>
+            <label>TelÃ©fono / WhatsApp *</label>
             <input type="tel" id="newClienteTel" placeholder="3001234567" required />
           </div>
           <div class="form-field full">
-            <label>Contraseña de Acceso (Opcional - por defecto: Flymetrics123!)</label>
-            <input type="password" id="newClientePassword" placeholder="Asignar contraseña personalizada (mín. 6 caracteres)" minlength="6" />
+            <label>ContraseÃ±a de Acceso (Opcional - por defecto: Flymetrics123!)</label>
+            <input type="password" id="newClientePassword" placeholder="Asignar contraseÃ±a personalizada (mÃ­n. 6 caracteres)" minlength="6" />
           </div>
         </div>
 
         <div style="font-weight:700; color:var(--primary); font-size:0.88rem; margin:16px 0 8px; display:flex; align-items:center; gap:6px;">
-          <i class="fa-solid fa-mountain-sun" style="color:#10b981;"></i> Ubicación y Predio / Finca
+          <i class="fa-solid fa-mountain-sun" style="color:#10b981;"></i> UbicaciÃ³n y Predio / Finca
         </div>
 
         <div class="form-grid form-grid-2">
@@ -1795,7 +1795,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="text" id="newClienteFinca" placeholder="Ej. Finca La Esperanza" />
           </div>
           <div class="form-field">
-            <label>Hectáreas Estimadas</label>
+            <label>HectÃ¡reas Estimadas</label>
             <input type="number" id="newClienteHectareas" placeholder="Ej. 25.5" step="0.1" min="0" />
           </div>
           <div class="form-field">
@@ -1803,8 +1803,8 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="text" id="newClienteDepto" placeholder="Ej. Cundinamarca" />
           </div>
           <div class="form-field">
-            <label>Municipio / Ubicación</label>
-            <input type="text" id="newClienteCiudad" placeholder="Ej. Facatativá" />
+            <label>Municipio / UbicaciÃ³n</label>
+            <input type="text" id="newClienteCiudad" placeholder="Ej. FacatativÃ¡" />
           </div>
         </div>
       </div>
@@ -1816,49 +1816,49 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-<!-- Nuevo Técnico Modal -->
+<!-- Nuevo TÃ©cnico Modal -->
 <div class="modal-overlay hidden" id="newTecnicoModal">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Nuevo Técnico</span>
-      <button class="modal-close" onclick="closeModal('newTecnicoModal')">✕</button>
+      <span class="modal-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Nuevo TÃ©cnico</span>
+      <button class="modal-close" onclick="closeModal('newTecnicoModal')">âœ•</button>
     </div>
     <form id="newTecnicoForm" onsubmit="submitNewTecnico(event)" novalidate>
       <div class="modal-body">
         <div class="form-grid form-grid-2">
           <div class="form-field full">
             <label>Nombre Completo *</label>
-            <input type="text" id="newTecnicoNombre" placeholder="Ej. JUAN PÉREZ GÓMEZ" required style="text-transform: uppercase;" />
+            <input type="text" id="newTecnicoNombre" placeholder="Ej. JUAN PÃ‰REZ GÃ“MEZ" required style="text-transform: uppercase;" />
           </div>
           <div class="form-field">
             <label>Email *</label>
             <input type="email" id="newTecnicoEmail" placeholder="tecnico@flymetrics.co" required />
           </div>
           <div class="form-field">
-            <label>Teléfono / WhatsApp</label>
+            <label>TelÃ©fono / WhatsApp</label>
             <input type="tel" id="newTecnicoTel" placeholder="3001234567" />
           </div>
           <div class="form-field full">
-            <label>Contraseña de Acceso para el Técnico *</label>
-            <input type="password" id="newTecnicoPassword" placeholder="Asignar contraseña (mínimo 6 caracteres)" required minlength="6" />
+            <label>ContraseÃ±a de Acceso para el TÃ©cnico *</label>
+            <input type="password" id="newTecnicoPassword" placeholder="Asignar contraseÃ±a (mÃ­nimo 6 caracteres)" required minlength="6" />
           </div>
           <input type="hidden" id="newTecnicoCert" value="Piloto RPAS" />
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-ghost" onclick="closeModal('newTecnicoModal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Crear técnico</button>
+        <button type="submit" class="btn btn-primary">Crear tÃ©cnico</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- Editar Técnico Modal -->
+<!-- Editar TÃ©cnico Modal -->
 <div class="modal-overlay hidden" id="editTecnicoModal">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title"><i class="fa-solid fa-user-pen" style="color:var(--accent); margin-right:6px;"></i> Editar Técnico</span>
-      <button class="modal-close" onclick="closeModal('editTecnicoModal')">✕</button>
+      <span class="modal-title"><i class="fa-solid fa-user-pen" style="color:var(--accent); margin-right:6px;"></i> Editar TÃ©cnico</span>
+      <button class="modal-close" onclick="closeModal('editTecnicoModal')">âœ•</button>
     </div>
     <form id="editTecnicoForm" novalidate>
       <div class="modal-body">
@@ -1870,7 +1870,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           </div>
           <input type="hidden" id="editTecnicoCert" value="Piloto RPAS" />
           <div class="form-field">
-            <label>Teléfono</label>
+            <label>TelÃ©fono</label>
             <input type="tel" id="editTecnicoTel" />
           </div>
           <div class="form-field">
@@ -1881,8 +1881,8 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             </select>
           </div>
           <div class="form-field full">
-            <label><i class="fa-solid fa-lock" style="color:var(--accent); margin-right:4px;"></i> Cambiar Contraseña (Opcional)</label>
-            <input type="password" id="editTecnicoPassword" placeholder="Dejar en blanco para conservar contraseña actual" minlength="6" />
+            <label><i class="fa-solid fa-lock" style="color:var(--accent); margin-right:4px;"></i> Cambiar ContraseÃ±a (Opcional)</label>
+            <input type="password" id="editTecnicoPassword" placeholder="Dejar en blanco para conservar contraseÃ±a actual" minlength="6" />
           </div>
         </div>
       </div>
@@ -1894,12 +1894,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-<!-- Ver Vuelos Registrados del Técnico Modal -->
+<!-- Ver Vuelos Registrados del TÃ©cnico Modal -->
 <div class="modal-overlay hidden" id="tecnicoVuelosModal">
   <div class="modal" style="max-width:760px; width:92%;">
     <div class="modal-header">
       <span class="modal-title" id="tecnicoVuelosModalTitle"><i class="fa-solid fa-plane-up" style="color:var(--accent); margin-right:6px;"></i> Vuelos Asignados al Piloto</span>
-      <button class="modal-close" onclick="closeModal('tecnicoVuelosModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('tecnicoVuelosModal')">âœ•</button>
     </div>
     <div class="modal-body" style="padding:16px 20px;">
       <div class="table-wrap" style="max-height:420px; overflow-y:auto; overflow-x:auto;">
@@ -1926,25 +1926,25 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-<!-- Cambiar Contraseña de Usuario Modal -->
+<!-- Cambiar ContraseÃ±a de Usuario Modal -->
 <div class="modal-overlay hidden" id="changePasswordModal">
   <div class="modal" style="max-width:420px">
     <div class="modal-header">
-      <span class="modal-title"><i class="fa-solid fa-key" style="color:var(--accent); margin-right:6px;"></i> Modificar Contraseña de Usuario</span>
-      <button class="modal-close" onclick="closeModal('changePasswordModal')">✕</button>
+      <span class="modal-title"><i class="fa-solid fa-key" style="color:var(--accent); margin-right:6px;"></i> Modificar ContraseÃ±a de Usuario</span>
+      <button class="modal-close" onclick="closeModal('changePasswordModal')">âœ•</button>
     </div>
     <form id="changePasswordForm" onsubmit="submitChangeUserPassword(event)">
       <div class="modal-body">
         <input type="hidden" id="changePassUserId" />
         <div style="background:rgba(28,130,173,0.06); border:1px solid rgba(28,130,173,0.2); border-radius:10px; padding:12px; margin-bottom:16px;">
-          <div style="font-size:0.75rem; color:var(--text-2);">Actualizando contraseña de:</div>
+          <div style="font-size:0.75rem; color:var(--text-2);">Actualizando contraseÃ±a de:</div>
           <div id="changePassUserEmailLabel" style="font-weight:bold; color:var(--primary); font-size:0.95rem;">usuario@flymetrics.co</div>
         </div>
         <div class="form-field full">
-          <label>Nueva Contraseña *</label>
+          <label>Nueva ContraseÃ±a *</label>
           <div style="position:relative; display:flex; align-items:center;">
-            <input type="password" id="changePassNewInput" class="form-input" placeholder="Ingresa la nueva contraseña (mín. 6 caracteres)" required minlength="6" style="padding-right:42px; width:100%;" />
-            <button type="button" onclick="toggleChangePassVisibility()" style="position:absolute; right:10px; background:none; border:none; color:#1c82ad; cursor:pointer; font-size:1rem; padding:4px;" title="Mostrar / Ocultar Contraseña">
+            <input type="password" id="changePassNewInput" class="form-input" placeholder="Ingresa la nueva contraseÃ±a (mÃ­n. 6 caracteres)" required minlength="6" style="padding-right:42px; width:100%;" />
+            <button type="button" onclick="toggleChangePassVisibility()" style="position:absolute; right:10px; background:none; border:none; color:#1c82ad; cursor:pointer; font-size:1rem; padding:4px;" title="Mostrar / Ocultar ContraseÃ±a">
               <i class="fa-solid fa-eye" id="changePassEyeIcon"></i>
             </button>
           </div>
@@ -1952,7 +1952,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-ghost" onclick="closeModal('changePasswordModal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-key"></i> Actualizar Contraseña</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-key"></i> Actualizar ContraseÃ±a</button>
       </div>
     </form>
   </div>
@@ -1963,22 +1963,22 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:480px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-user-gear" style="color:var(--accent); margin-right:6px;"></i> Crear Nuevo Usuario</span>
-      <button class="modal-close" onclick="closeModal('newUsuarioModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('newUsuarioModal')">âœ•</button>
     </div>
     <form id="newUsuarioForm" onsubmit="submitCreateUsuario(event)">
       <div class="modal-body">
         <div class="form-grid form-grid-2">
           <div class="form-field full">
             <label>Nombre Completo *</label>
-            <input type="text" id="newUsrNombre" placeholder="Ej. CARLOS GÓMEZ" required style="text-transform: uppercase;" />
+            <input type="text" id="newUsrNombre" placeholder="Ej. CARLOS GÃ“MEZ" required style="text-transform: uppercase;" />
           </div>
           <div class="form-field full">
-            <label>Correo Electrónico *</label>
+            <label>Correo ElectrÃ³nico *</label>
             <input type="email" id="newUsrEmail" placeholder="usuario@flymetrics.co" required />
           </div>
           <div class="form-field full">
-            <label>Contraseña de Acceso *</label>
-            <input type="password" id="newUsrPassword" placeholder="Mínimo 6 caracteres" required minlength="6" />
+            <label>ContraseÃ±a de Acceso *</label>
+            <input type="password" id="newUsrPassword" placeholder="MÃ­nimo 6 caracteres" required minlength="6" />
           </div>
         </div>
       </div>
@@ -1995,7 +1995,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:480px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-helicopter" style="color:var(--accent); margin-right:6px;"></i> Agregar Dron a la Flota</span>
-      <button class="modal-close" onclick="closeModal('newDroneModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('newDroneModal')">âœ•</button>
     </div>
     <form id="newDroneForm" onsubmit="submitNewDrone(event)" novalidate>
       <div class="modal-body">
@@ -2005,11 +2005,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="text" id="newDroneModelo" placeholder="Ej: DJI Agras T40 / DJI Mavic 3M" required />
           </div>
           <div class="form-field full">
-            <label>Número de Serie / Matrícula *</label>
+            <label>NÃºmero de Serie / MatrÃ­cula *</label>
             <input type="text" id="newDroneSerie" placeholder="Ej: AGT40-COL-001" required />
           </div>
           <div class="form-field full">
-            <label>Piloto Técnico Asignado (Opcional)</label>
+            <label>Piloto TÃ©cnico Asignado (Opcional)</label>
             <select id="newDroneTecnico">
               <option value="">Sin piloto asignado (Flota general)</option>
               <!-- Populated dynamically with tecnicos -->
@@ -2030,7 +2030,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:480px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-pen-to-square" style="color:var(--accent); margin-right:6px;"></i> Editar Dron y Asignar Piloto</span>
-      <button class="modal-close" onclick="closeModal('editDroneModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('editDroneModal')">âœ•</button>
     </div>
     <form id="editDroneForm" onsubmit="event.preventDefault(); submitEditDrone(event);" novalidate>
       <div class="modal-body">
@@ -2041,11 +2041,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <input type="text" id="editDroneModelo" required />
           </div>
           <div class="form-field full">
-            <label>Número de Serie / Matrícula *</label>
+            <label>NÃºmero de Serie / MatrÃ­cula *</label>
             <input type="text" id="editDroneSerie" placeholder="AGT40-COL-001" required />
           </div>
           <div class="form-field full">
-            <label>Piloto Técnico Asignado</label>
+            <label>Piloto TÃ©cnico Asignado</label>
             <select id="editDroneTecnico">
               <option value="">Sin piloto asignado (Flota general)</option>
               <!-- Populated dynamically with tecnicos -->
@@ -2061,28 +2061,28 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-<!-- Modal: Autenticación por Clave Maestra para Configuración de Correos -->
+<!-- Modal: AutenticaciÃ³n por Clave Maestra para ConfiguraciÃ³n de Correos -->
 <div class="modal-overlay hidden" id="masterKeyModal">
   <div class="modal" style="max-width:440px">
     <div class="modal-header">
-      <span class="modal-title"><i class="fa-solid fa-key" style="color:var(--accent); margin-right:6px;"></i> Contraseña Maestra de Seguridad</span>
-      <button class="modal-close" onclick="closeModal('masterKeyModal')">✕</button>
+      <span class="modal-title"><i class="fa-solid fa-key" style="color:var(--accent); margin-right:6px;"></i> ContraseÃ±a Maestra de Seguridad</span>
+      <button class="modal-close" onclick="closeModal('masterKeyModal')">âœ•</button>
     </div>
     <form id="formMasterKey" onsubmit="submitMasterKeyVerification(event)">
       <div class="modal-body">
         <p style="font-size:0.86rem; color:#475569; margin-bottom:14px; line-height:1.45;">
-          Ingresa la contraseña maestra para desbloquear y administrar las credenciales de correo (SMTP) y la URL de redirección de los botones.
+          Ingresa la contraseÃ±a maestra para desbloquear y administrar las credenciales de correo (SMTP) y la URL de redirecciÃ³n de los botones.
         </p>
         <div class="form-field full">
-          <label style="font-weight:700;">Contraseña Maestra *</label>
+          <label style="font-weight:700;">ContraseÃ±a Maestra *</label>
           <div style="position:relative; display:flex; align-items:center;">
             <input type="password" id="inputMasterKey" class="form-input" placeholder="Ingresa tu clave maestra..." required minlength="4" autofocus style="padding-right:40px; width:100%;" />
-            <button type="button" onclick="const inp=document.getElementById('inputMasterKey'); const ico=document.getElementById('eyeMasterKey'); if(inp){ const isPwd=inp.type==='password'; inp.type=isPwd?'text':'password'; if(ico) ico.className=isPwd?'fa-solid fa-eye-slash':'fa-solid fa-eye'; }" style="position:absolute; right:10px; background:none; border:none; color:#1c82ad; cursor:pointer; font-size:1rem; padding:4px;" title="Ver/Ocultar contraseña">
+            <button type="button" onclick="const inp=document.getElementById('inputMasterKey'); const ico=document.getElementById('eyeMasterKey'); if(inp){ const isPwd=inp.type==='password'; inp.type=isPwd?'text':'password'; if(ico) ico.className=isPwd?'fa-solid fa-eye-slash':'fa-solid fa-eye'; }" style="position:absolute; right:10px; background:none; border:none; color:#1c82ad; cursor:pointer; font-size:1rem; padding:4px;" title="Ver/Ocultar contraseÃ±a">
               <i class="fa-solid fa-eye" id="eyeMasterKey"></i>
             </button>
           </div>
           <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">
-            <i class="fa-solid fa-info-circle" style="color:var(--accent);"></i> Clave maestra predeterminada de fábrica: <strong>admin123</strong>
+            <i class="fa-solid fa-info-circle" style="color:var(--accent);"></i> Clave maestra predeterminada de fÃ¡brica: <strong>admin123</strong>
           </div>
           <div id="masterKeyError" style="color:#ef4444; font-size:0.8rem; margin-top:6px; display:none;"></div>
         </div>
@@ -2097,12 +2097,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-<!-- Modal: Vincular Facturación Alegra por Cliente -->
+<!-- Modal: Vincular FacturaciÃ³n Alegra por Cliente -->
 <div class="modal-overlay hidden" id="vincularAlegraModal">
   <div class="modal" style="max-width:540px">
     <div class="modal-header">
-      <span class="modal-title"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent); margin-right:6px;"></i> Vincular Facturación Alegra por Cliente</span>
-      <button class="modal-close" onclick="closeModal('vincularAlegraModal')">✕</button>
+      <span class="modal-title"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent); margin-right:6px;"></i> Vincular FacturaciÃ³n Alegra por Cliente</span>
+      <button class="modal-close" onclick="closeModal('vincularAlegraModal')">âœ•</button>
     </div>
     <form id="vincularAlegraForm" onsubmit="submitVincularAlegra(event)">
       <div class="modal-body">
@@ -2128,7 +2128,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-ghost" onclick="closeModal('vincularAlegraModal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="font-weight:700;"><i class="fa-solid fa-floppy-disk"></i> Guardar Vinculación Alegra</button>
+        <button type="submit" class="btn btn-primary" style="font-weight:700;"><i class="fa-solid fa-floppy-disk"></i> Guardar VinculaciÃ³n Alegra</button>
       </div>
     </form>
   </div>
@@ -2139,7 +2139,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:520px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent); margin-right:6px;"></i> Subir Comprobante / Recibo de Cobro</span>
-      <button class="modal-close" onclick="closeModal('uploadReciboModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('uploadReciboModal')">âœ•</button>
     </div>
     <form id="uploadReciboForm" onsubmit="event.preventDefault(); submitUploadRecibo(event);">
       <div class="modal-body">
@@ -2152,11 +2152,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             </select>
           </div>
           <div class="form-field">
-            <label>Número / Referencia del Comprobante *</label>
+            <label>NÃºmero / Referencia del Comprobante *</label>
             <input type="text" id="reciboReferencia" class="form-input" placeholder="Ej: REC-2026-0042 o FACT-105" required />
           </div>
           <div class="form-field">
-            <label>Fecha de Emisión *</label>
+            <label>Fecha de EmisiÃ³n *</label>
             <input type="date" id="reciboFecha" class="form-input" required />
           </div>
           <div class="form-field">
@@ -2170,7 +2170,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <div id="reciboFilePreview" style="margin-top:8px; font-size:0.8rem; color:var(--accent);"></div>
           </div>
           <div class="form-field">
-            <label>Observaciones / Descripción</label>
+            <label>Observaciones / DescripciÃ³n</label>
             <textarea id="reciboNotas" class="form-input" style="min-height:60px; resize:none;" placeholder="Detalles de la labor o insumos cobrados..."></textarea>
           </div>
         </div>
@@ -2184,12 +2184,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 </div>
 
 
-<!-- Nueva Notificación Modal -->
+<!-- Nueva NotificaciÃ³n Modal -->
 <div class="modal-overlay hidden" id="newNotifModal">
   <div class="modal" style="max-width:440px">
     <div class="modal-header">
-      <span class="modal-title"><i class="fa-solid fa-bell" style="color:var(--accent); margin-right:6px;"></i> Enviar Notificación / Alerta</span>
-      <button class="modal-close" onclick="closeModal('newNotifModal')">✕</button>
+      <span class="modal-title"><i class="fa-solid fa-bell" style="color:var(--accent); margin-right:6px;"></i> Enviar NotificaciÃ³n / Alerta</span>
+      <button class="modal-close" onclick="closeModal('newNotifModal')">âœ•</button>
     </div>
     <form id="newNotifForm" onsubmit="event.preventDefault(); submitNewNotif();">
       <div class="modal-body">
@@ -2200,7 +2200,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           </select>
         </div>
         <div class="form-field mb-4">
-          <label>Título de la Alerta *</label>
+          <label>TÃ­tulo de la Alerta *</label>
           <input type="text" id="notifTitulo" class="form-input" placeholder="Ej: Vuelo Programado" required />
         </div>
         <div class="form-field mb-4">
@@ -2307,7 +2307,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal" style="max-width:540px">
     <div class="modal-header">
       <span class="modal-title"><i class="fa-solid fa-file-signature" style="color:var(--accent); margin-right:6px;"></i> Vincular Carpeta SharePoint por Cliente</span>
-      <button class="modal-close" onclick="closeModal('vincularSharepointModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('vincularSharepointModal')">âœ•</button>
     </div>
     <form id="vincularSharepointForm" onsubmit="submitVincularSharepoint(event)">
       <div class="modal-body">
@@ -2332,7 +2332,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-ghost" onclick="closeModal('vincularSharepointModal')">Cancelar</button>
-        <button type="submit" class="btn btn-primary" style="font-weight:700;"><i class="fa-solid fa-floppy-disk"></i> Guardar Vinculación SharePoint</button>
+        <button type="submit" class="btn btn-primary" style="font-weight:700;"><i class="fa-solid fa-floppy-disk"></i> Guardar VinculaciÃ³n SharePoint</button>
       </div>
     </form>
   </div>
@@ -2343,9 +2343,9 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   <div class="modal card" style="max-width:540px; width:92%; padding:26px; border-radius:22px; background:#ffffff; box-shadow:0 20px 50px rgba(0,48,73,0.2); border:1.5px solid rgba(28,130,173,0.25);">
     <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #f1f5f9; padding-bottom:12px;">
       <span class="modal-title" style="font-weight:800; font-size:1.2rem; color:#003049; font-family:'Syne',sans-serif; display:flex; align-items:center; gap:8px;">
-        <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Modificar Información del Agendamiento
+        <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Modificar InformaciÃ³n del Agendamiento
       </span>
-      <button class="modal-close btn btn-ghost btn-sm" onclick="closeModal('reprogramarModal')">✕</button>
+      <button class="modal-close btn btn-ghost btn-sm" onclick="closeModal('reprogramarModal')">âœ•</button>
     </div>
     <form id="reprogramarForm" onsubmit="submitReprogramar(event)" style="display:flex; flex-direction:column; max-height:calc(90vh - 80px);">
       <input type="hidden" id="reprogramarTurnoId" />
@@ -2353,28 +2353,28 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <div class="modal-body" style="padding:4px 6px 16px; overflow-y:auto; flex:1 1 auto; max-height:calc(90vh - 160px);">
         <div id="reprogramarErrMsg" class="modal-alert-error" style="display:none;"><i class="fa-solid fa-triangle-exclamation"></i><span id="reprogramarErrMsgText"></span></div>
 
-        <!-- Aviso de protección de estados (Luis - Minuta oficial) -->
+        <!-- Aviso de protecciÃ³n de estados (Luis - Minuta oficial) -->
         <div id="reprogramarLockNotice" style="display:none; margin-bottom:12px; padding:10px 14px; background:rgba(28,130,173,0.1); border-left:4px solid #1c82ad; border-radius:8px; font-size:0.82rem; color:#003049; line-height:1.45;">
-          <strong><i class="fa-solid fa-shield-halved" style="color:#1c82ad;"></i> Modificación de Agendamiento:</strong> Puedes actualizar servicio, predio, hectáreas, fecha, recursos asignados y novedades operacionales del turno.
+          <strong><i class="fa-solid fa-shield-halved" style="color:#1c82ad;"></i> ModificaciÃ³n de Agendamiento:</strong> Puedes actualizar servicio, predio, hectÃ¡reas, fecha, recursos asignados y novedades operacionales del turno.
         </div>
 
         <div style="display:flex; flex-direction:column; gap:14px;">
           
           <div>
-            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> Servicios de Vuelo Solicitados * (Selección Múltiple)</label>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> Servicios de Vuelo Solicitados * (SelecciÃ³n MÃºltiple)</label>
             <div id="reprogramarServiciosContainer" style="display:flex; flex-wrap:wrap; gap:8px; background:#f8fafc; border:1.5px solid #cbd5e1; padding:10px 12px; border-radius:12px; max-height:160px; overflow-y:auto;">
               <!-- Loaded dynamically as styled checkboxes -->
             </div>
           </div>
 
           <div>
-            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-map-location-dot" style="color:var(--accent);"></i> Enlace Google Maps / Ubicación GPS *</label>
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-map-location-dot" style="color:var(--accent);"></i> Enlace Google Maps / UbicaciÃ³n GPS *</label>
             <input type="text" id="reprogramarMaps" class="form-input" placeholder="https://maps.app.goo.gl/... o coordenadas" style="width:100%; border-radius:10px;" required />
           </div>
 
           <div>
             <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-seedling" style="color:var(--accent);"></i> Cultivo Principal</label>
-            <input type="text" id="reprogramarCultivo" class="form-input" placeholder="Ej. Arroz, Palma, Maíz..." style="width:100%; border-radius:10px;" />
+            <input type="text" id="reprogramarCultivo" class="form-input" placeholder="Ej. Arroz, Palma, MaÃ­z..." style="width:100%; border-radius:10px;" />
           </div>
 
           <div style="display:grid; grid-template-columns: 2fr 1fr; gap:12px;">
@@ -2385,7 +2385,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
               </select>
             </div>
             <div>
-              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-chart-area" style="color:var(--accent);"></i> Hectáreas</label>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-chart-area" style="color:var(--accent);"></i> HectÃ¡reas</label>
               <input type="number" id="reprogramarHectareas" class="form-input" min="0.1" step="0.1" placeholder="Ej: 25" style="width:100%; font-weight:700; border-radius:10px;" />
             </div>
           </div>
@@ -2418,14 +2418,14 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
             <div>
-              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-user-plus" style="color:var(--accent);"></i> 2º Piloto Asistente (Opcional)</label>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-user-plus" style="color:var(--accent);"></i> 2Âº Piloto Asistente (Opcional)</label>
               <select id="reprogramarTecnico2" class="form-select" style="width:100%; font-weight:600; border-radius:10px;">
                 <option value="">Sin segundo piloto</option>
                 <!-- Loaded dynamically -->
               </select>
             </div>
             <div>
-              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-user-plus" style="color:var(--accent);"></i> 3º Piloto Asistente (Opcional)</label>
+              <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-user-plus" style="color:var(--accent);"></i> 3Âº Piloto Asistente (Opcional)</label>
               <select id="reprogramarTecnico3" class="form-select" style="width:100%; font-weight:600; border-radius:10px;">
                 <option value="">Sin tercer piloto</option>
                 <!-- Loaded dynamically -->
@@ -2437,9 +2437,9 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-signal" style="color:var(--accent);"></i> Estado del Vuelo *</label>
             <select id="reprogramarEstado" class="form-select" style="width:100%; font-weight:700; border-radius:10px;">
               <option value="Pendiente">Pendiente (Nueva solicitud)</option>
-              <option value="Pendiente por confirmar">Pendiente por confirmar (Cotización enviada)</option>
+              <option value="Pendiente por confirmar">Pendiente por confirmar (CotizaciÃ³n enviada)</option>
               <option value="Confirmado">Confirmado (Aceptado / En agenda)</option>
-              <option value="En Proceso">En Proceso (Operación en campo)</option>
+              <option value="En Proceso">En Proceso (OperaciÃ³n en campo)</option>
               <option value="Completado">Completado (Vuelo realizado por piloto)</option>
               <option value="Finalizado">Finalizado (Informe y SharePoint entregados)</option>
               <option value="Reagendado">Reagendado (Fecha / hora modificada)</option>
@@ -2448,8 +2448,8 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           </div>
 
           <div>
-            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-comment-dots" style="color:var(--accent);"></i> Motivo de Modificación / Reagendamiento</label>
-            <input type="text" id="reprogramarMotivo" class="form-input" placeholder="Ej: Ajuste por clima, solicitud del cliente, optimización de ruta..." style="width:100%; border-radius:10px;" />
+            <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;"><i class="fa-solid fa-comment-dots" style="color:var(--accent);"></i> Motivo de ModificaciÃ³n / Reagendamiento</label>
+            <input type="text" id="reprogramarMotivo" class="form-input" placeholder="Ej: Ajuste por clima, solicitud del cliente, optimizaciÃ³n de ruta..." style="width:100%; border-radius:10px;" />
           </div>
 
           <div>
@@ -2471,7 +2471,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 </div>
 
 <!-- ========================================
-     MODAL DETALLE COTIZACIÓN 24 HORAS
+     MODAL DETALLE COTIZACIÃ“N 24 HORAS
 ======================================== -->
 <div class="modal-overlay hidden" id="contactoDetailModal">
   <div class="modal-card" style="max-width: 640px; width: 94%; border-radius: 24px; padding: 24px; box-shadow: 0 20px 50px rgba(0,48,73,0.22); border: 1px solid rgba(28,130,173,0.22); background: #ffffff;">
@@ -2479,7 +2479,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <div class="modal-title" id="contactoDetailTitle" style="font-size:1.15rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
         <i class="fa-solid fa-file-invoice" style="color:var(--accent);"></i> Detalle de Solicitud
       </div>
-      <button class="modal-close" onclick="closeModal('contactoDetailModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('contactoDetailModal')">âœ•</button>
     </div>
     <div id="contactoDetailBody" style="padding: 16px 0; font-size: 0.92rem; line-height: 1.6;">
       <!-- Loaded dynamically -->
@@ -2519,12 +2519,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <div class="modal-title" style="font-size:1.2rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
         <i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent);"></i> <span id="cotizarModalTitle">Cotizar y Asignar Turno #RAD-</span>
       </div>
-      <button class="modal-close" onclick="closeModal('cotizarAgendaModal')">✕</button>
+      <button class="modal-close" onclick="closeModal('cotizarAgendaModal')">âœ•</button>
     </div>
 
     <!-- Info resumen del turno -->
     <div id="cotizarModalResumen" style="background:#f8fafc; border-radius:14px; padding:14px 18px; margin:16px 0; border:1px solid #e2e8f0; font-size:0.88rem;">
-      <!-- Llenado dinámico -->
+      <!-- Llenado dinÃ¡mico -->
     </div>
 
     <!-- Sugerencia del cliente destacada si existe -->
@@ -2535,11 +2535,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <div id="cotizarModalSugerenciaTexto" style="color:#1e3a8a; font-size:0.88rem; font-style:italic; line-height:1.5;"></div>
     </div>
 
-    <!-- Historial de negociación colapsable -->
+    <!-- Historial de negociaciÃ³n colapsable -->
     <div id="cotizarModalHistorialBox" style="display:none; margin-bottom:16px;">
       <details style="background:#fafafa; border:1px solid #e5e7eb; border-radius:10px; padding:10px 14px;">
         <summary style="font-weight:700; color:#475569; font-size:0.84rem; cursor:pointer;">
-          <i class="fa-solid fa-clock-rotate-left"></i> Ver historial de negociación en base de datos
+          <i class="fa-solid fa-clock-rotate-left"></i> Ver historial de negociaciÃ³n en base de datos
         </summary>
         <div id="cotizarModalHistorialTimeline" style="margin-top:10px; font-size:0.82rem; line-height:1.6; max-height:160px; overflow-y:auto;"></div>
       </details>
@@ -2558,7 +2558,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 
         <div>
           <label class="form-label" style="font-weight:800; color:#003049; font-size:0.86rem;">
-            <i class="fa-solid fa-user-astronaut" style="color:var(--accent);"></i> Técnico / Piloto Asignado *
+            <i class="fa-solid fa-user-astronaut" style="color:var(--accent);"></i> TÃ©cnico / Piloto Asignado *
           </label>
           <select id="cotizarTecnicoSelect" class="form-select" required style="width:100%; border-radius:10px; font-weight:700;">
             <option value="">Seleccione piloto obligatorio...</option>
@@ -2568,9 +2568,9 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 
       <div>
         <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;">
-          <i class="fa-solid fa-message" style="color:#1c82ad;"></i> Mensaje / Nota para el Cliente (Máx 500 caracteres)
+          <i class="fa-solid fa-message" style="color:#1c82ad;"></i> Mensaje / Nota para el Cliente (MÃ¡x 500 caracteres)
         </label>
-        <textarea id="cotizarMensajeAdmin" rows="2" maxlength="500" class="form-input" placeholder="Mensaje que acompañará la propuesta de precio en el correo y portal..." style="width:100%; border-radius:10px; font-family:'Outfit',sans-serif;"></textarea>
+        <textarea id="cotizarMensajeAdmin" rows="2" maxlength="500" class="form-input" placeholder="Mensaje que acompaÃ±arÃ¡ la propuesta de precio en el correo y portal..." style="width:100%; border-radius:10px; font-family:'Outfit',sans-serif;"></textarea>
       </div>
 
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:8px; border-top:1px solid #f1f5f9; padding-top:16px;">
@@ -2580,7 +2580,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <i class="fa-solid fa-check-double"></i> Aceptar Directamente el Servicio
           </button>
           <button type="submit" class="btn btn-primary btn-sm" style="font-weight:800; border-radius:10px; padding:10px 18px; display:inline-flex; align-items:center; gap:6px;">
-            <i class="fa-solid fa-paper-plane"></i> Enviar Cotización al Cliente
+            <i class="fa-solid fa-paper-plane"></i> Enviar CotizaciÃ³n al Cliente
           </button>
         </div>
       </div>
@@ -2589,7 +2589,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 </div>
 
 <!-- ========================================
-     MODAL GESTIÓN DE SERVICIO (CREAR / EDITAR)
+     MODAL GESTIÃ“N DE SERVICIO (CREAR / EDITAR)
 ======================================== -->
 <div class="modal-overlay hidden" id="modalServicio">
   <div class="modal-card" style="max-width: 780px; width: 95%; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 26px; box-shadow: 0 25px 60px rgba(0,48,73,0.25); border: 1px solid rgba(28,130,173,0.22); background: #ffffff;">
@@ -2597,7 +2597,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <div class="modal-title" style="font-size:1.2rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
         <i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> <span id="modalServicioTitle">Nuevo Servicio Especializado</span>
       </div>
-      <button class="modal-close" onclick="closeModal('modalServicio')">✕</button>
+      <button class="modal-close" onclick="closeModal('modalServicio')">âœ•</button>
     </div>
 
     <form id="formServicioAdmin" onsubmit="submitGuardarServicio(event)" style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
@@ -2609,18 +2609,18 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       </div>
 
       <div>
-        <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;">Descripción Operativa y Comercial *</label>
-        <textarea id="servicioModalDescripcion" rows="3" class="form-input" required placeholder="Descripción de los entregables agronómicos, analítica y alcance del vuelo..." style="width:100%; border-radius:10px; font-family:'Outfit',sans-serif;"></textarea>
+        <label class="form-label" style="font-weight:700; color:#003049; font-size:0.85rem;">DescripciÃ³n Operativa y Comercial *</label>
+        <textarea id="servicioModalDescripcion" rows="3" class="form-input" required placeholder="DescripciÃ³n de los entregables agronÃ³micos, analÃ­tica y alcance del vuelo..." style="width:100%; border-radius:10px; font-family:'Outfit',sans-serif;"></textarea>
       </div>
 
-      <!-- Especificaciones Técnicas (Mostradas en las tarjetas del home) -->
+      <!-- Especificaciones TÃ©cnicas (Mostradas en las tarjetas del home) -->
       <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:14px;">
         <div style="font-weight:800; font-size:0.85rem; color:#003049; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
-          <i class="fa-solid fa-microchip" style="color:var(--accent);"></i> Especificaciones Técnicas (Página Principal)
+          <i class="fa-solid fa-microchip" style="color:var(--accent);"></i> Especificaciones TÃ©cnicas (PÃ¡gina Principal)
         </div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
           <div>
-            <label style="font-size:0.78rem; font-weight:700; color:#475569;">Sistema / Tecnología</label>
+            <label style="font-size:0.78rem; font-weight:700; color:#475569;">Sistema / TecnologÃ­a</label>
             <input type="text" id="servicioModalSistema" class="form-input" placeholder="Ej: Sensores Multiespectrales 5 Bandas" style="width:100%; border-radius:8px; font-size:0.82rem;" />
           </div>
           <div>
@@ -2629,11 +2629,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
           </div>
           <div>
             <label style="font-size:0.78rem; font-weight:700; color:#475569;">Capacidad / Cobertura</label>
-            <input type="text" id="servicioModalCapacidad" class="form-input" placeholder="Ej: Vuelo autónomo con RTK continuo" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+            <input type="text" id="servicioModalCapacidad" class="form-input" placeholder="Ej: Vuelo autÃ³nomo con RTK continuo" style="width:100%; border-radius:8px; font-size:0.82rem;" />
           </div>
           <div>
-            <label style="font-size:0.78rem; font-weight:700; color:#475569;">Precisión Métrica</label>
-            <input type="text" id="servicioModalPrecision" class="form-input" placeholder="Ej: Centimétrica RTK ±2cm" style="width:100%; border-radius:8px; font-size:0.82rem;" />
+            <label style="font-size:0.78rem; font-weight:700; color:#475569;">PrecisiÃ³n MÃ©trica</label>
+            <input type="text" id="servicioModalPrecision" class="form-input" placeholder="Ej: CentimÃ©trica RTK Â±2cm" style="width:100%; border-radius:8px; font-size:0.82rem;" />
           </div>
         </div>
       </div>
@@ -2649,23 +2649,23 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         </div>
         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">
           <small style="color:#64748b; font-size:0.75rem; width:100%;">Iconos recomendados (haz clic para asignar):</small>
-          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-helicopter')" style="font-size:0.75rem; padding:2px 8px;">🚁 Dron</button>
-          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-mountain-sun')" style="font-size:0.75rem; padding:2px 8px;">🏔️ Topografía</button>
-          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-spray-can')" style="font-size:0.75rem; padding:2px 8px;">💦 Aspersión</button>
-          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-seedling')" style="font-size:0.75rem; padding:2px 8px;">🌱 Agricultura</button>
-          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-cow')" style="font-size:0.75rem; padding:2px 8px;">🐄 Ganadería</button>
-          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-camera')" style="font-size:0.75rem; padding:2px 8px;">📷 Fotogrametría</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-helicopter')" style="font-size:0.75rem; padding:2px 8px;">ðŸš Dron</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-mountain-sun')" style="font-size:0.75rem; padding:2px 8px;">ðŸ”ï¸ TopografÃ­a</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-spray-can')" style="font-size:0.75rem; padding:2px 8px;">ðŸ’¦ AspersiÃ³n</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-seedling')" style="font-size:0.75rem; padding:2px 8px;">ðŸŒ± Agricultura</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-cow')" style="font-size:0.75rem; padding:2px 8px;">ðŸ„ GanaderÃ­a</button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="setServicioIconoPreset('fa-solid fa-camera')" style="font-size:0.75rem; padding:2px 8px;">ðŸ“· FotogrametrÃ­a</button>
         </div>
       </div>
 
-      <!-- MÓDULO MULTIMEDIA: SUBIR IMAGEN DIRECTA -->
+      <!-- MÃ“DULO MULTIMEDIA: SUBIR IMAGEN DIRECTA -->
       <div style="border:1.5px dashed #cbd5e1; border-radius:14px; padding:16px; background:#fafafa;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <label style="font-weight:800; color:#003049; font-size:0.86rem; margin:0; display:flex; align-items:center; gap:6px;">
             <i class="fa-solid fa-image" style="color:#0284c7;"></i> Imagen del Servicio (Miniatura & Portada)
           </label>
           <button type="button" class="btn btn-sm btn-ghost" onclick="openMediaGalleryModal('imagen')" style="font-size:0.76rem; font-weight:700; color:#0284c7;">
-            <i class="fa-solid fa-images"></i> Elegir de la Galería
+            <i class="fa-solid fa-images"></i> Elegir de la GalerÃ­a
           </button>
         </div>
 
@@ -2689,14 +2689,14 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         </div>
       </div>
 
-      <!-- MÓDULO MULTIMEDIA: SUBIR VIDEO DIRECTO -->
+      <!-- MÃ“DULO MULTIMEDIA: SUBIR VIDEO DIRECTO -->
       <div style="border:1.5px dashed #cbd5e1; border-radius:14px; padding:16px; background:#fafafa;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
           <label style="font-weight:800; color:#003049; font-size:0.86rem; margin:0; display:flex; align-items:center; gap:6px;">
             <i class="fa-solid fa-video" style="color:#e11d48;"></i> Video Demostrativo del Servicio
           </label>
           <button type="button" class="btn btn-sm btn-ghost" onclick="openMediaGalleryModal('video')" style="font-size:0.76rem; font-weight:700; color:#e11d48;">
-            <i class="fa-solid fa-film"></i> Elegir de la Galería
+            <i class="fa-solid fa-film"></i> Elegir de la GalerÃ­a
           </button>
         </div>
 
@@ -2723,11 +2723,11 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         </div>
       </div>
 
-      <!-- Estado Activo en la página principal -->
+      <!-- Estado Activo en la pÃ¡gina principal -->
       <div style="display:flex; align-items:center; gap:10px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:12px 16px;">
         <input type="checkbox" id="servicioModalActivo" checked style="width:18px; height:18px; accent-color:#16a34a; cursor:pointer;" />
         <label for="servicioModalActivo" style="font-weight:700; color:#15803d; font-size:0.88rem; margin:0; cursor:pointer;">
-          Publicar y mostrar activamente este servicio en la página principal (Home)
+          Publicar y mostrar activamente este servicio en la pÃ¡gina principal (Home)
         </label>
       </div>
 
@@ -2742,33 +2742,33 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 </div>
 
 <!-- ========================================
-     MODAL GALERÍA MULTIMEDIA (IMÁGENES & VIDEOS)
+     MODAL GALERÃA MULTIMEDIA (IMÃGENES & VIDEOS)
 ======================================== -->
 <div class="modal-overlay hidden" id="modalMediaGallery">
   <div class="modal-card" style="max-width: 1180px; width: 96%; max-height: 94vh; height: 90vh; display:flex; flex-direction:column; border-radius: 24px; padding: 24px; box-shadow: 0 25px 60px rgba(0,48,73,0.3); border: 1.5px solid rgba(28,130,173,0.3); background: #ffffff;">
     <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0;">
       <div>
         <div class="modal-title" style="font-size:1.25rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
-          <i class="fa-solid fa-photo-film" style="color:var(--accent);"></i> Galería Multimedia del Sistema
+          <i class="fa-solid fa-photo-film" style="color:var(--accent);"></i> GalerÃ­a Multimedia del Sistema
           <span id="galleryCountBadge" class="badge" style="background:#e0f2fe; color:#0284c7; font-weight:800; font-size:0.75rem; border:1px solid #bae6fd;">Cargando...</span>
         </div>
         <div style="font-size:0.80rem; color:#64748b; margin-top:2px;">
-          Explora con miniatura real, previsualiza en HD, copia enlaces directos o elimina archivos físicos de raíz
+          Explora con miniatura real, previsualiza en HD, copia enlaces directos o elimina archivos fÃ­sicos de raÃ­z
         </div>
       </div>
-      <button class="modal-close" onclick="closeModal('modalMediaGallery')">✕</button>
+      <button class="modal-close" onclick="closeModal('modalMediaGallery')">âœ•</button>
     </div>
 
-    <!-- Barra de control, filtros de formato, buscador y subida rápida -->
+    <!-- Barra de control, filtros de formato, buscador y subida rÃ¡pida -->
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin:16px 0 14px;">
       <!-- Filtros por tipo -->
       <div style="display:flex; background:#f1f5f9; padding:4px; border-radius:12px; gap:4px; border:1px solid #e2e8f0;">
         <button type="button" id="galleryTabAll" class="btn btn-sm btn-primary" onclick="filterMediaGallery('all')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">Todos</button>
-        <button type="button" id="galleryTabImages" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('imagen')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">🖼️ Imágenes</button>
-        <button type="button" id="galleryTabVideos" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('video')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">🎬 Videos</button>
+        <button type="button" id="galleryTabImages" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('imagen')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">ðŸ–¼ï¸ ImÃ¡genes</button>
+        <button type="button" id="galleryTabVideos" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('video')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">ðŸŽ¬ Videos</button>
       </div>
 
-      <!-- Buscador dinámico y subida directa -->
+      <!-- Buscador dinÃ¡mico y subida directa -->
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
         <div class="search-input-wrap" style="min-width:180px; max-width:240px;">
           <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -2787,9 +2787,9 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <span>Subiendo archivo multimedia al servidor...</span>
     </div>
 
-    <!-- Grid de archivos multimedia con previsualización definida y tarjetas ampliadas -->
+    <!-- Grid de archivos multimedia con previsualizaciÃ³n definida y tarjetas ampliadas -->
     <div id="galleryMediaGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:20px; padding:16px 8px 30px; overflow-y:auto; flex:1; align-content:start;">
-      <!-- Llenado dinámico -->
+      <!-- Llenado dinÃ¡mico -->
       <div style="grid-column: 1/-1; text-align:center; padding:40px; color:#64748b;">
         <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem; margin-bottom:8px;"></i>
         <div>Cargando archivos multimedia...</div>
@@ -2800,7 +2800,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <div style="font-size:0.75rem; color:#64748b;">
         <i class="fa-solid fa-shield-halved" style="color:#0284c7; margin-right:4px;"></i> Al eliminar un archivo subido, se borra directamente del disco del servidor.
       </div>
-      <button type="button" class="btn btn-ghost" onclick="closeModal('modalMediaGallery')" style="font-weight:700;">Cerrar Galería</button>
+      <button type="button" class="btn btn-ghost" onclick="closeModal('modalMediaGallery')" style="font-weight:700;">Cerrar GalerÃ­a</button>
     </div>
   </div>
 </div>
@@ -2845,7 +2845,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         <div class="modal-title" id="collageModalTitle" style="font-size:1.2rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
           <i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> Elemento del Collage
         </div>
-        <div style="font-size:0.78rem; color:#64748b;">Configura imágenes o videos con su texto y botón para el dashboard de cliente</div>
+        <div style="font-size:0.78rem; color:#64748b;">Configura imÃ¡genes o videos con su texto y botÃ³n para el dashboard de cliente</div>
       </div>
       <button type="button" class="btn-close-circle" onclick="closeModal('modalCollageItem')" style="background:none; border:none; font-size:1.4rem; color:#94a3b8; cursor:pointer;">&times;</button>
     </div>
@@ -2854,13 +2854,13 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
       <input type="hidden" id="collageModalId" value="" />
 
       <div class="form-group">
-        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Título Principal *</label>
-        <input type="text" id="collageModalTitulo" class="form-input" placeholder="Ej: Aspersión Aérea Ultra-Fina & Nutrición" required style="font-size:0.85rem;" />
+        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">TÃ­tulo Principal *</label>
+        <input type="text" id="collageModalTitulo" class="form-input" placeholder="Ej: AspersiÃ³n AÃ©rea Ultra-Fina & NutriciÃ³n" required style="font-size:0.85rem;" />
       </div>
 
       <div class="form-group">
-        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Subtítulo o Descripción</label>
-        <textarea id="collageModalSubtitulo" class="form-input" rows="2" placeholder="Breve descripción del servicio o tecnología para los agricultores..." style="font-size:0.82rem; resize:vertical;"></textarea>
+        <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">SubtÃ­tulo o DescripciÃ³n</label>
+        <textarea id="collageModalSubtitulo" class="form-input" rows="2" placeholder="Breve descripciÃ³n del servicio o tecnologÃ­a para los agricultores..." style="font-size:0.82rem; resize:vertical;"></textarea>
       </div>
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
@@ -2877,7 +2877,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         </div>
       </div>
 
-      <!-- SECCIÓN MULTIMEDIA DEL COLLAGE -->
+      <!-- SECCIÃ“N MULTIMEDIA DEL COLLAGE -->
       <div style="border:1.5px dashed #cbd5e1; border-radius:14px; padding:14px; background:#f8fafc;">
         <label style="font-size:0.82rem; font-weight:800; color:#003049; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
           <i class="fa-solid fa-photo-film" style="color:var(--accent);"></i> Archivo Multimedia (Imagen o Video)
@@ -2886,7 +2886,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         <div style="display:flex; gap:12px; align-items:center;">
           <!-- Preview Miniatura -->
           <div style="width:110px; height:75px; border-radius:10px; border:1px solid #cbd5e1; background:#0f172a; overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-            <img id="collageModalImgPreview" src="../img/servicio_aspersion.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='../img/servicio_precision.jpg';" />
+            <img id="collageModalImgPreview" src="img/servicio_aspersion.jpg" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.src='img/servicio_precision.jpg';" />
             <video id="collageModalVidPreview" src="/video/hero.mp4" muted loop playsinline style="width:100%; height:100%; object-fit:cover; display:none;"></video>
           </div>
           
@@ -2894,7 +2894,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
             <div style="display:flex; gap:8px; margin-bottom:6px; flex-wrap:wrap;">
               <input type="file" id="collageModalFileInput" accept="image/*,video/mp4,video/webm" style="display:none;" onchange="subirArchivoCollage(this)" />
               <button type="button" class="btn btn-sm btn-ghost" onclick="openMediaGalleryModal()" style="font-size:0.80rem; font-weight:700; display:inline-flex; align-items:center; gap:6px; border:1px solid var(--accent); color:var(--accent);">
-                <i class="fa-solid fa-photo-film"></i> Elegir de Galería
+                <i class="fa-solid fa-photo-film"></i> Elegir de GalerÃ­a
               </button>
               <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('collageModalFileInput').click()" style="font-size:0.80rem; font-weight:700; display:inline-flex; align-items:center; gap:6px;">
                 <i class="fa-solid fa-cloud-arrow-up"></i> Subir Archivo Directo
@@ -2910,24 +2910,24 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
         <div class="form-group">
-          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Texto del Botón CTA</label>
-          <input type="text" id="collageModalTextoBoton" class="form-input" placeholder="Ej: Programar Aspersión" style="font-size:0.85rem;" />
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Texto del BotÃ³n CTA</label>
+          <input type="text" id="collageModalTextoBoton" class="form-input" placeholder="Ej: Programar AspersiÃ³n" style="font-size:0.85rem;" />
         </div>
         <div class="form-group">
-          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Acción / Enlace</label>
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">AcciÃ³n / Enlace</label>
           <input type="text" id="collageModalUrlAccion" class="form-input" placeholder="Ej: #agendar, #documentos, #whatsapp" style="font-size:0.85rem;" />
         </div>
       </div>
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:center;">
         <div class="form-group">
-          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Orden de Presentación</label>
+          <label style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:4px; display:block;">Orden de PresentaciÃ³n</label>
           <input type="number" id="collageModalOrden" class="form-input" value="1" min="0" style="font-size:0.85rem;" />
         </div>
         <div style="display:flex; align-items:center; gap:8px; padding-top:16px;">
           <input type="checkbox" id="collageModalActivo" checked style="width:18px; height:18px; accent-color:#16a34a; cursor:pointer;" />
           <label for="collageModalActivo" style="font-weight:700; font-size:0.85rem; color:#15803d; cursor:pointer; margin:0;">
-            Activo en rotación automática
+            Activo en rotaciÃ³n automÃ¡tica
           </label>
         </div>
       </div>
@@ -2998,7 +2998,7 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
         <div style="display:flex; align-items:center; gap:8px; padding-top:16px;">
           <input type="checkbox" id="redSocialModalActivo" checked style="width:18px; height:18px; accent-color:#16a34a; cursor:pointer;" />
           <label for="redSocialModalActivo" style="font-weight:700; font-size:0.85rem; color:#15803d; cursor:pointer; margin:0;">
-            Activa públicamente
+            Activa pÃºblicamente
           </label>
         </div>
       </div>
@@ -3013,6 +3013,6 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-  <script src="../js/admin.js?v=20261016_190800"></script>
+  <script src="js/admin.js?v=20261016_190800"></script>
 </body>
 </html>

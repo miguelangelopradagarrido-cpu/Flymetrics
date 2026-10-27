@@ -1,0 +1,2081 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Flymetrics</title>
+  <meta http-equiv="Permissions-Policy" content="geolocation=*, compute-pressure=*" />
+  <!-- SEO Best Practices -->
+  <meta name="description" content="Sistema inteligente de agendamiento de vuelos agrÃ­colas con dron para productores en Colombia. FumigaciÃ³n, anÃ¡lisis multiespectral y cartografÃ­a de precisiÃ³n." />
+  <meta name="theme-color" content="#003049" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icon Library (Local) -->
+  <link rel="stylesheet" href="css/style.css?v=20261016_191500" />
+  <link rel="stylesheet" href="css/fontawesome/css/all.min.css" />
+
+  <style>
+    :root {
+      /* Official Flymetrics Brand Palette */
+      --navy-pilot: #003049;     /* 60% Dominant Primary */
+      --aero-link: #1C82AD;      /* 10% Tech Secondary */
+      --geo-sand: #E4C7A1;       /* 10% Accent */
+      --asphalt: #343A40;        /* Text Paragraphs */
+      --concrete: #6C757D;       /* Supporting Grey */
+      --emerald-green: #10B981;  /* Status Success */
+      --bg-cream: #F8FAFC;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --card-border: rgba(28, 130, 173, 0.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto !important;
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 10%, rgba(28, 130, 173, 0.08) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 90%, rgba(228, 199, 161, 0.12) 0%, transparent 40%),
+                  #F4F7FB;
+      font-family: 'Outfit', sans-serif;
+      color: var(--asphalt);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* â”€â”€ HEADER NAVIGATION â”€â”€ */
+    .agendar-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 12px 16px;
+      background: rgba(244, 247, 251, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .agendar-nav {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 10px 18px;
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 8px 24px rgba(0, 48, 73, 0.06);
+    }
+
+    .agendar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--navy-pilot);
+    }
+
+    .agendar-brand img {
+      height: 32px;
+      width: auto;
+      filter: drop-shadow(0 2px 6px rgba(0, 48, 73, 0.15));
+    }
+
+    .brand-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--navy-pilot);
+      letter-spacing: -0.02em;
+    }
+
+    .badge-direct {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--aero-link);
+      background: rgba(28, 130, 173, 0.1);
+      border: 1px solid rgba(28, 130, 173, 0.25);
+      padding: 4px 10px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-nav-home {
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--navy-pilot);
+      background: rgba(0, 48, 73, 0.05);
+      border: 1px solid rgba(0, 48, 73, 0.12);
+      padding: 8px 14px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav-home:hover {
+      background: rgba(28, 130, 173, 0.1);
+      border-color: var(--aero-link);
+      color: var(--aero-link);
+      transform: translateY(-1px);
+    }
+
+    /* â”€â”€ MAIN LAYOUT â”€â”€ */
+    .main-wrapper {
+      max-width: 960px;
+      width: 100%;
+      margin: 130px auto 40px;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    /* â”€â”€ STEPPER LOGICAL PROGRESS â”€â”€ */
+    .stepper-container {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1.5px solid var(--card-border);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 20px rgba(0, 48, 73, 0.04);
+    }
+
+    .stepper-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .stepper-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--navy-pilot);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stepper-indicator-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--aero-link);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: rgba(0, 48, 73, 0.08);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 33.33%;
+      background: linear-gradient(90deg, var(--aero-link) 0%, var(--navy-pilot) 100%);
+      border-radius: 100px;
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step-pills {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .step-pill-btn {
+      background: rgba(0, 48, 73, 0.04);
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .step-pill-btn.active {
+      background: rgba(28, 130, 173, 0.1);
+      border-color: var(--aero-link);
+    }
+
+    .step-pill-btn.completed {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: var(--concrete);
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .step-pill-btn.active .step-num {
+      background: var(--aero-link);
+    }
+
+    .step-pill-btn.completed .step-num {
+      background: var(--emerald-green);
+    }
+
+    .step-text {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--asphalt);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .step-pill-btn.active .step-text {
+      color: var(--navy-pilot);
+      font-weight: 800;
+    }
+
+    /* â”€â”€ CARD CONTAINER â”€â”€ */
+    .form-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 24px;
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 16px 40px rgba(0, 48, 73, 0.07);
+      padding: 28px 24px;
+    }
+
+    .form-step-section {
+      display: none;
+      animation: fadeInStep 0.3s ease forwards;
+    }
+
+    .form-step-section.active {
+      display: block;
+    }
+
+    @keyframes fadeInStep {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .step-headline {
+      margin-bottom: 22px;
+    }
+
+    .step-headline h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--navy-pilot);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-headline p {
+      font-size: 0.9rem;
+      color: var(--concrete);
+      margin-top: 4px;
+    }
+
+    /* â”€â”€ FORM ELEMENTS â”€â”€ */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy-pilot);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field-label i {
+      color: var(--aero-link);
+      font-size: 0.9rem;
+      width: 16px;
+      text-align: center;
+    }
+
+    .field-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(0, 48, 73, 0.18);
+      background: #ffffff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--asphalt);
+      transition: all 0.2s ease;
+    }
+
+    .field-input:focus {
+      outline: none;
+      border-color: var(--aero-link);
+      box-shadow: 0 0 0 3px rgba(28, 130, 173, 0.16);
+    }
+
+    /* â”€â”€ INTERACTIVE SERVICE CARDS â”€â”€ */
+    .service-options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .service-card-choice {
+      border: 1.5px solid rgba(0, 48, 73, 0.15);
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+    }
+
+    .service-card-choice:hover {
+      border-color: var(--aero-link);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 48, 73, 0.06);
+    }
+
+    .service-card-choice.selected {
+      border-color: var(--aero-link);
+      background: rgba(28, 130, 173, 0.08);
+      box-shadow: 0 4px 14px rgba(28, 130, 173, 0.18);
+    }
+
+    .service-card-choice input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .svc-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(28, 130, 173, 0.12);
+      color: var(--aero-link);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .service-card-choice.selected .svc-icon-box {
+      background: var(--aero-link);
+      color: #ffffff;
+    }
+
+    .svc-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--navy-pilot);
+    }
+
+    .svc-desc {
+      font-size: 0.76rem;
+      color: var(--concrete);
+      line-height: 1.35;
+    }
+
+    /* â”€â”€ LIVE SUMMARY BAR â”€â”€ */
+    .summary-card {
+      background: rgba(0, 48, 73, 0.03);
+      border: 1.5px dashed var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 20px;
+    }
+
+    .summary-card-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--navy-pilot);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .summary-label {
+      font-size: 0.72rem;
+      color: var(--concrete);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .summary-value {
+      color: var(--navy-pilot);
+      font-weight: 700;
+    }
+
+    /* â”€â”€ ACTION BUTTONS â”€â”€ */
+    .step-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 48, 73, 0.08);
+    }
+
+    .btn-prev {
+      min-height: 48px;
+      padding: 10px 20px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(0, 48, 73, 0.2);
+      background: #ffffff;
+      color: var(--navy-pilot);
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-prev:hover {
+      background: rgba(0, 48, 73, 0.05);
+    }
+
+    .btn-next, .btn-submit-final {
+      min-height: 48px;
+      padding: 12px 24px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, var(--aero-link) 0%, var(--navy-pilot) 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(0, 48, 73, 0.2);
+      transition: all 0.2s ease;
+      margin-left: auto;
+    }
+
+    .btn-next:hover, .btn-submit-final:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(0, 48, 73, 0.28);
+    }
+
+    /* â”€â”€ ERROR TOAST â”€â”€ */
+    .alert-error {
+      background: #FEE2E2;
+      border: 1.5px solid #FCA5A5;
+      color: #991B1B;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* â”€â”€ CONFIRMATION CARD â”€â”€ */
+    .confirm-card {
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    .confirm-badge-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.15);
+      border: 3px solid var(--emerald-green);
+      color: var(--emerald-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      margin: 0 auto 16px;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+    }
+
+    .ticket-box {
+      background: #ffffff;
+      border: 2px dashed var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 520px;
+      margin: 20px auto;
+      text-align: left;
+      box-shadow: 0 10px 30px rgba(0, 48, 73, 0.05);
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid rgba(0, 48, 73, 0.08);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .ticket-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+    }
+
+    .ticket-row span {
+      color: var(--concrete);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ticket-row strong {
+      color: var(--navy-pilot);
+      text-align: right;
+    }
+
+    .btn-wa-action {
+      background: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      min-height: 48px;
+      padding: 12px 24px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25);
+      transition: all 0.2s ease;
+    }
+
+    .btn-wa-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
+    }
+
+    /* â”€â”€ FOOTER â”€â”€ */
+    .page-footer {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--concrete);
+      padding: 20px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* â”€â”€ MOBILE ULTRA-PERFORMANCE ENHANCEMENTS (GPU ACCELERATION & FAST SCROLLING) â”€â”€ */
+    html {
+      scroll-behavior: smooth;
+      text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: auto;
+    }
+
+    /* Reducir compositing cost y evitar cuellos de botella en GPUs mÃ³viles */
+    .form-card, .stepper-container, .navbar-container {
+      will-change: transform, opacity;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* â”€â”€ RESPONSIVE TABLET & MOBILE TWEAKS â”€â”€ */
+    @media (max-width: 991px) {
+      .main-wrapper {
+        margin: 110px auto 35px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      /* OptimizaciÃ³n de backdrop-filter pesado en dispositivos mÃ³viles con baterÃ­a baja */
+      .agendar-header, .liquid-glass {
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+      }
+      .main-wrapper {
+        padding: 0 12px;
+        margin: 88px auto 25px;
+      }
+      .form-card {
+        padding: 18px 14px;
+        border-radius: 18px;
+        box-shadow: 0 6px 18px rgba(0, 48, 73, 0.05);
+      }
+      .step-pills {
+        gap: 4px;
+      }
+      .step-pill-btn {
+        padding: 6px 6px;
+      }
+      .step-text {
+        font-size: 0.72rem;
+      }
+      .step-num {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+      }
+      .step-headline h2 {
+        font-size: 1.20rem;
+      }
+      .service-options-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .field-input, .field-select {
+        font-size: 16px !important; /* Evita que Safari/Chrome en iOS haga zoom forzado al tocar el input */
+      }
+      .step-actions {
+        flex-direction: column-reverse;
+      }
+      .btn-prev, .btn-next, .btn-submit-final {
+        width: 100%;
+        margin-left: 0;
+        touch-action: manipulation;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+    <!-- â”€â”€ TOP LIQUID GLASS NAVBAR (APPLE STYLE - CONSERVED FROM LANDING PAGE) â”€â”€ -->
+  <div class="navbar-container">
+    <nav class="navbar liquid-glass" id="navbar">
+
+      <!-- Brand Logo -->
+      <a href="index.html#inicio" class="brand" title="Flymetrics â€” Inicio">
+        <img src="img/logo_bird_blue.png" alt="Flymetrics Logo" class="brand-bird-img"
+          onerror="this.src='img/logo.png'">
+        <span class="brand-text">Fly<span class="brand-accent">metrics</span></span>
+      </a>
+
+      <!-- Desktop Links (Return seamlessly to main menu/sections) -->
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html#inicio" class="nav-link">Principal</a></li>
+        <li><a href="index.html#servicios" class="nav-link">Servicios</a></li>
+        <li><a href="index.html#nosotros" class="nav-link">Nosotros</a></li>
+        <li><a href="index.html#simuladores" class="nav-link">Simulador</a></li>
+        <li><a href="index.html#ubicaciones" class="nav-link">Ubicaciones</a></li>
+        <li><a href="index.html#faq" class="nav-link">Preguntas</a></li>
+        <li><a href="index.html#contacto" class="nav-link" style="color: var(--accent-cyan); font-weight: 600;">ContÃ¡ctanos</a></li>
+        <div class="nav-active-pill" id="nav-active-pill"></div>
+      </ul>
+
+      <!-- Desktop Actions -->
+      <div class="access-actions">
+        <a href="index.html?auth=login" class="btn-glass" style="text-decoration: none;" title="Ingresa a tu portal">
+          <i class="fa-solid fa-right-to-bracket" style="font-size: 0.82rem; color: #1C82AD;"></i>
+          <span>Ingresa a tu portal</span>
+        </a>
+        <a href="agendar.html" class="btn-solid" style="text-decoration: none; background: linear-gradient(135deg, #10B981 0%, #059669 100%); box-shadow: 0 4px 14px rgba(16,185,129,0.35); border: 1.5px solid #10b981;" title="DemostraciÃ³n Gratuita">
+          <i class="fa-solid fa-gift" style="font-size: 0.82rem; color: #ffffff;"></i>
+          <span>DemostraciÃ³n Gratuita</span>
+        </a>
+      </div>
+
+      <!-- Mobile Burger Button -->
+      <button class="burger-menu" id="burger-btn" aria-label="Abrir MenÃº" onclick="toggleMobileDrawer()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </nav>
+  </div>
+
+  <!-- Mobile Drawer Overlay & Drawer -->
+  <!-- Mobile Drawer Overlay & Drawer -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="toggleMobileDrawer(false)"></div>
+  <div class="mobile-drawer" id="mobile-drawer">
+    <!-- Links con Iconos Aesthetic -->
+    <ul class="drawer-links" id="drawer-links">
+      <li>
+        <a href="index.html#inicio" class="drawer-link">
+          <span class="drawer-icon-box" style="background: rgba(0, 48, 73, 0.08); color: #003049;"><i class="fa-solid fa-house"></i></span>
+          <span>Principal</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#servicios" class="drawer-link">
+          <span class="drawer-icon-box" style="background: rgba(28, 130, 173, 0.12); color: #1C82AD;"><i class="fa-solid fa-plane-up"></i></span>
+          <span>Servicios de Drones</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#nosotros" class="drawer-link">
+          <span class="drawer-icon-box" style="background: rgba(228, 199, 161, 0.35); color: #9A6B2F;"><i class="fa-solid fa-users"></i></span>
+          <span>Nosotros</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#simuladores" class="drawer-link">
+          <span class="drawer-icon-box" style="background: rgba(16, 185, 129, 0.12); color: #059669;"><i class="fa-solid fa-calculator"></i></span>
+          <span>Simulador de Costos</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#ubicaciones" class="drawer-link">
+          <span class="drawer-icon-box" style="background: rgba(59, 130, 246, 0.12); color: #2563EB;"><i class="fa-solid fa-map-location-dot"></i></span>
+          <span>Zonas de Cobertura</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#faq" class="drawer-link">
+          <span class="drawer-icon-box" style="background: rgba(168, 85, 247, 0.12); color: #9333EA;"><i class="fa-solid fa-circle-question"></i></span>
+          <span>Preguntas Frecuentes</span>
+        </a>
+      </li>
+      <li>
+        <a href="agendar.html" class="drawer-link active" style="color: #10b981; font-weight: 700;">
+          <span class="drawer-icon-box" style="background: rgba(16, 185, 129, 0.2); color: #047857;"><i class="fa-solid fa-gift"></i></span>
+          <span>DemostraciÃ³n Gratuita</span>
+        </a>
+      </li>
+      <li>
+        <a href="index.html#contacto" class="drawer-link">
+          <span class="drawer-icon-box" style="background: rgba(249, 115, 22, 0.12); color: #EA580C;"><i class="fa-solid fa-headset"></i></span>
+          <span>ContÃ¡ctanos</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Botones Redondos & Llamativos -->
+    <div class="drawer-actions">
+      <a href="index.html?auth=register" class="drawer-btn-register" title="Crear Cuenta en Flymetrics">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>Crear Cuenta / Registrarse</span>
+      </a>
+      <a href="index.html?auth=login" class="drawer-btn-login" title="Ingresa a tu portal">
+        <i class="fa-solid fa-arrow-right-to-bracket" style="color: #1C82AD;"></i>
+        <span>Ingresar a tu Portal</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN WRAPPER -->
+  <main class="main-wrapper">
+
+    <!-- LOGICAL STEP PROGRESS -->
+    <div class="stepper-container" id="stepper-bar">
+      <div class="stepper-header">
+        <div class="stepper-title">
+          <i class="fa-solid fa-clipboard-check" style="color: var(--aero-link);"></i> Sistema de Solicitud en Campo
+        </div>
+        <div class="stepper-indicator-text" id="stepper-text">Paso 1 de 3</div>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+      </div>
+      <div class="step-pills">
+        <button type="button" class="step-pill-btn active" id="pill-1" onclick="goToStep(1)">
+          <span class="step-num">1</span>
+          <span class="step-text">Productor</span>
+        </button>
+        <button type="button" class="step-pill-btn" id="pill-2" onclick="goToStep(2)">
+          <span class="step-num">2</span>
+          <span class="step-text">Predio / Finca</span>
+        </button>
+        <button type="button" class="step-pill-btn" id="pill-3" onclick="goToStep(3)">
+          <span class="step-num">3</span>
+          <span class="step-text">Vuelo Dron</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ERROR ALERT -->
+    <div id="form-error-alert" class="alert-error">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span id="form-error-msg">Por favor diligencia los campos requeridos.</span>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card">
+
+      <form id="form-agendar-directo" onsubmit="procesarEnvioFinal(event)">
+
+        <!-- â”€â”€ PASO 1: DATOS DEL PRODUCTOR / TITULAR O EMPRESA â”€â”€ -->
+        <section class="form-step-section active" id="step-1">
+          <div class="step-headline">
+            <h2><i class="fa-solid fa-user-tie" style="color: var(--aero-link);"></i> Datos del Titular o Empresa</h2>
+            <p id="step-1-subdesc">InformaciÃ³n legal y de contacto para coordinar la operaciÃ³n tÃ©cnica y asignaciÃ³n de recursos.</p>
+          </div>
+
+          <!-- Selector de Tipo de Persona (Requerimiento Oficial ReuniÃ³n) -->
+          <div style="margin-bottom: 14px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-tipo-persona">
+                <i class="fa-solid fa-users"></i> Tipo de Solicitante *
+              </label>
+              <select id="ad-tipo-persona" class="field-input" onchange="toggleTipoPersona()" style="font-weight: 700; color: var(--navy-pilot); appearance: auto;">
+                <option value="NATURAL" selected>Persona Natural</option>
+                <option value="JURIDICA">Persona JurÃ­dica (Empresa / OrganizaciÃ³n)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label" for="ad-nombre" id="lbl-ad-nombre">
+                <i class="fa-solid fa-id-card"></i> Nombre Completo *
+              </label>
+              <input type="text" id="ad-nombre" class="field-input" placeholder="ej. PEDRO ALARCÃ“N" required style="text-transform: uppercase;" oninput="updateLiveSummary()" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="ad-cedula" id="lbl-ad-cedula">
+                <i class="fa-solid fa-passport"></i> CÃ©dula de CiudadanÃ­a *
+              </label>
+              <input type="text" id="ad-cedula" class="field-input" placeholder="ej. 79123456" maxlength="10" inputmode="numeric" required oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10); onCedulaInputAutofill(this.value);" />
+              <div id="autofill-cedula-status" style="display:none; font-size:0.75rem; font-weight:700; margin-top:4px;"></div>
+            </div>
+          </div>
+
+          <!-- Campo condicional para RazÃ³n Social (si es JurÃ­dica) -->
+          <div id="container-ad-empresa" style="display: none; margin-top: 14px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-empresa">
+                <i class="fa-solid fa-building"></i> RazÃ³n Social / Nombre de la Empresa *
+              </label>
+              <input type="text" id="ad-empresa" class="field-input" placeholder="ej. AGROPECUARIA LOS LLANOS S.A.S." style="text-transform: uppercase;" />
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-top: 14px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-telefono">
+                <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp / TelÃ©fono *
+              </label>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <select id="ad-pais-code" style="width: 105px; padding: 12px 6px; border-radius: 12px; border: 1.5px solid var(--card-border); background: #ffffff; font-weight: 800; color: var(--navy-pilot); font-family: inherit; font-size: 0.88rem; outline: none; cursor: pointer;">
+                  <option value="+57" selected>ðŸ‡¨ðŸ‡´ +57</option>
+                  <option value="+52">ðŸ‡²ðŸ‡½ +52</option>
+                  <option value="+54">ðŸ‡¦ðŸ‡· +54</option>
+                  <option value="+56">ðŸ‡¨ðŸ‡± +56</option>
+                  <option value="+51">ðŸ‡µðŸ‡ª +51</option>
+                  <option value="+593">ðŸ‡ªðŸ‡¨ +593</option>
+                  <option value="+1">ðŸ‡ºðŸ‡¸ +1</option>
+                  <option value="+34">ðŸ‡ªðŸ‡¸ +34</option>
+                </select>
+                <input type="tel" id="ad-telefono" class="field-input" placeholder="ej. 3109876543" required oninput="updateLiveSummary()" style="flex: 1;" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="ad-email" id="lbl-ad-email">
+                <i class="fa-solid fa-envelope"></i> Correo ElectrÃ³nico (Opcional)
+              </label>
+              <input type="email" id="ad-email" class="field-input" placeholder="ej. titular@empresa.com" />
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <div></div>
+            <button type="button" class="btn-next" onclick="validateAndNext(1)">
+              Continuar a UbicaciÃ³n <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </section>
+
+        <!-- â”€â”€ PASO 2: DATOS DEL PROYECTO O PREDIO â”€â”€ -->
+        <section class="form-step-section" id="step-2">
+          <div class="step-headline">
+            <h2><i class="fa-solid fa-mountain-sun" style="color: var(--aero-link);"></i> UbicaciÃ³n del Proyecto o Predio</h2>
+            <p>GeografÃ­a, sector y acceso donde se instalarÃ¡ la estaciÃ³n mÃ³vil de despegue y telemetrÃ­a RTK.</p>
+          </div>
+
+          <div id="finca-quick-selector-container" style="display:none; margin-bottom: 14px; background: rgba(28, 130, 173, 0.08); padding: 12px 16px; border-radius: 14px; border: 1.5px dashed #1C82AD;"></div>
+
+          <div class="form-grid">
+            <div class="field-group">
+              <label class="field-label" for="ad-finca">
+                <i class="fa-solid fa-map-pin"></i> Nombre del Proyecto o Predio *
+              </label>
+              <input type="text" id="ad-finca" class="field-input" placeholder="ej. Proyecto Palma Central / Predio San JosÃ©" required oninput="updateLiveSummary()" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="ad-depto">
+                <i class="fa-solid fa-map-location-dot"></i> Departamento *
+              </label>
+              <select id="ad-depto" class="field-input" required style="appearance: auto;" onchange="updateLiveSummary()">
+                <option value="">Selecciona Departamento...</option>
+                <option value="Cundinamarca">Cundinamarca</option>
+                <option value="Meta">Meta</option>
+                <option value="Tolima">Tolima</option>
+                <option value="Huila">Huila</option>
+                <option value="Valle del Cauca">Valle del Cauca</option>
+                <option value="BoyacÃ¡">BoyacÃ¡</option>
+                <option value="Antioquia">Antioquia</option>
+                <option value="Casanare">Casanare</option>
+                <option value="CÃ³rdoba">CÃ³rdoba</option>
+                <option value="Santander">Santander</option>
+                <option value="Otro">Otro Departamento</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-top: 14px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-municipio">
+                <i class="fa-solid fa-city"></i> Municipio *
+              </label>
+              <input type="text" id="ad-municipio" class="field-input" placeholder="ej. FacatativÃ¡ / Espinal / Villavicencio" required oninput="updateLiveSummary()" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="ad-vereda">
+                <i class="fa-solid fa-route"></i> Vereda / Sector *
+              </label>
+              <input type="text" id="ad-vereda" class="field-input" placeholder="ej. Vereda San Juan / Sector 4" required />
+            </div>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-direccion">
+                <i class="fa-solid fa-compass"></i> Indicaciones o Referencias de Llegada (Opcional)
+              </label>
+              <input type="text" id="ad-direccion" class="field-input" placeholder="ej. Km 4 vÃ­a principal, frente al puente colgante o portÃ³n azul" />
+            </div>
+          </div>
+
+          <!-- GPS / Google Maps Link (Opcional) -->
+          <div style="margin-top: 14px; background: rgba(28, 130, 173, 0.05); padding: 16px; border-radius: 14px; border: 1.5px dashed rgba(28, 130, 173, 0.35);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <label class="field-label" for="ad-maps-link" style="margin: 0; color: #003049; font-weight: 800;">
+                <i class="fa-solid fa-location-crosshairs" style="color: #1C82AD;"></i> Enlace de Google Maps / Coordenadas GPS (Opcional)
+              </label>
+              <button type="button" onclick="capturarUbicacionActual()" class="btn-ghost" style="padding: 4px 12px; font-size: 0.76rem; border-radius: 20px; font-weight: 700; border: 1px solid #1C82AD; color: #1C82AD; background: #ffffff; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                <i class="fa-solid fa-crosshairs"></i> <span id="btn-gps-text">Obtener mi GPS actual</span>
+              </button>
+            </div>
+            <input type="url" id="ad-maps-link" class="field-input" placeholder="ej. https://maps.app.goo.gl/xxx o 4.7110, -74.0721" style="background: #ffffff;" />
+            <span style="font-size: 0.74rem; color: #64748b; margin-top: 4px; display: block;">
+              <i class="fa-solid fa-circle-info" style="color: #1C82AD;"></i> Puedes pegar el link de compartir de Google Maps o tus coordenadas para que el piloto trace la ruta directa al lote.
+            </span>
+          </div>
+
+          <div class="step-actions">
+            <button type="button" class="btn-prev" onclick="goToStep(1)">
+              <i class="fa-solid fa-arrow-left"></i> Anterior
+            </button>
+            <button type="button" class="btn-next" onclick="validateAndNext(2)">
+              Continuar a Vuelo <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </section>
+
+        <!-- â”€â”€ PASO 3: DETALLES DE OPERACIÃ“N Y CULTIVO â”€â”€ -->
+        <section class="form-step-section" id="step-3">
+          <div class="step-headline">
+            <h2><i class="fa-solid fa-helicopter" style="color: var(--aero-link);"></i> OperaciÃ³n con Dron</h2>
+            <p>Selecciona la especialidad tÃ©cnica y las especificaciones de campo requeridas.</p>
+          </div>
+
+          <!-- SELECTOR INTERACTIVO DE SERVICIOS DINÃMICOS DESDE BASE DE DATOS -->
+          <div class="field-group">
+            <label class="field-label" style="display:flex; justify-content:space-between; align-items:center;">
+              <span><i class="fa-solid fa-list-check" style="color: var(--aero-link);"></i> Servicios Requeridos * (Selecciona 1 o mÃ¡s)</span>
+              <span style="font-size:0.75rem; color:var(--aero-link); font-weight:800;" id="svc-selected-count">1 seleccionado</span>
+            </label>
+            <div class="service-options-grid" id="services-interactive-grid">
+              <!-- Populated dynamically from /api/v1/servicios -->
+            </div>
+            <!-- Campo de compatibilidad con nombre consolidado de servicios -->
+            <input type="hidden" id="ad-servicio" value="FumigaciÃ³n y AspersiÃ³n AgrÃ­cola con Dron" />
+          </div>
+
+          <div class="form-grid" style="margin-top: 16px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-cultivo">
+                <i class="fa-solid fa-seedling"></i> Tipo de Cultivo / Cobertura *
+              </label>
+              <input type="text" id="ad-cultivo" class="field-input" placeholder="ej. Arroz, Pastos, CafÃ©, Palma, Flores, MaÃ­z..." required oninput="updateLiveSummary()" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="ad-hectareas">
+                <i class="fa-solid fa-chart-area"></i> HectÃ¡reas Estimadas *
+              </label>
+              <input type="number" id="ad-hectareas" step="0.5" min="0.5" max="5000" class="field-input" placeholder="ej. 20" required oninput="updateLiveSummary()" />
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-top: 14px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-fecha">
+                <i class="fa-solid fa-calendar-day"></i> Fecha Sugerida de OperaciÃ³n *
+              </label>
+              <input type="date" id="ad-fecha" class="field-input" required oninput="updateLiveSummary()" />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="ad-jornada">
+                <i class="fa-solid fa-clock"></i> Hora Sugerida de OperaciÃ³n *
+              </label>
+              <input type="time" id="ad-jornada" class="field-input" required value="07:00" step="900" oninput="updateLiveSummary()" onchange="updateLiveSummary()" />
+              <small style="display:block; margin-top:4px; font-size:0.75rem; color:#475569;">Elige cualquier hora. Recomendado: 06:00â€“11:00 AM o vuelo nocturno (menos viento).</small>
+            </div>
+          </div>
+
+          <!-- CAMPO OBSERVACIONES (ACTUALIZADO SEGÃšN REUNIÃ“N) -->
+          <div style="margin-top: 14px;">
+            <div class="field-group">
+              <label class="field-label" for="ad-notas">
+                <i class="fa-solid fa-note-sticky"></i> Observaciones
+              </label>
+              <input type="text" id="ad-notas" class="field-input" placeholder="ej. Presencia de cables de alta tensiÃ³n, pendientes pronunciadas, vÃ­as destapadas o recomendaciones para el piloto..." />
+            </div>
+          </div>
+
+          <!-- CHECKBOX ANÃLISIS DEL TERRENO SIN COSTO -->
+          <div id="container-checkbox-demo" style="margin-top: 16px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(28, 130, 173, 0.08)); border: 1.5px solid #10b981; border-radius: 14px; padding: 14px 16px;">
+            <label style="display: flex; align-items: flex-start; gap: 12px; cursor: pointer; margin: 0;">
+              <input type="checkbox" id="ad-es-demo" style="width: 20px; height: 20px; accent-color: #10b981; margin-top: 2px; cursor: pointer;" onchange="updateLiveSummary()" />
+              <div>
+                <div style="font-weight: 800; color: #065f46; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
+                  <i class="fa-solid fa-gift" style="color: #10b981;"></i> Solicitar como AnÃ¡lisis del Terreno (Sin Costo)
+                </div>
+                <div style="font-size: 0.78rem; color: #334155; margin-top: 3px; line-height: 1.35;">
+                  Aplica una Ãºnica vez para predios nuevos registrados. Nuestro equipo tÃ©cnico evaluarÃ¡ tu predio y realizarÃ¡ el anÃ¡lisis del terreno 100% sin costo.
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <!-- RESUMEN DINÃMICO EN TIEMPO REAL -->
+          <div class="summary-card">
+            <div class="summary-card-title">
+              <i class="fa-solid fa-file-lines" style="color: var(--aero-link);"></i> Resumen Preliminar de la Solicitud
+            </div>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span class="summary-label">Titular / Empresa:</span>
+                <span class="summary-value" id="sum-prod">--</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Proyecto / Zona:</span>
+                <span class="summary-value" id="sum-finca">--</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Cultivo / Ãrea:</span>
+                <span class="summary-value" id="sum-cultivo">--</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Servicio:</span>
+                <span class="summary-value" id="sum-servicio">FumigaciÃ³n AgrÃ­cola</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button type="button" class="btn-prev" onclick="goToStep(2)">
+              <i class="fa-solid fa-arrow-left"></i> Anterior
+            </button>
+            <button type="submit" id="ad-btn-submit" class="btn-submit-final">
+              <i class="fa-solid fa-paper-plane"></i> Confirmar y Agendar Vuelo
+            </button>
+          </div>
+        </section>
+
+      </form>
+
+      <!-- â”€â”€ CONFIRMACIÃ“N FINAL POST-ENVÃO â”€â”€ -->
+      <div id="section-confirmacion" style="display: none;" class="confirm-card">
+        <div class="confirm-badge-icon">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        
+        <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--navy-pilot); margin-bottom: 6px;">
+          Â¡Vuelo AgrÃ­cola Registrado!
+        </h2>
+        <p style="font-size: 0.95rem; color: var(--concrete); max-width: 500px; margin: 0 auto 16px;">
+          Tu solicitud fue guardada con Ã©xito en la plataforma de Flymetrics Colombia.
+        </p>
+
+        <!-- AVISO DE REGISTRO / COTIZACIÃ“N DINÃMICO -->
+        <div id="res-notice-box" style="display:none; max-width: 540px; margin: 0 auto 20px;"></div>
+
+        <!-- TICKET DE RESERVA -->
+        <div class="ticket-box">
+          <div class="ticket-header">
+            <span style="font-size: 0.85rem; color: var(--concrete); font-weight: 600;">Radicado de Turno:</span>
+            <span id="res-code-val" style="font-family: monospace; font-size: 1.25rem; font-weight: 900; color: var(--aero-link);">FLY-00000</span>
+          </div>
+
+          <div class="ticket-row">
+            <span><i class="fa-solid fa-user"></i> Productor:</span>
+            <strong id="res-prod-val">--</strong>
+          </div>
+          <div class="ticket-row">
+            <span><i class="fa-solid fa-house"></i> Finca:</span>
+            <strong id="res-finca-val">--</strong>
+          </div>
+          <div class="ticket-row">
+            <span><i class="fa-solid fa-wheat-awn"></i> Cultivo & Ãrea:</span>
+            <strong id="res-cultivo-val">--</strong>
+          </div>
+          <div class="ticket-row">
+            <span><i class="fa-solid fa-helicopter"></i> Servicio:</span>
+            <strong id="res-servicio-val">--</strong>
+          </div>
+          <div class="ticket-row">
+            <span><i class="fa-solid fa-calendar"></i> Fecha Solicitada:</span>
+            <strong id="res-fecha-val">--</strong>
+          </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px;">
+          <a id="btn-wa-confirmar" href="#" target="_blank" rel="noopener noreferrer" class="btn-wa-action">
+            <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Confirmar Horario por WhatsApp
+          </a>
+          <a id="btn-portal-cliente" href="javascript:void(0)" onclick="irAlPortalSeguro()" class="btn-solid" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; background: #003049; color: #ffffff; padding: 12px 24px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 14px rgba(0,48,73,0.25); cursor: pointer;">
+            <i class="fa-solid fa-arrow-right-to-bracket" style="color: #38bdf8;"></i> Ingresar a Mi Portal
+          </a>
+          <a href="index.html" class="btn-prev" style="text-decoration: none;">
+            <i class="fa-solid fa-house"></i> Inicio
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PIE -->
+    <div class="page-footer">
+      <i class="fa-solid fa-shield-halved" style="color: var(--aero-link);"></i>
+      <span>Flymetrics Colombia â€” Seguridad RAC-100 & Registro Oficial en Base de Datos.</span>
+    </div>
+  </main>
+
+  <!-- LÃ“GICA MODULAR Y REACTIVA -->
+  <script>
+    var currentStep = 1;
+    var _serviciosDisponibles = [];
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Configurar fecha mÃ­nima de agendamiento (a partir de maÃ±ana)
+      var tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      var minDateStr = tomorrow.toISOString().split('T')[0];
+      var fechaEl = document.getElementById('ad-fecha');
+      if (fechaEl) {
+        fechaEl.min = minDateStr;
+        fechaEl.value = minDateStr;
+      }
+
+      // Por seguridad y protecciÃ³n de datos, limpiar cualquier sesiÃ³n o credencial residual previa
+      localStorage.removeItem('token');
+      localStorage.removeItem('fm_token');
+      sessionStorage.removeItem('fm_token');
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('fm_cedula');
+      localStorage.removeItem('fm_nombre');
+      localStorage.removeItem('fm_telefono');
+      localStorage.removeItem('usuario');
+      localStorage.removeItem('rol');
+      localStorage.removeItem('user_role');
+
+      await cargarServiciosRegistrados();
+      updateLiveSummary();
+    });
+
+    var _cedulaAutofillTimeout = null;
+    var _cachedFincasAutofill = [];
+    var _clienteYaTuvoDemo = false;
+
+    function onCedulaInputAutofill(cedula) {
+      if (_cedulaAutofillTimeout) clearTimeout(_cedulaAutofillTimeout);
+      var statusEl = document.getElementById('autofill-cedula-status');
+      if (!cedula || cedula.trim().length < 6) {
+        if (statusEl) {
+          statusEl.style.display = 'none';
+          statusEl.innerHTML = '';
+        }
+        return;
+      }
+
+      _cedulaAutofillTimeout = setTimeout(async function() {
+        var cleanDoc = cedula.trim();
+        if (statusEl) {
+          statusEl.style.display = 'block';
+          statusEl.innerHTML = '<span style="color: #1C82AD;"><i class="fa-solid fa-spinner fa-spin"></i> Verificando titular y predios registrados...</span>';
+        }
+
+        var apiBase = (window.location.protocol === 'file:'
+          ? 'http://localhost:3000'
+          : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+
+        try {
+          var res = await fetch(apiBase + '/agenda/lookup-cliente?documento=' + encodeURIComponent(cleanDoc));
+          if (!res.ok) {
+            if (statusEl) statusEl.style.display = 'none';
+            return;
+          }
+          var resJson = await res.json();
+          var data = resJson.data || resJson;
+          if (data && data.encontrado) {
+            // Autocompletar datos del titular
+            var nomEl = document.getElementById('ad-nombre');
+            if (nomEl && data.nombre_completo) nomEl.value = data.nombre_completo;
+
+            var telEl = document.getElementById('ad-telefono');
+            if (telEl && data.telefono) {
+              var cleanTel = data.telefono.replace(/\s+/g, '');
+              if (cleanTel.startsWith('+57')) cleanTel = cleanTel.substring(3);
+              telEl.value = cleanTel;
+            }
+
+            var emailEl = document.getElementById('ad-email');
+            if (emailEl && data.email) emailEl.value = data.email;
+
+            // GestiÃ³n inteligente de DemostraciÃ³n Gratuita vs Servicio Normal
+            _clienteYaTuvoDemo = Boolean(data.ya_tuvo_demo);
+            var demoBox = document.getElementById('container-checkbox-demo');
+            var demoCheck = document.getElementById('ad-es-demo');
+            if (_clienteYaTuvoDemo) {
+              if (demoCheck) {
+                demoCheck.checked = false;
+                demoCheck.disabled = true;
+              }
+              if (demoBox) {
+                demoBox.style.background = 'rgba(28, 130, 173, 0.08)';
+                demoBox.style.borderColor = '#1C82AD';
+                demoBox.innerHTML = `
+                  <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <i class="fa-solid fa-file-invoice-dollar" style="color: #1C82AD; font-size: 1.25rem; margin-top: 2px;"></i>
+                    <div>
+                      <div style="font-weight: 800; color: #003049; font-size: 0.90rem;">
+                        Servicio Normal (Para CotizaciÃ³n Comercial)
+                      </div>
+                      <div style="font-size: 0.78rem; color: #475569; margin-top: 2px; line-height: 1.35;">
+                        Detectamos que tu predio ya disfrutÃ³ de la demostraciÃ³n gratuita. Este nuevo servicio llegarÃ¡ <strong>automÃ¡ticamente como Servicio Normal</strong> para cotizar segÃºn las hectÃ¡reas y servicios tÃ©cnicos elegidos.
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }
+            } else {
+              if (demoCheck) demoCheck.disabled = false;
+            }
+
+            // Autocompletar fincas
+            _cachedFincasAutofill = data.fincas || [];
+            if (_cachedFincasAutofill.length > 0) {
+              aplicarDatosFincaAutofill(_cachedFincasAutofill[0]);
+
+              var fincasCount = _cachedFincasAutofill.length;
+              var fincasMsg = fincasCount === 1
+                ? 'Predio vinculado: <strong>' + _cachedFincasAutofill[0].nombre_finca + '</strong>'
+                : 'Se encontraron <strong>' + fincasCount + ' predios vinculados</strong>';
+
+              if (statusEl) {
+                statusEl.style.display = 'block';
+                statusEl.innerHTML = '<div style="color: #059669; background: #ecfdf5; border: 1px solid #10b981; padding: 6px 12px; border-radius: 8px; margin-top: 6px;">' +
+                  '<i class="fa-solid fa-circle-check"></i> Â¡Titular reconocido! <strong>' + data.nombre_completo + '</strong>. ' + fincasMsg + '.' +
+                  (fincasCount > 1 ? '<div style="margin-top:3px; font-size:0.75rem; color:#065f46;">Puedes elegir entre tus predios en el Paso 2.</div>' : '') +
+                  '</div>';
+              }
+              renderFincaQuickSelector();
+            } else {
+              if (statusEl) {
+                statusEl.style.display = 'block';
+                statusEl.innerHTML = '<div style="color: #059669; background: #ecfdf5; border: 1px solid #10b981; padding: 6px 12px; border-radius: 8px; margin-top: 6px;">' +
+                  '<i class="fa-solid fa-circle-check"></i> Â¡Titular reconocido! <strong>' + data.nombre_completo + '</strong>. Diligencia los datos de tu nuevo predio a continuaciÃ³n.' +
+                  '</div>';
+              }
+            }
+            updateLiveSummary();
+          } else {
+            if (statusEl) statusEl.style.display = 'none';
+          }
+        } catch (err) {
+          console.warn('Error en lookup-cliente:', err);
+          if (statusEl) statusEl.style.display = 'none';
+        }
+      }, 400);
+    }
+
+    function aplicarDatosFincaAutofill(f) {
+      if (!f) return;
+      var fincaEl = document.getElementById('ad-finca');
+      if (fincaEl && f.nombre_finca) fincaEl.value = f.nombre_finca;
+
+      var deptoEl = document.getElementById('ad-depto');
+      if (deptoEl && f.departamento) {
+        for (var i = 0; i < deptoEl.options.length; i++) {
+          if (deptoEl.options[i].value.toLowerCase() === f.departamento.toLowerCase()) {
+            deptoEl.selectedIndex = i;
+            break;
+          }
+        }
+      }
+
+      var muniEl = document.getElementById('ad-municipio');
+      if (muniEl && f.municipio) muniEl.value = f.municipio;
+
+      var hecEl = document.getElementById('ad-hectareas');
+      if (hecEl && f.hectareas) hecEl.value = f.hectareas;
+
+      var mapsEl = document.getElementById('ad-maps-link');
+      if (mapsEl && f.maps_url) mapsEl.value = f.maps_url;
+    }
+
+    function renderFincaQuickSelector() {
+      var container = document.getElementById('finca-quick-selector-container');
+      if (!container) return;
+      if (!_cachedFincasAutofill || _cachedFincasAutofill.length <= 1) {
+        container.innerHTML = '';
+        container.style.display = 'none';
+        return;
+      }
+      container.style.display = 'block';
+      container.innerHTML = '<div style="margin-bottom:8px; font-size:0.8rem; font-weight:800; color:#003049;"><i class="fa-solid fa-layer-group" style="color:#1C82AD;"></i> Predios registrados a tu nombre (clic para cargar):</div>' +
+        '<div style="display:flex; flex-wrap:wrap; gap:8px;">' +
+        _cachedFincasAutofill.map(function(f, idx) {
+          return '<button type="button" onclick="seleccionarFincaIndex(' + idx + ')" style="background:#ffffff; border:1.5px solid #1C82AD; color:#003049; padding:5px 12px; border-radius:20px; font-size:0.78rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; box-shadow:0 2px 5px rgba(0,0,0,0.05);">' +
+            '<i class="fa-solid fa-mountain-sun" style="color:#1C82AD;"></i> ' + f.nombre_finca + ' (' + (f.municipio || 'Sector') + ')' +
+          '</button>';
+        }).join('') +
+        '</div>';
+    }
+
+    function seleccionarFincaIndex(idx) {
+      if (_cachedFincasAutofill[idx]) {
+        aplicarDatosFincaAutofill(_cachedFincasAutofill[idx]);
+        updateLiveSummary();
+        var ced = document.getElementById('ad-cedula') ? document.getElementById('ad-cedula').value.trim() : '';
+        verificarDemoFincaOCedula(_cachedFincasAutofill[idx].nombre_finca, ced);
+      }
+    }
+
+    async function cargarServiciosRegistrados() {
+      var grid = document.getElementById('services-interactive-grid');
+      if (!grid) return;
+
+      var apiBase = (window.location.protocol === 'file:'
+        ? 'http://localhost:3000'
+        : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+
+      try {
+        var res = await fetch(apiBase + '/servicios');
+        if (res.ok) {
+          var body = await res.json();
+          var rawList = Array.isArray(body) ? body : (body.data || []);
+          _serviciosDisponibles = rawList.filter(function(s) { return s.activo !== false && s.activo !== 0; });
+        }
+      } catch (e) {
+        console.warn('Error cargando servicios desde API:', e);
+      }
+
+      if (!_serviciosDisponibles || _serviciosDisponibles.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#64748b;"><i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b; margin-right:6px;"></i> No hay servicios activos en este momento en el catÃ¡logo.</div>';
+        return;
+      }
+
+      grid.innerHTML = _serviciosDisponibles.map(function(s, idx) {
+        var iconClass = s.icono || (s.nombre_servicio.includes('Multi') || s.nombre_servicio.includes('Espectral') ? 'fa-satellite-dish' : (s.nombre_servicio.includes('Topo') ? 'fa-map-location-dot' : 'fa-spray-can-sparkles'));
+        var isChecked = idx === 0;
+        return `
+          <label class="service-card-choice ${isChecked ? 'selected' : ''}" style="cursor:pointer; display:flex; flex-direction:column; gap:6px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div class="svc-icon-box"><i class="fa-solid ${iconClass}"></i></div>
+              <input type="checkbox" class="ad-svc-checkbox" value="${s.nombre_servicio}" data-id="${s.id_servicio || s.id}" ${isChecked ? 'checked' : ''} onchange="onServiceCardToggled(this)" style="width:20px; height:20px; accent-color:#1c82ad; cursor:pointer;" />
+            </div>
+            <div class="svc-title" style="font-weight:800; color:#003049;">${s.nombre_servicio}</div>
+            <div class="svc-desc" style="font-size:0.8rem; color:#4a5568; line-height:1.4;">${s.descripcion || 'Servicio especializado con drones de Ãºltima generaciÃ³n.'}</div>
+          </label>
+        `;
+      }).join('');
+
+      actualizarServiciosSeleccionados();
+    }
+
+    function onServiceCardToggled(checkbox) {
+      var card = checkbox.closest('.service-card-choice');
+      if (checkbox.checked) {
+        card.classList.add('selected');
+      } else {
+        card.classList.remove('selected');
+      }
+      actualizarServiciosSeleccionados();
+    }
+
+    function actualizarServiciosSeleccionados() {
+      var checked = document.querySelectorAll('.ad-svc-checkbox:checked');
+      var selectedNames = Array.from(checked).map(function(cb) { return cb.value; });
+      var countEl = document.getElementById('svc-selected-count');
+      
+      if (selectedNames.length === 0) {
+        if (countEl) countEl.textContent = 'Ninguno seleccionado (mÃ­n. 1)';
+        document.getElementById('ad-servicio').value = '';
+      } else {
+        if (countEl) countEl.textContent = selectedNames.length + (selectedNames.length === 1 ? ' seleccionado' : ' seleccionados');
+        document.getElementById('ad-servicio').value = selectedNames.join(' + ');
+      }
+      updateLiveSummary();
+    }
+
+    function goToStep(step) {
+      hideError();
+
+      if (step > currentStep) {
+        if (!validateStep(currentStep)) return;
+      }
+
+      currentStep = step;
+
+      document.querySelectorAll('.form-step-section').forEach(function(sec) {
+        sec.classList.remove('active');
+      });
+      var targetSec = document.getElementById('step-' + step);
+      if (targetSec) targetSec.classList.add('active');
+
+      var percent = step === 1 ? 33.33 : (step === 2 ? 66.66 : 100);
+      document.getElementById('progress-bar-fill').style.width = percent + '%';
+      document.getElementById('stepper-text').textContent = 'Paso ' + step + ' de 3';
+
+      for (var i = 1; i <= 3; i++) {
+        var pill = document.getElementById('pill-' + i);
+        if (pill) {
+          pill.classList.remove('active', 'completed');
+          if (i === step) pill.classList.add('active');
+          else if (i < step) pill.classList.add('completed');
+        }
+      }
+
+      document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function toggleTipoPersona() {
+      var tipo = document.getElementById('ad-tipo-persona').value;
+      var lblNom = document.getElementById('lbl-ad-nombre');
+      var lblCed = document.getElementById('lbl-ad-cedula');
+      var inputCed = document.getElementById('ad-cedula');
+      var containerEmpresa = document.getElementById('container-ad-empresa');
+      var inputEmpresa = document.getElementById('ad-empresa');
+
+      if (tipo === 'JURIDICA') {
+        lblNom.innerHTML = '<i class="fa-solid fa-user-check"></i> Nombre del Contacto / Responsable *';
+        lblCed.innerHTML = '<i class="fa-solid fa-building-columns"></i> NIT (9 dÃ­gitos sin dÃ­gito de verificaciÃ³n) *';
+        inputCed.placeholder = 'ej. 901234567';
+        inputCed.maxLength = 9;
+        if (containerEmpresa) containerEmpresa.style.display = 'block';
+        if (inputEmpresa) inputEmpresa.required = true;
+      } else {
+        lblNom.innerHTML = '<i class="fa-solid fa-id-card"></i> Nombre Completo *';
+        lblCed.innerHTML = '<i class="fa-solid fa-passport"></i> CÃ©dula de CiudadanÃ­a *';
+        inputCed.placeholder = 'ej. 79123456';
+        inputCed.maxLength = 10;
+        inputCed.inputMode = 'numeric';
+        if (containerEmpresa) containerEmpresa.style.display = 'none';
+        if (inputEmpresa) inputEmpresa.required = false;
+      }
+      updateLiveSummary();
+    }
+
+    function validateStep(step) {
+      hideError();
+      if (step === 1) {
+        var tipo = document.getElementById('ad-tipo-persona').value;
+        var nom = document.getElementById('ad-nombre').value.trim();
+        var ced = document.getElementById('ad-cedula').value.trim();
+        var tel = document.getElementById('ad-telefono').value.trim();
+        var emp = document.getElementById('ad-empresa') ? document.getElementById('ad-empresa').value.trim() : '';
+
+        if (!nom || !ced || !tel) {
+          showError('Por favor completa todos los campos obligatorios (*).');
+          return false;
+        }
+
+        if (tipo === 'JURIDICA') {
+          if (!emp) {
+            showError('Por favor ingresa la RazÃ³n Social o Nombre de la Empresa.');
+            return false;
+          }
+          // ValidaciÃ³n estricta acordada en reuniÃ³n: 9 dÃ­gitos numÃ©ricos sin dÃ­gito de verificaciÃ³n
+          if (!/^\d{9}$/.test(ced)) {
+            showError('Para personas jurÃ­dicas, el NIT debe contener exactamente 9 dÃ­gitos numÃ©ricos (sin dÃ­gito de verificaciÃ³n ni guiones).');
+            return false;
+          }
+        } else if (ced.length < 6 || ced.length > 10) {
+          showError('La CÃ©dula de CiudadanÃ­a debe contener entre 6 y 10 dÃ­gitos numÃ©ricos.');
+          return false;
+        }
+      } else if (step === 2) {
+        var fin = document.getElementById('ad-finca').value.trim();
+        var dep = document.getElementById('ad-depto').value;
+        var mun = document.getElementById('ad-municipio').value.trim();
+        var ver = document.getElementById('ad-vereda').value.trim();
+        if (!fin || !dep || !mun || !ver) {
+          showError('Por favor completa Nombre del Proyecto o Predio, Departamento, Municipio y Vereda.');
+          return false;
+        }
+      }
+      return true;
+    }
+
+    async function validateAndNext(step) {
+      if (!validateStep(step)) return;
+      if (step === 2) {
+        var fin = document.getElementById('ad-finca') ? document.getElementById('ad-finca').value.trim() : '';
+        var ced = document.getElementById('ad-cedula') ? document.getElementById('ad-cedula').value.trim() : '';
+        await verificarDemoFincaOCedula(fin, ced);
+      }
+      goToStep(step + 1);
+    }
+
+    async function verificarDemoFincaOCedula(finca, cedula) {
+      var apiBase = (window.location.protocol === 'file:'
+        ? 'http://localhost:3000'
+        : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+      try {
+        var params = [];
+        if (cedula) params.push('documento=' + encodeURIComponent(cedula));
+        if (finca) params.push('finca=' + encodeURIComponent(finca));
+        var res = await fetch(apiBase + '/agenda/lookup-cliente?' + params.join('&'));
+        if (res.ok) {
+          var resJson = await res.json();
+          var data = resJson.data || resJson;
+          if (data && data.ya_tuvo_demo) {
+            _clienteYaTuvoDemo = true;
+            actualizarEstadoDemoUI(true);
+            return;
+          }
+        }
+      } catch (e) {
+        console.debug('VerificaciÃ³n demo local');
+      }
+      actualizarEstadoDemoUI(_clienteYaTuvoDemo);
+    }
+
+    function actualizarEstadoDemoUI(yaTuvoDemo) {
+      var demoBox = document.getElementById('container-checkbox-demo');
+      var demoCheck = document.getElementById('ad-es-demo');
+      if (yaTuvoDemo) {
+        if (demoCheck) {
+          demoCheck.checked = false;
+          demoCheck.disabled = true;
+        }
+        if (demoBox) {
+          demoBox.style.background = 'rgba(28, 130, 173, 0.08)';
+          demoBox.style.borderColor = '#1C82AD';
+          demoBox.innerHTML = `
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <i class="fa-solid fa-file-invoice-dollar" style="color: #1C82AD; font-size: 1.25rem; margin-top: 2px;"></i>
+              <div>
+                <div style="font-weight: 800; color: #003049; font-size: 0.90rem;">
+                  Servicio Normal (Para CotizaciÃ³n Comercial)
+                </div>
+                <div style="font-size: 0.78rem; color: #475569; margin-top: 2px; line-height: 1.35;">
+                  Detectamos que este predio o productor ya disfrutÃ³ de la demostraciÃ³n gratuita. Esta solicitud se radicarÃ¡ <strong>automÃ¡ticamente como Servicio Normal</strong> para cotizar segÃºn las hectÃ¡reas y servicios tÃ©cnicos elegidos.
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      } else {
+        if (demoCheck) demoCheck.disabled = false;
+      }
+    }
+
+    function showError(msg) {
+      var box = document.getElementById('form-error-alert');
+      var txt = document.getElementById('form-error-msg');
+      txt.textContent = msg;
+      box.style.display = 'flex';
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideError() {
+      document.getElementById('form-error-alert').style.display = 'none';
+    }
+
+    function updateLiveSummary() {
+      var tipo = document.getElementById('ad-tipo-persona') ? document.getElementById('ad-tipo-persona').value : 'NATURAL';
+      var nom = document.getElementById('ad-nombre').value.trim();
+      var emp = document.getElementById('ad-empresa') ? document.getElementById('ad-empresa').value.trim() : '';
+      var tel = document.getElementById('ad-telefono').value.trim();
+      var fin = document.getElementById('ad-finca').value.trim();
+      var dep = document.getElementById('ad-depto').value;
+      var mun = document.getElementById('ad-municipio').value.trim();
+      var cul = document.getElementById('ad-cultivo').value.trim();
+      var ha = document.getElementById('ad-hectareas').value.trim();
+      var srv = document.getElementById('ad-servicio').value;
+
+      var titularTexto = (tipo === 'JURIDICA' && emp) ? emp + (nom ? ' (Resp: ' + nom + ')' : '') : nom;
+      document.getElementById('sum-prod').textContent = titularTexto ? (titularTexto + (tel ? ' â€¢ ' + tel : '')) : '--';
+      document.getElementById('sum-finca').textContent = fin ? (fin + (mun ? ' - ' + mun : '') + (dep ? ' (' + dep + ')' : '')) : '--';
+      document.getElementById('sum-cultivo').textContent = cul ? (cul + (ha ? ' (' + ha + ' Ha)' : '')) : '--';
+      document.getElementById('sum-servicio').textContent = srv || '--';
+    }
+
+    // Captura automÃ¡tica de coordenadas GPS del dispositivo
+    function capturarUbicacionActual() {
+      var btnText = document.getElementById('btn-gps-text');
+      var input = document.getElementById('ad-maps-link');
+      if (!navigator.geolocation) {
+        alert('Tu navegador no soporta geolocalizaciÃ³n GPS.');
+        return;
+      }
+      if (btnText) btnText.textContent = 'Obteniendo GPS...';
+      navigator.geolocation.getCurrentPosition(
+        function(pos) {
+          var lat = pos.coords.latitude.toFixed(6);
+          var lng = pos.coords.longitude.toFixed(6);
+          var url = `https://www.google.com/maps?q=${lat},${lng}`;
+          if (input) input.value = url;
+          if (btnText) btnText.textContent = 'GPS Capturado âœ”';
+          setTimeout(() => { if (btnText) btnText.textContent = 'Obtener mi GPS actual'; }, 3000);
+        },
+        function(err) {
+          if (btnText) btnText.textContent = 'No se pudo obtener';
+          setTimeout(() => { if (btnText) btnText.textContent = 'Obtener mi GPS actual'; }, 3000);
+          alert('No se pudo obtener la ubicaciÃ³n GPS automÃ¡tica: ' + err.message + '. Puedes pegar el enlace de Google Maps manualmente.');
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    var _isSubmittingBooking = false;
+    async function procesarEnvioFinal(e) {
+      if (e) e.preventDefault();
+      if (_isSubmittingBooking) return;
+      hideError();
+
+      var tipoPersona = document.getElementById('ad-tipo-persona') ? document.getElementById('ad-tipo-persona').value : 'NATURAL';
+      var empresa = (document.getElementById('ad-empresa') ? document.getElementById('ad-empresa').value.trim() : '').toUpperCase();
+      var nombre = (document.getElementById('ad-nombre').value.trim() || '').toUpperCase();
+      var cedula = document.getElementById('ad-cedula').value.trim();
+      var telefono = document.getElementById('ad-telefono').value.trim();
+      var email = document.getElementById('ad-email').value.trim();
+      var finca = document.getElementById('ad-finca').value.trim();
+      var depto = document.getElementById('ad-depto').value;
+      var municipio = document.getElementById('ad-municipio').value.trim();
+      var vereda = document.getElementById('ad-vereda').value.trim();
+      var direccion = document.getElementById('ad-direccion').value.trim();
+      var mapsLink = (document.getElementById('ad-maps-link') ? document.getElementById('ad-maps-link').value.trim() : '');
+      var cultivo = document.getElementById('ad-cultivo').value.trim();
+      var ha = parseFloat(document.getElementById('ad-hectareas').value);
+      var servicio = document.getElementById('ad-servicio').value;
+      var fecha = document.getElementById('ad-fecha').value;
+      var notas = document.getElementById('ad-notas').value.trim();
+
+      if (!servicio) {
+        showError('Por favor selecciona al menos un servicio tÃ©cnico de vuelo.');
+        return;
+      }
+
+      var todayStr = new Date().toISOString().split('T')[0];
+      if (fecha < todayStr) {
+        showError('La fecha de la solicitud no puede ser anterior al dÃ­a de hoy.');
+        return;
+      }
+
+      if (!nombre || !cedula || !telefono || !finca || !depto || !municipio || !vereda || !cultivo || !ha || !fecha) {
+        showError('Por favor verifica todos los campos obligatorios marcados con (*).');
+        return;
+      }
+
+      if (tipoPersona === 'JURIDICA' && !/^\d{9}$/.test(cedula)) {
+        showError('Para personas jurÃ­dicas, el NIT debe tener exactamente 9 dÃ­gitos sin dÃ­gito de verificaciÃ³n.');
+        return;
+      }
+
+      _isSubmittingBooking = true;
+      var btn = document.getElementById('ad-btn-submit');
+      if (btn) {
+        btn.disabled = true;
+        btn.style.pointerEvents = 'none';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando Solicitud de Vuelo...';
+      }
+
+      var jornada = document.getElementById('ad-jornada') ? document.getElementById('ad-jornada').value : 'Diurno';
+      var extraInfo = [];
+      if (tipoPersona === 'JURIDICA' && empresa) extraInfo.push(`[Empresa: ${empresa}]`);
+      if (jornada) extraInfo.push(`[Jornada: ${jornada}]`);
+      var _clienteYaTuvoDemo = window._clienteYaTuvoDemo || false;
+      var esDemoGratis = !_clienteYaTuvoDemo && Boolean(document.getElementById('ad-es-demo') && document.getElementById('ad-es-demo').checked);
+      if (esDemoGratis) {
+        extraInfo.push('[DEMOSTRACION GRATUITA - ESTE SERVICIO VA A SER SIN COSTO]');
+      } else {
+        extraInfo.push('[SERVICIO NORMAL COMERCIAL - PARA COTIZACIÃ“N]');
+      }
+      if (notas) {
+        extraInfo.push(`[Observaciones del Cliente: ${notas}]`);
+      }
+      var notasCompletas = extraInfo.join(' ');
+
+      var paisCode = (document.getElementById('ad-pais-code') ? document.getElementById('ad-pais-code').value : '+57').trim();
+      var fullPhone = telefono.startsWith('+') ? telefono : `${paisCode} ${telefono}`;
+
+      var payload = {
+        modo_agendamiento: esDemoGratis ? 'demo_gratis' : 'servicio_normal',
+        es_demo_gratis: esDemoGratis,
+        es_demostracion: esDemoGratis,
+        tipo_persona: tipoPersona,
+        empresa: empresa || undefined,
+        nombre_completo: nombre,
+        cedula: cedula,
+        telefono: fullPhone,
+        email: email || undefined,
+        nombre_finca: finca,
+        departamento: depto,
+        municipio: municipio,
+        vereda_corregimiento: vereda,
+        direccion_ubicacion: direccion || undefined,
+        hectareas: ha,
+        tipo_cultivo: cultivo,
+        servicio_solicitado: servicio,
+        fecha_deseada: fecha,
+        observaciones: notasCompletas,
+        maps_link: mapsLink || undefined
+      };
+
+      try {
+        var apiBase = (window.location.protocol === 'file:'
+          ? 'http://localhost:3000'
+          : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+
+        var res = await fetch(apiBase + '/agenda/reserva-rapida', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        var json = await res.json().catch(function() { return {}; });
+
+        await mostrarConfirmacion(json.data || {}, payload);
+      } catch (err) {
+        console.warn('ConexiÃ³n fallback local:', err);
+        await mostrarConfirmacion({
+          codigo_reserva: 'FLY-' + Math.floor(10000 + Math.random() * 90000),
+          id_turno: Math.floor(100 + Math.random() * 900)
+        }, payload);
+      } finally {
+        setTimeout(function() {
+          _isSubmittingBooking = false;
+          if (btn) {
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Confirmar y Agendar Vuelo';
+          }
+        }, 1500);
+      }
+    }
+
+    async function mostrarConfirmacion(data, payload) {
+      var formEl = document.getElementById('form-agendar-directo');
+      if (formEl) formEl.style.display = 'none';
+
+      var stepperBar = document.getElementById('stepper-bar');
+      if (stepperBar) stepperBar.style.display = 'none';
+
+      var stepperText = document.getElementById('stepper-text');
+      if (stepperText) stepperText.style.display = 'none';
+
+      var confirmSec = document.getElementById('section-confirmacion');
+      if (confirmSec) confirmSec.style.display = 'block';
+
+      var cod = data.codigo_reserva || ('FLY-' + String(data.id_turno || '00000').padStart(5, '0'));
+      var elCod = document.getElementById('res-code-val') || document.getElementById('res-codigo');
+      if (elCod) elCod.textContent = cod;
+
+      var elNombre = document.getElementById('res-prod-val') || document.getElementById('res-nombre');
+      if (elNombre) elNombre.textContent = payload.nombre_completo;
+
+      var elFinca = document.getElementById('res-finca-val') || document.getElementById('res-finca');
+      if (elFinca) elFinca.textContent = `${payload.nombre_finca} (${payload.municipio}, ${payload.departamento})`;
+
+      var elCultivo = document.getElementById('res-cultivo-val') || document.getElementById('res-area');
+      if (elCultivo) elCultivo.textContent = `${payload.tipo_cultivo} (${payload.hectareas} Ha)`;
+
+      var elServicio = document.getElementById('res-servicio-val') || document.getElementById('res-servicio');
+      if (elServicio) elServicio.textContent = payload.servicio_solicitado;
+
+      var elFecha = document.getElementById('res-fecha-val') || document.getElementById('res-fecha');
+      if (elFecha) elFecha.textContent = payload.fecha_deseada;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Registrar datos del agendamiento para facilitar el acceso
+      window._lastBookingEmail = payload.email || '';
+      window._lastBookingNombre = payload.nombre_completo || '';
+      window._lastBookingTel = payload.telefono || '';
+      window._lastBookingCedula = payload.cedula || '';
+      localStorage.removeItem('fm_cedula');
+      localStorage.removeItem('fm_telefono');
+      localStorage.removeItem('fm_nombre');
+      localStorage.removeItem('token');
+      localStorage.removeItem('fm_token');
+      sessionStorage.removeItem('fm_token');
+
+      var esClienteNuevo = !data.encontrado;
+      window._lastBookingEsNuevo = esClienteNuevo;
+      var btnCrearClave = document.getElementById('btn-crear-clave');
+      if (btnCrearClave) {
+        // Si el cliente ya existÃ­a, ocultar el botÃ³n de "Asignar Mi ContraseÃ±a" ya que ya tiene su contraseÃ±a segura establecida
+        btnCrearClave.style.display = esClienteNuevo ? 'inline-flex' : 'none';
+      }
+
+      // Banner dinÃ¡mico de confirmaciÃ³n con Ã©nfasis en seguridad
+      var noticeBox = document.getElementById('res-notice-box');
+      if (noticeBox) {
+        var instruccionAcceso = '';
+        if (esClienteNuevo) {
+          instruccionAcceso = `
+            <div>â€¢ <strong>Acceso con tu Documento:</strong> Pulsa <em>Ingresar a Mi Portal</em> con tu correo <strong>${payload.email || 'registrado'}</strong> y tu nÃºmero de documento/cÃ©dula como contraseÃ±a de acceso.</div>
+            <div>â€¢ <strong>VerificaciÃ³n RÃ¡pida:</strong> Al ingresar por primera vez, podrÃ¡s verificar tus datos de forma segura para activar todas las funciones y agendar nuevos servicios.</div>
+          `;
+        } else {
+          instruccionAcceso = `
+            <div>â€¢ <strong>Iniciar SesiÃ³n:</strong> Pulsa <em>Ingresar a Mi Portal</em> e introduce tu contraseÃ±a registrada para acceder a tus predios y solicitudes.</div>
+            <div>â€¢ <strong>Â¿Olvidaste tu contraseÃ±a?:</strong> En la ventana de ingreso podrÃ¡s restablecerla mediante cÃ³digo de seguridad de 8 dÃ­gitos enviado a tu correo.</div>
+          `;
+        }
+
+        if (data.ya_tuvo_demo || !data.es_demo_gratis) {
+          noticeBox.innerHTML = `
+            <div style="background: rgba(28, 130, 173, 0.08); border: 1.5px solid #1C82AD; border-radius: 14px; padding: 14px 18px; text-align: left; margin-bottom: 12px;">
+              <div style="font-weight: 800; color: #003049; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-file-invoice-dollar" style="color: #1C82AD;"></i> Â¡Vuelo Registrado como Servicio Normal!
+              </div>
+              <div style="font-size: 0.85rem; color: #334155; margin-top: 5px; line-height: 1.45;">
+                ${data.ya_tuvo_demo ? 'Detectamos que tu cuenta ya disfrutÃ³ previamente de la demostraciÃ³n gratuita. Por tanto, tu solicitud fue radicada automÃ¡ticamente como <strong>Servicio Normal para CotizaciÃ³n Comercial</strong>.' : 'Tu solicitud de vuelo fue radicada formalmente como <strong>Servicio Normal para CotizaciÃ³n Comercial</strong>.'}
+              </div>
+            </div>
+            <div style="background: rgba(28, 130, 173, 0.08); border: 1.5px solid rgba(28, 130, 173, 0.3); border-radius: 14px; padding: 14px 18px; text-align: left;">
+              <div style="font-weight: 800; color: #003049; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-shield-halved" style="color: #1C82AD;"></i> Acceso Seguro a tu Portal de Clientes
+              </div>
+              <div style="font-size: 0.85rem; color: #334155; margin-top: 6px; line-height: 1.45;">
+                Tu predio y tu solicitud ya quedaron vinculados a tu cuenta:
+                <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+                  ${instruccionAcceso}
+                </div>
+              </div>
+            </div>
+          `;
+          noticeBox.style.display = 'block';
+        } else {
+          noticeBox.innerHTML = `
+            <div style="background: rgba(16, 185, 129, 0.08); border: 1.5px solid #10b981; border-radius: 14px; padding: 14px 18px; text-align: left; margin-bottom: 12px;">
+              <div style="font-weight: 800; color: #065f46; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-gift" style="color: #10b981;"></i> Â¡AnÃ¡lisis del Terreno Agendado Exitosamente!
+              </div>
+              <div style="font-size: 0.85rem; color: #334155; margin-top: 5px; line-height: 1.45;">
+                Hemos registrado formalmente tu solicitud para el nuevo predio <strong>${payload.nombre_finca}</strong> con radicado <strong>${cod}</strong>.
+              </div>
+            </div>
+            <div style="background: rgba(28, 130, 173, 0.08); border: 1.5px solid rgba(28, 130, 173, 0.3); border-radius: 14px; padding: 14px 18px; text-align: left;">
+              <div style="font-weight: 800; color: #003049; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-shield-halved" style="color: #1C82AD;"></i> Acceso Seguro a tu Portal de Clientes
+              </div>
+              <div style="font-size: 0.85rem; color: #334155; margin-top: 6px; line-height: 1.45;">
+                Tu predio y tu anÃ¡lisis del terreno sin costo ya estÃ¡n registrados en la plataforma:
+                <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+                  ${instruccionAcceso}
+                </div>
+              </div>
+            </div>
+          `;
+          noticeBox.style.display = 'block';
+        }
+      }
+
+      // Obtener nÃºmero oficial y plantilla de WhatsApp configurada en base de datos
+      var apiBase = (window.location.protocol === 'file:'
+        ? 'http://localhost:3000'
+        : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+
+      var waNumber = '573155429714';
+      var template = `Hola Flymetrics Colombia, acabo de agendar una solicitud de servicio / demostraciÃ³n:
+Radicado: {radicado}
+Productor: {nombre} (CC/NIT: {cedula})
+Finca: {finca} en {municipio} ({departamento})
+Cultivo: {cultivo} ({hectareas} Ha)
+Servicio: {servicio}
+Fecha programada: {fecha}
+UbicaciÃ³n / Maps: {ubicacion_maps}
+Deseo coordinar detalles tÃ©cnicos de campo con el piloto.`;
+
+      try {
+        var cfgRes = await fetch(apiBase + '/contacto/config/sistema').catch(() => null);
+        if (!cfgRes || !cfgRes.ok) {
+          cfgRes = await fetch(apiBase + '/admin/usuarios/config/sistema').catch(() => null);
+        }
+        if (cfgRes && cfgRes.ok) {
+          var cfgJson = await cfgRes.json();
+          var cfg = cfgJson.data || cfgJson;
+          var rawTel = cfg.whatsapp || cfg.telefono || '3155429714';
+          var cleanDigits = rawTel.replace(/[^0-9]/g, '');
+          waNumber = cleanDigits.startsWith('57') ? cleanDigits : ('57' + (cleanDigits.length === 10 ? cleanDigits : cleanDigits.slice(-10)));
+          if (cfg.wa_template_agendar) {
+            template = cfg.wa_template_agendar;
+          }
+        }
+      } catch (e) {
+        console.debug('Usando configuraciÃ³n por defecto de WhatsApp');
+      }
+
+      var ubicacionStr = payload.maps_link ? payload.maps_link : (payload.direccion_ubicacion || `${payload.vereda_corregimiento}, ${payload.municipio}`);
+
+      // Reemplazo limpio y dinÃ¡mico de etiquetas sin etiquetas HTML rotas
+      var filledText = template
+        .replace(/\{radicado\}/g, cod)
+        .replace(/\{nombre\}/g, payload.nombre_completo)
+        .replace(/\{cedula\}/g, payload.cedula)
+        .replace(/\{finca\}/g, payload.nombre_finca)
+        .replace(/\{municipio\}/g, payload.municipio)
+        .replace(/\{departamento\}/g, payload.departamento)
+        .replace(/\{cultivo\}/g, payload.tipo_cultivo)
+        .replace(/\{hectareas\}/g, payload.hectareas)
+        .replace(/\{servicio\}/g, payload.servicio_solicitado)
+        .replace(/\{fecha\}/g, payload.fecha_deseada)
+        .replace(/\{ubicacion_maps\}/g, ubicacionStr);
+
+      document.getElementById('btn-wa-confirmar').href = `https://wa.me/${waNumber}?text=${encodeURIComponent(filledText)}`;
+    }
+  
+    window.irAlPortalSeguro = function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('fm_token');
+      sessionStorage.removeItem('fm_token');
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('rol');
+      localStorage.removeItem('user_role');
+      localStorage.removeItem('usuario');
+
+      var params = new URLSearchParams();
+      params.set('openAuth', 'login');
+      if (window._lastBookingEmail) params.set('email', window._lastBookingEmail);
+      if (window._lastBookingNombre) params.set('nombre', window._lastBookingNombre);
+      if (window._lastBookingTel) params.set('telefono', window._lastBookingTel);
+      window.location.href = 'index.html?' + params.toString();
+    };
+
+    window.irACrearContrasena = function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('fm_token');
+      sessionStorage.removeItem('fm_token');
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('rol');
+      localStorage.removeItem('user_role');
+      localStorage.removeItem('usuario');
+
+      var params = new URLSearchParams();
+      params.set('openAuth', 'register');
+      if (window._lastBookingEmail) params.set('email', window._lastBookingEmail);
+      if (window._lastBookingNombre) params.set('nombre', window._lastBookingNombre);
+      if (window._lastBookingTel) params.set('telefono', window._lastBookingTel);
+      if (window._lastBookingCedula) params.set('cedula', window._lastBookingCedula);
+      window.location.href = 'index.html?' + params.toString();
+    };
+
+    function toggleMobileDrawer(forceState) {
+      var drawer = document.getElementById('mobile-drawer');
+      var overlay = document.getElementById('drawer-overlay');
+      var burger = document.getElementById('burger-btn');
+      if (!drawer || !overlay) return;
+      var isOpen = forceState !== undefined ? forceState : !drawer.classList.contains('open');
+      if (isOpen) {
+        drawer.classList.add('open');
+        overlay.classList.add('active');
+        if (burger) burger.classList.add('active');
+      } else {
+        drawer.classList.remove('open');
+        overlay.classList.remove('active');
+        if (burger) burger.classList.remove('active');
+      }
+    }
+
+  </script>
+</body>
+</html>
