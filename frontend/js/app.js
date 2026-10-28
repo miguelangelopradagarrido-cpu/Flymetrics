@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════
    Flymetrics — app.js
    Lógica interactiva nativa y animaciones de cristal líquido
    ═══════════════════════════════════════════════════════════ */
@@ -8,7 +8,8 @@ let GOOGLE_CLIENT_ID = '1044490043488-n2l2jjvnpq2mn8km4ag62r4t4af10vb6.apps.goog
 // Cargar dinámicamente el Client ID oficial desde la configuración activa del servidor
 (async function syncGoogleClientId() {
   try {
-    const res = await fetch('/api/v1/auth/google-config');
+    const apiBase = (window.BASE_URL || (window.API_BASE ? window.API_BASE + '/api/v1' : 'https://flymetrics-api.hostless.app/api/v1')).replace(/\/+$/, '');
+    const res = await fetch(`${apiBase}/auth/google-config`);
     if (res.ok) {
       const body = await res.json();
       if (body && body.data && body.data.client_id) {

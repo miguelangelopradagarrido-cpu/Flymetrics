@@ -6,13 +6,30 @@
 'use strict';
 
 var _adminIsDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port && window.location.port !== '3000';
-var API_BASE = window.BASE_URL || (
-  (window.location.protocol === 'file:' || _adminIsDev)
-    ? 'http://localhost:3000/api/v1'
-    : ((window.API_BASE || 'https://flymetrics-api.hostless.app') + '/api/v1')
-);
-window.API_BASE = API_BASE.replace(/\/api\/v1\/?$/, '');
+var _rawApiOrigin = (window.location.protocol === 'file:' || _adminIsDev)
+  ? 'http://localhost:3000'
+  : (window.location.hostname.includes('flymetrics-api') ? window.location.origin : 'https://flymetrics-api.hostless.app');
+
+var API_BASE = _rawApiOrigin.replace(/\/+$/, '').replace(/\/api\/v1\/?$/, '') + '/api/v1';
+window.API_BASE = API_BASE;
 window.BASE_URL = API_BASE;
+
+// ─────────────────────────────────────────
+// UNIVERSAL MEDIA URL RESOLVER
+// ─────────────────────────────────────────
+function resolveMediaUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  url = url.trim();
+  if (!url) return '';
+  if (/^(https?:|\/\/|data:|blob:)/i.test(url)) return url;
+  if (/^\/?(img|video|css|js|assets)\//i.test(url)) {
+    return url.startsWith('/') ? url : ('/' + url);
+  }
+  const apiOrigin = API_BASE.replace(/\/api\/v1\/?$/, '');
+  const cleanPath = url.startsWith('/') ? url : ('/' + url);
+  return `${apiOrigin}${cleanPath}`;
+}
+window.resolveMediaUrl = resolveMediaUrl;
 
 // ─────────────────────────────────────────
 // ANTI-XSS UTILITY HELPER
@@ -105,7 +122,7 @@ window.getCurrentUser = getCurrentUser;
 
 async function logout() {
   try {
-    await fetch('/api/v1/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => null);
+    await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }).catch(() => null);
   } catch(e) {}
   try { sessionStorage.clear(); } catch(e) {}
   try { localStorage.clear(); } catch(e) {}
@@ -216,6 +233,10 @@ async function ensureAdminAuth() {
 // ─── API FETCH WRAPPER
 // ─────────────────────────────────────────
 async function apiFetch(path, options = {}) {
+  if (typeof path !== 'string') path = String(path || '');
+  if (!path.startsWith('/')) path = '/' + path;
+  if (path.startsWith('/api/v1/')) path = path.slice(7);
+
   const token = getToken();
   const headers = {
     'Content-Type': 'application/json',
@@ -4639,8 +4660,8 @@ function renderServiciosTable() {
 
   tbody.innerHTML = list.map(s => {
     const sId = s.id || s.id_servicio;
-    const imgUrl = s.imagen_url || 'img/servicio_precision.jpg';
-    const vidUrl = s.video_url || '';
+    const imgUrl = resolveMediaUrl(s.imagen_url) || 'img/servicio_precision.jpg';
+    const vidUrl = resolveMediaUrl(s.video_url) || '';
     const hasVid = Boolean(vidUrl);
 
     return `
@@ -4725,8 +4746,8 @@ window.openEditServicioModal = function(id) {
   document.getElementById('servicioModalVideoUrl').value = s.video_url || 'video/hero.mp4';
   document.getElementById('servicioModalActivo').checked = s.activo !== false;
 
-  document.getElementById('servicioModalImgPreview').src = s.imagen_url || 'img/servicio_precision.jpg';
-  document.getElementById('servicioModalVidPreview').src = s.video_url || 'video/hero.mp4';
+  document.getElementById('servicioModalImgPreview').src = resolveMediaUrl(s.imagen_url || 'img/servicio_precision.jpg');
+  document.getElementById('servicioModalVidPreview').src = resolveMediaUrl(s.video_url || 'video/hero.mp4');
   setServicioIconoPreset(s.icono || 'fa-solid fa-helicopter');
 
   openModal('modalServicio');
@@ -4852,7 +4873,7 @@ window.subirArchivoServicio = async function(inputEl, tipo) {
 
   try {
     const token = getToken();
-    const res = await fetch('/api/v1/media/upload', {
+    const res = await fetch(`${API_BASE}/media/upload`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },
       body: formData
@@ -4863,7 +4884,7 @@ window.subirArchivoServicio = async function(inputEl, tipo) {
     }
 
     const mediaUrl = body.data.url;
-    const cacheBustedUrl = mediaUrl + '?t=' + Date.now();
+    const cacheBustedUrl = resolveMediaUrl(mediaUrl) + (mediaUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
     if (tipo === 'imagen') {
       document.getElementById('servicioModalImagenUrl').value = mediaUrl;
       const imgPrev = document.getElementById('servicioModalImgPreview');
@@ -4905,7 +4926,7 @@ window.loadMediaGallery = async function() {
 
   try {
     const token = getToken();
-    const res = await fetch('/api/v1/media', {
+    const res = await fetch(`${API_BASE}/media`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const body = await res.json();
@@ -4987,7 +5008,7 @@ function renderMediaGalleryItems() {
   grid.innerHTML = items.map(m => {
     const isVid = m.tipo === 'video';
     const isLogo = (m.name || '').toLowerCase().includes('logo') || Boolean(m.is_protected);
-    const safeUrl = m.url || '';
+    const safeUrl = resolveMediaUrl(m.url || '');
     const safeName = (m.name || 'Archivo').replace(/'/g, "\\'");
 
     return `
@@ -5077,11 +5098,12 @@ window.previewMediaInViewer = function(url, tipo, name, size) {
   if (subEl) subEl.textContent = url;
   if (metaEl) metaEl.innerHTML = `<span><strong>Tipo:</strong> ${tipo === 'video' ? 'Video' : 'Imagen'}</span> | <span><strong>Tamaño:</strong> ${size || 'Desconocido'}</span>`;
 
+  const resolvedUrl = resolveMediaUrl(url);
   if (tipo === 'video') {
     if (imgEl) imgEl.style.display = 'none';
     if (vidEl) {
       vidEl.style.display = 'block';
-      vidEl.src = url;
+      vidEl.src = resolvedUrl;
       vidEl.load();
       vidEl.play().catch(() => {});
     }
@@ -5092,7 +5114,7 @@ window.previewMediaInViewer = function(url, tipo, name, size) {
     }
     if (imgEl) {
       imgEl.style.display = 'block';
-      imgEl.src = url;
+      imgEl.src = resolvedUrl;
     }
   }
 
@@ -5192,7 +5214,7 @@ window.subirArchivoGaleriaDirecto = async function(inputEl) {
 
   try {
     const token = getToken();
-    const res = await fetch('/api/v1/media/upload', {
+    const res = await fetch(`${API_BASE}/media/upload`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },
       body: formData
@@ -5215,7 +5237,7 @@ window.eliminarArchivoGaleria = async function(filename) {
 
   try {
     const token = getToken();
-    const res = await fetch(`/api/v1/media/${encodeURIComponent(filename)}`, {
+    const res = await fetch(`${API_BASE}/media/${encodeURIComponent(filename)}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -7391,8 +7413,8 @@ async function loadPublicidadPanel() {
         if (imgInp) imgInp.value = pubGlobalMedios.mobile_poster_url || '/img/servicio_precision.jpg';
         const vPrev = document.getElementById('pubGlobalHeroPreview');
         const iPrev = document.getElementById('pubGlobalPosterPreview');
-        const heroUrl = pubGlobalMedios.hero_video_url || '/video/hero.mp4';
-        const posterUrl = pubGlobalMedios.mobile_poster_url || '/img/servicio_precision.jpg';
+        const heroUrl = resolveMediaUrl(pubGlobalMedios.hero_video_url) || '/video/hero.mp4';
+        const posterUrl = resolveMediaUrl(pubGlobalMedios.mobile_poster_url) || '/img/servicio_precision.jpg';
         if (vPrev) {
           vPrev.src = heroUrl;
           vPrev.load();
@@ -7483,7 +7505,7 @@ window.subirMedioGlobalDirecto = async function(input, tipo) {
   try {
     showToast(`Subiendo ${tipo === 'video' ? 'Video Hero' : 'Portada Móvil'} al servidor...`, 'info');
     const token = getToken();
-    const res = await fetch('/api/v1/media/upload', {
+    const res = await fetch(`${API_BASE}/media/upload`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },
       body: formData
@@ -7494,7 +7516,7 @@ window.subirMedioGlobalDirecto = async function(input, tipo) {
     }
 
     const uploadedUrl = body.data.url;
-    const cacheBusted = uploadedUrl + (uploadedUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
+    const cacheBusted = resolveMediaUrl(uploadedUrl) + (uploadedUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
 
     if (tipo === 'video') {
       const vidInp = document.getElementById('pubHeroVideoInput');
@@ -7557,7 +7579,7 @@ window.eliminarMedioGlobal = async function(tipo) {
       if (filename) {
         try {
           const token = getToken();
-          await fetch(`/api/v1/media/${encodeURIComponent(filename)}`, {
+          await fetch(`${API_BASE}/media/${encodeURIComponent(filename)}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
           });
@@ -7661,10 +7683,7 @@ window.renderCollageTable = function() {
 
   tbody.innerHTML = filtered.map(item => {
     const isVid = (item.tipo_medio === 'video');
-    let itemUrl = (item.url_medio || '').trim();
-    if (itemUrl && !itemUrl.startsWith('http') && !itemUrl.startsWith('/') && !itemUrl.startsWith('../')) {
-      itemUrl = '/' + itemUrl;
-    }
+    let itemUrl = resolveMediaUrl(item.url_medio);
     const mediaPreview = isVid
       ? `<div style="width:65px; height:45px; border-radius:8px; background:#0f172a; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center;">
           <video src="${itemUrl}" style="width:100%; height:100%; object-fit:cover;" muted></video>
@@ -7777,10 +7796,7 @@ window.onCollageTipoMedioChange = function() {
 
 window.updateCollagePreview = function(url) {
   const tipo = document.getElementById('collageModalTipoMedio').value;
-  let finalUrl = (url || '').trim();
-  if (finalUrl && !finalUrl.startsWith('http') && !finalUrl.startsWith('/') && !finalUrl.startsWith('../')) {
-    finalUrl = '/' + finalUrl;
-  }
+  let finalUrl = resolveMediaUrl(url);
   if (tipo === 'video') {
     const vid = document.getElementById('collageModalVidPreview');
     if (vid && finalUrl) {
@@ -7810,7 +7826,7 @@ window.subirArchivoCollage = async function(input) {
 
   try {
     const token = getToken();
-    const res = await fetch('/api/v1/media/upload', {
+    const res = await fetch(`${API_BASE}/media/upload`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },
       body: formData
@@ -7852,7 +7868,7 @@ window.uploadMultipleCollageFiles = async function(input) {
       formData.append('files', files[i]);
     }
 
-    const uploadRes = await fetch('/api/v1/media/upload-batch', {
+    const uploadRes = await fetch(`${API_BASE}/media/upload-batch`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}` },
       body: formData
@@ -7948,7 +7964,7 @@ async function _uploadCollageFilesSequential(files, token, statusText, statusWra
     try {
       const fd = new FormData();
       fd.append('file', file);
-      const r = await fetch('/api/v1/media/upload', {
+      const r = await fetch(`${API_BASE}/media/upload`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: fd

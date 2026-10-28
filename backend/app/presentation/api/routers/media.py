@@ -54,7 +54,7 @@ async def upload_media(
     file: UploadFile = File(...),
     tipo: Optional[str] = Form(None),
     modulo: Optional[str] = Form("general"),
-    current_user: UsuarioModel = Depends(admin_required)
+    current_user: UsuarioModel = Depends(admin_or_tech)
 ):
     """
     Sube directamente una imagen o video al servidor para usar en servicios de la página principal o galerías.
@@ -111,7 +111,7 @@ async def upload_media(
 async def upload_media_batch(
     files: list[UploadFile] = File(...),
     modulo: Optional[str] = Form("collage"),
-    current_user: UsuarioModel = Depends(admin_required)
+    current_user: UsuarioModel = Depends(admin_or_tech)
 ):
     """
     Sube múltiples imágenes/videos de una sola vez organizados por módulo (ej: collage).

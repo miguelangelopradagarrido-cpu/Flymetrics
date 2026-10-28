@@ -69,13 +69,27 @@
     currentUser = JSON.parse(uStr) || {};
   } catch(e) {}
 
-  const API_BASE = window.BASE_URL || (
-    (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? 'http://localhost:3000/api/v1'
-      : ((window.API_BASE || 'https://flymetrics-api.hostless.app') + '/api/v1')
-  );
-  window.API_BASE = API_BASE.replace(/\/api\/v1\/?$/, '');
+  var _tecIsDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port && window.location.port !== '3000';
+  var _rawTecOrigin = (window.location.protocol === 'file:' || _tecIsDev)
+    ? 'http://localhost:3000'
+    : (window.location.hostname.includes('flymetrics-api') ? window.location.origin : 'https://flymetrics-api.hostless.app');
+  var API_BASE = _rawTecOrigin.replace(/\/+$/, '').replace(/\/api\/v1\/?$/, '') + '/api/v1';
+  window.API_BASE = API_BASE;
   window.BASE_URL = API_BASE;
+
+  function resolveMediaUrl(url) {
+    if (!url || typeof url !== 'string') return '';
+    url = url.trim();
+    if (!url) return '';
+    if (/^(https?:|\/\/|data:|blob:)/i.test(url)) return url;
+    if (/^\/?(img|video|css|js|assets)\//i.test(url)) {
+      return url.startsWith('/') ? url : ('/' + url);
+    }
+    const apiOrigin = API_BASE.replace(/\/api\/v1\/?$/, '');
+    const cleanPath = url.startsWith('/') ? url : ('/' + url);
+    return `${apiOrigin}${cleanPath}`;
+  }
+  window.resolveMediaUrl = resolveMediaUrl;
 
   let _allTurnos = [];
   let _invoices = [];
@@ -147,8 +161,10 @@
           localStorage.setItem('fm_user', JSON.stringify(currentUser));
         } catch(e) {}
       } else {
-        window.location.href = 'index.html';
-        return;
+        if (!currentUser || (currentUser.rol !== 'tecnico' && currentUser.rol !== 'administrador')) {
+          window.location.href = 'index.html';
+          return;
+        }
       }
     } catch(err) {
       console.warn('Could not fetch fresh user profile:', err);
@@ -329,7 +345,7 @@
 
   async function logout() {
     try {
-      await fetch('/api/v1/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => null);
+      await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }).catch(() => null);
     } catch(e) {}
     try { sessionStorage.clear(); } catch(e) {}
     try { localStorage.clear(); } catch(e) {}

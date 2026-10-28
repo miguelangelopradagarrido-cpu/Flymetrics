@@ -37,11 +37,24 @@
       }
     };
   </script>
-    <script>
+  <script>
     window.API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       ? 'http://localhost:3000'
-      : 'https://flymetrics-api.hostless.app';
-    window.BASE_URL = window.API_BASE + '/api/v1';
+      : (window.location.hostname.includes('flymetrics-api') ? window.location.origin : 'https://flymetrics-api.hostless.app');
+    window.BASE_URL = window.API_BASE.replace(/\/+$/, '').replace(/\/api\/v1\/?$/, '') + '/api/v1';
+
+    window.resolveMediaUrl = function(url) {
+      if (!url || typeof url !== 'string') return '';
+      url = url.trim();
+      if (!url) return '';
+      if (/^(https?:|\/\/|data:|blob:)/i.test(url)) return url;
+      if (/^\/?(img|video|css|js|assets)\//i.test(url)) {
+        return url.startsWith('/') ? url : ('/' + url);
+      }
+      const apiOrigin = window.API_BASE.replace(/\/api\/v1\/?$/, '');
+      const cleanPath = url.startsWith('/') ? url : ('/' + url);
+      return `${apiOrigin}${cleanPath}`;
+    };
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -80,6 +93,20 @@
 
   <!-- Early Global Declarations to ensure instant click responsiveness -->
   <script>
+        window.toggleMobileDrawer = function (e) {
+      if (e && e.preventDefault) e.preventDefault();
+      if (e && e.stopPropagation) e.stopPropagation();
+      var drawer = document.getElementById('mobile-drawer');
+      var overlay = document.getElementById('drawer-overlay');
+      var burger = document.getElementById('burger-btn');
+      if (!drawer) return;
+      var isOpen = drawer.classList.toggle('open');
+      if (burger) burger.classList.toggle('open', isOpen);
+      if (overlay) overlay.classList.toggle('active', isOpen);
+      document.body.classList.toggle('drawer-open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    };
+
     window.togglePasswordVisibility = function (inputId, btn) {
       var inp = document.getElementById(inputId);
       if (!inp) return;
@@ -415,8 +442,8 @@
             return {
               id: idx,
               db_id: s.id_servicio,
-              image: s.imagen_url || 'img/servicio_precision.jpg',
-              video: s.video_url || 'video/hero.mp4',
+              image: (window.resolveMediaUrl ? window.resolveMediaUrl(s.imagen_url) : s.imagen_url) || 'img/servicio_precision.jpg',
+              video: (window.resolveMediaUrl ? window.resolveMediaUrl(s.video_url) : s.video_url) || 'video/hero.mp4',
               icon: rawIcon,
               rawIconClass: s.icono ? (s.icono.includes('class="') ? (s.icono.match(/class="([^"]+)"/) || [])[1] : s.icono) : 'fa-solid fa-helicopter',
               title: s.nombre_servicio || 'Servicio Dron',
@@ -588,7 +615,7 @@
       </div>
 
       <!-- Mobile Burger Button -->
-      <button class="burger-menu" id="burger-btn" aria-label="Abrir Menú" onclick="window.toggleMobileDrawer && window.toggleMobileDrawer()">
+      <button class="burger-menu" id="burger-btn" aria-label="Abrir Menú" onclick="window.toggleMobileDrawer && window.toggleMobileDrawer(event)">
         <span></span>
         <span></span>
         <span></span>
@@ -4085,8 +4112,8 @@
   </style>
 
   <!-- Script Files -->
-  <script src="../js/api.js?v=20261027_220000"></script>
-  <script src="../js/app.js?v=20261027_220000"></script>
+  <script src="js/api.js?v=20261027_220000"></script>
+  <script src="js/app.js?v=20261027_220000"></script>
   <script>
     // ── RECUPERACIÓN DE CONTRASEÑA CON CÓDIGO DE 8 DÍGITOS ──
     function openRecoveryView() {
@@ -4741,7 +4768,8 @@
           if (res.ok) {
             var json = await res.json();
             var medios = json.data || json || {};
-            var posterUrl = (medios.mobile_poster_url || medios.hero_poster_mobile_url || defaultPoster).trim();
+            var rawPoster = (medios.mobile_poster_url || medios.hero_poster_mobile_url || defaultPoster).trim();
+            var posterUrl = window.resolveMediaUrl ? window.resolveMediaUrl(rawPoster) : rawPoster;
             if (posterUrl) {
               if (posterEl) {
                 posterEl.style.setProperty('background-image', 'url("' + posterUrl + '")', 'important');
@@ -4753,7 +4781,8 @@
               if (vidEl) vidEl.poster = posterUrl;
             }
 
-            var videoUrl = (medios.hero_video_url || defaultVideo).trim();
+            var rawVideo = (medios.hero_video_url || defaultVideo).trim();
+            var videoUrl = window.resolveMediaUrl ? window.resolveMediaUrl(rawVideo) : rawVideo;
             if (vidEl && videoUrl) {
               var source = vidEl.querySelector('source');
               if (source) source.src = videoUrl;

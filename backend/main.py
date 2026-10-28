@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 from pathlib import Path
 from fastapi import FastAPI, APIRouter, Depends
@@ -44,13 +44,16 @@ from starlette.responses import Response
 # Context manager moderno de ciclo de vida de FastAPI
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Asegurar usuario administrador por defecto al iniciar / desplegar
+    # Asegurar usuario administrador y técnico por defecto al iniciar / desplegar
     try:
         from app.infrastructure.database.session import SessionLocal
         from app.infrastructure.security.jwt_handler import hash_password
+        from app.infrastructure.database.models.models import TecnicoModel
         
         default_admin_email = os.getenv("ADMIN_EMAIL", "admin@flymetrics.co").strip().lower()
         default_admin_password = os.getenv("ADMIN_PASSWORD", "FlymetricsAdmin2026*").strip()
+        default_tec_email = os.getenv("TECNICO_EMAIL", "tecnico@flymetrics.co").strip().lower()
+        default_tec_password = os.getenv("TECNICO_PASSWORD", "FlymetricsAdmin2026*").strip()
 
         with SessionLocal() as db_session:
             admin_user = db_session.query(UsuarioModel).filter(UsuarioModel.email == default_admin_email).first()
@@ -64,13 +67,42 @@ async def lifespan(app: FastAPI):
                 db_session.commit()
                 print(f"[STARTUP] Usuario Administrador creado exitosamente: {default_admin_email}")
             else:
-                # Actualizar siempre al iniciar para garantizar acceso con la clave oficial
                 admin_user.rol = "administrador"
                 admin_user.password_hash = hash_password(default_admin_password)
                 db_session.commit()
                 print(f"[STARTUP] Contraseña de Administrador actualizada a la oficial: {default_admin_email}")
+
+            tec_user = db_session.query(UsuarioModel).filter(UsuarioModel.email == default_tec_email).first()
+            if not tec_user:
+                tec_user = UsuarioModel(
+                    email=default_tec_email,
+                    rol="tecnico"
+                )
+                tec_user.password_hash = hash_password(default_tec_password)
+                db_session.add(tec_user)
+                db_session.commit()
+                print(f"[STARTUP] Usuario Técnico creado exitosamente: {default_tec_email}")
+            else:
+                tec_user.rol = "tecnico"
+                tec_user.password_hash = hash_password(default_tec_password)
+                db_session.commit()
+
+            # Asegurar perfil técnico asociado
+            tec_profile = db_session.query(TecnicoModel).filter(TecnicoModel.id_usuario == tec_user.id_usuarios).first()
+            if not tec_profile:
+                tec_profile = TecnicoModel(
+                    id_usuario=tec_user.id_usuarios,
+                    nombre="Carlos",
+                    apellido_1="Mendoza",
+                    especialidad="Piloto Dron Agrícola RTK",
+                    telefono="3101234567",
+                    estado="disponible"
+                )
+                db_session.add(tec_profile)
+                db_session.commit()
+                print(f"[STARTUP] Perfil de Técnico vinculado para {default_tec_email}")
     except Exception as e:
-        print(f"[STARTUP] Aviso: No se pudo verificar el usuario admin inicial: {e}")
+        print(f"[STARTUP] Aviso en inicialización de usuarios: {e}")
 
     # Tareas en segundo plano ligeras (sincronizacion de bitacoras bajo demanda o webhook)
     yield
@@ -141,33 +173,37 @@ setup_rate_limiter(app)
 # Registrar manejadores de error globales
 setup_error_handlers(app)
 
-# Sub-router principal de la API con versión v1
+# Lista completa de routers modulares de la arquitectura
+all_modular_routers = [
+    auth.router,
+    clientes.router,
+    tecnicos.router,
+    tecnicos.tecnico_ops_router,
+    fincas.router,
+    servicios.router,
+    agenda.router,
+    agenda.admin_router,
+    webhook.webhook_forms_router,
+    drones.router,
+    entregables.router,
+    entregables.informes_router,
+    pagos.router,
+    notificaciones.router,
+    webhook.router,
+    usuarios.router,
+    solicitudes.router,
+    pqrs.router,
+    contacto.router,
+    media.router,
+    publicidad.router,
+]
+
+# 1. Sub-router principal oficial con prefijo /api/v1
 api_router = APIRouter(prefix="/api/v1")
+for r in all_modular_routers:
+    api_router.include_router(r)
 
-# Registrar routers modulares
-api_router.include_router(auth.router)
-api_router.include_router(clientes.router)
-api_router.include_router(tecnicos.router)
-api_router.include_router(tecnicos.tecnico_ops_router)
-api_router.include_router(fincas.router)
-api_router.include_router(servicios.router)
-api_router.include_router(agenda.router)
-api_router.include_router(agenda.admin_router)
-api_router.include_router(webhook.webhook_forms_router)
-api_router.include_router(drones.router)
-api_router.include_router(entregables.router)
-api_router.include_router(entregables.informes_router)
-api_router.include_router(pagos.router)
-api_router.include_router(notificaciones.router)
-api_router.include_router(webhook.router)
-api_router.include_router(usuarios.router)
-api_router.include_router(solicitudes.router)
-api_router.include_router(pqrs.router)
-api_router.include_router(contacto.router)
-api_router.include_router(media.router)
-api_router.include_router(publicidad.router)
-
-# Health check y estado del sistema
+# Health check y estado del sistema bajo /api/v1
 @api_router.get("/health", tags=["General"])
 def read_root():
     return {
@@ -204,10 +240,27 @@ def listar_agendas_admin_plural_alias(
 ):
     return agenda.admin_list_agenda(estado=estado, id_tecnico=id_tecnico, fecha=fecha, db=db, current_user=current_user)
 
+# Registrar /api/v1 en FastAPI
+app.include_router(api_router)
 
-@api_router.get("/health", include_in_schema=False)
-def health_api():
-    return health_check()
+# 2. Sub-router espejo a nivel de raíz (prefix="") para compatibilidad total ante peticiones sin /api/v1
+root_api_router = APIRouter(prefix="", include_in_schema=False)
+for r in all_modular_routers:
+    root_api_router.include_router(r)
+
+# Alias root para /admin/agendas
+@root_api_router.get("/admin/agendas", include_in_schema=False)
+@root_api_router.get("/admin/agendas/", include_in_schema=False)
+def listar_agendas_admin_plural_alias_root(
+    estado: str = None,
+    id_tecnico: int = None,
+    fecha: str = None,
+    db: Session = Depends(get_db),
+    current_user: UsuarioModel = Depends(agenda.admin_required)
+):
+    return agenda.admin_list_agenda(estado=estado, id_tecnico=id_tecnico, fecha=fecha, db=db, current_user=current_user)
+
+app.include_router(root_api_router)
 
 @app.get("/health", tags=["Salud"])
 def health_check():
@@ -221,20 +274,6 @@ def health_check():
     except Exception as e:
         db_status, detalle = "error", str(e)[:300]
     return {"api": "ok", "database": db_status, "detalle": detalle}
-
-# Registrar el sub-router en la aplicación
-app.include_router(api_router)
-
-# Rutas públicas directas en la raíz para compatibilidad total con scripts y llamadas sin prefijo /api/v1
-@app.get("/zonas", tags=["Zonas de Mayor Demanda (Root)"])
-def listar_zonas_root(db: Session = Depends(get_db)):
-    from app.presentation.api.routers.contacto import get_public_zonas
-    return get_public_zonas(db=db)
-
-@app.get("/contacto/config/sistema", tags=["Configuración Sistema (Root)"])
-def get_config_sistema_root(db: Session = Depends(get_db)):
-    from app.presentation.api.routers.contacto import get_public_system_config
-    return get_public_system_config(db=db)
 
 
 
@@ -322,23 +361,23 @@ if target_dir.exists():
     if (target_dir / "video").exists():
         app.mount("/video", StaticFiles(directory=str(target_dir / "video")), name="video")
         app.mount("/pages/video", StaticFiles(directory=str(target_dir / "video")), name="pages_video")
-    # Uploads directos
-    uploads_dir = target_dir / "uploads"
+    # Uploads directos unificados con el módulo media
+    from app.presentation.api.routers.media import UPLOADS_DIR
     try:
-        uploads_dir.mkdir(parents=True, exist_ok=True)
+        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     except Exception:
         pass
-    app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
-    app.mount("/pages/uploads", StaticFiles(directory=str(uploads_dir)), name="pages_uploads")
+    app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
+    app.mount("/pages/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="pages_uploads")
     app.mount("/", StaticFiles(directory=str(target_dir), html=True), name="frontend")
 else:
     # Backend desplegado de forma independiente: asegurar y servir /uploads localmente
-    standalone_uploads = BASE_DIR / "uploads"
+    from app.presentation.api.routers.media import UPLOADS_DIR
     try:
-        standalone_uploads.mkdir(parents=True, exist_ok=True)
+        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     except Exception:
         pass
-    app.mount("/uploads", StaticFiles(directory=str(standalone_uploads)), name="uploads")
+    app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)

@@ -1,13 +1,27 @@
 'use strict';
 
 // Configuración Global y Resiliente de API Flymetrics
-const API_BASE = window.BASE_URL || (
-  (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3000/api/v1'
-    : ((window.API_BASE || 'https://flymetrics-api.hostless.app') + '/api/v1')
-);
-window.API_BASE = API_BASE.replace(/\/api\/v1\/?$/, '');
+var _cliIsDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port && window.location.port !== '3000';
+var _rawCliOrigin = (window.location.protocol === 'file:' || _cliIsDev)
+  ? 'http://localhost:3000'
+  : (window.location.hostname.includes('flymetrics-api') ? window.location.origin : 'https://flymetrics-api.hostless.app');
+var API_BASE = _rawCliOrigin.replace(/\/+$/, '').replace(/\/api\/v1\/?$/, '') + '/api/v1';
+window.API_BASE = API_BASE;
 window.BASE_URL = API_BASE;
+
+function resolveMediaUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  url = url.trim();
+  if (!url) return '';
+  if (/^(https?:|\/\/|data:|blob:)/i.test(url)) return url;
+  if (/^\/?(img|video|css|js|assets)\//i.test(url)) {
+    return url.startsWith('/') ? url : ('/' + url);
+  }
+  const apiOrigin = API_BASE.replace(/\/api\/v1\/?$/, '');
+  const cleanPath = url.startsWith('/') ? url : ('/' + url);
+  return `${apiOrigin}${cleanPath}`;
+}
+window.resolveMediaUrl = resolveMediaUrl;
 // ── ANTI-XSS ESCAPING HELPER ──
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';
@@ -3934,7 +3948,7 @@ window.BASE_URL = API_BASE;
 
     window.logout = async function () {
       try {
-        await fetch('/api/v1/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => null);
+        await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }).catch(() => null);
       } catch(e) {}
       try { sessionStorage.clear(); } catch(e) {}
       try { localStorage.clear(); } catch(e) {}
@@ -4789,10 +4803,7 @@ window.showBlockingVerificationUI = function (e) {
 
       const cardsHtml = items.map((item, idx) => {
         const isVideo = (item.tipo_medio === 'video');
-        let finalMediaUrl = (item.url_medio || '').trim();
-        if (finalMediaUrl && !finalMediaUrl.startsWith('http') && !finalMediaUrl.startsWith('/') && !finalMediaUrl.startsWith('../')) {
-          finalMediaUrl = '/' + finalMediaUrl;
-        }
+        let finalMediaUrl = resolveMediaUrl(item.url_medio);
 
         const mediaBg = isVideo
           ? `<video autoplay muted loop playsinline src="${finalMediaUrl}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; filter:brightness(0.72); transition:transform 0.5s ease;"></video>`

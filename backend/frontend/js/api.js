@@ -21,7 +21,7 @@
     ? 'http://localhost:3000'
     : (isStaticFrontend ? 'https://flymetrics-api.hostless.app' : (_origin || 'https://flymetrics-api.hostless.app')));
 
-  var baseUrl = (apiBase.replace(/\/+$/, '')) + '/api/v1';
+  var baseUrl = (apiBase.replace(/\/+$/, '').replace(/\/api\/v1\/?$/, '')) + '/api/v1';
 
   var API = {
     async login(email, password) {
