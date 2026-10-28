@@ -69,69 +69,63 @@ def _clean_base_portal_url(raw_url: str) -> str:
 
 def _get_active_portal_url(path: str = "cliente", email_dest: Optional[str] = None) -> str:
     """
-    Retorna dinámicamente la URL pública de acceso para correos.
-    Por seguridad, redirige siempre al inicio de sesión (index.html?login=1)
-    evitando el ingreso directo sin autenticación previa.
-    - Cotización/Revisión: Mantiene el modal desplegable de cotización (?revisar_turno=...).
-    - Clientes: index.html?login=1&role=cliente
-    - Técnicos: index.html?login=1&role=tecnico
-    - Administradores: index.html?login=1&role=administrador
+    Retorna dinámicamente la URL pública de acceso para botones de correo.
+    Prioridad absoluta: La URL configurada por el Administrador en Base de Datos (url_botones_correo).
+    Permite redireccionar directamente a flymetrics.com.co o al portal corporativo establecido.
     """
-    from urllib.parse import quote
+    from urllib.parse import quote, urlparse
+    import json
 
     raw_path = (path or "").strip().lstrip("/")
-    
-    # 1. Si es una ruta especial como revisión de cotización, conservarla intacta
-    if "revisar_turno=" in raw_path:
-        clean_path = raw_path if raw_path.startswith("pages/") else f"pages/{raw_path}"
-    else:
-        # Determinar el rol de destino
-        role_target = "cliente"
-        if "tecnico" in raw_path.lower():
-            role_target = "tecnico"
-        elif "admin" in raw_path.lower():
-            role_target = "administrador"
 
-        query_parts = [f"login=1", f"role={role_target}"]
-        if email_dest and "@" in email_dest:
-            query_parts.append(f"email={quote(email_dest.strip().lower())}")
-
-        qs = "&".join(query_parts)
-        clean_path = f"pages/index.html?{qs}"
-
-    try:
-        from pathlib import Path
-        base_search = Path(__file__).resolve()
-        for _ in range(5):
-            candidate = base_search / "scripts" / "tunnels" / "active_tunnel_url.txt"
-            if candidate.exists():
-                u = candidate.read_text(encoding="utf-8").strip()
-                if u.startswith("http"):
-                    base = _clean_base_portal_url(u)
-                    return f"{base}/{clean_path}"
-            base_search = base_search.parent
-    except Exception:
-        pass
-
-    # Prioridad: URL configurada por el Administrador en BD
+    # ── PRIORIDAD 1: URL CONFIGURADA POR EL ADMINISTRADOR EN BASE DE DATOS ──
+    custom_url = None
     try:
         from app.infrastructure.database.session import SessionLocal
         from app.infrastructure.database.models.models import SystemConfigModel
-        import json
         with SessionLocal() as db:
             cfg_m = db.query(SystemConfigModel).filter(SystemConfigModel.clave == "config_correo_seguro").first()
             if cfg_m and cfg_m.valor:
                 c_json = json.loads(cfg_m.valor)
-                custom_url = (c_json.get("url_botones_correo") or "").strip()
-                if custom_url:
-                    base = _clean_base_portal_url(custom_url)
-                    return f"{base}/{clean_path}"
-    except Exception:
-        pass
+                val = (c_json.get("url_botones_correo") or "").strip()
+                if val:
+                    if not val.startswith("http://") and not val.startswith("https://"):
+                        val = f"https://{val}"
+                    custom_url = val.rstrip("/")
+    except Exception as e:
+        logger.debug(f"[GET_PORTAL_URL_DB] {e}")
 
-    base = getattr(settings, "PORTAL_CLIENTE_URL", None) or getattr(settings, "FRONTEND_URL", None) or "http://localhost:3000"
-    base = _clean_base_portal_url(str(base))
-    return f"{base}/{clean_path}"
+    # Fallback si no hay configuración en BD
+    if not custom_url:
+        base = getattr(settings, "PORTAL_CLIENTE_URL", None) or getattr(settings, "FRONTEND_URL", None) or "https://flymetrics.com.co"
+        custom_url = str(base).strip().rstrip("/")
+        if not custom_url.startswith("http://") and not custom_url.startswith("https://"):
+            custom_url = f"https://{custom_url}"
+
+    # Si es una revisión de turno/cotización, preservar los parámetros query
+    if "revisar_turno=" in raw_path:
+        qs = raw_path if "?" not in raw_path else raw_path.split("?", 1)[1]
+        sep = "&" if "?" in custom_url else "?"
+        if custom_url.endswith(".html"):
+            return f"{custom_url}{sep}{qs}"
+        return f"{custom_url}/index.html?{qs}"
+
+    # Si la petición es específica para el panel de administración
+    if "admin" in raw_path.lower():
+        parsed = urlparse(custom_url)
+        origin = f"{parsed.scheme}://{parsed.netloc}"
+        return f"{origin}/admin.html"
+
+    # Si la petición es específica para técnicos
+    if "tecnico" in raw_path.lower():
+        parsed = urlparse(custom_url)
+        origin = f"{parsed.scheme}://{parsed.netloc}"
+        return f"{origin}/tecnico.html"
+
+    # Para todos los correos estándar (bienvenida, confirmación de vuelo, reportes listos, pagos):
+    # Redirecciona DIRECTAMENTE a la URL configurada por el admin (ej: https://flymetrics.com.co)
+    return custom_url
+
 
 
 

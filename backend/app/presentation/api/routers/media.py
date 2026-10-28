@@ -5,6 +5,7 @@ import time
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, status, Depends
+from fastapi.responses import FileResponse
 from app.presentation.api.dependencies.auth import RoleChecker
 from app.infrastructure.database.models.models import UsuarioModel
 from app.shared.responses.response import success_response
@@ -180,26 +181,32 @@ def list_media(current_user: UsuarioModel = Depends(admin_or_tech)):
         for f in UPLOADS_DIR.rglob("*"):
             if f.is_file():
                 ext = f.suffix.lower()
-                rel_path = f.relative_to(FRONTEND_DIR).as_posix()
-                url = f"/{rel_path}"
+                is_vid = ext in ALLOWED_VIDEO_EXTS
+                is_img = ext in ALLOWED_IMAGE_EXTS
+                if not (is_vid or is_img):
+                    continue
+
+                try:
+                    rel_to_uploads = f.relative_to(UPLOADS_DIR).as_posix()
+                    url = f"/uploads/{rel_to_uploads}"
+                except Exception:
+                    url = f"/uploads/{f.name}"
+
                 if url in seen_urls:
                     continue
                 seen_urls.add(url)
                 sz = f.stat().st_size
-                is_vid = ext in ALLOWED_VIDEO_EXTS
-                is_img = ext in ALLOWED_IMAGE_EXTS
-                if is_vid or is_img:
-                    is_logo = "logo" in f.name.lower()
-                    items.append({
-                        "name": f.name,
-                        "url": url,
-                        "tipo": "video" if is_vid else "imagen",
-                        "size_bytes": sz,
-                        "size_formatted": f"{sz / (1024 * 1024):.1f} MB" if sz >= 1024*1024 else f"{sz / 1024:.0f} KB",
-                        "is_custom_upload": not is_logo,
-                        "is_protected": is_logo,
-                        "updated_at": int(f.stat().st_mtime)
-                    })
+                is_logo = "logo" in f.name.lower()
+                items.append({
+                    "name": f.name,
+                    "url": url,
+                    "tipo": "video" if is_vid else "imagen",
+                    "size_bytes": sz,
+                    "size_formatted": f"{sz / (1024 * 1024):.1f} MB" if sz >= 1024*1024 else f"{sz / 1024:.0f} KB",
+                    "is_custom_upload": not is_logo,
+                    "is_protected": is_logo,
+                    "updated_at": int(f.stat().st_mtime)
+                })
 
     # 2. Escanear imágenes y videos base
     for folder, m_type, prefix in [
@@ -230,6 +237,7 @@ def list_media(current_user: UsuarioModel = Depends(admin_or_tech)):
     # Ordenar por fecha de modificación descendente
     items.sort(key=lambda x: x["updated_at"], reverse=True)
     return success_response(message="Archivos multimedia obtenidos exitosamente", data=items)
+
 
 def delete_physical_upload(url_or_path: str) -> bool:
     """
@@ -263,7 +271,45 @@ def delete_physical_upload(url_or_path: str) -> bool:
                 return True
     except Exception as e:
         print(f"Error borrando archivo '{url_or_path}': {e}")
-    return False
+@router.get("/{filename:path}")
+def get_media_file(filename: str):
+    """
+    Sirve directamente cualquier archivo multimedia (video o imagen)
+    buscando en uploads/, video/ o img/. Soporta streaming de video con Range headers.
+    """
+    safe_name = Path(filename).name
+
+    # 1. Buscar en uploads/
+    if UPLOADS_DIR.exists():
+        direct_target = UPLOADS_DIR / filename
+        if direct_target.is_file():
+            return FileResponse(str(direct_target))
+        for target in UPLOADS_DIR.rglob(safe_name):
+            if target.is_file():
+                return FileResponse(str(target))
+
+    # 2. Buscar en video/ o img/
+    candidate_roots = [
+        FRONTEND_DIR / "video",
+        FRONTEND_DIR / "img",
+        PROJECT_ROOT / "frontend" / "video",
+        PROJECT_ROOT / "frontend" / "img",
+        _curr.parent.parent.parent.parent / "frontend" / "video",
+        _curr.parent.parent.parent.parent / "frontend" / "img",
+        _curr.parent.parent.parent.parent / "video",
+        _curr.parent.parent.parent.parent / "img",
+    ]
+    for root in candidate_roots:
+        if root.exists():
+            direct_target = root / filename
+            if direct_target.is_file():
+                return FileResponse(str(direct_target))
+            target = root / safe_name
+            if target.is_file():
+                return FileResponse(str(target))
+
+    raise HTTPException(status_code=404, detail=f"Archivo multimedia '{safe_name}' no encontrado en el servidor")
+
 
 @router.delete("/{filename:path}")
 def delete_media(filename: str, current_user: UsuarioModel = Depends(admin_required)):
