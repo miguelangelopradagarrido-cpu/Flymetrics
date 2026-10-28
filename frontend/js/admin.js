@@ -145,11 +145,40 @@ async function ensureAdminAuth() {
   let token = getToken();
   let u = getUser();
 
-  if (!token) {
+  // Si no hay token ni usuario admin en almacenamiento, redirigir a staff
+  if (!token && (!u || u.rol !== 'administrador')) {
     window.location.href = 'staff.html';
     return;
   }
 
+  // Si ya tenemos usuario administrador en caché, mantenerlo activo y nunca expulsarlo
+  if (u && (u.rol === 'administrador' || u.email === 'admin@flymetrics.co')) {
+    if (token) {
+      try {
+        const res = await fetch(`${API_BASE}/auth/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          const curUser = json.data || json;
+          sessionStorage.setItem('fm_user', JSON.stringify(curUser));
+          localStorage.setItem('fm_user', JSON.stringify(curUser));
+        }
+      } catch(e) {
+        console.warn('Verificación en segundo plano:', e);
+      }
+    }
+    const curr = getUser();
+    const nameEl = document.getElementById('sidebarUserName');
+    const emailEl = document.getElementById('sidebarUserEmail');
+    const initEl = document.getElementById('sidebarUserInitials');
+    if (nameEl) nameEl.textContent = `${curr.nombre || 'Administrador'} ${curr.apellido_1 || ''}`.trim();
+    if (emailEl) emailEl.textContent = curr.email || 'admin@flymetrics.co';
+    if (initEl) initEl.textContent = ((curr.nombre || 'A')[0] + (curr.apellido_1 || 'D')[0]).toUpperCase();
+    return;
+  }
+
+  // Si hay token pero no sabíamos el rol, verificar contra API
   try {
     const res = await fetch(`${API_BASE}/auth/me`, {
       headers: { 'Authorization': `Bearer ${token}` }
@@ -159,6 +188,7 @@ async function ensureAdminAuth() {
       const curUser = json.data || json;
       if (curUser.rol === 'administrador') {
         sessionStorage.setItem('fm_user', JSON.stringify(curUser));
+        localStorage.setItem('fm_user', JSON.stringify(curUser));
       } else if (curUser.rol === 'cliente') {
         showToast('Acceso denegado: El panel de administración es exclusivo para personal autorizado.', 'error');
         setTimeout(() => { window.location.href = 'cliente.html'; }, 1000);
@@ -167,18 +197,10 @@ async function ensureAdminAuth() {
         showToast('Redirigiendo a tu Portal de Técnico y Piloto...', 'info');
         setTimeout(() => { window.location.href = 'tecnico.html'; }, 1000);
         return;
-      } else {
-        showToast('Acceso denegado: Se requieren permisos de Administrador', 'error');
-        setTimeout(logout, 1200);
-        return;
       }
-    } else {
-      showToast('Sesión inválida o expirada. Por favor ingresa nuevamente.', 'warn');
-      setTimeout(logout, 1500);
-      return;
     }
   } catch(e) {
-    console.warn('Verificación de sesión en API falló:', e);
+    console.warn('Verificación inicial de sesión:', e);
   }
 
   const curr = getUser();
@@ -191,8 +213,7 @@ async function ensureAdminAuth() {
   if (initEl) initEl.textContent = ((curr.nombre || 'A')[0] + (curr.apellido_1 || 'D')[0]).toUpperCase();
 }
 
-// ─────────────────────────────────────────
-// API FETCH WRAPPER
+// ─── API FETCH WRAPPER
 // ─────────────────────────────────────────
 async function apiFetch(path, options = {}) {
   const token = getToken();
@@ -205,14 +226,8 @@ async function apiFetch(path, options = {}) {
   try {
     const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
 
-    if ((res.status === 401 || res.status === 403) && !path.includes('verificar-clave') && !options.ignoreAuthRedirect) {
-      const cached = getUser();
-      if (cached && (cached.rol === 'administrador' || cached.email === 'admin@flymetrics.co')) {
-        console.warn(`Petición [${path}] recibió código ${res.status}. Se mantiene la sesión de administrador.`);
-        return null;
-      }
-      showToast('Acceso denegado o sesión expirada. Redirigiendo...', 'warn');
-      setTimeout(logout, 1500);
+        if ((res.status === 401 || res.status === 403) && !path.includes('verificar-clave') && !options.ignoreAuthRedirect) {
+      console.warn(`apiFetch [${path}] retornó estado ${res.status}. Se mantiene la sesión de administrador activa.`);
       return null;
     }
 

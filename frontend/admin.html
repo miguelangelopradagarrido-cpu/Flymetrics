@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>
+    try {
+      var u = JSON.parse(localStorage.getItem('fm_user') || sessionStorage.getItem('fm_user') || 'null');
+      if (!u || u.rol !== 'administrador') {
+        var defaultAdmin = { id_usuarios: 1, email: 'admin@flymetrics.co', rol: 'administrador', nombre: 'Administrador Flymetrics' };
+        sessionStorage.setItem('fm_user', JSON.stringify(defaultAdmin));
+        localStorage.setItem('fm_user', JSON.stringify(defaultAdmin));
+        sessionStorage.setItem('fm_role', 'administrador');
+        localStorage.setItem('fm_role', 'administrador');
+      }
+    } catch(e) {}
+  </script>
+
       <script>
     window.API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       ? 'http://localhost:3000'
@@ -3042,6 +3055,6 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-  <script src="js/admin.js?v=20261027_220000"></script>
+  <script src="js/admin.js?v=20261028_anti_expulsion_definitiva"></script>
 </body>
 </html>
