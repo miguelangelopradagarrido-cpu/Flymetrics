@@ -5233,7 +5233,7 @@ window.subirArchivoGaleriaDirecto = async function(inputEl) {
 };
 
 window.eliminarArchivoGaleria = async function(filename) {
-  if (!confirm(`¿Eliminar definitivamente el archivo "${filename}" del servidor?\n\nEsta acción borrará el archivo físico de inmediato del disco.`)) return;
+  if (!confirm(`¿Eliminar definitivamente el archivo "${filename}" del servidor?\n\nEsta acción quitará el archivo de inmediato del sistema y la galería.`)) return;
 
   try {
     const token = getToken();
@@ -5242,9 +5242,9 @@ window.eliminarArchivoGaleria = async function(filename) {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const body = await res.json();
-    if (!res.ok || !body.success) throw new Error(body.message || 'No se pudo eliminar');
+    if (!res.ok || !body.success) throw new Error(body.message || body.detail || 'No se pudo eliminar');
 
-    showToast('<i class="fa-solid fa-trash-can"></i> Archivo borrado físicamente del servidor', 'success');
+    showToast('<i class="fa-solid fa-trash-can"></i> Archivo eliminado exitosamente del servidor', 'success');
     await loadMediaGallery();
   } catch (err) {
     showToast('Error al eliminar archivo: ' + err.message, 'error');

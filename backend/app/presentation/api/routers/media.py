@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, status, Depends
 from fastapi.responses import FileResponse
+from sqlalchemy.orm import Session
+from app.infrastructure.database.session import get_db
 from app.presentation.api.dependencies.auth import RoleChecker
 from app.infrastructure.database.models.models import UsuarioModel
 from app.shared.responses.response import success_response
@@ -167,14 +169,62 @@ async def upload_media_batch(
     )
 
 
+def _get_deleted_media_set(db: Session) -> set:
+    """Retorna el conjunto de archivos eliminados registrados en la base de datos."""
+    try:
+        from app.infrastructure.database.models.models import SystemConfigModel
+        import json
+        cfg = db.query(SystemConfigModel).filter(SystemConfigModel.clave == "media_deleted_files").first()
+        if cfg and cfg.valor:
+            data = json.loads(cfg.valor)
+            if isinstance(data, list):
+                return set(data)
+    except Exception:
+        pass
+    return set()
+
+
+def _add_deleted_media(db: Session, identifier: str):
+    """Registra un archivo en la lista negra de medios eliminados en base de datos."""
+    if not identifier:
+        return
+    try:
+        from app.infrastructure.database.models.models import SystemConfigModel
+        import json
+        cfg = db.query(SystemConfigModel).filter(SystemConfigModel.clave == "media_deleted_files").first()
+        items = []
+        if cfg and cfg.valor:
+            try:
+                items = json.loads(cfg.valor)
+                if not isinstance(items, list):
+                    items = []
+            except Exception:
+                items = []
+        if identifier not in items:
+            items.append(identifier)
+        if not cfg:
+            cfg = SystemConfigModel(clave="media_deleted_files", valor=json.dumps(items))
+            db.add(cfg)
+        else:
+            cfg.valor = json.dumps(items)
+        db.commit()
+    except Exception as e:
+        print(f"Error registrando archivo eliminado en BD: {e}")
+
+
 @router.get("")
-def list_media(current_user: UsuarioModel = Depends(admin_or_tech)):
+def list_media(
+    db: Session = Depends(get_db),
+    current_user: UsuarioModel = Depends(admin_or_tech)
+):
     """
     Lista todos los archivos multimedia disponibles (imágenes y videos).
     Solo los logotipos oficiales del sistema se marcan como protegidos.
+    Filtra automáticamente cualquier archivo registrado como eliminado.
     """
     items = []
     seen_urls = set()
+    deleted_set = _get_deleted_media_set(db)
 
     # 1. Escanear recursivamente uploads/
     if UPLOADS_DIR.exists():
@@ -186,13 +236,16 @@ def list_media(current_user: UsuarioModel = Depends(admin_or_tech)):
                 if not (is_vid or is_img):
                     continue
 
+                if f.name in deleted_set:
+                    continue
+
                 try:
                     rel_to_uploads = f.relative_to(UPLOADS_DIR).as_posix()
                     url = f"/uploads/{rel_to_uploads}"
                 except Exception:
                     url = f"/uploads/{f.name}"
 
-                if url in seen_urls:
+                if url in seen_urls or url in deleted_set:
                     continue
                 seen_urls.add(url)
                 sz = f.stat().st_size
@@ -218,8 +271,10 @@ def list_media(current_user: UsuarioModel = Depends(admin_or_tech)):
                 if f.is_file():
                     ext = f.suffix.lower()
                     if (m_type == "imagen" and ext in ALLOWED_IMAGE_EXTS) or (m_type == "video" and ext in ALLOWED_VIDEO_EXTS):
+                        if f.name in deleted_set:
+                            continue
                         url = f"{prefix}{f.name}"
-                        if url not in seen_urls:
+                        if url not in seen_urls and url not in deleted_set:
                             seen_urls.add(url)
                             sz = f.stat().st_size
                             is_logo = "logo" in f.name.lower()
@@ -251,19 +306,16 @@ def delete_physical_upload(url_or_path: str) -> bool:
     if not filename:
         return False
 
-    # Proteger exclusivamente los logos
     if "logo" in filename.lower():
         return False
 
     try:
-        # 1. Buscar en uploads/
         if UPLOADS_DIR.exists():
             for target in UPLOADS_DIR.rglob(filename):
                 if target.is_file():
                     target.unlink()
                     return True
 
-        # 2. Buscar en img/ o video/
         for root in [FRONTEND_DIR / "img", FRONTEND_DIR / "video"]:
             target = root / filename
             if target.is_file():
@@ -271,13 +323,22 @@ def delete_physical_upload(url_or_path: str) -> bool:
                 return True
     except Exception as e:
         print(f"Error borrando archivo '{url_or_path}': {e}")
+    return False
+
+
 @router.get("/{filename:path}")
-def get_media_file(filename: str):
+def get_media_file(
+    filename: str,
+    db: Session = Depends(get_db)
+):
     """
     Sirve directamente cualquier archivo multimedia (video o imagen)
     buscando en uploads/, video/ o img/. Soporta streaming de video con Range headers.
     """
     safe_name = Path(filename).name
+    deleted_set = _get_deleted_media_set(db)
+    if safe_name in deleted_set or filename in deleted_set:
+        raise HTTPException(status_code=404, detail=f"Archivo multimedia '{safe_name}' no encontrado en el servidor")
 
     # 1. Buscar en uploads/
     if UPLOADS_DIR.exists():
@@ -312,42 +373,87 @@ def get_media_file(filename: str):
 
 
 @router.delete("/{filename:path}")
-def delete_media(filename: str, current_user: UsuarioModel = Depends(admin_required)):
+def delete_media(
+    filename: str,
+    db: Session = Depends(get_db),
+    current_user: UsuarioModel = Depends(admin_required)
+):
     """
     Elimina directamente un archivo multimedia del servidor.
-    Se permite eliminar cualquier archivo de servicios, publicidad, videos o imágenes,
-    salvaguardando únicamente los logos oficiales de la marca.
+    - Soporta entornos con filesystem de solo lectura ([Errno 30]) ocultando de inmediato el recurso en BD.
+    - Elimina físicamente si el archivo tiene permisos de escritura.
+    - Limpia automáticamente referencias activas en medios_globales o servicios para evitar pantallas rotas.
+    - Protege logotipos institucionales oficiales.
     """
     safe_name = Path(filename).name
     if "logo" in safe_name.lower():
         raise HTTPException(status_code=403, detail="Los logotipos institucionales del sistema están protegidos y no pueden eliminarse")
 
-    deleted = False
+    physical_deleted = False
 
-    # 1. Buscar en uploads
+    # 1. Intentar borrar físicamente en uploads
     if UPLOADS_DIR.exists():
         for target in UPLOADS_DIR.rglob(safe_name):
             if target.is_file():
                 try:
                     target.unlink()
-                    deleted = True
+                    physical_deleted = True
                     break
-                except Exception as e:
-                    raise HTTPException(status_code=500, detail=f"No se pudo eliminar: {str(e)}")
+                except OSError as e:
+                    print(f"[MEDIA UNLINK WARN] No se pudo borrar {target} en disco ({e}). Se registrará como eliminado en BD.")
 
-    # 2. Si no estaba en uploads, buscar en img/ o video/
-    if not deleted:
+    # 2. Si no estaba en uploads, intentar buscar en img/ o video/
+    if not physical_deleted:
         for root in [FRONTEND_DIR / "img", FRONTEND_DIR / "video"]:
-            target = root / safe_name
-            if target.is_file():
-                try:
-                    target.unlink()
-                    deleted = True
-                    break
-                except Exception as e:
-                    raise HTTPException(status_code=500, detail=f"No se pudo eliminar: {str(e)}")
+            if root.exists():
+                target = root / safe_name
+                if target.is_file():
+                    try:
+                        target.unlink()
+                        physical_deleted = True
+                        break
+                    except OSError as e:
+                        print(f"[MEDIA UNLINK WARN] No se pudo borrar {target} en disco ({e}). Se registrará como eliminado en BD.")
 
-    if not deleted:
-        raise HTTPException(status_code=404, detail=f"Archivo '{safe_name}' no encontrado en el servidor")
+    # 3. Registrar siempre en la base de datos como eliminado permanentemente
+    _add_deleted_media(db, safe_name)
+    _add_deleted_media(db, filename)
+
+    # 4. Limpiar referencias activas en medios_globales o servicios
+    try:
+        from app.infrastructure.database.models.models import SystemConfigModel, ServicioModel
+        import json
+
+        # Limpiar en medios globales
+        cfg_medios = db.query(SystemConfigModel).filter(SystemConfigModel.clave == "medios_globales").first()
+        if cfg_medios and cfg_medios.valor:
+            m_data = json.loads(cfg_medios.valor)
+            changed = False
+            if safe_name in (m_data.get("hero_video_url") or ""):
+                m_data["hero_video_url"] = "/video/hero.mp4"
+                changed = True
+            if safe_name in (m_data.get("mobile_poster_url") or ""):
+                m_data["mobile_poster_url"] = "/img/servicio_precision.jpg"
+                changed = True
+            if changed:
+                cfg_medios.valor = json.dumps(m_data)
+                db.commit()
+
+        # Limpiar en servicios
+        servicios_afectados = db.query(ServicioModel).all()
+        for s in servicios_afectados:
+            s_changed = False
+            if s.video_url and safe_name in s.video_url:
+                s.video_url = None
+                s_changed = True
+            if s.imagen_url and safe_name in s.imagen_url:
+                s.imagen_url = None
+                s_changed = True
+            if s_changed:
+                db.add(s)
+        db.commit()
+    except Exception as ref_err:
+        print(f"[MEDIA CLEANUP REFS WARN] {ref_err}")
 
     return success_response(message=f"Archivo '{safe_name}' eliminado exitosamente del servidor")
+
