@@ -25,4 +25,4 @@ COPY . .
 EXPOSE 8000
 
 # Iniciar la aplicación
-CMD ["sh", "-c", "if [ -f main.py ]; then exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}; else exec uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000}; fi"]
+CMD ["sh", "-c", "cd /app/backend && exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
