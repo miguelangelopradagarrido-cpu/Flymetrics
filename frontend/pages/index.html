@@ -898,7 +898,7 @@
 
                 <!-- Botón flotante para ver Video Completo en pantalla grande (aparece ÚNICAMENTE cuando se reproduce el video principal) -->
         <button type="button" id="heroFloatingFullscreenBtn" onclick="window.openHeroFullscreenViewer(event)" aria-label="Ver video completo con sonido"
-          style="display: none; position: absolute; right: 28px; bottom: 32px; z-index: 1000; background: rgba(0, 48, 73, 0.88); color: #ffffff; border-radius: 9999px; padding: 12px 22px; font-weight: 800; font-size: 0.90rem; font-family: 'Barlow', sans-serif; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 2px solid #10b981; align-items: center; gap: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 30px rgba(0,0,0,0.6);"
+          style="display: none; position: absolute; right: 20px; bottom: 85px; z-index: 1000; box-shadow: 0 8px 30px rgba(0,0,0,0.7); background: rgba(0, 48, 73, 0.88); color: #ffffff; border-radius: 9999px; padding: 12px 22px; font-weight: 800; font-size: 0.90rem; font-family: 'Barlow', sans-serif; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 2px solid #10b981; align-items: center; gap: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 30px rgba(0,0,0,0.6);"
           onmouseover="this.style.background='rgba(16, 185, 129, 0.9)'; this.style.borderColor='#ffffff'; this.style.transform='translateY(-2px) scale(1.05)';"
           onmouseout="this.style.background='rgba(0, 48, 73, 0.88)'; this.style.borderColor='#10b981'; this.style.transform='translateY(0) scale(1)';">
           <i class="fa-solid fa-expand" style="color: #6ee7b7; font-size: 1.1rem;"></i>
@@ -5050,7 +5050,10 @@
 
       // Visualizador de Cine / Pantalla Completa para Video Principal
       window.openHeroFullscreenViewer = function(e) {
-        if (e && e.stopPropagation) e.stopPropagation();
+        if (e) {
+          if (e.stopPropagation) e.stopPropagation();
+          if (e.preventDefault) e.preventDefault();
+        }
         var currentSlide = _heroSlides[_currentHeroIndex] || _heroSlides[0];
         var videoUrl = (currentSlide && currentSlide.tipo === 'video' && currentSlide.url) ? currentSlide.url : '/video/hero.mp4';
         var resolved = window.resolveMediaUrl ? window.resolveMediaUrl(videoUrl) : videoUrl;
@@ -5065,10 +5068,22 @@
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
 
-        player.play().catch(function() {
-          player.muted = true;
-          player.play().catch(function(){});
-        });
+        var p = player.play();
+        if (p !== undefined) {
+          p.catch(function() {
+            player.muted = true;
+            player.play().catch(function(){});
+          });
+        }
+
+        // Si es pantalla táctil móvil, intentar disparar fullscreen nativo
+        if (window.innerWidth <= 768) {
+          if (player.requestFullscreen) {
+            player.requestFullscreen().catch(function(){});
+          } else if (player.webkitRequestFullscreen) {
+            player.webkitRequestFullscreen().catch(function(){});
+          }
+        }
       };
 
       window.closeHeroFullscreenViewer = function() {
@@ -5361,6 +5376,21 @@
       } catch (err) {}
     })();
   </script>
+  <!-- ── MODAL TEATRO DE VIDEO HERO COMPLETO (AUDIO + PANTALLA COMPLETA) ── -->
+  <div id="heroVideoFullscreenModal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: rgba(0, 10, 20, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); align-items: center; justify-content: center; padding: 20px;">
+    <!-- Botón de Cerrar Flotante en la Esquina Superior Derecha -->
+    <button type="button" onclick="window.closeHeroFullscreenViewer()" aria-label="Cerrar reproductor"
+      style="position: absolute; top: 24px; right: 28px; z-index: 1000000; width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 2px solid rgba(228,199,161,0.8); color: #ffffff; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"
+      onmouseover="this.style.background='#ef4444'; this.style.borderColor='#ffffff'; this.style.transform='scale(1.1)';"
+      onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='rgba(228,199,161,0.8)'; this.style.transform='scale(1)';">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <!-- Contenedor del Reproductor con Controles Nativos y Barra de Calidad -->
+    <div style="width: 100%; max-width: 1200px; max-height: 88vh; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 90px rgba(0,0,0,0.9), 0 0 0 2px rgba(228,199,161,0.4); background: #000; position: relative; display: flex; flex-direction: column;">
+      <video id="heroTheaterPlayer" controls playsinline preload="auto" style="width: 100%; height: 100%; max-height: 85vh; object-fit: contain; background: #000; display: block;"></video>
+    </div>
+  </div>
 </body>
 
 </html>
