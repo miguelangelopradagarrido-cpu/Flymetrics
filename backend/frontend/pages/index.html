@@ -126,7 +126,7 @@
       }
     };
 
-    window.servicesData = [
+        window.servicesData = [
       {
         id: 0,
         image: "img/servicio_precision.jpg",
@@ -137,7 +137,13 @@
         sistema: "Ecosistema Inteligente Flymetrics",
         efficiency: "Alta cobertura por jornada operativa",
         capacity: "Diagnóstico Multiespectral y Telemetría RTK",
-        precision: "Centimétrica RTK (± 2 cm de margen geográfico)"
+        precision: "Centimétrica RTK (± 2 cm de margen geográfico)",
+        gallery: [
+          { tipo: 'video', url: 'video/precision_drone.mp4', label: 'Aspersión RTK en Cultivo' },
+          { tipo: 'imagen', url: 'img/servicio_precision.jpg', label: 'Operación Terrestre RTK' },
+          { tipo: 'imagen', url: '/fotovideofly/Diseño sin título (4).png', label: 'Control Telemétrico' },
+          { tipo: 'imagen', url: '/fotovideofly/IMG-20261009-WA0050.jpg.jpeg', label: 'Monitoreo de Lote' }
+        ]
       },
       {
         id: 1,
@@ -149,7 +155,13 @@
         sistema: "Plataforma de Mapeo de Potreros y Aspersión de Pasturas",
         efficiency: "Zonificación y cobertura eficiente de potreros y pastizales",
         capacity: "Digitalización de linderos, aforos de pasturas y fuentes hídricas",
-        precision: "Precisión centimétrica RTK para cercado y fuentes de agua"
+        precision: "Precisión centimétrica RTK para cercado y fuentes de agua",
+        gallery: [
+          { tipo: 'video', url: 'video/ganaderia_drone.mp4', label: 'Patrullaje Ganadero' },
+          { tipo: 'imagen', url: 'img/servicio_ganaderia.jpg', label: 'Delimitación de Potreros' },
+          { tipo: 'imagen', url: '/fotovideofly/20260630_114921.jpg.jpeg', label: 'Pasturas y Aforo' },
+          { tipo: 'imagen', url: '/fotovideofly/IMG-20261009-WA0030.jpg.jpeg', label: 'Topografía de Finca' }
+        ]
       },
       {
         id: 2,
@@ -161,7 +173,13 @@
         sistema: "Sistemas de Aspersión Inteligente y Pulverización ULV",
         efficiency: "Operación ágil y cobertura uniforme por lote",
         capacity: "Atomización Centrífuga de Alta Cobertura Foliar",
-        precision: "Centimétrica RTK (± 2 cm de precisión de vuelo)"
+        precision: "Centimétrica RTK (± 2 cm de precisión de vuelo)",
+        gallery: [
+          { tipo: 'video', url: 'video/hero.mp4', label: 'Vuelo de Aspersión Centimétrica' },
+          { tipo: 'imagen', url: 'img/servicio_aspersion.jpg', label: 'Niebla Atomizada ULV' },
+          { tipo: 'imagen', url: '/fotovideofly/IMG-20261009-WA0058.jpg.jpeg', label: 'Despegue de Cuadrilla' },
+          { tipo: 'imagen', url: '/fotovideofly/IMG-20260720-WA0053.jpg.jpeg', label: 'Tanqueo de Insumos' }
+        ]
       },
       {
         id: 3,
@@ -173,7 +191,13 @@
         sistema: "Sensor Multiespectral 4 Bandas (G/R/RE/NIR) + RGB de Alta Resolución",
         efficiency: "Hasta 200 Hectáreas por vuelo de diagnóstico",
         capacity: "Resolución espacial de alta definición desde 2 cm por píxel",
-        precision: "Georreferenciación centimétrica en tiempo real mediante RTK"
+        precision: "Georreferenciación centimétrica en tiempo real mediante RTK",
+        gallery: [
+          { tipo: 'video', url: 'video/field_drone.mp4', label: 'Escaneo Multiespectral NDVI' },
+          { tipo: 'imagen', url: 'img/servicio_multiespectral.jpg', label: 'Mapa de Vigor Vegetativo' },
+          { tipo: 'imagen', url: '/fotovideofly/IMG-20261009-WA0025.jpg.jpeg', label: 'Detección Temprana de Estrés' },
+          { tipo: 'imagen', url: '/fotovideofly/20261007_155800.jpg.jpeg', label: 'Calibración Radiométrica' }
+        ]
       },
       {
         id: 4,
@@ -185,12 +209,31 @@
         sistema: "Sistemas de Fotogrametría Aérea RTK",
         efficiency: "Levantamiento rápido y preciso de fincas y predios",
         capacity: "Resolución espacial de alta definición desde 2 cm por píxel",
-        precision: "Margen de error centimétrico absoluto RTK (± 2 cm con GCPs)"
+        precision: "Margen de error centimétrico absoluto RTK (± 2 cm con GCPs)",
+        gallery: [
+          { tipo: 'video', url: 'video/topografia_drone.mp4', label: 'Modelo Digital y Nube 3D' },
+          { tipo: 'imagen', url: 'img/servicio_topografia_3d.jpg', label: 'Curvas de Nivel y Elevación' },
+          { tipo: 'imagen', url: '/fotovideofly/IMG-20261009-WA0031.jpg.jpeg', label: 'Ortomosaico Georreferenciado' },
+          { tipo: 'imagen', url: '/fotovideofly/20261007_160739.jpg.jpeg', label: 'Punto de Control Terrestre' }
+        ]
       }
     ];
 
-    window.currentServiceIndex = 0;
+        window.currentServiceIndex = 0;
     window.modalOpenTime = 0;
+
+    // Detección de calidad de video autoescalable por dispositivo y red
+    window.getAutoVideoQualityBadge = function() {
+      const isMobile = window.innerWidth <= 768;
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (isMobile) {
+        return '<i class="fa-solid fa-bolt" style="color: #10b981;"></i> Calidad Móvil Fluida';
+      }
+      if (conn && conn.saveData) {
+        return '<i class="fa-solid fa-gauge-simple-high" style="color: #f59e0b;"></i> Ahorro de Datos';
+      }
+      return '<i class="fa-solid fa-clapperboard" style="color: #10b981;"></i> 1080p Full HD';
+    };
 
     window.toggleModalVideoPlay = function (e) {
       if (e) {
@@ -259,6 +302,53 @@
       }
     };
 
+    // Galería interactiva del servicio (seleccionar thumbnail para cambiar visualizador)
+    window.selectServiceMedia = function(tipo, url, targetEl) {
+      const modalVideo = document.getElementById('modal-video');
+      const modalImg = document.getElementById('modal-img');
+      const box = document.getElementById('modal-video-container');
+      const playIcon = document.getElementById('video-play-icon');
+      const resolved = window.resolveMediaUrl ? window.resolveMediaUrl(url) : url;
+
+      // Actualizar estado activo en thumbnails
+      document.querySelectorAll('.service-thumb-item').forEach(el => el.classList.remove('active'));
+      if (targetEl) targetEl.classList.add('active');
+
+      if (tipo === 'video') {
+        if (modalImg) modalImg.style.display = 'none';
+        if (modalVideo) {
+          modalVideo.style.display = 'block';
+          modalVideo.src = resolved;
+          let srcChild = modalVideo.querySelector('source');
+          if (srcChild) srcChild.src = resolved;
+          modalVideo.load();
+          modalVideo.play().then(() => {
+            if (box) box.classList.add('video-playing');
+            if (playIcon) playIcon.className = 'fa-solid fa-pause';
+          }).catch(() => {});
+        }
+      } else {
+        if (modalVideo) {
+          modalVideo.pause();
+          modalVideo.style.display = 'none';
+        }
+        if (box) box.classList.remove('video-playing');
+        if (modalImg) {
+          modalImg.src = resolved;
+          modalImg.style.display = 'block';
+        }
+      }
+    };
+
+    window.seekModalVideo = function(e) {
+      const bar = document.getElementById('modal-video-progress-container');
+      const modalVideo = document.getElementById('modal-video');
+      if (!bar || !modalVideo || !modalVideo.duration) return;
+      const rect = bar.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      modalVideo.currentTime = Math.max(0, Math.min(modalVideo.duration, pos * modalVideo.duration));
+    };
+
     window.updateModalContent = function (index) {
       const service = window.servicesData[index];
       if (!service) return;
@@ -271,6 +361,11 @@
       const audioLabel = document.getElementById('modal-video-audio-label');
       const btnAudio = document.getElementById('btn-audio-modal-video');
       const playIcon = document.getElementById('video-play-icon');
+      const badgeQuality = document.getElementById('modal-video-quality-badge');
+
+      if (badgeQuality) {
+        badgeQuality.innerHTML = window.getAutoVideoQualityBadge();
+      }
 
       // Resetear estado de audio y play
       if (audioIcon) { audioIcon.className = 'fa-solid fa-volume-xmark'; audioIcon.style.color = '#f59e0b'; }
@@ -278,26 +373,28 @@
       if (btnAudio) btnAudio.classList.remove('active');
       if (playIcon) playIcon.className = 'fa-solid fa-play';
 
+      const initialVideoUrl = service.video ? (window.resolveMediaUrl ? window.resolveMediaUrl(service.video) : service.video) : '';
+      const initialImgUrl = service.image ? (window.resolveMediaUrl ? window.resolveMediaUrl(service.image) : service.image) : '';
+
       if (modalVideo) {
         modalVideo.muted = true;
         modalVideo.setAttribute('playsinline', '');
         modalVideo.setAttribute('webkit-playsinline', '');
-        if (service.image) {
-          modalVideo.poster = service.image;
+        if (initialImgUrl) {
+          modalVideo.poster = initialImgUrl;
         }
-        if (service.video) {
+        if (initialVideoUrl) {
           modalVideo.style.display = 'block';
-          const targetVideoUrl = service.video;
-          const currentVideoSrc = modalVideo.currentSrc || modalVideo.src || '';
+          if (modalImg) modalImg.style.display = 'none';
           
-          if (!currentVideoSrc.includes(targetVideoUrl)) {
-            modalVideo.src = targetVideoUrl;
+          if (!modalVideo.src.includes(initialVideoUrl)) {
+            modalVideo.src = initialVideoUrl;
             let srcChild = modalVideo.querySelector('source');
             if (!srcChild) {
               srcChild = document.createElement('source');
               modalVideo.appendChild(srcChild);
             }
-            srcChild.src = targetVideoUrl;
+            srcChild.src = initialVideoUrl;
             srcChild.type = 'video/mp4';
             modalVideo.load();
           }
@@ -309,13 +406,16 @@
               if (box) box.classList.add('video-playing');
               if (playIcon) playIcon.className = 'fa-solid fa-pause';
             }).catch(() => {
-              // Si el móvil bloquea autoplay con audio (incluso muted), asegurar UI consistente
               if (box) box.classList.remove('video-playing');
               if (playIcon) playIcon.className = 'fa-solid fa-play';
             });
           }
         } else {
           modalVideo.style.display = 'none';
+          if (modalImg) {
+            modalImg.src = initialImgUrl;
+            modalImg.style.display = 'block';
+          }
         }
 
         modalVideo.ontimeupdate = function() {
@@ -337,12 +437,31 @@
         };
       }
 
-      if (modalImg) {
-        if (service.image) {
-          modalImg.src = service.image;
-          modalImg.alt = service.title;
-        }
-        modalImg.style.display = service.video ? 'none' : 'block';
+      // Renderizar galería múltiple de imágenes y videos del servicio
+      const galleryTrack = document.getElementById('modal-service-gallery');
+      if (galleryTrack) {
+        const items = service.gallery && service.gallery.length > 0 ? service.gallery : [
+          { tipo: service.video ? 'video' : 'imagen', url: service.video || service.image, label: 'Principal' },
+          { tipo: 'imagen', url: service.image, label: 'Fotografía Técnica' }
+        ];
+
+        galleryTrack.innerHTML = items.map((item, idx) => {
+          const isVid = item.tipo === 'video';
+          const rUrl = window.resolveMediaUrl ? window.resolveMediaUrl(item.url) : item.url;
+          return `
+            <div class="service-thumb-item ${idx === 0 ? 'active' : ''}" 
+                 onclick="window.selectServiceMedia('${item.tipo}', '${item.url}', this)"
+                 title="${item.label || 'Ver recurso'}"
+                 style="position: relative; width: 84px; height: 56px; border-radius: 8px; overflow: hidden; cursor: pointer; flex-shrink: 0; border: 2px solid ${idx === 0 ? '#10b981' : 'rgba(0,48,73,0.15)'}; transition: all 0.25s ease;">
+              ${isVid ? 
+                `<video src="${rUrl}" muted playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;"></video>
+                 <span style="position: absolute; bottom: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #E4C7A1; font-size: 0.65rem; padding: 1px 4px; border-radius: 4px;"><i class="fa-solid fa-play"></i></span>`
+                : 
+                `<img src="${rUrl}" alt="${item.label}" style="width: 100%; height: 100%; object-fit: cover;">`
+              }
+            </div>
+          `;
+        }).join('');
       }
 
       const modalIcon = document.getElementById('modal-icon');
@@ -769,6 +888,12 @@
               onmouseout="this.style.background='rgba(0, 48, 73, 0.65)'; this.style.borderColor='rgba(28, 130, 173, 0.7)';">
               <i class="fa-solid fa-paper-plane" style="color: #1C82AD;"></i> Solicitar Cotización
             </a>
+            <button type="button" class="btn-glass" onclick="window.openHeroFullscreenViewer()"
+              style="background: rgba(16, 185, 129, 0.25); color: #ffffff; border-radius: 9999px; padding: 18px 28px; font-weight: 800; font-size: 0.98rem; font-family: 'Barlow', sans-serif; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1.5px solid #10b981; display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.03em; cursor: pointer; transition: all 0.3s;"
+              onmouseover="this.style.background='rgba(16, 185, 129, 0.45)'; this.style.borderColor='#ffffff'; this.style.transform='scale(1.04)';"
+              onmouseout="this.style.background='rgba(16, 185, 129, 0.25)'; this.style.borderColor='#10b981'; this.style.transform='scale(1)';">
+              <i class="fa-solid fa-expand" style="color: #6ee7b7;"></i> Ver Video Completo
+            </button>
             <a href="#servicios" class="btn-glass"
               style="background: rgba(255, 255, 255, 0.14); color: #ffffff; border-radius: 9999px; padding: 18px 26px; font-weight: 700; font-size: 0.98rem; font-family: 'Barlow', sans-serif; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1.5px solid rgba(228, 199, 161, 0.6); display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.03em; text-decoration: none; transition: all 0.3s;"
               onmouseover="this.style.background='rgba(255, 255, 255, 0.28)'; this.style.borderColor='#ffffff';"
@@ -3576,7 +3701,7 @@
         <!-- Floating Top Bar con Controles -->
         <div class="video-top-bar">
           <div class="video-badge-tag">
-            <span class="video-live-dot"></span> VUELO DEMOSTRATIVO 4K
+            <span class="video-live-dot"></span> <span id="modal-video-quality-badge"><i class="fa-solid fa-clapperboard" style="color: #10b981;"></i> 1080p Full HD</span>
           </div>
           <div class="video-top-actions">
             <!-- Botón de Audio (Activar / Silenciar) -->
@@ -3611,6 +3736,17 @@
         <div class="video-bottom-progress">
           <div id="modal-video-progress" class="video-bottom-progress-bar"></div>
         </div>
+      </div>
+
+      <!-- Carrusel de Miniaturas / Collage Multimedia del Servicio -->
+      <div style="margin: 10px 0 16px 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+          <span style="font-size: 0.78rem; font-weight: 700; color: #003049; text-transform: uppercase; letter-spacing: 0.05em;">
+            <i class="fa-solid fa-photo-film" style="color: #1C82AD; margin-right: 5px;"></i> Galería Multimedia del Servicio
+          </span>
+          <span style="font-size: 0.72rem; color: #6C757D;">Haz clic para alternar foto o video</span>
+        </div>
+        <div id="modal-service-gallery" style="display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px; -webkit-overflow-scrolling: touch;"></div>
       </div>
 
       <!-- Modal Header (Icon + Title) -->
@@ -4863,13 +4999,17 @@
         showHeroSlide(0);
       }
 
+            // Carrusel Hero continuo: Video -> Diapositivas -> Video en bucle constante
       function showHeroSlide(index) {
         if (!_heroSlides.length) return;
         if (index < 0) index = _heroSlides.length - 1;
         if (index >= _heroSlides.length) index = 0;
         _currentHeroIndex = index;
 
-        if (_heroTimer) clearTimeout(_heroTimer);
+        if (_heroTimer) {
+          clearTimeout(_heroTimer);
+          _heroTimer = null;
+        }
 
         var wrapper = document.getElementById('hero-slides-wrapper');
         if (!wrapper) return;
@@ -4883,13 +5023,18 @@
             if (vid) {
               vid.currentTime = 0;
               vid.play().catch(function() {});
+              // Avanzar al finalizar el video o tras máximo 14 segundos de seguridad
               vid.onended = function() {
                 window.nextHeroSlide();
               };
-            } else {
               _heroTimer = setTimeout(function() {
                 window.nextHeroSlide();
-              }, 6000);
+              }, 14000);
+            } else {
+              // Diapositiva de imagen: 5 segundos y avanza a la siguiente
+              _heroTimer = setTimeout(function() {
+                window.nextHeroSlide();
+              }, 5000);
             }
           } else {
             el.style.opacity = '0';
@@ -4916,6 +5061,42 @@
           }
         });
       }
+
+      // Visualizador de Cine / Pantalla Completa para Video Principal
+      window.openHeroFullscreenViewer = function() {
+        var currentSlide = _heroSlides[_currentHeroIndex] || _heroSlides[0];
+        var videoUrl = (currentSlide && currentSlide.tipo === 'video' && currentSlide.url) ? currentSlide.url : '/video/hero.mp4';
+        var resolved = window.resolveMediaUrl ? window.resolveMediaUrl(videoUrl) : videoUrl;
+
+        var modal = document.getElementById('heroVideoFullscreenModal');
+        var player = document.getElementById('heroTheaterPlayer');
+        if (!modal || !player) return;
+
+        player.src = resolved;
+        player.muted = false;
+        player.volume = 1.0;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        player.play().catch(function() {
+          player.muted = true;
+          player.play().catch(function(){});
+        });
+      };
+
+      window.closeHeroFullscreenViewer = function() {
+        var modal = document.getElementById('heroVideoFullscreenModal');
+        var player = document.getElementById('heroTheaterPlayer');
+        if (player) {
+          player.pause();
+          player.currentTime = 0;
+          player.src = '';
+        }
+        if (modal) {
+          modal.style.display = 'none';
+        }
+        document.body.style.overflow = '';
+      };
 
       window.nextHeroSlide = function(e) {
         if (e && e.preventDefault) e.preventDefault();
