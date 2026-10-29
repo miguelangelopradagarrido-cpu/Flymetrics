@@ -569,8 +569,8 @@ def delete_media(
     - Protege logotipos institucionales oficiales.
     """
     safe_name = Path(filename).name
-    if "logo" in safe_name.lower():
-        raise HTTPException(status_code=403, detail="Los logotipos institucionales del sistema están protegidos y no pueden eliminarse")
+    if any(p in safe_name.lower() for p in ["logo", "hero.mp4", "field_drone.mp4", "servicio_precision.jpg"]):
+        raise HTTPException(status_code=403, detail="Los recursos base del sistema están protegidos y no pueden eliminarse")
 
     physical_deleted = False
     writable_dir = _get_writable_uploads_dir()
@@ -623,10 +623,10 @@ def delete_media(
         if cfg_medios and cfg_medios.valor:
             m_data = json.loads(cfg_medios.valor)
             changed = False
-            if safe_name in (m_data.get("hero_video_url") or ""):
+            if safe_name in (m_data.get("hero_video_url") or "") or filename in (m_data.get("hero_video_url") or ""):
                 m_data["hero_video_url"] = "/video/hero.mp4"
                 changed = True
-            if safe_name in (m_data.get("mobile_poster_url") or ""):
+            if safe_name in (m_data.get("mobile_poster_url") or "") or filename in (m_data.get("mobile_poster_url") or ""):
                 m_data["mobile_poster_url"] = "/img/servicio_precision.jpg"
                 changed = True
             if changed:
