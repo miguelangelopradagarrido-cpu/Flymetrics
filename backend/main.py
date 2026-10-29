@@ -44,6 +44,15 @@ from starlette.responses import Response
 # Context manager moderno de ciclo de vida de FastAPI
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Sincronizar modelos y tablas en la base de datos
+    try:
+        from app.infrastructure.database.session import engine
+        from app.infrastructure.database.models.models import Base
+        Base.metadata.create_all(bind=engine)
+        print("[STARTUP] Tablas sincronizadas con base de datos exitosamente")
+    except Exception as db_sync_err:
+        print(f"[STARTUP] Aviso en sincronización de base de datos: {db_sync_err}")
+
     # Asegurar usuario administrador y técnico por defecto al iniciar / desplegar
     try:
         from app.infrastructure.database.session import SessionLocal
@@ -361,23 +370,20 @@ if target_dir.exists():
     if (target_dir / "video").exists():
         app.mount("/video", StaticFiles(directory=str(target_dir / "video")), name="video")
         app.mount("/pages/video", StaticFiles(directory=str(target_dir / "video")), name="pages_video")
-    # Uploads directos unificados con el módulo media
-    from app.presentation.api.routers.media import UPLOADS_DIR
-    try:
-        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-    except Exception:
-        pass
-    app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
-    app.mount("/pages/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="pages_uploads")
+    # Servir uploads de forma dinámica con get_media_file para soportar entornos read-only y restauración de MySQL
+    @app.get("/uploads/{filepath:path}", include_in_schema=False)
+    @app.get("/pages/uploads/{filepath:path}", include_in_schema=False)
+    def serve_uploads_file(filepath: str, db: Session = Depends(get_db)):
+        from app.presentation.api.routers.media import get_media_file
+        return get_media_file(filename=filepath, db=db)
+
     app.mount("/", StaticFiles(directory=str(target_dir), html=True), name="frontend")
 else:
-    # Backend desplegado de forma independiente: asegurar y servir /uploads localmente
-    from app.presentation.api.routers.media import UPLOADS_DIR
-    try:
-        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-    except Exception:
-        pass
-    app.mount("/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
+    # Backend desplegado de forma independiente: asegurar y servir /uploads mediante get_media_file
+    @app.get("/uploads/{filepath:path}", include_in_schema=False)
+    def serve_uploads_file_standalone(filepath: str, db: Session = Depends(get_db)):
+        from app.presentation.api.routers.media import get_media_file
+        return get_media_file(filename=filepath, db=db)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)

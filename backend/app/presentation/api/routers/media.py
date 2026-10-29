@@ -2,6 +2,7 @@
 import os
 import shutil
 import time
+import tempfile
 from pathlib import Path
 from typing import Optional
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, status, Depends
@@ -9,7 +10,7 @@ from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from app.infrastructure.database.session import get_db
 from app.presentation.api.dependencies.auth import RoleChecker
-from app.infrastructure.database.models.models import UsuarioModel
+from app.infrastructure.database.models.models import UsuarioModel, MediaUploadModel
 from app.shared.responses.response import success_response
 
 router = APIRouter(prefix="/media", tags=["Multimedia & Galería"])
@@ -44,6 +45,32 @@ try:
 except Exception:
     pass
 
+def _get_writable_uploads_dir() -> Path:
+    """
+    Determina la carpeta de subida con permisos de escritura reales.
+    Si la carpeta estándar del contenedor es de solo lectura ([Errno 30]),
+    retrocede dinámicamente a /tmp/flymetrics_uploads para garantizar la subida.
+    """
+    candidates = [
+        UPLOADS_DIR,
+        (PROJECT_ROOT / "uploads") if PROJECT_ROOT else None,
+        Path(tempfile.gettempdir()) / "flymetrics_uploads",
+        Path("/tmp/flymetrics_uploads")
+    ]
+    for c in candidates:
+        if not c:
+            continue
+        try:
+            c.mkdir(parents=True, exist_ok=True)
+            test_file = c / f".perm_check_{int(time.time()*1000)}"
+            test_file.write_text("ok")
+            test_file.unlink()
+            return c
+        except Exception:
+            continue
+    fallback = Path(tempfile.gettempdir())
+    return fallback
+
 ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".svg", ".gif"}
 ALLOWED_VIDEO_EXTS = {".mp4", ".webm", ".mov", ".m4v"}
 
@@ -57,11 +84,13 @@ async def upload_media(
     file: UploadFile = File(...),
     tipo: Optional[str] = Form(None),
     modulo: Optional[str] = Form("general"),
+    db: Session = Depends(get_db),
     current_user: UsuarioModel = Depends(admin_or_tech)
 ):
     """
     Sube directamente una imagen o video al servidor para usar en servicios de la página principal o galerías.
     Organiza por módulo: 'publicidad', 'servicios', 'collage', etc.
+    Guarda en disco escribible (/tmp o uploads) y en base de datos para persistencia total contra reinicios.
     """
     import re
     ext = Path(file.filename).suffix.lower()
@@ -79,22 +108,55 @@ async def upload_media(
         media_type = tipo
 
     clean_mod = re.sub(r'[^a-zA-Z0-9_-]', '_', modulo or "general").strip('_') or "general"
-    mod_dir = UPLOADS_DIR / clean_mod / ("videos" if media_type == "video" else "images")
-    mod_dir.mkdir(parents=True, exist_ok=True)
+    writable_dir = _get_writable_uploads_dir()
+    mod_dir = writable_dir / clean_mod / ("videos" if media_type == "video" else "images")
+    try:
+        mod_dir.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        mod_dir = writable_dir
 
-    dest_folder = mod_dir
     ts = int(time.time())
     safe_name = _sanitize_filename(Path(file.filename).stem)
     new_filename = f"{safe_name}_{ts}{ext}"
-    dest_path = dest_folder / new_filename
+    dest_path = mod_dir / new_filename
 
-    total_bytes = 0
-    with open(dest_path, "wb") as buffer:
-        while chunk := await file.read(1024 * 1024):  # 1MB chunks
-            buffer.write(chunk)
-            total_bytes += len(chunk)
+    # 1. Leer buffer completo en memoria
+    file_bytes = await file.read()
+    total_bytes = len(file_bytes)
+
+    # 2. Intentar guardar en disco escribible (ej: /tmp/flymetrics_uploads o uploads)
+    try:
+        dest_path.write_bytes(file_bytes)
+    except Exception as disk_err:
+        print(f"[MEDIA DISK WRITE WARN] No se pudo escribir en disco ({disk_err}). Respaldando en base de datos...")
 
     rel_url = f"/uploads/{clean_mod}/{'videos' if media_type == 'video' else 'images'}/{new_filename}"
+
+    # 3. Guardar en base de datos MySQL para persistencia total contra reinicios o entornos de solo lectura
+    try:
+        import base64
+        b64_str = base64.b64encode(file_bytes).decode('ascii')
+        media_rec = db.query(MediaUploadModel).filter(MediaUploadModel.filename == new_filename).first()
+        if not media_rec:
+            media_rec = MediaUploadModel(
+                filename=new_filename,
+                rel_url=rel_url,
+                modulo=clean_mod,
+                tipo=media_type,
+                content_type=file.content_type or ("video/mp4" if is_vid else "image/jpeg"),
+                data=b64_str,
+                size_bytes=total_bytes,
+                activo=True
+            )
+            db.add(media_rec)
+        else:
+            media_rec.data = b64_str
+            media_rec.size_bytes = total_bytes
+            media_rec.activo = True
+        db.commit()
+    except Exception as db_err:
+        db.rollback()
+        print(f"[MEDIA DB BACKUP WARN] Error guardando respaldo en BD: {db_err}")
 
     return success_response(
         message=f"{media_type.capitalize()} subido exitosamente en módulo {clean_mod}",
@@ -114,6 +176,7 @@ async def upload_media(
 async def upload_media_batch(
     files: list[UploadFile] = File(...),
     modulo: Optional[str] = Form("collage"),
+    db: Session = Depends(get_db),
     current_user: UsuarioModel = Depends(admin_or_tech)
 ):
     """
@@ -121,9 +184,11 @@ async def upload_media_batch(
     Retorna la lista de URLs de todos los archivos subidos exitosamente.
     """
     import re
+    import base64
     results = []
     errors = []
     clean_mod = re.sub(r'[^a-zA-Z0-9_-]', '_', modulo or "collage").strip('_') or "collage"
+    writable_dir = _get_writable_uploads_dir()
 
     for file in files:
         ext = Path(file.filename).suffix.lower()
@@ -135,21 +200,46 @@ async def upload_media_batch(
             continue
 
         media_type = "video" if is_vid else "imagen"
-        mod_dir = UPLOADS_DIR / clean_mod / ("videos" if media_type == "video" else "images")
-        mod_dir.mkdir(parents=True, exist_ok=True)
-        ts = int(time.time() * 1000)  # milisegundos para evitar colisiones
+        mod_dir = writable_dir / clean_mod / ("videos" if media_type == "video" else "images")
+        try:
+            mod_dir.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            mod_dir = writable_dir
+
+        ts = int(time.time() * 1000)
         safe_name = _sanitize_filename(Path(file.filename).stem)
         new_filename = f"{safe_name}_{ts}{ext}"
         dest_path = mod_dir / new_filename
 
         try:
-            total_bytes = 0
-            with open(dest_path, "wb") as buffer:
-                while chunk := await file.read(1024 * 1024):
-                    buffer.write(chunk)
-                    total_bytes += len(chunk)
+            file_bytes = await file.read()
+            total_bytes = len(file_bytes)
+
+            try:
+                dest_path.write_bytes(file_bytes)
+            except Exception as disk_err:
+                print(f"[MEDIA BATCH DISK WARN] {disk_err}")
 
             rel_url = f"/uploads/{clean_mod}/{'videos' if media_type == 'video' else 'images'}/{new_filename}"
+
+            try:
+                b64_str = base64.b64encode(file_bytes).decode('ascii')
+                media_rec = MediaUploadModel(
+                    filename=new_filename,
+                    rel_url=rel_url,
+                    modulo=clean_mod,
+                    tipo=media_type,
+                    content_type=file.content_type or ("video/mp4" if is_vid else "image/jpeg"),
+                    data=b64_str,
+                    size_bytes=total_bytes,
+                    activo=True
+                )
+                db.add(media_rec)
+                db.commit()
+            except Exception as db_e:
+                db.rollback()
+                print(f"[MEDIA BATCH DB WARN] {db_e}")
+
             results.append({
                 "filename": new_filename,
                 "original_name": file.filename,
@@ -219,49 +309,71 @@ def list_media(
 ):
     """
     Lista todos los archivos multimedia disponibles (imágenes y videos).
-    Solo los logotipos oficiales del sistema se marcan como protegidos.
+    Integra archivos de la base de datos MySQL (persistentes), carpetas de uploads y recursos base.
     Filtra automáticamente cualquier archivo registrado como eliminado.
     """
     items = []
     seen_urls = set()
     deleted_set = _get_deleted_media_set(db)
 
-    # 1. Escanear recursivamente uploads/
-    if UPLOADS_DIR.exists():
-        for f in UPLOADS_DIR.rglob("*"):
-            if f.is_file():
-                ext = f.suffix.lower()
-                is_vid = ext in ALLOWED_VIDEO_EXTS
-                is_img = ext in ALLOWED_IMAGE_EXTS
-                if not (is_vid or is_img):
-                    continue
+    # 1. Escanear registros en la base de datos (subidas dinámicas persistentes)
+    try:
+        db_items = db.query(MediaUploadModel).filter(MediaUploadModel.activo == True).all()
+        for rec in db_items:
+            if rec.filename in deleted_set or rec.rel_url in deleted_set:
+                continue
+            if rec.rel_url in seen_urls:
+                continue
+            seen_urls.add(rec.rel_url)
+            sz = rec.size_bytes or 0
+            items.append({
+                "name": rec.filename,
+                "url": rec.rel_url,
+                "tipo": rec.tipo or "imagen",
+                "size_bytes": sz,
+                "size_formatted": f"{sz / (1024 * 1024):.1f} MB" if sz >= 1024*1024 else f"{sz / 1024:.0f} KB",
+                "is_custom_upload": True,
+                "is_protected": False,
+                "updated_at": int(rec.created_at.timestamp()) if hasattr(rec, "created_at") and rec.created_at else int(time.time())
+            })
+    except Exception as db_e:
+        print(f"[LIST MEDIA DB WARN] {db_e}")
 
-                if f.name in deleted_set:
-                    continue
+    # 2. Escanear recursivamente carpetas de uploads en disco
+    writable_dir = _get_writable_uploads_dir()
+    for search_dir in [UPLOADS_DIR, writable_dir]:
+        if search_dir and search_dir.exists():
+            for f in search_dir.rglob("*"):
+                if f.is_file():
+                    ext = f.suffix.lower()
+                    is_vid = ext in ALLOWED_VIDEO_EXTS
+                    is_img = ext in ALLOWED_IMAGE_EXTS
+                    if not (is_vid or is_img):
+                        continue
+                    if f.name in deleted_set:
+                        continue
+                    try:
+                        rel_to_uploads = f.relative_to(search_dir).as_posix()
+                        url = f"/uploads/{rel_to_uploads}"
+                    except Exception:
+                        url = f"/uploads/{f.name}"
+                    if url in seen_urls or url in deleted_set:
+                        continue
+                    seen_urls.add(url)
+                    sz = f.stat().st_size
+                    is_logo = "logo" in f.name.lower()
+                    items.append({
+                        "name": f.name,
+                        "url": url,
+                        "tipo": "video" if is_vid else "imagen",
+                        "size_bytes": sz,
+                        "size_formatted": f"{sz / (1024 * 1024):.1f} MB" if sz >= 1024*1024 else f"{sz / 1024:.0f} KB",
+                        "is_custom_upload": not is_logo,
+                        "is_protected": is_logo,
+                        "updated_at": int(f.stat().st_mtime)
+                    })
 
-                try:
-                    rel_to_uploads = f.relative_to(UPLOADS_DIR).as_posix()
-                    url = f"/uploads/{rel_to_uploads}"
-                except Exception:
-                    url = f"/uploads/{f.name}"
-
-                if url in seen_urls or url in deleted_set:
-                    continue
-                seen_urls.add(url)
-                sz = f.stat().st_size
-                is_logo = "logo" in f.name.lower()
-                items.append({
-                    "name": f.name,
-                    "url": url,
-                    "tipo": "video" if is_vid else "imagen",
-                    "size_bytes": sz,
-                    "size_formatted": f"{sz / (1024 * 1024):.1f} MB" if sz >= 1024*1024 else f"{sz / 1024:.0f} KB",
-                    "is_custom_upload": not is_logo,
-                    "is_protected": is_logo,
-                    "updated_at": int(f.stat().st_mtime)
-                })
-
-    # 2. Escanear imágenes y videos base
+    # 3. Escanear imágenes y videos base
     for folder, m_type, prefix in [
         (FRONTEND_DIR / "img", "imagen", "/img/"),
         (FRONTEND_DIR / "video", "video", "/video/")
@@ -310,20 +422,46 @@ def delete_physical_upload(url_or_path: str) -> bool:
         return False
 
     try:
-        if UPLOADS_DIR.exists():
-            for target in UPLOADS_DIR.rglob(filename):
-                if target.is_file():
-                    target.unlink()
-                    return True
+        writable_dir = _get_writable_uploads_dir()
+        for check_dir in [UPLOADS_DIR, writable_dir]:
+            if check_dir and check_dir.exists():
+                for target in check_dir.rglob(filename):
+                    if target.is_file():
+                        try:
+                            target.unlink()
+                            return True
+                        except OSError:
+                            pass
 
         for root in [FRONTEND_DIR / "img", FRONTEND_DIR / "video"]:
-            target = root / filename
-            if target.is_file():
-                target.unlink()
-                return True
+            if root and root.exists():
+                target = root / filename
+                if target.is_file():
+                    try:
+                        target.unlink()
+                        return True
+                    except OSError:
+                        pass
     except Exception as e:
         print(f"Error borrando archivo '{url_or_path}': {e}")
     return False
+
+
+def _guess_media_type(filename_or_path: str) -> str:
+    ext = Path(filename_or_path).suffix.lower()
+    mapping = {
+        ".mp4": "video/mp4",
+        ".webm": "video/webm",
+        ".mov": "video/quicktime",
+        ".m4v": "video/mp4",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".png": "image/png",
+        ".webp": "image/webp",
+        ".svg": "image/svg+xml",
+        ".gif": "image/gif",
+    }
+    return mapping.get(ext, "application/octet-stream")
 
 
 @router.get("/{filename:path}")
@@ -333,41 +471,86 @@ def get_media_file(
 ):
     """
     Sirve directamente cualquier archivo multimedia (video o imagen)
-    buscando en uploads/, video/ o img/. Soporta streaming de video con Range headers.
+    buscando en uploads/, video/ o img/, y restaurando de MySQL si es necesario.
+    Soporta streaming de video con Range headers.
     """
     safe_name = Path(filename).name
     deleted_set = _get_deleted_media_set(db)
     if safe_name in deleted_set or filename in deleted_set:
         raise HTTPException(status_code=404, detail=f"Archivo multimedia '{safe_name}' no encontrado en el servidor")
 
-    # 1. Buscar en uploads/
-    if UPLOADS_DIR.exists():
-        direct_target = UPLOADS_DIR / filename
-        if direct_target.is_file():
-            return FileResponse(str(direct_target))
-        for target in UPLOADS_DIR.rglob(safe_name):
-            if target.is_file():
-                return FileResponse(str(target))
+    writable_dir = _get_writable_uploads_dir()
 
-    # 2. Buscar en video/ o img/
+    # Normalizar ruta relativa eliminando prefijos redundantes
+    clean_rel = filename.lstrip("/")
+    if clean_rel.startswith("uploads/"):
+        clean_rel = clean_rel[len("uploads/"):]
+    elif clean_rel.startswith("pages/uploads/"):
+        clean_rel = clean_rel[len("pages/uploads/"):]
+
+    # 1. Buscar en directorios de uploads en disco
+    candidate_dirs = [
+        writable_dir,
+        UPLOADS_DIR,
+        Path(tempfile.gettempdir()) / "flymetrics_uploads",
+        Path("/tmp/flymetrics_uploads"),
+        (PROJECT_ROOT / "uploads") if PROJECT_ROOT else None,
+        (PROJECT_ROOT / "frontend" / "uploads") if PROJECT_ROOT else None
+    ]
+    for c_dir in candidate_dirs:
+        if c_dir and c_dir.exists():
+            direct_target = c_dir / clean_rel
+            if direct_target.is_file():
+                return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target))
+            direct_raw = c_dir / filename
+            if direct_raw.is_file():
+                return FileResponse(str(direct_raw), media_type=_guess_media_type(direct_raw))
+            for target in c_dir.rglob(safe_name):
+                if target.is_file():
+                    return FileResponse(str(target), media_type=_guess_media_type(target))
+
+    # 2. Buscar en video/ o img/ base
     candidate_roots = [
         FRONTEND_DIR / "video",
         FRONTEND_DIR / "img",
-        PROJECT_ROOT / "frontend" / "video",
-        PROJECT_ROOT / "frontend" / "img",
+        PROJECT_ROOT / "frontend" / "video" if PROJECT_ROOT else None,
+        PROJECT_ROOT / "frontend" / "img" if PROJECT_ROOT else None,
         _curr.parent.parent.parent.parent / "frontend" / "video",
         _curr.parent.parent.parent.parent / "frontend" / "img",
         _curr.parent.parent.parent.parent / "video",
         _curr.parent.parent.parent.parent / "img",
     ]
     for root in candidate_roots:
-        if root.exists():
-            direct_target = root / filename
+        if root and root.exists():
+            direct_target = root / clean_rel
             if direct_target.is_file():
-                return FileResponse(str(direct_target))
+                return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target))
             target = root / safe_name
             if target.is_file():
-                return FileResponse(str(target))
+                return FileResponse(str(target), media_type=_guess_media_type(target))
+
+    # 3. Restaurar desde MySQL si no está en disco (ej: tras despliegue de contenedor efímero)
+    try:
+        import base64
+        clean_url_match = f"/uploads/{clean_rel.lstrip('/')}"
+        media_rec = db.query(MediaUploadModel).filter(
+            (MediaUploadModel.filename == safe_name) | 
+            (MediaUploadModel.filename == filename) |
+            (MediaUploadModel.rel_url == clean_url_match) |
+            (MediaUploadModel.rel_url == f"/{filename.lstrip('/')}")
+        ).first()
+
+        if media_rec and media_rec.data and media_rec.activo:
+            cache_file = writable_dir / safe_name
+            try:
+                raw_bytes = base64.b64decode(media_rec.data)
+                cache_file.write_bytes(raw_bytes)
+                return FileResponse(str(cache_file), media_type=media_rec.content_type or _guess_media_type(cache_file))
+            except Exception:
+                from fastapi.responses import Response
+                return Response(content=base64.b64decode(media_rec.data), media_type=media_rec.content_type or _guess_media_type(safe_name))
+    except Exception as rec_err:
+        print(f"[MEDIA RESTORE DB WARN] {rec_err}")
 
     raise HTTPException(status_code=404, detail=f"Archivo multimedia '{safe_name}' no encontrado en el servidor")
 
@@ -390,22 +573,24 @@ def delete_media(
         raise HTTPException(status_code=403, detail="Los logotipos institucionales del sistema están protegidos y no pueden eliminarse")
 
     physical_deleted = False
+    writable_dir = _get_writable_uploads_dir()
 
     # 1. Intentar borrar físicamente en uploads
-    if UPLOADS_DIR.exists():
-        for target in UPLOADS_DIR.rglob(safe_name):
-            if target.is_file():
-                try:
-                    target.unlink()
-                    physical_deleted = True
-                    break
-                except OSError as e:
-                    print(f"[MEDIA UNLINK WARN] No se pudo borrar {target} en disco ({e}). Se registrará como eliminado en BD.")
+    for search_dir in [UPLOADS_DIR, writable_dir]:
+        if search_dir and search_dir.exists():
+            for target in search_dir.rglob(safe_name):
+                if target.is_file():
+                    try:
+                        target.unlink()
+                        physical_deleted = True
+                        break
+                    except OSError as e:
+                        print(f"[MEDIA UNLINK WARN] No se pudo borrar {target} en disco ({e}). Se registrará como eliminado en BD.")
 
     # 2. Si no estaba en uploads, intentar buscar en img/ o video/
     if not physical_deleted:
         for root in [FRONTEND_DIR / "img", FRONTEND_DIR / "video"]:
-            if root.exists():
+            if root and root.exists():
                 target = root / safe_name
                 if target.is_file():
                     try:
@@ -419,7 +604,16 @@ def delete_media(
     _add_deleted_media(db, safe_name)
     _add_deleted_media(db, filename)
 
-    # 4. Limpiar referencias activas en medios_globales o servicios
+    # 4. Desactivar en tabla_archivos_media en BD
+    try:
+        db.query(MediaUploadModel).filter(
+            (MediaUploadModel.filename == safe_name) | (MediaUploadModel.filename == filename)
+        ).delete(synchronize_session=False)
+        db.commit()
+    except Exception as db_del_err:
+        print(f"[MEDIA DB DELETE WARN] {db_del_err}")
+
+    # 5. Limpiar referencias activas en medios_globales o servicios
     try:
         from app.infrastructure.database.models.models import SystemConfigModel, ServicioModel
         import json
@@ -456,4 +650,5 @@ def delete_media(
         print(f"[MEDIA CLEANUP REFS WARN] {ref_err}")
 
     return success_response(message=f"Archivo '{safe_name}' eliminado exitosamente del servidor")
+
 

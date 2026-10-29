@@ -417,4 +417,21 @@ class RedSocialModel(Base, AuditMixin):
     activo = Column(Boolean, default=True)
 
 
+from sqlalchemy.dialects.mysql import LONGTEXT
+
+class MediaUploadModel(Base, AuditMixin):
+    __tablename__ = "tabla_archivos_media"
+
+    id_media = Column(Integer, primary_key=True, autoincrement=True)
+    filename = Column(String(255), unique=True, nullable=False, index=True)
+    rel_url = Column(String(500), nullable=False)
+    modulo = Column(String(100), default="general")
+    tipo = Column(String(50), default="imagen")  # 'imagen', 'video'
+    content_type = Column(String(100), default="application/octet-stream")
+    data = Column(Text().with_variant(LONGTEXT, "mysql"), nullable=True)  # Base64 para persistencia total en Cloud
+    size_bytes = Column(Integer, default=0)
+    activo = Column(Boolean, default=True)
+
+
+
 
