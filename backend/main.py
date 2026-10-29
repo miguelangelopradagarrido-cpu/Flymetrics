@@ -378,6 +378,7 @@ if target_dir.exists():
 
     # Servir carpeta fotovideofly directamente desde disco de forma ultra rápida
     @app.get("/fotovideofly/{filepath:path}", include_in_schema=False)
+    @app.get("/api/v1/fotovideofly/{filepath:path}", include_in_schema=False)
     @app.get("/pages/fotovideofly/{filepath:path}", include_in_schema=False)
     def serve_fotovideofly_file(filepath: str, db: Session = Depends(get_db)):
         from app.presentation.api.routers.media import get_media_file
@@ -393,6 +394,7 @@ else:
         return get_media_file(filename=filepath, db=db)
 
     @app.get("/fotovideofly/{filepath:path}", include_in_schema=False)
+    @app.get("/api/v1/fotovideofly/{filepath:path}", include_in_schema=False)
     def serve_fotovideofly_file_standalone(filepath: str, db: Session = Depends(get_db)):
         from app.presentation.api.routers.media import get_media_file
         from urllib.parse import unquote

@@ -14,7 +14,6 @@ __pycache__/
 .idea/
 
 # Carpetas pesadas locales
-fotovideofly/
 video/
 scratch/
 backend/scratch/

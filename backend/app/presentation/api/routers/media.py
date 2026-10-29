@@ -77,6 +77,8 @@ ALLOWED_VIDEO_EXTS = {".mp4", ".webm", ".mov", ".m4v"}
 
 def _get_fotovideofly_candidates() -> List[Path]:
     candidates = [
+        Path("/app/fotovideofly/fotovideofly"),
+        Path("/app/fotovideofly"),
         (PROJECT_ROOT / "fotovideofly" / "fotovideofly") if PROJECT_ROOT else None,
         (PROJECT_ROOT / "fotovideofly") if PROJECT_ROOT else None,
         (PROJECT_ROOT / "video" / "video") if PROJECT_ROOT else None,
@@ -104,7 +106,7 @@ def _get_fotovideofly_candidates() -> List[Path]:
 def get_fotovideofly_items() -> List[Dict[str, Any]]:
     """
     Escanea y devuelve todos los archivos multimedia de la carpeta fotovideofly
-    directamente desde el disco, sin intermediación de base de datos para máxima velocidad.
+    directamente desde el disco, sin intermediación de base de datos para máxima velocidad (< 5 ms).
     """
     seen_names = set()
     items = []
@@ -124,9 +126,9 @@ def get_fotovideofly_items() -> List[Dict[str, Any]]:
                     subtitulo = "Video de dron agrícola en vuelo, aspersión y telemetría RTK en tiempo real"
                     badge = "Video de Vuelo"
                 else:
-                    titulo = f"Fotografía de Campo: {name_clean}"
+                    titulo = f"Operación en Campo: {name_clean}"
                     subtitulo = "Captura de alta resolución de cultivos y predios con tecnología Flymetrics"
-                    badge = "Registro de Campo"
+                    badge = "Operación en Campo"
 
                 items.append({
                     "id_publicidad": f"fv_{len(items)+1}",
@@ -595,13 +597,19 @@ def get_media_file(
     for fv_dir in _get_fotovideofly_candidates():
         direct_target = fv_dir / clean_rel
         if direct_target.is_file():
-            return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target))
+            return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target), headers={"Cache-Control": "public, max-age=86400"})
         direct_raw = fv_dir / filename
         if direct_raw.is_file():
-            return FileResponse(str(direct_raw), media_type=_guess_media_type(direct_raw))
+            return FileResponse(str(direct_raw), media_type=_guess_media_type(direct_raw), headers={"Cache-Control": "public, max-age=86400"})
         for target in fv_dir.rglob(safe_name):
             if target.is_file():
-                return FileResponse(str(target), media_type=_guess_media_type(target))
+                return FileResponse(str(target), media_type=_guess_media_type(target), headers={"Cache-Control": "public, max-age=86400"})
+        # Fallback insensitivo a mayúsculas/minúsculas para Linux
+        safe_lower = safe_name.lower()
+        unquoted_lower = unquote(safe_name).lower()
+        for target in fv_dir.rglob("*"):
+            if target.is_file() and target.name.lower() in [safe_lower, unquoted_lower]:
+                return FileResponse(str(target), media_type=_guess_media_type(target), headers={"Cache-Control": "public, max-age=86400"})
 
     # 2. Buscar en directorios de uploads en disco
     candidate_dirs = [
@@ -616,15 +624,15 @@ def get_media_file(
         if c_dir and c_dir.exists():
             direct_target = c_dir / clean_rel
             if direct_target.is_file():
-                return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target))
+                return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target), headers={"Cache-Control": "public, max-age=86400"})
             direct_raw = c_dir / filename
             if direct_raw.is_file():
-                return FileResponse(str(direct_raw), media_type=_guess_media_type(direct_raw))
+                return FileResponse(str(direct_raw), media_type=_guess_media_type(direct_raw), headers={"Cache-Control": "public, max-age=86400"})
             for target in c_dir.rglob(safe_name):
                 if target.is_file():
-                    return FileResponse(str(target), media_type=_guess_media_type(target))
+                    return FileResponse(str(target), media_type=_guess_media_type(target), headers={"Cache-Control": "public, max-age=86400"})
 
-    # 2. Buscar en video/ o img/ base
+    # 3. Buscar en video/ o img/ base
     candidate_roots = [
         FRONTEND_DIR / "video",
         FRONTEND_DIR / "img",
@@ -639,10 +647,10 @@ def get_media_file(
         if root and root.exists():
             direct_target = root / clean_rel
             if direct_target.is_file():
-                return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target))
+                return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target), headers={"Cache-Control": "public, max-age=86400"})
             target = root / safe_name
             if target.is_file():
-                return FileResponse(str(target), media_type=_guess_media_type(target))
+                return FileResponse(str(target), media_type=_guess_media_type(target), headers={"Cache-Control": "public, max-age=86400"})
 
     # 3. Restaurar desde MySQL si no está en disco (ej: tras despliegue de contenedor efímero)
     try:

@@ -4985,10 +4985,7 @@ window.showBlockingVerificationUI = function (e) {
       if (badgeEl) badgeEl.textContent = item.badge || 'Vuelo Agrícola Especializado';
       if (counterEl) counterEl.textContent = `Foto ${_currentLightboxIndex + 1} de ${_clientCollageItems.length}`;
 
-      let mediaUrl = (item.url_medio || '').trim();
-      if (mediaUrl && !mediaUrl.startsWith('http') && !mediaUrl.startsWith('/') && !mediaUrl.startsWith('../')) {
-        mediaUrl = '/' + mediaUrl;
-      }
+      let mediaUrl = resolveMediaUrl(item.url_medio || '');
 
       if (isVideo) {
         if (imgEl) imgEl.style.display = 'none';
