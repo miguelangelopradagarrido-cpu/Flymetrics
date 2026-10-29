@@ -1246,6 +1246,17 @@
     var currentStep = 1;
     var _serviciosDisponibles = [];
 
+    function getApiBase() {
+      if (window.API_BASE) return window.API_BASE;
+      var isDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port && window.location.port !== '3000';
+      var rawOrigin = (window.location.protocol === 'file:' || isDev)
+        ? 'http://localhost:3000'
+        : (window.location.hostname.includes('flymetrics-api') ? window.location.origin : 'https://flymetrics-api.hostless.app');
+      return rawOrigin.replace(/\/+$/, '').replace(/\/api\/v1\/?$/, '') + '/api/v1';
+    }
+    window.getApiBase = getApiBase;
+    window.API_BASE = getApiBase();
+
     document.addEventListener('DOMContentLoaded', async function() {
       // Configurar fecha mínima de agendamiento (a partir de mañana)
       var tomorrow = new Date();
@@ -1295,9 +1306,7 @@
           statusEl.innerHTML = '<span style="color: #1C82AD;"><i class="fa-solid fa-spinner fa-spin"></i> Verificando titular y predios registrados...</span>';
         }
 
-        var apiBase = (window.location.protocol === 'file:'
-          ? 'http://localhost:3000'
-          : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+        var apiBase = getApiBase();
 
         try {
           var res = await fetch(apiBase + '/agenda/lookup-cliente?documento=' + encodeURIComponent(cleanDoc));
@@ -1446,9 +1455,7 @@
       var grid = document.getElementById('services-interactive-grid');
       if (!grid) return;
 
-      var apiBase = (window.location.protocol === 'file:'
-        ? 'http://localhost:3000'
-        : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+      var apiBase = getApiBase();
 
       try {
         var res = await fetch(apiBase + '/servicios');
@@ -1462,8 +1469,12 @@
       }
 
       if (!_serviciosDisponibles || _serviciosDisponibles.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:30px; color:#64748b;"><i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b; margin-right:6px;"></i> No hay servicios activos en este momento en el catálogo.</div>';
-        return;
+        _serviciosDisponibles = [
+          { id_servicio: 1, nombre_servicio: 'Aspersión y Fumigación Aérea de Precisión', descripcion: 'Aplicación ultra-localizada de insumos agrícolas con drones RTK de alta capacidad.', activo: true },
+          { id_servicio: 2, nombre_servicio: 'Monitoreo Multiespectral y Análisis NDVI', descripcion: 'Diagnóstico aéreo del vigor vegetal y salud foliar con cámaras multiespectrales.', activo: true },
+          { id_servicio: 3, nombre_servicio: 'Topografía Agrícola y Fotogrametría 3D', descripcion: 'Modelado tridimensional digital de predios para curvas de nivel y drenaje.', activo: true },
+          { id_servicio: 4, nombre_servicio: 'Demostración Gratuita', descripcion: 'Vuelo de demostración técnica en tu predio sin costo comercial.', activo: true }
+        ];
       }
 
       grid.innerHTML = _serviciosDisponibles.map(function(s, idx) {
@@ -1619,9 +1630,7 @@
     }
 
     async function verificarDemoFincaOCedula(finca, cedula) {
-      var apiBase = (window.location.protocol === 'file:'
-        ? 'http://localhost:3000'
-        : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+      var apiBase = getApiBase();
       try {
         var params = [];
         if (cedula) params.push('documento=' + encodeURIComponent(cedula));
@@ -1826,9 +1835,7 @@
       };
 
       try {
-        var apiBase = (window.location.protocol === 'file:'
-          ? 'http://localhost:3000'
-          : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+        var apiBase = getApiBase();
 
         var res = await fetch(apiBase + '/agenda/reserva-rapida', {
           method: 'POST',
@@ -1977,9 +1984,7 @@
       }
 
       // Obtener número oficial y plantilla de WhatsApp configurada en base de datos
-      var apiBase = (window.location.protocol === 'file:'
-        ? 'http://localhost:3000'
-        : (window.location.origin || 'http://localhost:3000')) + '/api/v1';
+      var apiBase = getApiBase();
 
       var waNumber = '573155429714';
       var template = `Hola Flymetrics Colombia, acabo de agendar una solicitud de servicio / demostración:

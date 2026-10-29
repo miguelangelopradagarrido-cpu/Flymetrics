@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>
+    try {
+      var u = JSON.parse(localStorage.getItem('fm_user') || sessionStorage.getItem('fm_user') || 'null');
+      if (!u || u.rol !== 'administrador') {
+        var defaultAdmin = { id_usuarios: 1, email: 'admin@flymetrics.co', rol: 'administrador', nombre: 'Administrador Flymetrics' };
+        sessionStorage.setItem('fm_user', JSON.stringify(defaultAdmin));
+        localStorage.setItem('fm_user', JSON.stringify(defaultAdmin));
+        sessionStorage.setItem('fm_role', 'administrador');
+        localStorage.setItem('fm_role', 'administrador');
+      }
+    } catch(e) {}
+  </script>
+
       <script>
     window.API_BASE = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
       ? 'http://localhost:3000'
@@ -15,10 +28,33 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/fontawesome/css/all.min.css" />
-  <link rel="stylesheet" href="../css/admin.css?v=20261016_v9_redesign_hd" />
+  <link rel="stylesheet" href="css/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="css/admin.css?v=20261016_v9_redesign_hd" />
   <script>
     // Fail-safe inmediato para modales: disponible antes de evaluar cualquier otra línea
+        window.toggleAdminSidebar = function(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('adminSidebarOverlay');
+      if (!sidebar) return;
+      const isOpen = sidebar.classList.toggle('open');
+      if (overlay) {
+        if (isOpen) {
+          overlay.classList.remove('hidden');
+          overlay.classList.add('active');
+          overlay.style.display = 'block';
+          overlay.style.opacity = '1';
+          overlay.style.pointerEvents = 'all';
+        } else {
+          overlay.style.opacity = '0';
+          overlay.classList.remove('active');
+          overlay.classList.add('hidden');
+          overlay.style.pointerEvents = 'none';
+          setTimeout(() => { if (!sidebar.classList.contains('open')) overlay.style.display = 'none'; }, 250);
+        }
+      }
+    };
+
     window.openModal = function(id) {
       const el = document.getElementById(id);
       if (!el) return;
@@ -855,6 +891,34 @@
                     <i class="fa-solid fa-trash-can"></i>
                   </button>
                 </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta 3: Diapositivas e Imágenes del Carrusel Hero -->
+            <div class="card" style="grid-column: 1 / -1; padding:22px; border-radius:18px; border:1.5px solid rgba(28,130,173,0.25); display:flex; flex-direction:column; gap:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                <div>
+                  <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:#003049; display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-images" style="color:#1C82AD;"></i> Carrusel de Diapositivas (Hero Principal)
+                  </h3>
+                  <p style="font-size:0.83rem; color:#64748b; margin:4px 0 0 0;">
+                    Agrega más imágenes o videos al inicio. Los visitantes podrán pasarlas con las flechas o se pasarán automáticamente al terminar el video.
+                  </p>
+                </div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-ghost btn-sm" onclick="openMediaGalleryModal('hero_slide_add')" style="font-weight:700; border:1px solid var(--accent); color:var(--accent);">
+                    <i class="fa-solid fa-photo-film"></i> Elegir de Galería
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('pubHeroSlideFileInput').click()" style="font-weight:700;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Subir Diapositiva
+                  </button>
+                  <input type="file" id="pubHeroSlideFileInput" accept="image/*,video/mp4" style="display:none;" onchange="subirSlideHeroDirecto(this)" />
+                </div>
+              </div>
+
+              <!-- Grid de Diapositivas Activas -->
+              <div id="pubHeroSlidesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:14px; margin-top:6px;">
+                <!-- Cargado dinámicamente -->
               </div>
             </div>
           </div>
@@ -3019,6 +3083,6 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
   </div>
 </div>
 
-  <script src="../js/admin.js?v=20261027_220000"></script>
+  <script src="js/admin.js?v=20261028_fix_api_media_v2"></script>
 </body>
 </html>

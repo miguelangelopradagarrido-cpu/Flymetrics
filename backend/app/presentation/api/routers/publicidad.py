@@ -19,8 +19,9 @@ admin_required = RoleChecker(["administrador", "Administrador", "admin", "Admin"
 # ==========================================
 
 class MediosGlobalesRequest(BaseModel):
-    hero_video_url: str
-    mobile_poster_url: str
+    hero_video_url: Optional[str] = "/video/hero.mp4"
+    mobile_poster_url: Optional[str] = "/img/servicio_precision.jpg"
+    hero_slides: Optional[List[dict]] = None
 
 class PublicidadElementoCreate(BaseModel):
     seccion: Optional[str] = "dashboard_cliente"
@@ -64,30 +65,61 @@ class RedSocialUpdate(BaseModel):
 
 
 # ==========================================
-# 1. MEDIOS GLOBALES (HERO VIDEO Y PÓSTER MÓVIL)
+# 1. MEDIOS GLOBALES (HERO VIDEO, PÓSTER MÓVIL Y CARRUSEL HERO)
 # ==========================================
 
 @router.get("/medios-globales", status_code=status.HTTP_200_OK)
 def get_medios_globales(db: Session = Depends(get_db)):
-    """Obtiene las URLs del video principal y de la foto de carga en celulares persistidas en la BD."""
+    """Obtiene las URLs del video principal, imagen y diapositivas de carrusel persistidas en la BD."""
     config_record = db.query(SystemConfigModel).filter(SystemConfigModel.clave == "medios_globales").first()
-    default_medios = {
-        "hero_video_url": "/video/hero.mp4",
-        "mobile_poster_url": "/img/servicio_precision.jpg"
-    }
+    default_hero = "/video/hero.mp4"
+    default_poster = "/img/servicio_precision.jpg"
+    default_slides = [
+        {
+            "tipo": "video",
+            "url": default_hero,
+            "titulo": "FLYMETRICS",
+            "subtitulo": "Agricultura y Ganadería de Precisión con Tecnología Aérea Avanzada en Colombia"
+        },
+        {
+            "tipo": "imagen",
+            "url": default_poster,
+            "titulo": "Fumigación y Aspersión Aérea",
+            "subtitulo": "Ahorro de hasta 90% de agua y protección milimétrica de cultivos"
+        },
+        {
+            "tipo": "video",
+            "url": "/video/field_drone.mp4",
+            "titulo": "Monitoreo y Diagnóstico Multiespectral",
+            "subtitulo": "Diagnóstico temprano con cámaras multiespectrales RTK"
+        }
+    ]
 
-    result = default_medios
+    result = {
+        "hero_video_url": default_hero,
+        "mobile_poster_url": default_poster,
+        "hero_slides": default_slides
+    }
     if config_record and config_record.valor:
         try:
             data = json.loads(config_record.valor)
+            hero_v = (data.get("hero_video_url") or "").strip() or default_hero
+            poster_v = (data.get("mobile_poster_url") or "").strip() or default_poster
+            raw_slides = data.get("hero_slides")
+            if not isinstance(raw_slides, list) or len(raw_slides) == 0:
+                raw_slides = [
+                    {"tipo": "video", "url": hero_v, "titulo": "FLYMETRICS", "subtitulo": "Agricultura y Ganadería de Precisión con Tecnología Aérea Avanzada en Colombia"},
+                    {"tipo": "imagen", "url": poster_v, "titulo": "Fumigación y Aspersión Aérea", "subtitulo": "Ahorro de hasta 90% de agua y protección milimétrica de cultivos"},
+                    {"tipo": "video", "url": "/video/field_drone.mp4", "titulo": "Monitoreo y Diagnóstico Multiespectral", "subtitulo": "Diagnóstico temprano con cámaras multiespectrales RTK"}
+                ]
             result = {
-                "hero_video_url": (data.get("hero_video_url") or "").strip() or default_medios["hero_video_url"],
-                "mobile_poster_url": (data.get("mobile_poster_url") or "").strip() or default_medios["mobile_poster_url"]
+                "hero_video_url": hero_v,
+                "mobile_poster_url": poster_v,
+                "hero_slides": raw_slides
             }
         except Exception:
             pass
     resp = success_response(message="Medios globales obtenidos exitosamente", data=result)
-    # Evitar que el navegador o Cloudflare cacheen la respuesta (causaba que volviera la imagen vieja)
     try:
         resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
         resp.headers["Pragma"] = "no-cache"
@@ -103,9 +135,10 @@ def update_medios_globales(
     db: Session = Depends(get_db),
     current_user: UsuarioModel = Depends(admin_required)
 ):
-    """Actualiza la configuración de medios globales (video hero e imagen de celulares)."""
-    hero = req.hero_video_url.strip()
-    poster = req.mobile_poster_url.strip()
+    """Actualiza la configuración de medios globales (video hero, imagen y diapositivas de carrusel)."""
+    hero = (req.hero_video_url or "").strip()
+    poster = (req.mobile_poster_url or "").strip()
+    slides = req.hero_slides if req.hero_slides is not None else []
 
     # Normalizar rutas relativas asegurando slash inicial
     if hero and not hero.startswith("http") and not hero.startswith("/"):
@@ -113,14 +146,15 @@ def update_medios_globales(
     if poster and not poster.startswith("http") and not poster.startswith("/"):
         poster = "/" + poster
 
-    config_record = db.query(SystemConfigModel).filter(SystemConfigModel.clave == "medios_globales").first()
     new_hero = hero or "/video/hero.mp4"
     new_poster = poster or "/img/servicio_precision.jpg"
 
     payload = {
         "hero_video_url": new_hero,
-        "mobile_poster_url": new_poster
+        "mobile_poster_url": new_poster,
+        "hero_slides": slides
     }
+    config_record = db.query(SystemConfigModel).filter(SystemConfigModel.clave == "medios_globales").first()
     if not config_record:
         config_record = SystemConfigModel(clave="medios_globales", valor=json.dumps(payload))
         db.add(config_record)

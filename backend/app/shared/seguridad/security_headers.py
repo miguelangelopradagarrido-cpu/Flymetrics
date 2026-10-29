@@ -52,6 +52,8 @@ async def security_headers_middleware(request: Request, call_next):
             "frame-src 'self' https://accounts.google.com https://www.youtube.com https://youtube.com; "
             "connect-src 'self' "
             "  http://localhost:3000 http://127.0.0.1:3000 "
+            "  https://*.hostless.app https://*.hostless.site "
+            "  https://*.flymetrics.com.co https://*.flymetrics.co "
             "  https://*.trycloudflare.com https://*.ngrok.io "
             "  https://*.ngrok-free.app https://accounts.google.com "
             "  https://apis.google.com https://www.googleapis.com "

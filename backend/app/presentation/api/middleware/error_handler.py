@@ -3,15 +3,26 @@ from fastapi.exceptions import RequestValidationError
 from app.shared.exceptions.exceptions import AppException
 from app.shared.responses.response import error_response
 
+def _add_cors_headers(resp, request: Request):
+    origin = request.headers.get("origin")
+    if origin:
+        resp.headers["Access-Control-Allow-Origin"] = origin
+        resp.headers["Access-Control-Allow-Credentials"] = "true"
+        resp.headers["Access-Control-Allow-Methods"] = "*"
+        resp.headers["Access-Control-Allow-Headers"] = "*"
+        resp.headers["Vary"] = "Origin"
+    return resp
+
 def setup_error_handlers(app: FastAPI):
     @app.exception_handler(AppException)
     async def app_exception_handler(request: Request, exc: AppException):
         """Maneja las excepciones personalizadas del dominio/aplicación."""
-        return error_response(
+        resp = error_response(
             message=exc.message,
             errors=exc.errors,
             status_code=exc.status_code
         )
+        return _add_cors_headers(resp, request)
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -22,11 +33,12 @@ def setup_error_handlers(app: FastAPI):
             msg = error["msg"]
             errors.append(f"{loc}: {msg}")
             
-        return error_response(
+        resp = error_response(
             message="Error de validación en los datos enviados",
             errors=errors,
             status_code=400
         )
+        return _add_cors_headers(resp, request)
 
     @app.exception_handler(Exception)
     async def general_exception_handler(request: Request, exc: Exception):
@@ -38,10 +50,4 @@ def setup_error_handlers(app: FastAPI):
             errors=["Error interno procesando la solicitud. Si el problema persiste, contacte a soporte."],
             status_code=500
         )
-        # Los errores 500 salen por fuera de CORSMiddleware: agregar cabeceras CORS manualmente
-        origin = request.headers.get("origin")
-        if origin:
-            resp.headers["Access-Control-Allow-Origin"] = origin
-            resp.headers["Access-Control-Allow-Credentials"] = "true"
-            resp.headers["Vary"] = "Origin"
-        return resp
+        return _add_cors_headers(resp, request)

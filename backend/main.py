@@ -125,29 +125,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# 1. CORS Middleware añadido PRIMERO para interceptar todas las peticiones (incluyendo preflight OPTIONS)
-cors_regex = r"^https?://(localhost|127\.0\.0\.1|.*\.hostless\.site|.*\.hostless\.app|.*\.flymetrics\.com\.co|.*\.flymetrics\.co)(:\d+)?$"
-app.add_middleware(
-    CORSMiddleware,
-    allow_origin_regex=cors_regex,
-    allow_origins=[
-        "https://flymetrics.com.co",
-        "https://www.flymetrics.com.co",
-        "https://flymetrics.co",
-        "https://www.flymetrics.co",
-        "https://flymetrics.hostless.site",
-        "https://flymetrics-api.hostless.app",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000"
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"]
-)
-
-
-# Middleware de aceleración y control de caché HTTP para recursos estáticos
+# 1. Middleware de aceleración y control de caché HTTP para recursos estáticos
 class CacheControlMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         response: Response = await call_next(request)
@@ -169,11 +147,32 @@ class CacheControlMiddleware(BaseHTTPMiddleware):
 
 app.add_middleware(CacheControlMiddleware)
 
-# Configurar compresión Gzip
+# 2. Configurar compresión Gzip
 app.add_middleware(GZipMiddleware, minimum_size=500)
 
-# Middleware de headers de seguridad (CSP, HSTS, X-Frame-Options, etc.)
+# 3. Middleware de headers de seguridad (CSP, HSTS, X-Frame-Options, etc.)
 app.add_middleware(BaseHTTPMiddleware, dispatch=security_headers_middleware)
+
+# 4. CORS Middleware añadido al final para ser el OUTERMOST (intercepta preflight OPTIONS y garantiza CORS en todas las respuestas)
+cors_regex = r"^https?://(localhost|127\.0\.0\.1|.*\.hostless\.site|.*\.hostless\.app|.*\.flymetrics\.com\.co|.*\.flymetrics\.co)(:\d+)?$"
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=cors_regex,
+    allow_origins=[
+        "https://flymetrics.com.co",
+        "https://www.flymetrics.com.co",
+        "https://flymetrics.co",
+        "https://www.flymetrics.co",
+        "https://flymetrics.hostless.site",
+        "https://flymetrics-api.hostless.app",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"]
+)
 
 
 # Registrar limitador de tasa (Rate Limiter)

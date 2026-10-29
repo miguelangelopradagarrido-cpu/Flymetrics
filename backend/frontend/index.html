@@ -707,21 +707,38 @@
       style="width: 100%; height: 100vh; min-height: 100vh; max-width: 100%; margin: 0; padding: 0; position: relative; overflow: hidden;">
 
       <!-- ── FULL-SCREEN VIDEO HERO ── -->
-      <div style="width: 100%; height: 100%; position: relative; overflow: hidden; background: #001B2E;">
+      <!-- ── FULL-SCREEN MULTI-MEDIA HERO CAROUSEL ── -->
+      <div id="hero-carousel-container" style="width: 100%; height: 100%; position: relative; overflow: hidden; background: #001B2E;">
 
-        <!-- Instant Lightweight Poster Background -->
-        <div class="hero-bg-poster" id="hero-bg-poster" style="position: absolute; inset: 0; width: 100%; height: 100%; background: #001B2E center/cover no-repeat; z-index: 0; transform: translateZ(0);">
-          <img id="hero-bg-img" alt="Flymetrics Drones" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 0; pointer-events: none;" />
+        <!-- Slides Wrapper -->
+        <div id="hero-slides-wrapper" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1;">
+          <div class="hero-slide active" data-index="0" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 1; transition: opacity 0.8s ease-in-out; z-index: 2;">
+            <video muted playsinline autoplay preload="metadata" id="hero-video" class="hero-slide-media" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+              <source src="/video/hero.mp4" type="video/mp4">
+            </video>
+          </div>
         </div>
-        <!-- Deferred Video Background -->
-        <video muted loop playsinline autoplay preload="metadata" id="hero-video"
-          style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; transform: translateZ(0); will-change: transform; opacity: 1; transition: opacity 0.5s ease;">
-          <source src="/video/hero.mp4" data-src="/video/hero.mp4" type="video/mp4">
-        </video>
 
-        <!-- Overlay transparente sin tinte azulado (Video limpio y visible) -->
-        <div
-          style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.15); z-index: 2; pointer-events: none;">
+        <!-- Overlay transparente para legibilidad y elegancia sin opacar el video -->
+        <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 27, 46, 0.35) 0%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 27, 46, 0.45) 100%); z-index: 2; pointer-events: none;"></div>
+
+        <!-- Controles laterales de navegación (Flechas interactivas) -->
+        <button type="button" id="hero-prev-btn" class="hero-nav-arrow" onclick="window.prevHeroSlide(event)" aria-label="Anterior diapositiva"
+          style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10; width: 48px; height: 48px; border-radius: 50%; background: rgba(0, 48, 73, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid rgba(228, 199, 161, 0.7); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"
+          onmouseover="this.style.background='rgba(28, 130, 173, 0.8)'; this.style.transform='translateY(-50%) scale(1.1)';"
+          onmouseout="this.style.background='rgba(0, 48, 73, 0.65)'; this.style.transform='translateY(-50%) scale(1)';">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <button type="button" id="hero-next-btn" class="hero-nav-arrow" onclick="window.nextHeroSlide(event)" aria-label="Siguiente diapositiva"
+          style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10; width: 48px; height: 48px; border-radius: 50%; background: rgba(0, 48, 73, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid rgba(228, 199, 161, 0.7); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"
+          onmouseover="this.style.background='rgba(28, 130, 173, 0.8)'; this.style.transform='translateY(-50%) scale(1.1)';"
+          onmouseout="this.style.background='rgba(0, 48, 73, 0.65)'; this.style.transform='translateY(-50%) scale(1)';">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <!-- Indicadores / Dots del Carrusel en la parte inferior -->
+        <div id="hero-dots-container" style="position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; align-items: center; gap: 8px; background: rgba(0, 27, 46, 0.65); backdrop-filter: blur(8px); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(228, 199, 161, 0.35);">
         </div>
 
         <!-- Hero Content (Centered, Grandecito, Clean Video) -->
@@ -4744,59 +4761,214 @@
   <script>
     (function() {
       // Sincronizar Medios Globales (Video Hero y Portada Móvil) desde la base de datos de manera robusta
-      async function syncMediosGlobales() {
-        var vidEl = document.getElementById('hero-video');
-        var posterEl = document.querySelector('.hero-bg-poster');
-        var defaultVideo = '/video/hero.mp4';
-        var defaultPoster = '/img/servicio_precision.jpg';
+      var _heroSlides = [];
+      var _currentHeroIndex = 0;
+      var _heroTimer = null;
 
-        // Manejador de error para el video: si la URL falla (404 o códec incompatible), restaurar default elegantemente
-        if (vidEl && !vidEl._fallbackBound) {
-          vidEl._fallbackBound = true;
-          vidEl.addEventListener('error', function(err) {
-            console.warn('[HERO VIDEO] Error cargando video configurado, aplicando fallback por defecto:', vidEl.src);
-            if (vidEl.src && !vidEl.src.endsWith(defaultVideo)) {
-              vidEl.src = defaultVideo;
-              vidEl.load();
-              vidEl.play().catch(function() {});
+      function renderHeroCarousel(slides) {
+        var wrapper = document.getElementById('hero-slides-wrapper');
+        var dotsContainer = document.getElementById('hero-dots-container');
+        if (!wrapper || !slides || !slides.length) return;
+
+        _heroSlides = slides;
+        wrapper.innerHTML = '';
+        if (dotsContainer) dotsContainer.innerHTML = '';
+
+        slides.forEach(function(s, idx) {
+          var slideDiv = document.createElement('div');
+          slideDiv.className = 'hero-slide' + (idx === 0 ? ' active' : '');
+          slideDiv.style.position = 'absolute';
+          slideDiv.style.inset = '0';
+          slideDiv.style.width = '100%';
+          slideDiv.style.height = '100%';
+          slideDiv.style.opacity = idx === 0 ? '1' : '0';
+          slideDiv.style.pointerEvents = idx === 0 ? 'auto' : 'none';
+          slideDiv.style.transition = 'opacity 0.8s ease-in-out';
+          slideDiv.style.zIndex = idx === 0 ? '2' : '1';
+
+          var rawUrl = s.url || s.url_medio || s;
+          var resolvedUrl = window.resolveMediaUrl ? window.resolveMediaUrl(rawUrl) : rawUrl;
+          var isVideo = s.tipo === 'video' || (typeof rawUrl === 'string' && (rawUrl.endsWith('.mp4') || rawUrl.endsWith('.webm') || rawUrl.endsWith('.mov')));
+
+          if (isVideo) {
+            var vid = document.createElement('video');
+            vid.className = 'hero-slide-media';
+            vid.muted = true;
+            vid.setAttribute('muted', '');
+            vid.setAttribute('playsinline', '');
+            vid.style.position = 'absolute';
+            vid.style.inset = '0';
+            vid.style.width = '100%';
+            vid.style.height = '100%';
+            vid.style.objectFit = 'cover';
+            vid.src = resolvedUrl;
+            if (idx === 0) {
+              vid.setAttribute('autoplay', '');
+              vid.play().catch(function() {});
             }
-          }, true);
+            vid.onended = function() {
+              window.nextHeroSlide();
+            };
+            slideDiv.appendChild(vid);
+          } else {
+            var img = document.createElement('img');
+            img.className = 'hero-slide-media';
+            img.alt = s.titulo || 'Flymetrics Drones';
+            img.style.position = 'absolute';
+            img.style.inset = '0';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.src = resolvedUrl;
+            slideDiv.appendChild(img);
+          }
+
+          wrapper.appendChild(slideDiv);
+
+          // Indicador (dot)
+          if (dotsContainer) {
+            var dot = document.createElement('button');
+            dot.className = 'hero-dot';
+            dot.type = 'button';
+            dot.setAttribute('aria-label', 'Diapositiva ' + (idx + 1));
+            dot.style.height = '10px';
+            dot.style.width = idx === 0 ? '28px' : '10px';
+            dot.style.borderRadius = '5px';
+            dot.style.background = idx === 0 ? '#E4C7A1' : '#ffffff';
+            dot.style.opacity = idx === 0 ? '1' : '0.5';
+            dot.style.border = 'none';
+            dot.style.cursor = 'pointer';
+            dot.style.padding = '0';
+            dot.style.transition = 'all 0.3s ease';
+            dot.onclick = function() {
+              showHeroSlide(idx);
+            };
+            dotsContainer.appendChild(dot);
+          }
+        });
+
+        // Ocultar controles si solo hay 1 diapositiva
+        var prevBtn = document.getElementById('hero-prev-btn');
+        var nextBtn = document.getElementById('hero-next-btn');
+        if (slides.length <= 1) {
+          if (prevBtn) prevBtn.style.display = 'none';
+          if (nextBtn) nextBtn.style.display = 'none';
+          if (dotsContainer) dotsContainer.style.display = 'none';
+        } else {
+          if (prevBtn) prevBtn.style.display = 'flex';
+          if (nextBtn) nextBtn.style.display = 'flex';
+          if (dotsContainer) dotsContainer.style.display = 'flex';
         }
+
+        showHeroSlide(0);
+      }
+
+      function showHeroSlide(index) {
+        if (!_heroSlides.length) return;
+        if (index < 0) index = _heroSlides.length - 1;
+        if (index >= _heroSlides.length) index = 0;
+        _currentHeroIndex = index;
+
+        if (_heroTimer) clearTimeout(_heroTimer);
+
+        var wrapper = document.getElementById('hero-slides-wrapper');
+        if (!wrapper) return;
+        var slideEls = wrapper.querySelectorAll('.hero-slide');
+        slideEls.forEach(function(el, i) {
+          if (i === index) {
+            el.style.opacity = '1';
+            el.style.pointerEvents = 'auto';
+            el.style.zIndex = '2';
+            var vid = el.querySelector('video');
+            if (vid) {
+              vid.currentTime = 0;
+              vid.play().catch(function() {});
+              vid.onended = function() {
+                window.nextHeroSlide();
+              };
+            } else {
+              _heroTimer = setTimeout(function() {
+                window.nextHeroSlide();
+              }, 6000);
+            }
+          } else {
+            el.style.opacity = '0';
+            el.style.pointerEvents = 'none';
+            el.style.zIndex = '1';
+            var vid = el.querySelector('video');
+            if (vid) {
+              vid.pause();
+              vid.onended = null;
+            }
+          }
+        });
+
+        var dots = document.querySelectorAll('.hero-dot');
+        dots.forEach(function(d, i) {
+          if (i === index) {
+            d.style.width = '28px';
+            d.style.background = '#E4C7A1';
+            d.style.opacity = '1';
+          } else {
+            d.style.width = '10px';
+            d.style.background = '#ffffff';
+            d.style.opacity = '0.5';
+          }
+        });
+      }
+
+      window.nextHeroSlide = function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        showHeroSlide(_currentHeroIndex + 1);
+      };
+
+      window.prevHeroSlide = function(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        showHeroSlide(_currentHeroIndex - 1);
+      };
+
+      // Soporte táctil en móviles (swipe)
+      var touchStartX = 0;
+      var heroSec = document.getElementById('inicio');
+      if (heroSec) {
+        heroSec.addEventListener('touchstart', function(e) {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        heroSec.addEventListener('touchend', function(e) {
+          var touchEndX = e.changedTouches[0].screenX;
+          if (touchEndX < touchStartX - 50) window.nextHeroSlide();
+          if (touchEndX > touchStartX + 50) window.prevHeroSlide();
+        }, { passive: true });
+      }
+
+      // Sincronizar Medios Globales (Video Hero y Portada Móvil) desde la base de datos de manera robusta
+      async function syncMediosGlobales() {
+        var defaultSlides = [
+          { tipo: 'video', url: '/video/hero.mp4', titulo: 'Operación con Drones RTK' },
+          { tipo: 'imagen', url: '/img/servicio_precision.jpg', titulo: 'Fumigación y Aspersión' },
+          { tipo: 'video', url: '/video/field_drone.mp4', titulo: 'Monitoreo Multiespectral' }
+        ];
 
         try {
           var res = await fetch(window.BASE_URL + '/publicidad/medios-globales?t=' + Date.now());
           if (res.ok) {
             var json = await res.json();
             var medios = json.data || json || {};
-            var rawPoster = (medios.mobile_poster_url || medios.hero_poster_mobile_url || defaultPoster).trim();
-            var posterUrl = window.resolveMediaUrl ? window.resolveMediaUrl(rawPoster) : rawPoster;
-            if (posterUrl) {
-              if (posterEl) {
-                posterEl.style.setProperty('background-image', 'url("' + posterUrl + '")', 'important');
-                var posterImg = posterEl.querySelector('img');
-                if (posterImg) {
-                  posterImg.src = posterUrl;
-                }
-              }
-              if (vidEl) vidEl.poster = posterUrl;
+            var slides = medios.hero_slides;
+            if (!slides || !slides.length) {
+              slides = [
+                { tipo: 'video', url: medios.hero_video_url || '/video/hero.mp4', titulo: 'FLYMETRICS' },
+                { tipo: 'imagen', url: medios.mobile_poster_url || '/img/servicio_precision.jpg', titulo: 'Fumigación de Precisión' },
+                { tipo: 'video', url: '/video/field_drone.mp4', titulo: 'Monitoreo Multiespectral' }
+              ];
             }
-
-            var rawVideo = (medios.hero_video_url || defaultVideo).trim();
-            var videoUrl = window.resolveMediaUrl ? window.resolveMediaUrl(rawVideo) : rawVideo;
-            if (vidEl && videoUrl) {
-              var source = vidEl.querySelector('source');
-              if (source) source.src = videoUrl;
-              vidEl.src = videoUrl;
-              vidEl.muted = true;
-              vidEl.setAttribute('muted', '');
-              vidEl.setAttribute('playsinline', '');
-              vidEl.setAttribute('autoplay', '');
-              vidEl.load();
-              vidEl.play().catch(function() {});
-            }
+            renderHeroCarousel(slides);
+          } else {
+            renderHeroCarousel(defaultSlides);
           }
         } catch (e) {
           console.warn('Error sincronizando medios globales:', e);
+          renderHeroCarousel(defaultSlides);
         }
       }
 

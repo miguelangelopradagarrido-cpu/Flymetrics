@@ -135,7 +135,7 @@ async def upload_media(
     # 3. Guardar en base de datos MySQL para persistencia total contra reinicios o entornos de solo lectura
     try:
         import base64
-        b64_str = base64.b64encode(file_bytes).decode('ascii')
+        b64_str = base64.b64encode(file_bytes).decode('ascii') if total_bytes <= 25 * 1024 * 1024 else None
         media_rec = db.query(MediaUploadModel).filter(MediaUploadModel.filename == new_filename).first()
         if not media_rec:
             media_rec = MediaUploadModel(
@@ -150,7 +150,8 @@ async def upload_media(
             )
             db.add(media_rec)
         else:
-            media_rec.data = b64_str
+            if b64_str:
+                media_rec.data = b64_str
             media_rec.size_bytes = total_bytes
             media_rec.activo = True
         db.commit()
@@ -223,7 +224,7 @@ async def upload_media_batch(
             rel_url = f"/uploads/{clean_mod}/{'videos' if media_type == 'video' else 'images'}/{new_filename}"
 
             try:
-                b64_str = base64.b64encode(file_bytes).decode('ascii')
+                b64_str = base64.b64encode(file_bytes).decode('ascii') if total_bytes <= 25 * 1024 * 1024 else None
                 media_rec = MediaUploadModel(
                     filename=new_filename,
                     rel_url=rel_url,

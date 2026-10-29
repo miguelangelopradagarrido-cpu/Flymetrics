@@ -5178,6 +5178,19 @@ window.asignarMediaDesdeGaleria = function(url, tipo) {
     showToast('<i class="fa-solid fa-check"></i> Asignado como Portada Móvil', 'success');
     return;
   }
+  if (_galleryTargetType === 'hero_slide_add') {
+    if (!window._adminHeroSlides) window._adminHeroSlides = [];
+    window._adminHeroSlides.push({
+      tipo: tipo || 'imagen',
+      url: url,
+      titulo: 'Flymetrics Drones'
+    });
+    renderHeroSlidesGrid();
+    window.guardarMediosGlobales();
+    closeModal('modalMediaGallery');
+    showToast('<i class="fa-solid fa-check"></i> Diapositiva agregada al carrusel Hero', 'success');
+    return;
+  }
 
   // Por defecto, intentar asignar a Servicio o copiar
   seleccionarMediaParaServicio(url, tipo);
@@ -7423,6 +7436,11 @@ async function loadPublicidadPanel() {
         if (iPrev) {
           iPrev.src = posterUrl + (posterUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
         }
+        window._adminHeroSlides = Array.isArray(mediosData.hero_slides) ? [...mediosData.hero_slides] : [];
+        renderHeroSlidesGrid();
+      } else {
+        window._adminHeroSlides = [];
+        renderHeroSlidesGrid();
       }
     } catch (err) {
       console.warn('No se pudieron cargar medios globales:', err);
@@ -7625,11 +7643,12 @@ window.guardarMediosGlobales = async function() {
       method: 'POST',
       body: JSON.stringify({
         hero_video_url: heroUrl,
-        mobile_poster_url: posterUrl
+        mobile_poster_url: posterUrl,
+        hero_slides: window._adminHeroSlides || []
       })
     });
 
-    pubGlobalMedios = (res && res.data) ? res.data : (res || { hero_video_url: heroUrl, mobile_poster_url: posterUrl });
+    pubGlobalMedios = (res && res.data) ? res.data : (res || { hero_video_url: heroUrl, mobile_poster_url: posterUrl, hero_slides: window._adminHeroSlides });
 
     const vPrev = document.getElementById('pubGlobalHeroPreview');
     const iPrev = document.getElementById('pubGlobalPosterPreview');
@@ -7642,9 +7661,104 @@ window.guardarMediosGlobales = async function() {
       iPrev.src = posterUrl + (posterUrl.includes('?') ? '&' : '?') + 't=' + Date.now();
     }
 
+    renderHeroSlidesGrid();
     showToast('<i class="fa-solid fa-check"></i> Medios globales guardados y confirmados en la BD', 'success');
   } catch (err) {
     showToast('Error al guardar medios: ' + (err.detail || err.message), 'error');
+  }
+};
+
+window._adminHeroSlides = [];
+
+function renderHeroSlidesGrid() {
+  const container = document.getElementById('pubHeroSlidesGrid');
+  if (!container) return;
+
+  const slides = window._adminHeroSlides || [];
+  if (!slides.length) {
+    container.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:25px; color:#94a3b8; background:#f8fafc; border-radius:12px; border:1px dashed #cbd5e1;">
+        <i class="fa-solid fa-photo-film" style="font-size:1.8rem; margin-bottom:8px; color:#cbd5e1;"></i>
+        <div style="font-weight:700; color:#475569;">No hay diapositivas adicionales en el carrusel</div>
+        <div style="font-size:0.8rem; margin-top:4px;">Se proyectará el video y la imagen principal por defecto. Agrega más arriba para enriquecer el carrusel.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = slides.map((s, idx) => {
+    const rawUrl = s.url || s.url_medio || s;
+    const isVid = s.tipo === 'video' || (typeof rawUrl === 'string' && (rawUrl.endsWith('.mp4') || rawUrl.endsWith('.webm') || rawUrl.endsWith('.mov')));
+    const safeUrl = resolveMediaUrl(rawUrl);
+
+    return `
+      <div style="background:#ffffff; border:1.5px solid #cbd5e1; border-radius:14px; overflow:hidden; position:relative; box-shadow:0 4px 12px rgba(0,0,0,0.06); display:flex; flex-direction:column;">
+        <div style="width:100%; height:130px; background:#001828; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+          ${isVid ? `
+            <video src="${safeUrl}" muted playsinline preload="metadata" style="width:100%; height:100%; object-fit:cover;"></video>
+            <span style="position:absolute; background:rgba(0,48,73,0.8); color:#fff; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border:1.5px solid #E4C7A1;"><i class="fa-solid fa-play" style="font-size:0.75rem;"></i></span>
+          ` : `
+            <img src="${safeUrl}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='/img/servicio_precision.jpg'" />
+          `}
+          <span class="badge" style="position:absolute; top:8px; left:8px; background:rgba(0,27,46,0.85); color:#E4C7A1; border:1px solid rgba(228,199,161,0.5); font-size:0.7rem; padding:2px 8px;">Diapositiva ${idx + 1}</span>
+        </div>
+        <div style="padding:10px; display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border-top:1px solid #e2e8f0;">
+          <span style="font-size:0.75rem; font-weight:700; color:#334155; text-transform:uppercase;">${isVid ? '<i class="fa-solid fa-video"></i> Video' : '<i class="fa-solid fa-image"></i> Imagen'}</span>
+          <button type="button" class="btn btn-danger btn-sm" onclick="eliminarHeroSlide(${idx})" title="Quitar diapositiva" style="padding:4px 8px; font-size:0.75rem; background:#fee2e2; color:#ef4444; border:1px solid #fca5a5;">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+window.renderHeroSlidesGrid = renderHeroSlidesGrid;
+
+window.eliminarHeroSlide = async function(idx) {
+  if (!window._adminHeroSlides) return;
+  window._adminHeroSlides.splice(idx, 1);
+  renderHeroSlidesGrid();
+  await window.guardarMediosGlobales();
+  showToast('<i class="fa-solid fa-check"></i> Diapositiva quitada del carrusel', 'info');
+};
+
+window.subirSlideHeroDirecto = async function(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  const isVid = file.type.startsWith('video/') || file.name.endsWith('.mp4');
+  const tipo = isVid ? 'video' : 'imagen';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('tipo', tipo);
+  formData.append('modulo', 'hero');
+
+  try {
+    showToast(`Subiendo ${tipo} para el carrusel...`, 'info');
+    const token = getToken();
+    const res = await fetch(`${API_BASE}/media/upload`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: formData
+    });
+    const body = await res.json();
+    if (!res.ok || !body.success) throw new Error(body.message || body.detail || 'Error al subir archivo');
+
+    const newUrl = body.data.url;
+    if (!window._adminHeroSlides) window._adminHeroSlides = [];
+    window._adminHeroSlides.push({
+      tipo: tipo,
+      url: newUrl,
+      titulo: 'Flymetrics Agro'
+    });
+    renderHeroSlidesGrid();
+    await window.guardarMediosGlobales();
+    showToast('<i class="fa-solid fa-check"></i> Nueva diapositiva agregada al carrusel Hero', 'success');
+  } catch (err) {
+    showToast('Error subiendo diapositiva: ' + err.message, 'error');
+  } finally {
+    input.value = '';
   }
 };
 
