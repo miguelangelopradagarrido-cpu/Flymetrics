@@ -593,28 +593,27 @@
         const iconCls = s.rawIconClass || 'fa-solid fa-helicopter';
         return `
           <article class="showcase-card" data-service-id="${idx}" onclick="window.openModal(${idx}, event)"
-            style="cursor: pointer; border-top: 3.5px solid ${color};">
+            style="cursor: pointer; border-top: 4px solid ${color}; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,48,73,0.08);">
             <div>
               <div class="card-image-slot"
-                style="width: 100%; height: 185px; border-radius: 10px; background-image: url('${s.image}'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
-                <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,48,73,0.05) 0%, rgba(0,48,73,0.6) 100%);"></div>
-                <span style="position: absolute; bottom: 12px; left: 12px; color: #ffffff; font-weight: 800; font-size: 0.8rem; background: rgba(0,48,73,0.85); padding: 4px 12px; border-radius: 8px; border: 1px solid ${color}; font-family: 'Barlow', sans-serif;">
-                  <i class="${iconCls}" style="color: #E4C7A1; margin-right: 4px;"></i> ${s.title}
-                </span>
+                style="width: 100%; height: 235px; border-radius: 12px; background-image: url('${s.image}'); background-size: cover; background-position: center; margin-bottom: 18px; position: relative; overflow: hidden; box-shadow: 0 10px 24px rgba(0,48,73,0.15); transition: transform 0.4s ease;">
+                <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,48,73,0.02) 0%, rgba(0,48,73,0.45) 100%);"></div>
               </div>
 
-              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                <i class="${iconCls}" style="font-size: 1.5rem; color: ${color};"></i>
-                <h3 style="margin: 0; font-size: 1.25rem; color: #003049; font-family: 'Barlow', sans-serif; font-weight: 800;">
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(0,48,73,0.06); display: flex; align-items: center; justify-content: center;">
+                  <i class="${iconCls}" style="font-size: 1.4rem; color: ${color};"></i>
+                </div>
+                <h3 style="margin: 0; font-size: 1.3rem; color: #003049; font-family: 'Barlow', sans-serif; font-weight: 800; line-height: 1.2;">
                   ${s.title}
                 </h3>
               </div>
 
-              <p style="font-size: 0.875rem; color: #343A40; line-height: 1.55; margin-bottom: 14px; font-family: 'Inter', sans-serif;">
+              <p style="font-size: 0.885rem; color: #343A40; line-height: 1.6; margin-bottom: 16px; font-family: 'Inter', sans-serif;">
                 ${s.description}
               </p>
 
-              <ul style="list-style: none; padding: 0; margin: 0 0 18px 0; font-size: 0.82rem; color: #6C757D; display: flex; flex-direction: column; gap: 8px; font-family: 'Inter', sans-serif;">
+              <ul style="list-style: none; padding: 0; margin: 0 0 20px 0; font-size: 0.83rem; color: #6C757D; display: flex; flex-direction: column; gap: 9px; font-family: 'Inter', sans-serif;">
                 <li><i class="fa-solid fa-check" style="color: #10b981;"></i> <strong>Sistema:</strong> ${s.sistema}</li>
                 <li><i class="fa-solid fa-check" style="color: #10b981;"></i> <strong>Eficiencia:</strong> ${s.efficiency}</li>
                 <li><i class="fa-solid fa-check" style="color: #10b981;"></i> <strong>Precisión:</strong> ${s.precision}</li>
@@ -622,7 +621,7 @@
             </div>
 
             <button type="button" class="btn-solid" onclick="event.stopPropagation(); window.openModal(${idx}, event);"
-              style="width: 100%; padding: 13px; font-size: 0.92rem; border-radius: 10px; background: linear-gradient(135deg, #003049 0%, #1C82AD 100%); color: #ffffff; font-weight: 800; font-family: 'Barlow', sans-serif; letter-spacing: 0.03em; cursor: pointer; border: none; box-shadow: 0 8px 24px rgba(28,130,173,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+              style="width: 100%; padding: 14px; font-size: 0.94rem; border-radius: 12px; background: linear-gradient(135deg, #003049 0%, ${color} 100%); color: #ffffff; font-weight: 800; font-family: 'Barlow', sans-serif; letter-spacing: 0.03em; cursor: pointer; border: none; box-shadow: 0 8px 24px rgba(0,48,73,0.25); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease;">
               Ver Ficha Técnica <i class="fa-solid fa-arrow-right"></i>
             </button>
           </article>
@@ -843,14 +842,14 @@
 
         <!-- Controles laterales de navegación (Flechas interactivas) -->
         <button type="button" id="hero-prev-btn" class="hero-nav-arrow" onclick="window.prevHeroSlide(event)" aria-label="Anterior diapositiva"
-          style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 10; width: 48px; height: 48px; border-radius: 50%; background: rgba(0, 48, 73, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid rgba(228, 199, 161, 0.7); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"
+          style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); z-index: 100; width: 48px; height: 48px; border-radius: 50%; background: rgba(0, 48, 73, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid rgba(228, 199, 161, 0.7); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"
           onmouseover="this.style.background='rgba(28, 130, 173, 0.8)'; this.style.transform='translateY(-50%) scale(1.1)';"
           onmouseout="this.style.background='rgba(0, 48, 73, 0.65)'; this.style.transform='translateY(-50%) scale(1)';">
           <i class="fa-solid fa-chevron-left"></i>
         </button>
 
         <button type="button" id="hero-next-btn" class="hero-nav-arrow" onclick="window.nextHeroSlide(event)" aria-label="Siguiente diapositiva"
-          style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 10; width: 48px; height: 48px; border-radius: 50%; background: rgba(0, 48, 73, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid rgba(228, 199, 161, 0.7); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"
+          style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 100; width: 48px; height: 48px; border-radius: 50%; background: rgba(0, 48, 73, 0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid rgba(228, 199, 161, 0.7); color: #E4C7A1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.4);"
           onmouseover="this.style.background='rgba(28, 130, 173, 0.8)'; this.style.transform='translateY(-50%) scale(1.1)';"
           onmouseout="this.style.background='rgba(0, 48, 73, 0.65)'; this.style.transform='translateY(-50%) scale(1)';">
           <i class="fa-solid fa-chevron-right"></i>
@@ -888,12 +887,6 @@
               onmouseout="this.style.background='rgba(0, 48, 73, 0.65)'; this.style.borderColor='rgba(28, 130, 173, 0.7)';">
               <i class="fa-solid fa-paper-plane" style="color: #1C82AD;"></i> Solicitar Cotización
             </a>
-            <button type="button" class="btn-glass" onclick="window.openHeroFullscreenViewer()"
-              style="background: rgba(16, 185, 129, 0.25); color: #ffffff; border-radius: 9999px; padding: 18px 28px; font-weight: 800; font-size: 0.98rem; font-family: 'Barlow', sans-serif; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1.5px solid #10b981; display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.03em; cursor: pointer; transition: all 0.3s;"
-              onmouseover="this.style.background='rgba(16, 185, 129, 0.45)'; this.style.borderColor='#ffffff'; this.style.transform='scale(1.04)';"
-              onmouseout="this.style.background='rgba(16, 185, 129, 0.25)'; this.style.borderColor='#10b981'; this.style.transform='scale(1)';">
-              <i class="fa-solid fa-expand" style="color: #6ee7b7;"></i> Ver Video Completo
-            </button>
             <a href="#servicios" class="btn-glass"
               style="background: rgba(255, 255, 255, 0.14); color: #ffffff; border-radius: 9999px; padding: 18px 26px; font-weight: 700; font-size: 0.98rem; font-family: 'Barlow', sans-serif; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1.5px solid rgba(228, 199, 161, 0.6); display: inline-flex; align-items: center; gap: 8px; letter-spacing: 0.03em; text-decoration: none; transition: all 0.3s;"
               onmouseover="this.style.background='rgba(255, 255, 255, 0.28)'; this.style.borderColor='#ffffff';"
@@ -902,6 +895,15 @@
             </a>
           </div>
         </div>
+
+                <!-- Botón flotante para ver Video Completo en pantalla grande (aparece ÚNICAMENTE cuando se reproduce el video principal) -->
+        <button type="button" id="heroFloatingFullscreenBtn" onclick="window.openHeroFullscreenViewer(event)" aria-label="Ver video completo con sonido"
+          style="display: none; position: absolute; right: 28px; bottom: 32px; z-index: 1000; background: rgba(0, 48, 73, 0.88); color: #ffffff; border-radius: 9999px; padding: 12px 22px; font-weight: 800; font-size: 0.90rem; font-family: 'Barlow', sans-serif; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 2px solid #10b981; align-items: center; gap: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 30px rgba(0,0,0,0.6);"
+          onmouseover="this.style.background='rgba(16, 185, 129, 0.9)'; this.style.borderColor='#ffffff'; this.style.transform='translateY(-2px) scale(1.05)';"
+          onmouseout="this.style.background='rgba(0, 48, 73, 0.88)'; this.style.borderColor='#10b981'; this.style.transform='translateY(0) scale(1)';">
+          <i class="fa-solid fa-expand" style="color: #6ee7b7; font-size: 1.1rem;"></i>
+          <span>Ver Video Completo</span>
+        </button>
 
         <!-- Scroll indicator -->
         <div
@@ -929,15 +931,11 @@
           style="cursor: pointer; border-top: 3.5px solid #1C82AD;">
           <div>
             <div class="card-image-slot"
-              style="width: 100%; height: 185px; border-radius: 10px; background-image: url('img/servicio_precision.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
+              style="width: 100%; height: 235px; border-radius: 10px; background-image: url('img/servicio_precision.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
               <div
                 style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,48,73,0.05) 0%, rgba(0,48,73,0.6) 100%);">
               </div>
-              <span
-                style="position: absolute; bottom: 12px; left: 12px; color: #ffffff; font-weight: 800; font-size: 0.8rem; background: rgba(0,48,73,0.85); padding: 4px 12px; border-radius: 8px; border: 1px solid #1C82AD; font-family: 'Barlow', sans-serif;">
-                <i class="fa-solid fa-wheat-awn" style="color: #E4C7A1; margin-right: 4px;"></i> Precisión Agrícola
-              </span>
-            </div>
+              </div>
 
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
               <i class="fa-solid fa-wheat-awn" style="font-size: 1.5rem; color: #1C82AD;"></i>
@@ -971,15 +969,11 @@
           style="cursor: pointer; border-top: 3.5px solid #10B981;">
           <div>
             <div class="card-image-slot"
-              style="width: 100%; height: 185px; border-radius: 10px; background-image: url('img/servicio_ganaderia.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
+              style="width: 100%; height: 235px; border-radius: 10px; background-image: url('img/servicio_ganaderia.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
               <div
                 style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,48,73,0.05) 0%, rgba(0,48,73,0.6) 100%);">
               </div>
-              <span
-                style="position: absolute; bottom: 12px; left: 12px; color: #ffffff; font-weight: 800; font-size: 0.8rem; background: rgba(0,48,73,0.85); padding: 4px 12px; border-radius: 8px; border: 1px solid #10B981; font-family: 'Barlow', sans-serif;">
-                <i class="fa-solid fa-cow" style="color: #10B981; margin-right: 4px;"></i> Ganadería Inteligente
-              </span>
-            </div>
+              </div>
 
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
               <i class="fa-solid fa-cow" style="font-size: 1.5rem; color: #10B981;"></i>
@@ -1013,15 +1007,11 @@
           style="cursor: pointer; border-top: 3.5px solid #E4C7A1;">
           <div>
             <div class="card-image-slot"
-              style="width: 100%; height: 185px; border-radius: 10px; background-image: url('img/servicio_aspersion.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
+              style="width: 100%; height: 235px; border-radius: 10px; background-image: url('img/servicio_aspersion.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
               <div
                 style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,48,73,0.05) 0%, rgba(0,48,73,0.6) 100%);">
               </div>
-              <span
-                style="position: absolute; bottom: 12px; left: 12px; color: #ffffff; font-weight: 800; font-size: 0.8rem; background: rgba(0,48,73,0.85); padding: 4px 12px; border-radius: 8px; border: 1px solid #E4C7A1; font-family: 'Barlow', sans-serif;">
-                <i class="fa-solid fa-helicopter" style="color: #E4C7A1; margin-right: 4px;"></i> Aspersión Aérea
-              </span>
-            </div>
+              </div>
 
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
               <i class="fa-solid fa-helicopter" style="font-size: 1.5rem; color: #003049;"></i>
@@ -1055,15 +1045,11 @@
           style="cursor: pointer; border-top: 3.5px solid #1C82AD;">
           <div>
             <div class="card-image-slot"
-              style="width: 100%; height: 185px; border-radius: 10px; background-image: url('img/servicio_multiespectral.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
+              style="width: 100%; height: 235px; border-radius: 10px; background-image: url('img/servicio_multiespectral.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
               <div
                 style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,48,73,0.05) 0%, rgba(0,48,73,0.6) 100%);">
               </div>
-              <span
-                style="position: absolute; bottom: 12px; left: 12px; color: #ffffff; font-weight: 800; font-size: 0.8rem; background: rgba(0,48,73,0.85); padding: 4px 12px; border-radius: 8px; border: 1px solid #1C82AD; font-family: 'Barlow', sans-serif;">
-                <i class="fa-solid fa-seedling" style="color: #E4C7A1; margin-right: 4px;"></i> Salud Vegetal
-              </span>
-            </div>
+              </div>
 
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
               <i class="fa-solid fa-seedling" style="font-size: 1.5rem; color: #1C82AD;"></i>
@@ -1097,15 +1083,11 @@
           style="cursor: pointer; border-top: 3.5px solid #E4C7A1;">
           <div>
             <div class="card-image-slot"
-              style="width: 100%; height: 185px; border-radius: 10px; background-image: url('img/servicio_topografia_3d.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
+              style="width: 100%; height: 235px; border-radius: 10px; background-image: url('img/servicio_topografia_3d.jpg'); background-size: cover; background-position: center; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(0,48,73,0.12);">
               <div
                 style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,48,73,0.05) 0%, rgba(0,48,73,0.6) 100%);">
               </div>
-              <span
-                style="position: absolute; bottom: 12px; left: 12px; color: #ffffff; font-weight: 800; font-size: 0.8rem; background: rgba(0,48,73,0.85); padding: 4px 12px; border-radius: 8px; border: 1px solid #E4C7A1; font-family: 'Barlow', sans-serif;">
-                <i class="fa-solid fa-map-location-dot" style="color: #E4C7A1; margin-right: 4px;"></i> Topografía RTK
-              </span>
-            </div>
+              </div>
 
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
               <i class="fa-solid fa-map-location-dot" style="font-size: 1.5rem; color: #003049;"></i>
@@ -5000,7 +4982,7 @@
       }
 
             // Carrusel Hero continuo: Video -> Diapositivas -> Video en bucle constante
-      function showHeroSlide(index) {
+            function showHeroSlide(index) {
         if (!_heroSlides.length) return;
         if (index < 0) index = _heroSlides.length - 1;
         if (index >= _heroSlides.length) index = 0;
@@ -5012,8 +4994,10 @@
         }
 
         var wrapper = document.getElementById('hero-slides-wrapper');
+        var floatBtn = document.getElementById('heroFloatingFullscreenBtn');
         if (!wrapper) return;
         var slideEls = wrapper.querySelectorAll('.hero-slide');
+
         slideEls.forEach(function(el, i) {
           if (i === index) {
             el.style.opacity = '1';
@@ -5021,9 +5005,10 @@
             el.style.zIndex = '2';
             var vid = el.querySelector('video');
             if (vid) {
+              // Es video: mostrar el botón de ver video completo únicamente aquí
+              if (floatBtn) floatBtn.style.display = 'inline-flex';
               vid.currentTime = 0;
               vid.play().catch(function() {});
-              // Avanzar al finalizar el video o tras máximo 14 segundos de seguridad
               vid.onended = function() {
                 window.nextHeroSlide();
               };
@@ -5031,7 +5016,8 @@
                 window.nextHeroSlide();
               }, 14000);
             } else {
-              // Diapositiva de imagen: 5 segundos y avanza a la siguiente
+              // Es imagen: ocultar el botón de ver video completo
+              if (floatBtn) floatBtn.style.display = 'none';
               _heroTimer = setTimeout(function() {
                 window.nextHeroSlide();
               }, 5000);
@@ -5063,7 +5049,8 @@
       }
 
       // Visualizador de Cine / Pantalla Completa para Video Principal
-      window.openHeroFullscreenViewer = function() {
+      window.openHeroFullscreenViewer = function(e) {
+        if (e && e.stopPropagation) e.stopPropagation();
         var currentSlide = _heroSlides[_currentHeroIndex] || _heroSlides[0];
         var videoUrl = (currentSlide && currentSlide.tipo === 'video' && currentSlide.url) ? currentSlide.url : '/video/hero.mp4';
         var resolved = window.resolveMediaUrl ? window.resolveMediaUrl(videoUrl) : videoUrl;
@@ -5135,15 +5122,30 @@
           if (res.ok) {
             var json = await res.json();
             var medios = json.data || json || {};
+            var heroVid = medios.hero_video_url || '/video/hero.mp4';
             var slides = medios.hero_slides;
-            if (!slides || !slides.length) {
-              slides = [
-                { tipo: 'video', url: medios.hero_video_url || '/video/hero.mp4', titulo: 'FLYMETRICS' },
-                { tipo: 'imagen', url: medios.mobile_poster_url || '/img/servicio_precision.jpg', titulo: 'Fumigación de Precisión' },
-                { tipo: 'video', url: '/video/field_drone.mp4', titulo: 'Monitoreo Multiespectral' }
-              ];
+            
+            // Si el usuario configuró diapositivas, asegurar que la primera sea el video principal configurado
+            var finalSlides = [];
+            finalSlides.push({ tipo: 'video', url: heroVid, titulo: 'FLYMETRICS - Operación Aérea' });
+            
+            if (Array.isArray(slides) && slides.length > 0) {
+              slides.forEach(function(s) {
+                var sUrl = s.url || s.url_medio || s;
+                // Evitar duplicar el video principal si ya viene en las diapositivas
+                if (sUrl !== heroVid) {
+                  finalSlides.push({
+                    tipo: s.tipo || (typeof sUrl === 'string' && sUrl.endsWith('.mp4') ? 'video' : 'imagen'),
+                    url: sUrl,
+                    titulo: s.titulo || 'Flymetrics Drones'
+                  });
+                }
+              });
+            } else {
+              finalSlides.push({ tipo: 'imagen', url: medios.mobile_poster_url || '/img/servicio_precision.jpg', titulo: 'Fumigación de Precisión' });
+              finalSlides.push({ tipo: 'video', url: '/video/field_drone.mp4', titulo: 'Monitoreo Multiespectral' });
             }
-            renderHeroCarousel(slides);
+            renderHeroCarousel(finalSlides);
           } else {
             renderHeroCarousel(defaultSlides);
           }
