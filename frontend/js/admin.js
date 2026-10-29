@@ -4951,6 +4951,8 @@ window.filterMediaOrigin = function(origin) {
   document.getElementById('galleryOriginCustom')?.classList.toggle('btn-ghost', origin !== 'custom');
   document.getElementById('galleryOriginSystem')?.classList.toggle('btn-primary', origin === 'system');
   document.getElementById('galleryOriginSystem')?.classList.toggle('btn-ghost', origin !== 'system');
+  document.getElementById('galleryTabFotovideofly')?.classList.toggle('btn-primary', origin === 'fotovideofly');
+  document.getElementById('galleryTabFotovideofly')?.classList.toggle('btn-ghost', origin !== 'fotovideofly');
   renderMediaGalleryItems();
 };
 
@@ -4982,8 +4984,9 @@ function renderMediaGalleryItems() {
   if (_galleryFilter === 'imagen') items = items.filter(x => x.tipo === 'imagen');
   if (_galleryFilter === 'video') items = items.filter(x => x.tipo === 'video');
 
-  if (_galleryOrigin === 'custom') items = items.filter(x => Boolean(x.is_custom_upload));
-  if (_galleryOrigin === 'system') items = items.filter(x => !x.is_custom_upload);
+  if (_galleryOrigin === 'custom') items = items.filter(x => Boolean(x.is_custom_upload) && !x.is_fotovideofly);
+  if (_galleryOrigin === 'system') items = items.filter(x => !x.is_custom_upload && !x.is_fotovideofly);
+  if (_galleryOrigin === 'fotovideofly') items = items.filter(x => Boolean(x.is_fotovideofly) || x.origin === 'fotovideofly');
 
   if (_gallerySearchQuery) {
     items = items.filter(x => 
@@ -5024,12 +5027,16 @@ function renderMediaGalleryItems() {
             <img src="${safeUrl}" alt="${safeName}" style="width:100%; height:100%; min-height:100%; object-fit:cover; display:block;" onerror="this.onerror=null; this.src='/img/servicio_precision.jpg';" loading="lazy" />
           `}
           
-          <!-- Badges de Tipo y Protección -->
+            <!-- Badges de Tipo y Protección -->
           <div style="position:absolute; top:10px; left:10px; display:flex; gap:6px; z-index:2;">
             <span style="background:rgba(0,24,40,0.88); color:#fff; font-size:0.72rem; font-weight:800; padding:4px 10px; border-radius:8px; backdrop-filter:blur(4px); box-shadow:0 2px 6px rgba(0,0,0,0.3);">
               ${isVid ? '🎬 Video' : '🖼️ Imagen'}
             </span>
-            ${isLogo ? `
+            ${m.is_fotovideofly ? `
+              <span style="background:#f59e0b; color:#fff; font-size:0.72rem; font-weight:800; padding:4px 10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.25);">
+                📁 FotoVideoFly
+              </span>
+            ` : (isLogo ? `
               <span style="background:#f59e0b; color:#fff; font-size:0.72rem; font-weight:800; padding:4px 10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.25);">
                 🔒 Logo Oficial
               </span>
@@ -5037,7 +5044,7 @@ function renderMediaGalleryItems() {
               <span style="background:#0284c7; color:#fff; font-size:0.72rem; font-weight:800; padding:4px 10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.25);">
                 ✏️ Modificable
               </span>
-            `}
+            `)}
           </div>
 
           <div style="position:absolute; bottom:10px; right:10px; z-index:2; background:rgba(0,0,0,0.7); color:#fff; font-size:0.72rem; font-weight:700; padding:4px 8px; border-radius:6px; backdrop-filter:blur(4px);">
@@ -7474,7 +7481,7 @@ async function loadPublicidadPanel() {
 window.loadPublicidadPanel = loadPublicidadPanel;
 
 window.switchPublicidadSubTab = function(subTab) {
-  const tabs = ['collage', 'global', 'redes'];
+  const tabs = ['collage', 'fotovideofly', 'global', 'redes'];
   tabs.forEach(t => {
     const el = document.getElementById(`pubSubTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
     const btn = document.getElementById(`pubTabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
@@ -7500,6 +7507,10 @@ window.switchPublicidadSubTab = function(subTab) {
       btnNuevo.style.display = 'inline-flex';
       btnNuevo.innerHTML = '<i class="fa-solid fa-plus"></i> + Agregar al Collage';
       btnNuevo.onclick = openNewCollageModal;
+    } else if (subTab === 'fotovideofly') {
+      btnNuevo.style.display = 'inline-flex';
+      btnNuevo.innerHTML = '<i class="fa-solid fa-rotate"></i> Recargar Disco';
+      btnNuevo.onclick = renderFotovideoflyGrid;
     } else if (subTab === 'redes') {
       btnNuevo.style.display = 'inline-flex';
       btnNuevo.innerHTML = '<i class="fa-solid fa-plus"></i> + Registrar Red Social';
@@ -7507,6 +7518,10 @@ window.switchPublicidadSubTab = function(subTab) {
     } else {
       btnNuevo.style.display = 'none';
     }
+  }
+
+  if (subTab === 'fotovideofly') {
+    renderFotovideoflyGrid();
   }
 };
 
@@ -7760,6 +7775,152 @@ window.subirSlideHeroDirecto = async function(input) {
   } finally {
     input.value = '';
   }
+};
+
+// ── FOTOVIDEOFLY CARPETA LOCAL EN DISCO ──
+let _fotovideoflyData = [];
+let _fvTypeFilter = 'all';
+let _fvSearchQuery = '';
+
+window.renderFotovideoflyGrid = async function() {
+  const grid = document.getElementById('pubFotovideoflyGrid');
+  const badge = document.getElementById('pubFotovideoflyBadge');
+  if (!grid) return;
+  grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding:35px; color:#64748b;">
+    <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem; color:var(--accent);"></i>
+    <div style="margin-top:8px;">Leyendo archivos directamente de la carpeta fotovideofly...</div>
+  </div>`;
+
+  try {
+    const res = await fetch(`${API_BASE}/publicidad/fotovideofly?t=${Date.now()}`);
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      _fotovideoflyData = json.data;
+      if (badge) badge.textContent = `${_fotovideoflyData.length} archivos detectados`;
+      renderFilteredFotovideofly();
+    } else {
+      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding:30px; color:#ef4444;">No se pudieron cargar los archivos de fotovideofly</div>`;
+    }
+  } catch (err) {
+    grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding:30px; color:#ef4444;">Error de lectura en disco: ${err.message}</div>`;
+  }
+};
+
+window.filterFotovideoflyType = function(type) {
+  _fvTypeFilter = type;
+  document.getElementById('btnFvFilterAll')?.classList.toggle('btn-primary', type === 'all');
+  document.getElementById('btnFvFilterAll')?.classList.toggle('btn-ghost', type !== 'all');
+  document.getElementById('btnFvFilterVideos')?.classList.toggle('btn-primary', type === 'video');
+  document.getElementById('btnFvFilterVideos')?.classList.toggle('btn-ghost', type !== 'video');
+  document.getElementById('btnFvFilterImages')?.classList.toggle('btn-primary', type === 'imagen');
+  document.getElementById('btnFvFilterImages')?.classList.toggle('btn-ghost', type !== 'imagen');
+  renderFilteredFotovideofly();
+};
+
+window.filterFotovideoflyGrid = function(query) {
+  _fvSearchQuery = (query || '').toLowerCase().trim();
+  renderFilteredFotovideofly();
+};
+
+function renderFilteredFotovideofly() {
+  const grid = document.getElementById('pubFotovideoflyGrid');
+  if (!grid) return;
+
+  let items = [..._fotovideoflyData];
+  if (_fvTypeFilter === 'video') items = items.filter(x => x.tipo === 'video');
+  if (_fvTypeFilter === 'imagen') items = items.filter(x => x.tipo === 'imagen');
+  if (_fvSearchQuery) {
+    items = items.filter(x => (x.name || '').toLowerCase().includes(_fvSearchQuery) || (x.titulo || '').toLowerCase().includes(_fvSearchQuery));
+  }
+
+  if (!items.length) {
+    grid.innerHTML = `<div style="grid-column: 1 / -1; text-align:center; padding:40px; color:#94a3b8;">
+      <i class="fa-solid fa-folder-open" style="font-size:2.5rem; margin-bottom:10px; color:#cbd5e1;"></i>
+      <div style="font-weight:700; color:#475569;">No se encontraron archivos en este filtro</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map((m) => {
+    const isVid = (m.tipo === 'video');
+    const safeUrl = resolveMediaUrl(m.url);
+    const safeName = (m.name || 'Archivo').replace(/'/g, "\\'");
+    const safeTitle = (m.titulo || safeName).replace(/'/g, "\\'");
+
+    return `
+      <div class="card" style="padding:14px; border-radius:16px; border:1.5px solid #cbd5e1; display:flex; flex-direction:column; gap:12px; background:#ffffff; box-shadow:0 6px 18px rgba(0,48,73,0.06);">
+        <div style="position:relative; width:100%; height:180px; border-radius:12px; overflow:hidden; background:#070d17; cursor:pointer;" onclick="previewMediaInViewer('${safeUrl}', '${m.tipo}', '${safeName}', '${m.size_formatted || ''}')" title="Clic para ampliar">
+          ${isVid ? `
+            <video src="${safeUrl}" muted preload="metadata" playsinline style="width:100%; height:100%; object-fit:cover;"></video>
+            <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+              <span style="background:rgba(0,48,73,0.85); color:#E4C7A1; width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #E4C7A1;">
+                <i class="fa-solid fa-play" style="margin-left:3px;"></i>
+              </span>
+            </div>
+          ` : `
+            <img src="${safeUrl}" alt="${safeName}" style="width:100%; height:100%; object-fit:cover;" loading="lazy" onerror="this.src='/img/servicio_precision.jpg';" />
+          `}
+          <div style="position:absolute; top:8px; left:8px; display:flex; gap:6px;">
+            <span style="background:rgba(0,24,40,0.85); color:#fff; font-size:0.7rem; font-weight:800; padding:3px 8px; border-radius:6px;">
+              ${isVid ? '🎬 Video' : '🖼️ Foto'}
+            </span>
+            <span style="background:#f59e0b; color:#fff; font-size:0.7rem; font-weight:800; padding:3px 8px; border-radius:6px;">
+              ⚡ Disco
+            </span>
+          </div>
+          <div style="position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.7); color:#fff; font-size:0.68rem; padding:2px 6px; border-radius:4px; font-weight:700;">
+            ${m.size_formatted || ''}
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:4px; flex:1;">
+          <div style="font-weight:800; font-size:0.86rem; color:#003049; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${safeName}">
+            ${safeName}
+          </div>
+          <div style="font-size:0.75rem; color:#64748b; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+            ${m.subtitulo || 'Archivo multimedia en carpeta local'}
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:4px;">
+          <button type="button" class="btn btn-sm btn-ghost" onclick="vincularFotovideoflyAHero('${safeUrl}', '${safeTitle}', '${m.tipo}')" style="font-size:0.74rem; font-weight:700; padding:5px 6px; border:1px solid #1C82AD; color:#1C82AD; border-radius:8px;" title="Agregar al carrusel Hero">
+            <i class="fa-solid fa-tv"></i> + Hero
+          </button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="vincularFotovideoflyACollage('${safeUrl}', '${safeTitle}', '${m.tipo}')" style="font-size:0.74rem; font-weight:700; padding:5px 6px; border:1px solid #10B981; color:#059669; border-radius:8px;" title="Agregar como elemento de collage">
+            <i class="fa-solid fa-images"></i> + Collage
+          </button>
+          <button type="button" class="btn btn-sm btn-ghost" onclick="navigator.clipboard.writeText('${safeUrl}'); showToast('Enlace copiado al portapapeles', 'info');" style="font-size:0.72rem; padding:5px; border-radius:8px; grid-column:span 2; border:1px solid #cbd5e1; color:#64748b;">
+            <i class="fa-solid fa-link"></i> Copiar Enlace Directo
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+window.vincularFotovideoflyAHero = function(url, titulo, tipo) {
+  if (!window._adminHeroSlides) window._adminHeroSlides = [];
+  window._adminHeroSlides.push({
+    tipo: tipo || 'imagen',
+    url: url,
+    titulo: titulo || 'FLYMETRICS Drones',
+    subtitulo: 'Agricultura y Ganadería de Precisión'
+  });
+  renderHeroSlidesGrid();
+  showToast('¡Agregado al carrusel Hero! Haz clic en "Guardar Configuración de Medios" para confirmar.', 'success');
+  switchPublicidadSubTab('global');
+};
+
+window.vincularFotovideoflyACollage = function(url, titulo, tipo) {
+  openNewCollageModal();
+  document.getElementById('collageModalTitulo').value = titulo || 'Operación Flymetrics';
+  document.getElementById('collageModalSubtitulo').value = 'Flota certificada de drones agrícolas de alta precisión';
+  document.getElementById('collageModalUrlMedio').value = url;
+  document.getElementById('collageModalTipoMedio').value = tipo || 'imagen';
+  document.getElementById('collageModalBadge').value = 'FotoVideoFly';
+  onCollageTipoMedioChange();
+  updateCollagePreview(url);
+  showToast('Archivo asignado al formulario de collage. Configura detalles y guarda.', 'info');
 };
 
 // ── COLLAGE CLIENTE HANDLERS ──

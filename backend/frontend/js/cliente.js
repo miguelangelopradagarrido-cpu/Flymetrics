@@ -4699,15 +4699,59 @@ window.showBlockingVerificationUI = function (e) {
     // =========================================================================
     let _clientCollageItems = [];
     let _collageRotateInterval = null;
+    let _currentCollageApartado = 'fotovideofly';
 
-    async function loadClientPublicidadCollage() {
+    window.switchCollageApartado = async function(apartado) {
+      _currentCollageApartado = apartado;
+      const bTodos = document.getElementById('btnApartadoTodos');
+      const bFoto = document.getElementById('btnApartadoFotovideofly');
+      const bServ = document.getElementById('btnApartadoServicios');
+      const statusEl = document.getElementById('collageApartadoStatus');
+
+      [bTodos, bFoto, bServ].forEach(b => {
+        if (!b) return;
+        b.classList.remove('btn-primary');
+        b.classList.add('btn-ghost');
+        b.style.background = 'transparent';
+        b.style.color = '#64748b';
+        b.style.borderColor = '#cbd5e1';
+      });
+
+      const activeBtn = (apartado === 'fotovideofly') ? bFoto : (apartado === 'servicios' ? bServ : bTodos);
+      if (activeBtn) {
+        activeBtn.classList.remove('btn-ghost');
+        activeBtn.classList.add('btn-primary');
+        activeBtn.style.background = '#003049';
+        activeBtn.style.color = '#ffffff';
+        activeBtn.style.borderColor = '#003049';
+      }
+
+      if (statusEl) {
+        if (apartado === 'fotovideofly') {
+          statusEl.innerHTML = '<i class="fa-solid fa-bolt" style="color:#f59e0b;"></i> Carpeta local fotovideofly (40 fotos y videos directos desde disco)';
+        } else if (apartado === 'servicios') {
+          statusEl.innerHTML = '<i class="fa-solid fa-seedling" style="color:#10b981;"></i> Catálogo oficial de servicios agronómicos';
+        } else {
+          statusEl.innerHTML = '<i class="fa-solid fa-layer-group" style="color:#1c82ad;"></i> Todo el ecosistema (Servicios + FotoVideoFly)';
+        }
+      }
+
+      await loadClientPublicidadCollage(apartado);
+    };
+
+    async function loadClientPublicidadCollage(apartadoOpt = null) {
       const containerTrack = document.getElementById('clientCollageTrack');
       const containerShowcase = document.getElementById('collage-publicitario-container');
       const section = document.getElementById('clientCollageSection');
       if (!containerTrack && !containerShowcase) return;
 
+      const ap = apartadoOpt || _currentCollageApartado || 'fotovideofly';
+
       try {
-        const res = await fetch(`${API_BASE}/publicidad/collage?t=${Date.now()}`);
+        const endpoint = (ap === 'fotovideofly')
+          ? `${API_BASE}/publicidad/fotovideofly?t=${Date.now()}`
+          : `${API_BASE}/publicidad/collage?apartado=${ap}&t=${Date.now()}`;
+        const res = await fetch(endpoint);
         if (res.ok) {
           const contentType = res.headers.get('content-type') || '';
           if (contentType.includes('application/json')) {

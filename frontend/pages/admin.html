@@ -712,6 +712,9 @@
           <button class="btn btn-sm btn-ghost active pub-tab-btn" id="pubTabBtnCollage" onclick="switchPublicidadSubTab('collage')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1; background:rgba(28,130,173,0.1); color:var(--primary);">
             <i class="fa-solid fa-images" style="color:var(--accent); margin-right:6px;"></i> Collage Dashboard Cliente
           </button>
+          <button class="btn btn-sm btn-ghost pub-tab-btn" id="pubTabBtnFotovideofly" onclick="switchPublicidadSubTab('fotovideofly')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1;">
+            <i class="fa-solid fa-folder-open" style="color:#f59e0b; margin-right:6px;"></i> Carpeta FotoVideoFly (Disco)
+          </button>
           <button class="btn btn-sm btn-ghost pub-tab-btn" id="pubTabBtnGlobal" onclick="switchPublicidadSubTab('global')" style="font-weight:800; border-radius:10px; padding:8px 16px; border:1px solid #cbd5e1;">
             <i class="fa-solid fa-tv" style="color:#0284c7; margin-right:6px;"></i> Medios Globales (Video & Portada Móvil)
           </button>
@@ -819,7 +822,49 @@
           </div>
         </div>
 
-        <!-- SUBTAB 2: MEDIOS GLOBALES (VIDEO HERO & PÓSTER MÓVIL) -->
+        <!-- SUBTAB FOTOVIDEOFLY: CARPETA LOCAL EN DISCO (ULTRA RÁPIDA) -->
+        <div id="pubSubTabFotovideofly" class="pub-subtab-content" style="display:none;">
+          <!-- Banner explicativo de velocidad de disco -->
+          <div style="background: linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(28,130,173,0.08) 100%); border: 1.5px solid rgba(245,158,11,0.3); border-radius: 18px; padding: 20px 24px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #003049; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-folder-tree" style="color: #f59e0b;"></i> Apartado de Medios en Disco: "fotovideofly"
+                <span id="pubFotovideoflyBadge" class="badge" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-weight: 800;">Cargando...</span>
+              </h3>
+              <p style="margin: 6px 0 0 0; font-size: 0.85rem; color: #64748b; line-height: 1.45;">
+                Archivos leídos <strong>directamente desde la carpeta del proyecto</strong>. Carga ultra rápida sin intermediación de base de datos ni límites de tamaño. Con 1 clic puedes vincularlos al carrusel Hero o al Collage de clientes.
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-ghost btn-sm" onclick="renderFotovideoflyGrid()" style="font-weight: 800; border: 1.5px solid var(--accent); color: var(--accent);">
+                <i class="fa-solid fa-rotate"></i> Recargar Disco
+              </button>
+            </div>
+          </div>
+
+          <!-- Filtros y buscador dentro de fotovideofly -->
+          <div class="toolbar" style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 18px;">
+            <div class="search-input-wrap" style="flex: 1; min-width: 240px;">
+              <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input type="text" class="search-input" id="pubFotovideoflySearch" placeholder="Buscar por nombre de archivo o término..." oninput="filterFotovideoflyGrid(this.value)" />
+            </div>
+            <div style="display: flex; background: #f1f5f9; padding: 4px; border-radius: 12px; gap: 4px; border: 1px solid #e2e8f0;">
+              <button type="button" id="btnFvFilterAll" class="btn btn-sm btn-primary" onclick="filterFotovideoflyType('all')" style="font-weight: 700; border-radius: 8px; font-size: 0.8rem; padding: 6px 14px;">Todos</button>
+              <button type="button" id="btnFvFilterVideos" class="btn btn-sm btn-ghost" onclick="filterFotovideoflyType('video')" style="font-weight: 700; border-radius: 8px; font-size: 0.8rem; padding: 6px 14px;">🎬 Videos</button>
+              <button type="button" id="btnFvFilterImages" class="btn btn-sm btn-ghost" onclick="filterFotovideoflyType('imagen')" style="font-weight: 700; border-radius: 8px; font-size: 0.8rem; padding: 6px 14px;">🖼️ Fotos</button>
+            </div>
+          </div>
+
+          <!-- Grid interactivo de fotovideofly -->
+          <div id="pubFotovideoflyGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #64748b;">
+              <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; color: var(--accent);"></i>
+              <div style="margin-top: 8px;">Leyendo archivos de la carpeta fotovideofly...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: MEDIOS GLOBALES (VIDEO HERO & PÓSTER MÓVIL) -->
         <div id="pubSubTabGlobal" class="pub-subtab-content" style="display:none;">
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap:24px; margin-bottom:24px;">
             <!-- Tarjeta 1: Video Hero de la Página Principal -->
@@ -2831,11 +2876,12 @@ Deseo coordinar detalles técnicos de campo con el piloto.</textarea>
 
     <!-- Barra de control, filtros de formato, buscador y subida rápida -->
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin:16px 0 14px;">
-      <!-- Filtros por tipo -->
-      <div style="display:flex; background:#f1f5f9; padding:4px; border-radius:12px; gap:4px; border:1px solid #e2e8f0;">
+      <!-- Filtros por tipo y origen -->
+      <div style="display:flex; background:#f1f5f9; padding:4px; border-radius:12px; gap:4px; border:1px solid #e2e8f0; flex-wrap:wrap;">
         <button type="button" id="galleryTabAll" class="btn btn-sm btn-primary" onclick="filterMediaGallery('all')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">Todos</button>
         <button type="button" id="galleryTabImages" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('imagen')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">🖼️ Imágenes</button>
         <button type="button" id="galleryTabVideos" class="btn btn-sm btn-ghost" onclick="filterMediaGallery('video')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px;">🎬 Videos</button>
+        <button type="button" id="galleryTabFotovideofly" class="btn btn-sm btn-ghost" onclick="filterMediaOrigin('fotovideofly')" style="font-weight:700; border-radius:8px; font-size:0.82rem; padding:6px 14px; border:1px solid #f59e0b; color:#b45309; background:rgba(245,158,11,0.08);">📁 FotoVideoFly</button>
       </div>
 
       <!-- Buscador dinámico y subida directa -->

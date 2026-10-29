@@ -9,7 +9,7 @@ from app.infrastructure.database.session import get_db
 from app.infrastructure.database.models.models import PublicidadElementoModel, RedSocialModel, SystemConfigModel, UsuarioModel
 from app.shared.responses.response import success_response
 from app.presentation.api.dependencies.auth import RoleChecker, get_current_user
-from app.presentation.api.routers.media import delete_physical_upload
+from app.presentation.api.routers.media import delete_physical_upload, get_fotovideofly_items
 
 router = APIRouter(prefix="/publicidad", tags=["Publicidad, Medios y Redes Sociales"])
 admin_required = RoleChecker(["administrador", "Administrador", "admin", "Admin", "Staff", "staff"])
@@ -247,9 +247,39 @@ def _seed_collage_if_empty(db: Session):
             db.add(PublicidadElementoModel(**item))
         db.commit()
 
+@router.get("/fotovideofly", status_code=status.HTTP_200_OK)
+def get_fotovideofly_media():
+    """Obtiene los elementos multimedia de la carpeta local fotovideofly directamente de disco sin base de datos."""
+    items = get_fotovideofly_items()
+    resp = success_response(message="Elementos de fotovideofly obtenidos exitosamente desde disco", data=items)
+    try:
+        resp.headers["Cache-Control"] = "public, max-age=300"
+    except Exception:
+        pass
+    return resp
+
+
 @router.get("/collage", status_code=status.HTTP_200_OK)
-def get_collage_cliente(db: Session = Depends(get_db)):
-    """Obtiene los elementos activos del collage publicitario para el dashboard de cliente."""
+def get_collage_cliente(
+    apartado: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    """
+    Obtiene los elementos activos del collage publicitario para el dashboard de cliente.
+    Soporta filtro por apartado:
+    - 'fotovideofly': archivos de la carpeta local en disco (ultra rápido, sin BD).
+    - 'servicios': solo elementos configurados en BD.
+    - 'todos' o default: elementos principales combinados.
+    """
+    if apartado == "fotovideofly":
+        items = get_fotovideofly_items()
+        resp = success_response(message="Collage fotovideofly obtenido exitosamente desde disco", data=items)
+        try:
+            resp.headers["Cache-Control"] = "public, max-age=300"
+        except Exception:
+            pass
+        return resp
+
     _seed_collage_if_empty(db)
     items = db.query(PublicidadElementoModel).filter(
         PublicidadElementoModel.seccion == "dashboard_cliente",
@@ -268,10 +298,16 @@ def get_collage_cliente(db: Session = Depends(get_db)):
             "texto_boton": it.texto_boton,
             "url_accion": it.url_accion,
             "orden": it.orden,
-            "activo": it.activo
+            "activo": it.activo,
+            "apartado": "servicios"
         }
         for it in items
     ]
+
+    if apartado == "todos":
+        fv_items = get_fotovideofly_items()
+        data = data + fv_items
+
     resp = success_response(message="Collage obtenido exitosamente", data=data)
     try:
         resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"

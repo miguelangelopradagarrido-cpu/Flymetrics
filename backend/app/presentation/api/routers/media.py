@@ -4,7 +4,8 @@ import shutil
 import time
 import tempfile
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List, Dict, Any
+from urllib.parse import unquote
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, status, Depends
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
@@ -73,6 +74,84 @@ def _get_writable_uploads_dir() -> Path:
 
 ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".svg", ".gif"}
 ALLOWED_VIDEO_EXTS = {".mp4", ".webm", ".mov", ".m4v"}
+
+def _get_fotovideofly_candidates() -> List[Path]:
+    candidates = [
+        (PROJECT_ROOT / "fotovideofly" / "fotovideofly") if PROJECT_ROOT else None,
+        (PROJECT_ROOT / "fotovideofly") if PROJECT_ROOT else None,
+        (PROJECT_ROOT / "video" / "video") if PROJECT_ROOT else None,
+        (FRONTEND_DIR / "fotovideofly") if FRONTEND_DIR else None,
+        (UPLOADS_DIR / "fotovideofly") if UPLOADS_DIR else None,
+        Path("fotovideofly/fotovideofly"),
+        Path("fotovideofly"),
+        Path("video/video"),
+        Path("../fotovideofly/fotovideofly"),
+        Path("../fotovideofly")
+    ]
+    res = []
+    seen = set()
+    for c in candidates:
+        if c and c.exists() and c.is_dir():
+            try:
+                resolved = c.resolve()
+                if resolved not in seen:
+                    seen.add(resolved)
+                    res.append(c)
+            except Exception:
+                res.append(c)
+    return res
+
+def get_fotovideofly_items() -> List[Dict[str, Any]]:
+    """
+    Escanea y devuelve todos los archivos multimedia de la carpeta fotovideofly
+    directamente desde el disco, sin intermediación de base de datos para máxima velocidad.
+    """
+    seen_names = set()
+    items = []
+    for c_dir in _get_fotovideofly_candidates():
+        for f in c_dir.rglob("*"):
+            if f.is_file() and f.name not in seen_names:
+                ext = f.suffix.lower()
+                is_vid = ext in ALLOWED_VIDEO_EXTS
+                is_img = ext in ALLOWED_IMAGE_EXTS
+                if not (is_vid or is_img):
+                    continue
+                seen_names.add(f.name)
+                sz = f.stat().st_size
+                name_clean = f.stem.replace("_", " ").replace("-", " ")
+                if is_vid:
+                    titulo = f"Operación Aérea en Campo: {name_clean}"
+                    subtitulo = "Video de dron agrícola en vuelo, aspersión y telemetría RTK en tiempo real"
+                    badge = "Video de Vuelo"
+                else:
+                    titulo = f"Fotografía de Campo: {name_clean}"
+                    subtitulo = "Captura de alta resolución de cultivos y predios con tecnología Flymetrics"
+                    badge = "Registro de Campo"
+
+                items.append({
+                    "id_publicidad": f"fv_{len(items)+1}",
+                    "name": f.name,
+                    "titulo": titulo,
+                    "subtitulo": subtitulo,
+                    "badge": badge,
+                    "tipo": "video" if is_vid else "imagen",
+                    "tipo_medio": "video" if is_vid else "imagen",
+                    "url": f"/fotovideofly/{f.name}",
+                    "url_medio": f"/fotovideofly/{f.name}",
+                    "texto_boton": "Cotizar Operación",
+                    "url_accion": "#agendar",
+                    "size_bytes": sz,
+                    "size_formatted": f"{sz / (1024 * 1024):.1f} MB" if sz >= 1024*1024 else f"{sz / 1024:.0f} KB",
+                    "is_custom_upload": True,
+                    "is_protected": False,
+                    "is_fotovideofly": True,
+                    "modulo": "fotovideofly",
+                    "origin": "fotovideofly",
+                    "activo": True,
+                    "updated_at": int(f.stat().st_mtime)
+                })
+    items.sort(key=lambda x: (0 if x["tipo"] == "video" else 1, -x["updated_at"]))
+    return items
 
 def _sanitize_filename(name: str) -> str:
     import re
@@ -402,9 +481,27 @@ def list_media(
                                 "updated_at": int(f.stat().st_mtime)
                             })
 
+    # 4. Escanear carpeta 'fotovideofly' en disco
+    for fv_item in get_fotovideofly_items():
+        if fv_item["url"] not in seen_urls and fv_item["name"] not in deleted_set:
+            seen_urls.add(fv_item["url"])
+            items.append(fv_item)
+
     # Ordenar por fecha de modificación descendente
     items.sort(key=lambda x: x["updated_at"], reverse=True)
     return success_response(message="Archivos multimedia obtenidos exitosamente", data=items)
+
+
+@router.get("/fotovideofly/list", status_code=status.HTTP_200_OK)
+def list_fotovideofly_files():
+    """Retorna directamente la lista de archivos de la carpeta fotovideofly (sin base de datos)."""
+    items = get_fotovideofly_items()
+    resp = success_response(message="Archivos de fotovideofly obtenidos exitosamente", data=items)
+    try:
+        resp.headers["Cache-Control"] = "public, max-age=300"
+    except Exception:
+        pass
+    return resp
 
 
 def delete_physical_upload(url_or_path: str) -> bool:
@@ -475,6 +572,7 @@ def get_media_file(
     buscando en uploads/, video/ o img/, y restaurando de MySQL si es necesario.
     Soporta streaming de video con Range headers.
     """
+    filename = unquote(filename)
     safe_name = Path(filename).name
     deleted_set = _get_deleted_media_set(db)
     if safe_name in deleted_set or filename in deleted_set:
@@ -488,8 +586,24 @@ def get_media_file(
         clean_rel = clean_rel[len("uploads/"):]
     elif clean_rel.startswith("pages/uploads/"):
         clean_rel = clean_rel[len("pages/uploads/"):]
+    elif clean_rel.startswith("fotovideofly/"):
+        clean_rel = clean_rel[len("fotovideofly/"):]
+    elif clean_rel.startswith("pages/fotovideofly/"):
+        clean_rel = clean_rel[len("pages/fotovideofly/"):]
 
-    # 1. Buscar en directorios de uploads en disco
+    # 1. Buscar en carpetas fotovideofly en disco
+    for fv_dir in _get_fotovideofly_candidates():
+        direct_target = fv_dir / clean_rel
+        if direct_target.is_file():
+            return FileResponse(str(direct_target), media_type=_guess_media_type(direct_target))
+        direct_raw = fv_dir / filename
+        if direct_raw.is_file():
+            return FileResponse(str(direct_raw), media_type=_guess_media_type(direct_raw))
+        for target in fv_dir.rglob(safe_name):
+            if target.is_file():
+                return FileResponse(str(target), media_type=_guess_media_type(target))
+
+    # 2. Buscar en directorios de uploads en disco
     candidate_dirs = [
         writable_dir,
         UPLOADS_DIR,

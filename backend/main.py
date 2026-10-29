@@ -134,8 +134,8 @@ class CacheControlMiddleware(BaseHTTPMiddleware):
         if path.startswith("/uploads") or path.startswith("/pages/uploads"):
             if response.status_code == 200:
                 response.headers["Cache-Control"] = "no-cache, must-revalidate"
-        # Activos estáticos de diseño/librerías (CSS, JS, Fuentes fijas)
-        elif any(path.startswith(prefix) for prefix in ["/js", "/css", "/img", "/video", "/pages/js", "/pages/css", "/pages/img", "/pages/video"]):
+        # Activos estáticos de diseño/librerías y multimedia local (CSS, JS, Fuentes fijas, fotovideofly)
+        elif any(path.startswith(prefix) for prefix in ["/js", "/css", "/img", "/video", "/fotovideofly", "/pages/js", "/pages/css", "/pages/img", "/pages/video", "/pages/fotovideofly"]):
             if response.status_code == 200:
                 response.headers["Cache-Control"] = "public, max-age=86400, stale-while-revalidate=3600"
         elif path.endswith(".html") or path in ["/", "/admin", "/cliente", "/tecnico", "/agendar", "/bitacora", "/staff"]:
@@ -376,13 +376,27 @@ if target_dir.exists():
         from app.presentation.api.routers.media import get_media_file
         return get_media_file(filename=filepath, db=db)
 
+    # Servir carpeta fotovideofly directamente desde disco de forma ultra rápida
+    @app.get("/fotovideofly/{filepath:path}", include_in_schema=False)
+    @app.get("/pages/fotovideofly/{filepath:path}", include_in_schema=False)
+    def serve_fotovideofly_file(filepath: str, db: Session = Depends(get_db)):
+        from app.presentation.api.routers.media import get_media_file
+        from urllib.parse import unquote
+        return get_media_file(filename=unquote(filepath), db=db)
+
     app.mount("/", StaticFiles(directory=str(target_dir), html=True), name="frontend")
 else:
-    # Backend desplegado de forma independiente: asegurar y servir /uploads mediante get_media_file
+    # Backend desplegado de forma independiente: asegurar y servir /uploads y /fotovideofly mediante get_media_file
     @app.get("/uploads/{filepath:path}", include_in_schema=False)
     def serve_uploads_file_standalone(filepath: str, db: Session = Depends(get_db)):
         from app.presentation.api.routers.media import get_media_file
         return get_media_file(filename=filepath, db=db)
+
+    @app.get("/fotovideofly/{filepath:path}", include_in_schema=False)
+    def serve_fotovideofly_file_standalone(filepath: str, db: Session = Depends(get_db)):
+        from app.presentation.api.routers.media import get_media_file
+        from urllib.parse import unquote
+        return get_media_file(filename=unquote(filepath), db=db)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)
