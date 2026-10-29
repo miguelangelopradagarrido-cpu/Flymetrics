@@ -1,0 +1,21 @@
+# Control de versiones y entornos locales
+.git
+.gitignore
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+.pytest_cache/
+.vscode/
+.idea/
+
+# Carpetas pesadas locales
+fotovideofly/
+video/
+scratch/
+backend/scratch/
+docs/
