@@ -2343,8 +2343,60 @@
               const haBar = document.getElementById('sim-ha-bar');
               if (areaEl) areaEl.textContent = simHa.toFixed(1) + ' Ha';
               if (haBar) haBar.style.width = ((simHa / maxHa) * 100) + '%';
+
+              // 2. Batería Lipo Dinámica en operación
+              const battLevel = Math.max(12, Math.round(98 - (simHa / maxHa) * 32));
+              const battEl = document.getElementById('sim-batt');
+              const telBatt = document.getElementById('tel-batt');
+              const telBattBar = document.getElementById('tel-batt-bar');
+              if (battEl) battEl.textContent = battLevel + '%';
+              if (telBatt) telBatt.textContent = battLevel + '%';
+              if (telBattBar) telBattBar.style.width = battLevel + '%';
+
+              // 3. Altitud AGL en vivo
+              const altVal = (3.2 + Math.sin(tick * 0.08) * 0.35).toFixed(1);
+              const altEl = document.getElementById('sim-alt');
+              if (altEl) altEl.textContent = altVal + 'm AGL';
+
+              // 4. Velocidad en vivo
+              const velVal = (7.4 + Math.cos(tick * 0.06) * 0.4).toFixed(1);
+              const velEl = document.getElementById('sim-vel');
+              if (velEl) velEl.textContent = velVal + ' m/s';
+
+              // 5. Flujo de Aspersión según tipo
+              const sprayEl = document.getElementById('sim-spray-flow');
+              if (sprayEl) {
+                if (appType === 'spray') {
+                  sprayEl.innerHTML = `<span style="color:#1C82AD;">${(12.0 + Math.sin(tick * 0.12) * 0.7).toFixed(1)} L/min (Activa)</span>`;
+                } else if (appType === 'foliar') {
+                  sprayEl.innerHTML = `<span style="color:#10B981;">${(14.2 + Math.sin(tick * 0.12) * 0.5).toFixed(1)} L/min (Nutrición)</span>`;
+                } else if (appType === 'seeds') {
+                  sprayEl.innerHTML = `<span style="color:#F59E0B;">${(42.0 + Math.sin(tick * 0.15) * 1.8).toFixed(1)} Kg/min (Esparcido)</span>`;
+                } else {
+                  sprayEl.innerHTML = `<span style="color:#10B981;">Sensor Óptico 4 Bandas Activo</span>`;
+                }
+              }
+
+              // 6. Sensor de Viento Dinámico
+              const windVal = (2.3 + Math.sin(tick * 0.04) * 0.5).toFixed(1);
+              const windEl = document.getElementById('sim-wind');
+              const telWind = document.getElementById('tel-wind');
+              if (windEl) windEl.textContent = windVal + ' m/s';
+              if (telWind) telWind.textContent = windVal + ' m/s';
+
+              // 7. RTK Satélites Fix
+              const satCount = 27 + (tick % 5);
+              const rtkEl = document.getElementById('sim-signal');
+              if (rtkEl) rtkEl.textContent = `RTK: ${satCount} sat`;
+
+              // 8. Carga de Tanque en Telemetría
+              const maxPayload = appType === 'seeds' ? 50 : (appType === 'foliar' ? 25 : 40);
+              const unit = appType === 'seeds' ? ' Kg' : ' Litros';
+              const remainingPayload = Math.max(1.5, maxPayload - (simHa / maxHa) * (maxPayload * 0.85)).toFixed(1);
+              const telPayload = document.getElementById('tel-payload');
+              if (telPayload) telPayload.textContent = remainingPayload + ' ' + unit;
             } else {
-              // Dron en espera estacionaria en helipuerto / origen antes de pulsar Play
+              // Dron en espera estacionaria en helipuerto / origen antes de pulsar Play (ESTADO QUIETO)
               droneX = 0;
               droneY = 0;
               droneAngle = 0;
@@ -2354,46 +2406,46 @@
               workerPath = [];
               sprayParticles = [];
               simHa = 0;
+
               const areaEl = document.getElementById('sim-area');
               const haBar = document.getElementById('sim-ha-bar');
               if (areaEl) areaEl.textContent = '0.0 Ha';
               if (haBar) haBar.style.width = '0%';
-            }
 
-            // 2. Batería Lipo Dinámica
-            const battLevel = Math.max(12, Math.round(98 - (simHa / maxHa) * 32));
-            const battEl = document.getElementById('sim-batt');
-            const telBatt = document.getElementById('tel-batt');
-            const telBattBar = document.getElementById('tel-batt-bar');
-            if (battEl) battEl.textContent = battLevel + '%';
-            if (telBatt) telBatt.textContent = battLevel + '%';
-            if (telBattBar) telBattBar.style.width = battLevel + '%';
+              // Métricas estáticas en reposo
+              const battEl = document.getElementById('sim-batt');
+              const telBatt = document.getElementById('tel-batt');
+              const telBattBar = document.getElementById('tel-batt-bar');
+              if (battEl) battEl.textContent = '100%';
+              if (telBatt) telBatt.textContent = '100%';
+              if (telBattBar) telBattBar.style.width = '100%';
 
-            // 3. Altitud AGL en vivo
-            const altVal = (3.2 + Math.sin(tick * 0.08) * 0.35).toFixed(1);
-            const altEl = document.getElementById('sim-alt');
-            if (altEl) altEl.textContent = altVal + 'm AGL';
+              const altEl = document.getElementById('sim-alt');
+              if (altEl) altEl.textContent = '0.0m AGL';
 
-            // 4. Velocidad en vivo
-            const velVal = (7.4 + Math.cos(tick * 0.06) * 0.4).toFixed(1);
-            const velEl = document.getElementById('sim-vel');
-            if (velEl) velEl.textContent = velVal + ' m/s';
+              const velEl = document.getElementById('sim-vel');
+              if (velEl) velEl.textContent = '0.0 m/s';
 
-            // 5. Flujo de Aspersión según tipo
-            const sprayEl = document.getElementById('sim-spray-flow');
-            if (sprayEl) {
-              if (appType === 'spray') {
-                sprayEl.innerHTML = `<span style="color:#1C82AD;">${(12.0 + Math.sin(tick * 0.12) * 0.7).toFixed(1)} L/min (Activa)</span>`;
-              } else if (appType === 'foliar') {
-                sprayEl.innerHTML = `<span style="color:#10B981;">${(14.2 + Math.sin(tick * 0.12) * 0.5).toFixed(1)} L/min (Nutrición)</span>`;
-              } else if (appType === 'seeds') {
-                sprayEl.innerHTML = `<span style="color:#F59E0B;">${(42.0 + Math.sin(tick * 0.15) * 1.8).toFixed(1)} Kg/min (Esparcido)</span>`;
-              } else {
-                sprayEl.innerHTML = `<span style="color:#10B981;">Sensor Óptico 4 Bandas Activo</span>`;
+              const sprayEl = document.getElementById('sim-spray-flow');
+              if (sprayEl) {
+                sprayEl.innerHTML = `<span style="color:#64748B;">En espera (Inactivo)</span>`;
               }
+
+              const windEl = document.getElementById('sim-wind');
+              const telWind = document.getElementById('tel-wind');
+              if (windEl) windEl.textContent = '0.0 m/s';
+              if (telWind) telWind.textContent = '0.0 m/s';
+
+              const rtkEl = document.getElementById('sim-signal');
+              if (rtkEl) rtkEl.textContent = 'RTK: En espera';
+
+              const maxPayload = appType === 'seeds' ? 50 : (appType === 'foliar' ? 25 : 40);
+              const unit = appType === 'seeds' ? ' Kg' : ' Litros';
+              const telPayload = document.getElementById('tel-payload');
+              if (telPayload) telPayload.textContent = maxPayload + ' ' + unit;
             }
 
-            // 6. Modelo de Dron en HUD
+            // Modelo de Dron en HUD
             const modelEl = document.getElementById('sim-drone-model');
             if (modelEl) {
               if (appType === 'spray') modelEl.textContent = 'DJI AGRAS T40 — ASPERSIÓN ULV';
@@ -2401,25 +2453,6 @@
               else if (appType === 'seeds') modelEl.textContent = 'DJI AGRAS SPREADER — SIEMBRA SÓLIDOS';
               else modelEl.textContent = 'DJI MAVIC 3 MULTISPECTRAL — ESCANEO MULTIESPECTRAL';
             }
-
-            // 7. Sensor de Viento Dinámico
-            const windVal = (2.3 + Math.sin(tick * 0.04) * 0.5).toFixed(1);
-            const windEl = document.getElementById('sim-wind');
-            const telWind = document.getElementById('tel-wind');
-            if (windEl) windEl.textContent = windVal + ' m/s';
-            if (telWind) telWind.textContent = windVal + ' m/s';
-
-            // 8. RTK Satélites Fix
-            const satCount = 27 + (tick % 5);
-            const rtkEl = document.getElementById('sim-signal');
-            if (rtkEl) rtkEl.textContent = `RTK: ${satCount} sat`;
-
-            // 9. Carga de Tanque en Telemetría
-            const maxPayload = appType === 'seeds' ? 50 : (appType === 'foliar' ? 25 : 40);
-            const unit = appType === 'seeds' ? ' Kg' : ' Litros';
-            const remainingPayload = Math.max(1.5, maxPayload - (simHa / maxHa) * (maxPayload * 0.85)).toFixed(1);
-            const telPayload = document.getElementById('tel-payload');
-            if (telPayload) telPayload.textContent = remainingPayload + ' ' + unit;
 
             drawScene();
           }
@@ -3700,7 +3733,7 @@
         </div>
 
         <!-- Video Principal con Poster Fallback -->
-        <video id="modal-video" autoplay loop muted playsinline preload="metadata" class="modal-video-el" poster="img/servicio_precision.jpg">
+        <video id="modal-video" autoplay loop muted playsinline preload="auto" class="modal-video-el" poster="img/servicio_precision.jpg" style="will-change: transform; transform: translateZ(0);">
           <source src="video/field_drone.mp4" type="video/mp4">
         </video>
         <img id="modal-img" src="img/servicio_precision.jpg" alt="Servicio Flymetrics"
@@ -3720,14 +3753,8 @@
         </div>
       </div>
 
-      <!-- Carrusel de Miniaturas / Collage Multimedia del Servicio -->
-      <div style="margin: 10px 0 16px 0;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <span style="font-size: 0.78rem; font-weight: 700; color: #003049; text-transform: uppercase; letter-spacing: 0.05em;">
-            <i class="fa-solid fa-photo-film" style="color: #1C82AD; margin-right: 5px;"></i> Galería Multimedia del Servicio
-          </span>
-          <span style="font-size: 0.72rem; color: #6C757D;">Haz clic para alternar foto o video</span>
-        </div>
+      <!-- Carrusel de Miniaturas / Collage Multimedia del Servicio (Limpio sin textos estorbosos) -->
+      <div style="margin: 6px 0 14px 0;">
         <div id="modal-service-gallery" style="display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px; -webkit-overflow-scrolling: touch;"></div>
       </div>
 
@@ -4982,7 +5009,7 @@
       }
 
             // Carrusel Hero continuo: Video -> Diapositivas -> Video en bucle constante
-            function showHeroSlide(index) {
+    function showHeroSlide(index) {
         if (!_heroSlides.length) return;
         if (index < 0) index = _heroSlides.length - 1;
         if (index >= _heroSlides.length) index = 0;
@@ -4999,16 +5026,27 @@
         var slideEls = wrapper.querySelectorAll('.hero-slide');
 
         slideEls.forEach(function(el, i) {
+          var vid = el.querySelector('video');
           if (i === index) {
+            el.classList.add('active');
             el.style.opacity = '1';
             el.style.pointerEvents = 'auto';
             el.style.zIndex = '2';
-            var vid = el.querySelector('video');
             if (vid) {
-              // Es video: mostrar el botón de ver video completo únicamente aquí
               if (floatBtn) floatBtn.style.display = 'inline-flex';
-              vid.currentTime = 0;
-              vid.play().catch(function() {});
+              vid.muted = true;
+              vid.setAttribute('muted', '');
+              vid.setAttribute('playsinline', '');
+              // Solo reiniciar si no está reproduciendo o terminó
+              if (vid.ended || vid.currentTime > 0.1) {
+                try { vid.currentTime = 0; } catch(e){}
+              }
+              var playPromise = vid.play();
+              if (playPromise !== undefined) {
+                playPromise.catch(function(err) {
+                  console.debug('Autoplay slide video:', err);
+                });
+              }
               vid.onended = function() {
                 window.nextHeroSlide();
               };
@@ -5016,20 +5054,22 @@
                 window.nextHeroSlide();
               }, 14000);
             } else {
-              // Es imagen: ocultar el botón de ver video completo
               if (floatBtn) floatBtn.style.display = 'none';
               _heroTimer = setTimeout(function() {
                 window.nextHeroSlide();
               }, 5000);
             }
           } else {
+            el.classList.remove('active');
             el.style.opacity = '0';
             el.style.pointerEvents = 'none';
             el.style.zIndex = '1';
-            var vid = el.querySelector('video');
             if (vid) {
-              vid.pause();
               vid.onended = null;
+              try {
+                vid.pause();
+                vid.currentTime = 0;
+              } catch(e){}
             }
           }
         });
@@ -5223,30 +5263,25 @@
 
       // Carga y reproducción inmediata del video Hero en PC
       function initHeroVideoDesktop() {
-        var vid = document.getElementById('hero-video');
+        var wrapper = document.getElementById('hero-slides-wrapper');
+        var vid = wrapper ? wrapper.querySelector('.hero-slide.active video') : document.getElementById('hero-video');
         if (!vid) return;
-        var source = vid.querySelector('source');
-        if (!source) return;
 
-        var videoSrc = vid.src || source.getAttribute('data-src') || source.src || '/video/hero.mp4';
-        if (!vid.src && (!source.src || source.src.indexOf('hero.mp4') === -1 && !source.src.startsWith('http'))) {
-          source.src = videoSrc;
-          vid.src = videoSrc;
-        }
         vid.muted = true;
         vid.setAttribute('muted', '');
         vid.setAttribute('playsinline', '');
         vid.setAttribute('autoplay', '');
-        vid.load();
         var p = vid.play();
         if (p !== undefined) {
           p.then(function() {
             vid.style.opacity = '1';
           }).catch(function(err) {
             console.debug('Autoplay restringido por el navegador, esperando interacción:', err);
-            // Intentar reproducir en el primer clic o interacción
             var resumePlay = function() {
-              vid.play().then(function() { vid.style.opacity = '1'; }).catch(function(){});
+              var currentActiveVid = document.querySelector('#hero-slides-wrapper .hero-slide.active video') || document.getElementById('hero-video');
+              if (currentActiveVid) {
+                currentActiveVid.play().then(function() { currentActiveVid.style.opacity = '1'; }).catch(function(){});
+              }
               window.removeEventListener('click', resumePlay);
               window.removeEventListener('touchstart', resumePlay);
             };
@@ -5258,22 +5293,29 @@
 
       // Control inteligente de reproducción según visibilidad en pantalla (Ahorro de batería y recursos en móviles y PC)
       function setupVideoVisibilityObserver() {
-        var vid = document.getElementById('hero-video');
         var heroSec = document.getElementById('inicio');
-        if (!vid || !heroSec) return;
+        if (!heroSec) return;
+
+        function getActiveSlideVideo() {
+          var wrapper = document.getElementById('hero-slides-wrapper');
+          if (wrapper) {
+            var activeSlide = wrapper.querySelector('.hero-slide.active');
+            if (activeSlide) return activeSlide.querySelector('video');
+          }
+          return document.getElementById('hero-video');
+        }
 
         if ('IntersectionObserver' in window) {
           var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
+              var activeVid = getActiveSlideVideo();
               if (entry.isIntersecting) {
-                // Cuando el usuario está viendo el hero, reproducir
-                if (vid.paused) {
-                  vid.play().catch(function() {});
+                if (activeVid && activeVid.paused) {
+                  activeVid.play().catch(function() {});
                 }
               } else {
-                // Cuando el usuario baja o hace scroll hacia los servicios, pausar inmediatamente para no consumir recursos
-                if (!vid.paused) {
-                  vid.pause();
+                if (activeVid && !activeVid.paused) {
+                  activeVid.pause();
                 }
               }
             });
@@ -5281,7 +5323,6 @@
 
           observer.observe(heroSec);
         } else {
-          // Fallback con evento scroll para navegadores antiguos
           var onScrollThrottle = false;
           window.addEventListener('scroll', function() {
             if (onScrollThrottle) return;
@@ -5290,10 +5331,11 @@
               onScrollThrottle = false;
               var rect = heroSec.getBoundingClientRect();
               var inView = rect.bottom > 80 && rect.top < window.innerHeight;
-              if (inView && vid.paused) {
-                vid.play().catch(function() {});
-              } else if (!inView && !vid.paused) {
-                vid.pause();
+              var activeVid = getActiveSlideVideo();
+              if (inView && activeVid && activeVid.paused) {
+                activeVid.play().catch(function() {});
+              } else if (!inView && activeVid && !activeVid.paused) {
+                activeVid.pause();
               }
             }, 200);
           }, { passive: true });

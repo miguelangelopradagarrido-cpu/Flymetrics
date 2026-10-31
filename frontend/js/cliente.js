@@ -4699,7 +4699,7 @@ window.showBlockingVerificationUI = function (e) {
     // =========================================================================
     let _clientCollageItems = [];
     let _collageRotateInterval = null;
-    let _currentCollageApartado = 'fotovideofly';
+    let _currentCollageApartado = 'servicios';
 
     window.switchCollageApartado = async function(apartado) {
       _currentCollageApartado = apartado;
@@ -4728,11 +4728,11 @@ window.showBlockingVerificationUI = function (e) {
 
       if (statusEl) {
         if (apartado === 'fotovideofly') {
-          statusEl.innerHTML = '<i class="fa-solid fa-bolt" style="color:#f59e0b;"></i> Carpeta local fotovideofly (40 fotos y videos directos desde disco)';
+          statusEl.innerHTML = '<i class="fa-solid fa-camera" style="color:#f59e0b;"></i> Galería fotovideofly completa en almacenamiento';
         } else if (apartado === 'servicios') {
-          statusEl.innerHTML = '<i class="fa-solid fa-seedling" style="color:#10b981;"></i> Catálogo oficial de servicios agronómicos';
+          statusEl.innerHTML = '<i class="fa-solid fa-seedling" style="color:#10b981;"></i> Catálogo oficial de publicidad y servicios agronómicos';
         } else {
-          statusEl.innerHTML = '<i class="fa-solid fa-layer-group" style="color:#1c82ad;"></i> Todo el ecosistema (Servicios + FotoVideoFly)';
+          statusEl.innerHTML = '<i class="fa-solid fa-layer-group" style="color:#1c82ad;"></i> Todo el ecosistema Flymetrics';
         }
       }
 
@@ -4745,7 +4745,7 @@ window.showBlockingVerificationUI = function (e) {
       const section = document.getElementById('clientCollageSection');
       if (!containerTrack && !containerShowcase) return;
 
-      const ap = apartadoOpt || _currentCollageApartado || 'fotovideofly';
+      const ap = apartadoOpt || _currentCollageApartado || 'servicios';
 
       try {
         const endpoint = (ap === 'fotovideofly')
@@ -4768,15 +4768,6 @@ window.showBlockingVerificationUI = function (e) {
 
       if (!_clientCollageItems || !_clientCollageItems.length) {
         _clientCollageItems = [
-          {
-            titulo: "Aspersión Aérea Ultra-Fina & Nutrición Foliar",
-            subtitulo: "Flota certificada con boquillas de micro-gota atomizada. Cero compactación del terreno y máxima cobertura en cultivos de arroz, maíz, palma y caña.",
-            tipo_medio: "imagen",
-            url_medio: "img/servicio_aspersion.jpg",
-            badge: "Servicio Estrella",
-            texto_boton: "Programar Aspersión",
-            url_accion: "#agendar"
-          },
           {
             titulo: "Mapeo Multiespectral & Diagnóstico NDVI",
             subtitulo: "Detección temprana de estrés hídrico, malezas y deficiencias nutricionales antes de que sean visibles a simple vista.",

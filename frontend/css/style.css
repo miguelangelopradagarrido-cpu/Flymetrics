@@ -3440,16 +3440,12 @@ html {
   color: #ffffff;
 }
 
-.video-playing .video-play-btn-bubble {
-  opacity: 0;
-  transform: scale(0.8);
-  pointer-events: none;
-}
-
+.video-playing .video-play-btn-bubble,
 .modal-video-box.video-playing:hover .video-play-btn-bubble {
-  opacity: 0.75;
-  transform: scale(1);
-  pointer-events: auto;
+  opacity: 0 !important;
+  transform: scale(0.6) !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }
 
 /* Bottom Progress Track */

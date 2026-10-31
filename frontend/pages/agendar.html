@@ -1247,15 +1247,15 @@
     var _serviciosDisponibles = [];
 
     function getApiBase() {
-      if (window.API_BASE) return window.API_BASE;
       var isDev = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port && window.location.port !== '3000';
       var rawOrigin = (window.location.protocol === 'file:' || isDev)
         ? 'http://localhost:3000'
-        : (window.location.hostname.includes('flymetrics-api') ? window.location.origin : 'https://flymetrics-api.hostless.app');
+        : (window.location.hostname.includes('flymetrics-api') ? window.location.origin : (window.API_BASE ? window.API_BASE.replace(/\/api\/v1\/?$/, '') : 'https://flymetrics-api.hostless.app'));
       return rawOrigin.replace(/\/+$/, '').replace(/\/api\/v1\/?$/, '') + '/api/v1';
     }
     window.getApiBase = getApiBase;
     window.API_BASE = getApiBase();
+    window.BASE_URL = window.API_BASE;
 
     document.addEventListener('DOMContentLoaded', async function() {
       // Configurar fecha mínima de agendamiento (a partir de mañana)

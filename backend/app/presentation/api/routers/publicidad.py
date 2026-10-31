@@ -172,18 +172,6 @@ def update_medios_globales(
 DEFAULT_COLLAGE = [
     {
         "seccion": "dashboard_cliente",
-        "titulo": "Aspersión Aérea Ultra-Fina & Nutrición Foliar",
-        "subtitulo": "Flota certificada con boquillas de micro-gota atomizada. Cero compactación del terreno y máxima cobertura en cultivos de arroz, maíz, palma y caña.",
-        "tipo_medio": "imagen",
-        "url_medio": "/img/servicio_aspersion.jpg",
-        "badge": "Servicio Estrella",
-        "texto_boton": "Programar Aspersión",
-        "url_accion": "#agendar",
-        "orden": 1,
-        "activo": True
-    },
-    {
-        "seccion": "dashboard_cliente",
         "titulo": "Mapeo Multiespectral & Diagnóstico NDVI",
         "subtitulo": "Detección temprana de estrés hídrico, malezas y deficiencias nutricionales antes de que sean visibles a simple vista.",
         "tipo_medio": "imagen",
@@ -191,7 +179,7 @@ DEFAULT_COLLAGE = [
         "badge": "NDVI & NDRE",
         "texto_boton": "Ver Informes de Salud",
         "url_accion": "#documentos",
-        "orden": 2,
+        "orden": 1,
         "activo": True
     },
     {
