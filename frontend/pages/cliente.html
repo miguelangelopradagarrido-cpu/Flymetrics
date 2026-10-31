@@ -311,30 +311,6 @@
             </div>
           </div>
 
-          <!-- Dynamic Collage & Medios Rotativos para Clientes -->
-          <div id="clientCollageSection" style="margin-bottom: 24px; display: none;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
-              <div>
-                <h3 style="margin:0; font-family:'Outfit',sans-serif; color:#003049; font-size:1.12rem; font-weight:800; display:flex; align-items:center; gap:8px;">
-                  <i class="fa-solid fa-photo-film" style="color:#1C82AD;"></i> Galería de Operaciones & Medios Especializados
-                </h3>
-                <p style="margin:2px 0 0 0; font-size:0.78rem; color:#64748b;">
-                  Innovaciones, vuelos agronómicos y cobertura satelital activa en campo
-                </p>
-              </div>
-              <div style="display:flex; gap:8px; align-items:center;">
-                <button type="button" class="btn btn-sm btn-ghost" onclick="scrollClientCollage(-1)" style="padding:6px 12px; border-radius:8px; border:1px solid rgba(0,48,73,0.15);" title="Anterior">
-                  <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <button type="button" class="btn btn-sm btn-ghost" onclick="scrollClientCollage(1)" style="padding:6px 12px; border-radius:8px; border:1px solid rgba(0,48,73,0.15);" title="Siguiente">
-                  <i class="fa-solid fa-chevron-right"></i>
-                </button>
-              </div>
-            </div>
-            <div id="clientCollageTrack" style="display:flex; gap:16px; overflow-x:auto; scroll-behavior:smooth; padding-bottom:12px; scrollbar-width:thin;">
-              <!-- Dynamic collage cards rendered by JS -->
-            </div>
-          </div>
 
           <div class="dashboard-split">
             <!-- Left side: Next appointment + Recent Activity -->
@@ -396,55 +372,6 @@
           </div>
         </div>
 
-        <!-- ── SHOWCASE / COLLAGE PUBLICITARIO FLYMETRICS ── -->
-        <div style="margin-top: 32px; border-top: 1.5px dashed rgba(28, 130, 173, 0.25); padding-top: 28px;">
-          <div class="panel-head" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px;">
-            <div>
-              <span class="badge" style="background: rgba(28,130,173,0.12); color: #1C82AD; font-weight: 800; padding: 4px 12px; border-radius: 9999px; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                <i class="fa-solid fa-bullhorn"></i> Innovación & Soluciones
-              </span>
-              <h3 style="color: #003049; font-family: 'Outfit', 'Syne', sans-serif; font-size: 1.35rem; font-weight: 900; margin: 0; display:flex; align-items:center; gap:10px;">
-                Ecosistema AgroTecnológico Flymetrics
-              </h3>
-              <p style="color: var(--text-2); font-size: 0.86rem; margin: 4px 0 0 0;">
-                Descubre cómo maximizar la rentabilidad de tus hectáreas con nuestra flota avanzada y análisis agronómico.
-              </p>
-            </div>
-            <button class="btn btn-primary btn-sm" onclick="if(checkVerifiedOrBlock('solicitar un vuelo')) openNewAgendaModal();" style="border-radius: 10px; font-weight: 800; font-size: 0.82rem; padding: 8px 18px; display: inline-flex; align-items: center; gap: 6px;">
-              <i class="fa-solid fa-calendar-plus"></i> Cotizar Nuevo Vuelo
-            </button>
-          </div>
-
-          <!-- Selector de Apartados del Collage (FotoVideoFly ultra rápido vs Servicios) -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-              <span style="font-size: 0.8rem; font-weight: 800; color: #003049; display: flex; align-items: center; gap: 6px;">
-                <i class="fa-solid fa-layer-group" style="color: #1C82AD;"></i> Apartado:
-              </span>
-              <button type="button" id="btnApartadoServicios" class="btn btn-sm btn-primary" onclick="switchCollageApartado('servicios')" style="font-weight: 800; border-radius: 10px; font-size: 0.78rem; padding: 5px 14px; background: #003049; border-color: #003049; box-shadow: 0 4px 12px rgba(0,48,73,0.18);">
-                🌱 Servicios y Publicidad Oficial
-              </button>
-              <button type="button" id="btnApartadoFotovideofly" class="btn btn-sm btn-ghost" onclick="switchCollageApartado('fotovideofly')" style="font-weight: 700; border-radius: 10px; font-size: 0.78rem; padding: 5px 12px; border: 1px solid #cbd5e1;">
-                📸 Galería Local Fotovideofly
-              </button>
-              <button type="button" id="btnApartadoTodos" class="btn btn-sm btn-ghost" onclick="switchCollageApartado('todos')" style="font-weight: 700; border-radius: 10px; font-size: 0.78rem; padding: 5px 12px; border: 1px solid #cbd5e1;">
-                🌟 Todos los Medios
-              </button>
-            </div>
-            <div id="collageApartadoStatus" style="font-size: 0.76rem; color: #10b981; font-weight: 700;">
-              <i class="fa-solid fa-seedling"></i> Catálogo oficial de publicidad y servicios agronómicos
-            </div>
-          </div>
-
-          <!-- Collage Publicitario Dinámico y Rotativo -->
-          <div id="collage-publicitario-container" style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-bottom: 24px; transition: opacity 0.5s ease;">
-            <!-- Renderizado dinámico desde /api/v1/publicidad/collage con rotación automática -->
-            <div style="grid-column: span 12; text-align:center; padding:40px; color:#64748b;">
-              <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem; color:var(--accent);"></i>
-              <div style="margin-top:8px; font-size:0.85rem;">Cargando ecosistema agrotecnológico...</div>
-            </div>
-          </div>
-        </div>
       </section>
 
 
